@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, GraduationCap, Sparkles } from 'lucide-react';
 const Hero = () => {
+  const navigate = useNavigate();
   const {
     t,
     isRTL
@@ -36,12 +38,21 @@ const Hero = () => {
           </div>
 
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <Button size="lg" className="px-8 py-6 h-auto min-w-[200px] text-sm">
+            <Button 
+              size="lg" 
+              className="px-8 py-6 h-auto min-w-[200px] text-sm"
+              onClick={() => navigate('/products')}
+            >
               <ShoppingCart className="w-5 h-5 mr-2" />
               {t('hero.cta.products')}
             </Button>
             
-            <Button variant="outline" size="lg" className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm"
+              onClick={() => navigate('/courses')}
+            >
               <GraduationCap className="w-5 h-5 mr-2" />
               {t('hero.cta.courses')}
             </Button>
