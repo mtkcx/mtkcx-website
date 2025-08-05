@@ -53,12 +53,12 @@ const Header = () => {
         <div className="flex items-center justify-between w-full">
           {/* Logo - Left */}
           <div className="flex items-center">
-            <img src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" alt="MT KCx Logo" className="h-12 w-auto" />
+            <img src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" alt="MT KCx Logo" className="h-40 w-auto" />
           </div>
 
           {/* Desktop Navigation - Center */}
           <nav className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
-            <div className="flex items-center space-x-8">
+            <div className="flex items-center space-x-4">
               {navigationItems.map(item => <a 
                 key={item.key} 
                 href={item.href} 
