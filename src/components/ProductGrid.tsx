@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Product {
   id: string;
@@ -29,6 +30,7 @@ interface ProductGridProps {
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   if (loading) {
     return (
@@ -96,11 +98,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
               
               <div className="flex items-center justify-between mb-3">
                 <div className="text-sm text-muted-foreground">
-                  Available in {product.variants.length} sizes
+                  {t('products.available_in_sizes').replace('{count}', product.variants.length.toString())}
                 </div>
                 {lowestPrice && (
                   <div className="text-lg font-bold text-primary">
-                    From ${lowestPrice}
+                    {t('products.from_price')}{lowestPrice}
                   </div>
                 )}
               </div>
@@ -114,7 +116,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
                 onClick={() => handleViewProduct(product.id)}
               >
                 <Eye className="w-4 h-4 mr-2" />
-                View Details
+                {t('products.view_details')}
               </Button>
               <Button 
                 size="sm" 
@@ -122,7 +124,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
                 onClick={() => handleViewProduct(product.id)}
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
-                Select Size
+                {t('products.select_size')}
               </Button>
             </CardFooter>
           </Card>

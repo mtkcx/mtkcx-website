@@ -266,7 +266,7 @@ const translations = {
     'products.price_coming_soon': 'Price Coming Soon',
     'products.lowest_price': 'From',
     'products.select_variant': 'Select Variant',
-    'products.back_to_products': 'Back to Products',
+    
     
     // Footer
     'footer.company_name': 'MTKcx',
@@ -322,22 +322,34 @@ const translations = {
     'common.get_course_info': 'Get Course Information',
     'common.koch_official_training': 'Koch Chemie Official Training',
     'common.only_official_course': 'This is the only official Koch Chemie certification course in the region. Upon completion, you\'ll be a certified Koch Chemie professional detailer.',
-    'common.quote_request_received': 'Quote Request Received!',
-    'common.contact_service_hours': 'We\'ll contact you about {service} within 24 hours.',
-    'common.beyond_products': 'Beyond Products - Education & Excellence',
-    'common.why_choose_mt': 'Why Choose MT Wraps?',
-    'common.professional_training_programs': 'Professional Training Programs',
-    'common.expert_wrapping_services': 'Expert Wrapping Services',
-    'common.fast_response_time': 'Fast Response Time',
-    'common.our_work_gallery': 'Our Work Gallery',
-    'common.explore_portfolio': 'Explore our portfolio of vehicle transformations and custom projects',
-    'common.project_gallery_image': 'Project Gallery Image',
-    'common.images_coming_soon': '(Images coming soon)',
-    'common.view_full_gallery': 'View Full Gallery',
-    'common.ready_transform_vehicle': 'Ready to Transform Your Vehicle?',
-    'common.contact_consultation': 'Contact us today for a personalized consultation and quote for your vehicle wrapping project.',
-    'common.call_for_quote': 'Call for Quote',
-    'common.schedule_consultation': 'Schedule Consultation',
+    
+    // Category Filter & Navigation
+    'categories.categories': 'Categories',
+    'categories.all_products': 'All Products',
+    
+    // 404 Page
+    'notfound.error_title': '404',
+    'notfound.page_not_found': 'Oops! Page not found',
+    'notfound.return_home': 'Return to Home',
+    
+    // Product Grid
+    'products.available_in_sizes': 'Available in {count} sizes',
+    'products.from_price': 'From $',
+    'products.select_size': 'Select Size',
+    
+    // Product Detail Page
+    'products.error_title': 'Error',
+    'products.failed_load_details': 'Failed to load product details.',
+    'products.added_to_cart': 'Added to Cart',
+    'products.added_to_cart_desc': '{productName} ({size}) has been added to your cart.',
+    'products.back_to_products_new': 'Back to Products',
+    'products.product_description': 'Product Description',
+    'products.price_label': 'Price:',
+    'products.sku_label': 'SKU:',
+    
+    // Product Variant Selector
+    'products.price_tba_label': 'TBA',
+    
     // About page specific
     'about.our_achievements': 'Our Achievements',
     'about.building_trust': 'Building trust through excellence, innovation, and unwavering commitment to quality',
@@ -696,7 +708,7 @@ const translations = {
     'products.price_coming_soon': 'السعر قريباً',
     'products.lowest_price': 'من',
     'products.select_variant': 'اختر المتغير',
-    'products.back_to_products': 'العودة إلى المنتجات',
+    
     
     // Footer
     'footer.company_name': 'MTKcx',
@@ -752,22 +764,34 @@ const translations = {
     'common.get_course_info': 'احصل على معلومات الدورة',
     'common.koch_official_training': 'التدريب الرسمي لكوخ كيمي',
     'common.only_official_course': 'هذه هي دورة الشهادة الرسمية الوحيدة لكوخ كيمي في المنطقة. عند الانتهاء، ستصبح منظف كوخ كيمي مهني معتمد.',
-    'common.quote_request_received': 'تم استلام طلب العرض!',
-    'common.contact_service_hours': 'سنتواصل معك حول {service} خلال 24 ساعة.',
-    'common.beyond_products': 'أبعد من المنتجات - التعليم والتميز',
-    'common.why_choose_mt': 'لماذا تختار إم تي رابس؟',
-    'common.professional_training_programs': 'برامج التدريب المهني',
-    'common.expert_wrapping_services': 'خدمات التغليف المتخصصة',
-    'common.fast_response_time': 'وقت استجابة سريع',
-    'common.our_work_gallery': 'معرض أعمالنا',
-    'common.explore_portfolio': 'استكشف مجموعة أعمالنا لتحويلات السيارات والمشاريع المخصصة',
-    'common.project_gallery_image': 'صورة معرض المشروع',
-    'common.images_coming_soon': '(الصور قادمة قريباً)',
-    'common.view_full_gallery': 'عرض المعرض الكامل',
-    'common.ready_transform_vehicle': 'جاهز لتحويل سيارتك؟',
-    'common.contact_consultation': 'اتصل بنا اليوم للحصول على استشارة شخصية وعرض أسعار لمشروع تغليف سيارتك.',
-    'common.call_for_quote': 'اتصل للحصول على عرض أسعار',
-    'common.schedule_consultation': 'حدد موعد استشارة',
+    
+    // Category Filter & Navigation (Arabic)
+    'categories.categories': 'الفئات',
+    'categories.all_products': 'جميع المنتجات',
+    
+    // 404 Page (Arabic)
+    'notfound.error_title': '404',
+    'notfound.page_not_found': 'عذراً! الصفحة غير موجودة',
+    'notfound.return_home': 'العودة للرئيسية',
+    
+    // Product Grid (Arabic)
+    'products.available_in_sizes': 'متوفر بـ {count} أحجام',
+    'products.from_price': 'من $',
+    'products.select_size': 'اختر الحجم',
+    
+    // Product Detail Page (Arabic)
+    'products.error_title': 'خطأ',
+    'products.failed_load_details': 'فشل في تحميل تفاصيل المنتج.',
+    'products.added_to_cart': 'تمت الإضافة إلى السلة',
+    'products.added_to_cart_desc': 'تمت إضافة {productName} ({size}) إلى سلتك.',
+    'products.back_to_products_new': 'العودة إلى المنتجات',
+    'products.product_description': 'وصف المنتج',
+    'products.price_label': 'السعر:',
+    'products.sku_label': 'رمز المنتج:',
+    
+    // Product Variant Selector (Arabic)
+    'products.price_tba_label': 'سيُعلن لاحقاً',
+    
     // Authentication translations (Arabic)
     'auth.welcome_badge': 'بوابة عملاء MT Wraps',
     'auth.welcome_back': 'أهلاً بعودتك!',
@@ -1040,7 +1064,7 @@ const translations = {
     'products.price_coming_soon': 'מחיר בקרוב',
     'products.lowest_price': 'החל מ',
     'products.select_variant': 'בחר וריאנט',
-    'products.back_to_products': 'חזור למוצרים',
+    
     
     // Footer
     'footer.company_name': 'MTKcx',
@@ -1096,22 +1120,34 @@ const translations = {
     'common.get_course_info': 'קבל מידע על הקורס',
     'common.koch_official_training': 'הכשרה רשמית של Koch Chemie',
     'common.only_official_course': 'זהו קורס ההסמכה הרשמי היחיד של Koch Chemie באזור. עם השלמתו, תהיה מנקה מקצועי מוסמך של Koch Chemie.',
-    'common.quote_request_received': 'בקשת הצעת מחיר התקבלה!',
-    'common.contact_service_hours': 'ניצור איתך קשר לגבי {service} תוך 24 שעות.',
-    'common.beyond_products': 'מעבר למוצרים - חינוך ומצוינות',
-    'common.why_choose_mt': 'למה לבחור ב-MT Wraps?',
-    'common.professional_training_programs': 'תוכניות הכשרה מקצועיות',
-    'common.expert_wrapping_services': 'שירותי עיטוף מומחים',
-    'common.fast_response_time': 'זמן תגובה מהיר',
-    'common.our_work_gallery': 'גלריית העבודות שלנו',
-    'common.explore_portfolio': 'חקור את תיק העבודות שלנו של שינויי רכבים ופרויקטים מותאמים אישית',
-    'common.project_gallery_image': 'תמונת גלריית פרויקט',
-    'common.images_coming_soon': '(תמונות בקרוב)',
-    'common.view_full_gallery': 'צפה בגלריה המלאה',
-    'common.ready_transform_vehicle': 'מוכן לשנות את הרכב שלך?',
-    'common.contact_consultation': 'צור איתנו קשר היום לייעוץ אישי והצעת מחיר לפרויקט עיטוף הרכב שלך.',
-    'common.call_for_quote': 'התקשר להצעת מחיר',
-    'common.schedule_consultation': 'תזמן ייעוץ',
+    
+    // Category Filter & Navigation (Hebrew)
+    'categories.categories': 'קטגוריות',
+    'categories.all_products': 'כל המוצרים',
+    
+    // 404 Page (Hebrew)
+    'notfound.error_title': '404',
+    'notfound.page_not_found': 'אופס! הדף לא נמצא',
+    'notfound.return_home': 'חזור לעמוד הבית',
+    
+    // Product Grid (Hebrew)
+    'products.available_in_sizes': 'זמין ב-{count} גדלים',
+    'products.from_price': 'החל מ-$',
+    'products.select_size': 'בחר גודל',
+    
+    // Product Detail Page (Hebrew)
+    'products.error_title': 'שגיאה',
+    'products.failed_load_details': 'נכשל בטעינת פרטי המוצר.',
+    'products.added_to_cart': 'נוסף לעגלה',
+    'products.added_to_cart_desc': '{productName} ({size}) נוסף לעגלה שלך.',
+    'products.back_to_products_new': 'חזור למוצרים',
+    'products.product_description': 'תיאור המוצר',
+    'products.price_label': 'מחיר:',
+    'products.sku_label': 'מק"ט:',
+    
+    // Product Variant Selector (Hebrew)
+    'products.price_tba_label': 'יוכרז בהמשך',
+    
     // Authentication translations (Hebrew)
     'auth.welcome_badge': 'פורטל לקוחות MT Wraps',
     'auth.welcome_back': 'ברוך שובך!',

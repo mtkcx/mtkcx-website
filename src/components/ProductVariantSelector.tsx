@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -25,6 +26,8 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
   onVariantSelect,
   onAddToCart
 }) => {
+  const { t } = useLanguage();
+  
   const handleAddToCart = () => {
     if (selectedVariant && onAddToCart) {
       onAddToCart(selectedVariant);
@@ -62,14 +65,14 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
                     </div>
                   ) : (
                     <div className="text-muted-foreground text-sm">
-                      Price TBA
+                      {t('products.price_tba')}
                     </div>
                   )}
                   <Badge
                     variant={variant.stock_quantity > 0 ? "default" : "destructive"}
                     className="text-xs"
                   >
-                    {variant.stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}
+                    {variant.stock_quantity > 0 ? t('products.in_stock') : t('products.out_of_stock')}
                   </Badge>
                 </div>
               </CardContent>
@@ -92,9 +95,9 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
             </div>
             
             <div className="flex justify-between items-center">
-              <span className="font-medium">Price:</span>
+              <span className="font-medium">{t('products.price_label')}</span>
               <span className="text-xl font-bold text-primary">
-                {selectedVariant.price > 0 ? `$${selectedVariant.price}` : 'TBA'}
+                {selectedVariant.price > 0 ? `$${selectedVariant.price}` : t('products.price_tba_label')}
               </span>
             </div>
             
@@ -105,7 +108,7 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
               disabled={selectedVariant.stock_quantity === 0 || selectedVariant.price === 0}
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
-              {selectedVariant.price === 0 ? 'Price Coming Soon' : 'Add to Cart'}
+              {selectedVariant.price === 0 ? t('products.price_coming_soon') : t('products.add_to_cart')}
             </Button>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -23,11 +24,12 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   onCategorySelect,
   productCounts = {}
 }) => {
+  const { t } = useLanguage();
   const sortedCategories = [...categories].sort((a, b) => a.display_order - b.display_order);
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold text-lg">Categories</h3>
+      <h3 className="font-semibold text-lg">{t('categories.categories')}</h3>
       <ScrollArea className="h-auto max-h-96">
         <div className="space-y-2">
           <Button
@@ -35,7 +37,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             className="w-full justify-start"
             onClick={() => onCategorySelect(null)}
           >
-            All Products
+            {t('categories.all_products')}
             {productCounts.total && (
               <Badge variant="secondary" className="ml-auto">
                 {productCounts.total}

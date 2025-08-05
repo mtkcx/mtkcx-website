@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -36,6 +37,7 @@ interface Product {
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
@@ -97,8 +99,8 @@ const ProductDetail = () => {
       } catch (error) {
         console.error('Error fetching product:', error);
         toast({
-          title: "Error",
-          description: "Failed to load product details.",
+          title: t('products.error_title'),
+          description: t('products.failed_load_details'),
           variant: "destructive",
         });
       } finally {
@@ -111,8 +113,10 @@ const ProductDetail = () => {
 
   const handleAddToCart = (variant: ProductVariant) => {
     toast({
-      title: "Added to Cart",
-      description: `${product?.name} (${variant.size}) has been added to your cart.`,
+      title: t('products.added_to_cart'),
+      description: t('products.added_to_cart_desc')
+        .replace('{productName}', product?.name || '')
+        .replace('{size}', variant.size),
     });
   };
 
@@ -185,7 +189,7 @@ const ProductDetail = () => {
             className="p-0 h-auto"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Products
+            {t('products.back_to_products_new')}
           </Button>
           <span className="text-muted-foreground">/</span>
           <Badge variant="outline">{product.category.name}</Badge>
@@ -234,7 +238,7 @@ const ProductDetail = () => {
                   <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary">{product.category.name}</Badge>
-                    <Badge variant="outline">SKU: {product.product_code}</Badge>
+                    <Badge variant="outline">{t('products.sku_label')} {product.product_code}</Badge>
                   </div>
                 </div>
               </div>
@@ -243,7 +247,7 @@ const ProductDetail = () => {
 
               {/* Product Description */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Product Description</h3>
+                <h3 className="text-lg font-semibold">{t('products.product_description')}</h3>
                 <div className="space-y-2">
                   {formatDescription(product.description)}
                 </div>
