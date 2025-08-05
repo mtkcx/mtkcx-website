@@ -44,6 +44,145 @@ export type Database = {
         }
         Relationships: []
       }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          order_id: string
+          product_id: string | null
+          product_name: string
+          quantity: number
+          total_price: number
+          unit_price: number
+          variant_id: string | null
+          variant_size: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_id: string
+          product_id?: string | null
+          product_name: string
+          quantity?: number
+          total_price: number
+          unit_price: number
+          variant_id?: string | null
+          variant_size?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_id?: string
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+          total_price?: number
+          unit_price?: number
+          variant_id?: string | null
+          variant_size?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string | null
+          customer_address: string | null
+          customer_city: string | null
+          customer_country: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          email: string
+          id: string
+          items: Json
+          notes: string | null
+          order_number: string
+          order_type: string
+          payment_gateway: string
+          payment_intent_id: string | null
+          payment_session_id: string | null
+          preferred_date: string | null
+          service_description: string | null
+          service_type: string | null
+          status: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string | null
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_country?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          email: string
+          id?: string
+          items: Json
+          notes?: string | null
+          order_number?: string
+          order_type: string
+          payment_gateway: string
+          payment_intent_id?: string | null
+          payment_session_id?: string | null
+          preferred_date?: string | null
+          service_description?: string | null
+          service_type?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string | null
+          customer_address?: string | null
+          customer_city?: string | null
+          customer_country?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          email?: string
+          id?: string
+          items?: Json
+          notes?: string | null
+          order_number?: string
+          order_type?: string
+          payment_gateway?: string
+          payment_intent_id?: string | null
+          payment_session_id?: string | null
+          preferred_date?: string | null
+          service_description?: string | null
+          service_type?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       product_images: {
         Row: {
           alt_text: string | null
