@@ -18,10 +18,10 @@ const ServiceSection = () => {
     cta: 'View Products'
   }, {
     icon: GraduationCap,
-    title: 'Professional Consultation',
-    description: 'Expert guidance on product selection, application techniques, and professional detailing setup.',
-    features: ['Product recommendations', 'Technical support', 'Application guidance'],
-    cta: 'Get Consultation'
+    title: 'Detailing Courses',
+    description: 'Expert training programs for professional car detailing and polishing techniques.',
+    features: ['Hands-on training', 'Online & in-person', 'Certification included'],
+    cta: 'Enroll Today'
   }, {
     icon: Car,
     title: 'MT Wraps Services',
