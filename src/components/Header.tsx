@@ -33,7 +33,7 @@ const Header = () => {
             <img 
               src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" 
               alt="MT KCx Logo" 
-              className="h-10 w-auto"
+              className="h-14 w-auto"
             />
           </div>
 
