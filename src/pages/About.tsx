@@ -158,7 +158,7 @@ const About = () => {
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                      <span>{t('common.professional_training')}</span>
+                      <span>{t('about.certification_programs')}</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />

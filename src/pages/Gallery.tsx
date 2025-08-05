@@ -408,7 +408,8 @@ const Gallery = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, index) => <Card key={index} className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300">
+            {[...Array(6)].map((_, index) => (
+              <Card key={index} className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300">
                 <div className="w-full h-full bg-muted/50 flex items-center justify-center">
                   <div className="text-center">
                     <Car className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
@@ -416,7 +417,8 @@ const Gallery = () => {
                     <p className="text-xs text-muted-foreground">{t('common.images_coming_soon')}</p>
                   </div>
                 </div>
-              </Card>)}
+              </Card>
+            ))}
           </div>
           
           <div className="text-center mt-8">
