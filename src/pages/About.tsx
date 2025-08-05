@@ -16,20 +16,23 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const About = () => {
+  const { t } = useLanguage();
+  
   const achievements = [
-    { icon: Award, title: "Official Koch-Chemie Partner", description: "Authorized distributor of premium German car care products" },
-    { icon: Users, title: "500+ Satisfied Clients", description: "Serving professionals and enthusiasts across the region" },
-    { icon: GraduationCap, title: "Professional Training", description: "Comprehensive detailing and polishing courses" },
-    { icon: Car, title: "MT Wraps Expertise", description: "Leading vehicle wrapping and customization services" }
+    { icon: Award, title: t('about.achievement_1'), description: t('about.achievement_1_desc') },
+    { icon: Users, title: t('about.achievement_2'), description: t('about.achievement_2_desc') },
+    { icon: GraduationCap, title: t('about.achievement_3'), description: t('about.achievement_3_desc') },
+    { icon: Car, title: t('about.achievement_4'), description: t('about.achievement_4_desc') }
   ];
 
   const values = [
-    { icon: Target, title: "Precision", description: "Every detail matters in our work and service delivery" },
-    { icon: Sparkles, title: "Innovation", description: "Staying ahead with cutting-edge products and techniques" },
-    { icon: CheckCircle, title: "Quality", description: "Only the finest German-engineered products and materials" },
-    { icon: Users, title: "Education", description: "Empowering professionals through knowledge and training" }
+    { icon: Target, title: t('about.value_precision'), description: t('about.value_precision_desc') },
+    { icon: Sparkles, title: t('about.value_innovation'), description: t('about.value_innovation_desc') },
+    { icon: CheckCircle, title: t('about.value_quality'), description: t('about.value_quality_desc') },
+    { icon: Users, title: t('about.value_education'), description: t('about.value_education_desc') }
   ];
 
   const services = [
@@ -49,14 +52,12 @@ const About = () => {
       <section className="relative py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-2">About MT Wraps</Badge>
+            <Badge className="mb-6 px-4 py-2">{t('about.badge')}</Badge>
             <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
-              Crafting Excellence in 
-              <span className="text-gradient bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent"> Automotive Care</span>
+              {t('about.title')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Official Koch-Chemie distribution partner bringing world-class German car care products 
-              and professional expertise directly to you.
+              {t('about.subtitle')}
             </p>
           </div>
         </div>
@@ -68,21 +69,16 @@ const About = () => {
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
               <div>
-                <h2 className="text-3xl font-bold text-primary mb-6">Our Story</h2>
+                <h2 className="text-3xl font-bold text-primary mb-6">{t('about.story_title')}</h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    We are proud to be an official Koch-Chemie distribution partner, bringing world-class 
-                    German car care products directly to professionals and enthusiasts across the region.
+                    {t('about.story_p1')}
                   </p>
                   <p>
-                    With years of hands-on experience in detailing, polishing, and surface treatment, 
-                    we don't just sell products — we live the craft. Our deep understanding of the industry 
-                    allows us to provide tailored solutions for every stage of vehicle care, from pre-wash to final finish.
+                    {t('about.story_p2')}
                   </p>
                   <p>
-                    We are also the founders of <strong className="text-primary">MT Wraps</strong>, one of the leading names in 
-                    high-quality vehicle wrapping and customization. Our work speaks for itself — precision, 
-                    creativity, and premium execution on every car we touch.
+                    {t('about.story_p3')}
                   </p>
                 </div>
               </div>
@@ -91,11 +87,10 @@ const About = () => {
                   <CardContent className="p-0">
                     <div className="flex items-center mb-4">
                       <Package className="w-8 h-8 text-primary mr-3" />
-                      <h3 className="text-xl font-semibold">Koch-Chemie Official Partner</h3>
+                      <h3 className="text-xl font-semibold">{t('about.koch_partner')}</h3>
                     </div>
                     <p className="text-muted-foreground mb-4">
-                      Since 1968, Koch-Chemie has been the benchmark for professional car care. 
-                      As their official partner, we bring you authentic German engineering excellence.
+                      {t('about.koch_desc')}
                     </p>
                     <div className="flex items-center text-sm text-primary">
                       <MapPin className="w-4 h-4 mr-2" />

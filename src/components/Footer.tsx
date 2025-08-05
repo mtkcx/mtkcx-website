@@ -12,9 +12,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="font-bold text-lg">MTKcx</h3>
+            <h3 className="font-bold text-lg">{t('footer.company_name')}</h3>
             <p className="text-primary-foreground/80 leading-relaxed text-sm">
-              Official Koch-Chemie distributor providing premium car care products, professional training, and expert wrapping services.
+              {t('footer.company_desc')}
             </p>
             <div className="flex space-x-4">
               <a href="https://www.facebook.com/MTDetailing" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
@@ -33,7 +33,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Quick Links</h4>
+            <h4 className="text-lg font-semibold">{t('footer.quick_links')}</h4>
             <ul className="space-y-2">
               <li><Link to="/products" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.products')}</Link></li>
               <li><Link to="/courses" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.courses')}</Link></li>
@@ -44,12 +44,12 @@ const Footer = () => {
 
           {/* Services */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Services</h4>
+            <h4 className="text-lg font-semibold">{t('footer.services')}</h4>
             <ul className="space-y-2 text-primary-foreground/80">
-              <li>Professional Car Care</li>
-              <li>Detailing Training</li>
-              <li>Car Wrapping</li>
-              <li>Product Distribution</li>
+              <li>{t('footer.service_1')}</li>
+              <li>{t('footer.service_2')}</li>
+              <li>{t('footer.service_3')}</li>
+              <li>{t('footer.service_4')}</li>
             </ul>
           </div>
 
@@ -74,7 +74,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center">
-          <p className="text-primary-foreground/80">© 2025 MT Wraps. All rights reserved. | Koch-Chemie</p>
+          <p className="text-primary-foreground/80">{t('footer.copyright')}</p>
         </div>
       </div>
     </footer>;

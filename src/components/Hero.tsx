@@ -25,7 +25,7 @@ const Hero = () => {
           <div className="mb-8">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium mb-6 backdrop-blur-sm">
               <Sparkles className="w-4 h-4 mr-2" />
-              Official Koch-Chemie Partner
+              {t('common.official_partner')}
             </div>
             
             <h1 className="text-5xl font-bold text-white mb-6 leading-tight md:text-4xl">
@@ -62,15 +62,15 @@ const Hero = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 pt-16 border-t border-white/20">
             <div className="text-center">
               <div className="text-4xl font-bold text-white mb-2">250+</div>
-              <div className="text-white/80">Premium Products</div>
+              <div className="text-white/80">{t('stats.products')}</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-white mb-2">1000+</div>
-              <div className="text-white/80">Happy Customers</div>
+              <div className="text-white/80">{t('stats.customers')}</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-white mb-2">4+</div>
-              <div className="text-white/80">Years Experience</div>
+              <div className="text-white/80">{t('stats.experience')}</div>
             </div>
           </div>
         </div>
