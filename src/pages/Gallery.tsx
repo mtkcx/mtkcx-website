@@ -174,26 +174,26 @@ const Gallery = () => {
   const process = [
     {
       step: 1,
-      title: 'Consultation & Design',
-      description: 'We discuss your vision, assess your vehicle, and create a custom design proposal with material recommendations.',
+      title: 'consultation_design',
+      description: 'consultation_desc',
       icon: Eye
     },
     {
       step: 2,
-      title: 'Preparation',
-      description: 'Thorough cleaning and preparation of your vehicle surface to ensure optimal adhesion and finish quality.',
+      title: 'preparation',
+      description: 'preparation_desc',
       icon: Wrench
     },
     {
       step: 3,
-      title: 'Professional Installation',
-      description: 'Expert application using specialized tools and techniques in our controlled environment facility.',
+      title: 'professional_installation',
+      description: 'installation_process_desc',
       icon: Target
     },
     {
       step: 4,
-      title: 'Quality Control',
-      description: 'Comprehensive inspection and finishing touches to ensure perfect results and your complete satisfaction.',
+      title: 'quality_control',
+      description: 'quality_control_desc',
       icon: CheckCircle
     }
   ];
@@ -201,23 +201,23 @@ const Gallery = () => {
   const benefits = [
     {
       icon: Shield,
-      title: 'Paint Protection',
-      description: 'Protects original paint from chips, scratches, and UV damage'
+      title: 'paint_protection',
+      description: 'paint_protection_desc'
     },
     {
       icon: Palette,
-      title: 'Unlimited Customization',
-      description: 'Endless color and design possibilities for unique personalization'
+      title: 'unlimited_customization',
+      description: 'customization_desc'
     },
     {
       icon: Clock,
-      title: 'Reversible Process',
-      description: 'Can be removed without damaging original paint finish'
+      title: 'reversible_process',
+      description: 'reversible_desc'
     },
     {
       icon: Award,
-      title: 'Professional Quality',
-      description: 'Industry-leading materials and expert installation techniques'
+      title: 'professional_quality',
+      description: 'quality_desc'
     }
   ];
 
@@ -251,9 +251,9 @@ const Gallery = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Why Choose Vehicle Wrapping?</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">{t('gallery.why_choose_wrapping')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover the advantages of professional vehicle wrapping
+              {t('gallery.wrapping_advantages')}
             </p>
           </div>
           
@@ -265,8 +265,8 @@ const Gallery = () => {
                   <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
                     <IconComponent className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg mb-2">{benefit.title}</h3>
-                  <p className="text-muted-foreground text-sm">{benefit.description}</p>
+                  <h3 className="font-semibold text-lg mb-2">{t(`gallery.${benefit.title}`)}</h3>
+                  <p className="text-muted-foreground text-sm">{t(`gallery.${benefit.description}`)}</p>
                 </div>
               );
             })}
@@ -304,13 +304,13 @@ const Gallery = () => {
                   <div className="space-y-4">
                     <h4 className="font-semibold text-lg text-primary flex items-center">
                       <Sparkles className="w-5 h-5 mr-2" />
-                      Wrapping Services
+                      {t('gallery.wrapping_services')}
                     </h4>
                     <div className="space-y-3">
                       {[
-                        'Paint Protection Film',
-                        'Color Change Wrap', 
-                        'Commercial Fleet Wrapping'
+                        t('gallery.paint_protection_film'),
+                        t('gallery.color_change_wrap'), 
+                        t('gallery.commercial_fleet')
                       ].map((service, index) => (
                         <div key={index} className="flex items-center text-muted-foreground">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
@@ -323,13 +323,13 @@ const Gallery = () => {
                   <div className="space-y-4">
                     <h4 className="font-semibold text-lg text-primary flex items-center">
                       <Palette className="w-5 h-5 mr-2" />
-                      Additional Services
+                      {t('gallery.additional_services')}
                     </h4>
                     <div className="space-y-3">
                       {[
-                        'Specialty Finishes',
-                        'Polish & Detailing',
-                        'Professional Detailing'
+                        t('gallery.specialty_finishes'),
+                        t('gallery.polish_detailing'),
+                        t('gallery.professional_detailing')
                       ].map((service, index) => (
                         <div key={index} className="flex items-center text-muted-foreground">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
@@ -344,29 +344,29 @@ const Gallery = () => {
                 <div className="bg-primary/5 rounded-lg p-6">
                   <h4 className="font-semibold text-lg text-primary mb-4 flex items-center">
                     <Award className="w-5 h-5 mr-2" />
-                    Why Choose Our Services?
+                    {t('gallery.why_choose_services')}
                   </h4>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="text-center">
                       <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
                         <Shield className="w-6 w-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">Premium Materials</h5>
-                      <p className="text-sm text-muted-foreground">Industry-leading automotive films</p>
+                      <h5 className="font-medium mb-1">{t('gallery.premium_materials')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('gallery.materials_desc')}</p>
                     </div>
                     <div className="text-center">
                       <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
                         <Users className="w-6 h-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">Expert Installation</h5>
-                      <p className="text-sm text-muted-foreground">Professional certified technicians</p>
+                      <h5 className="font-medium mb-1">{t('gallery.expert_installation')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('gallery.installation_desc')}</p>
                     </div>
                     <div className="text-center">
                       <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
                         <Clock className="w-6 h-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">Quality Guarantee</h5>
-                      <p className="text-sm text-muted-foreground">Warranty on all services</p>
+                      <h5 className="font-medium mb-1">{t('gallery.quality_guarantee')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('gallery.guarantee_desc')}</p>
                     </div>
                   </div>
                 </div>
@@ -374,7 +374,7 @@ const Gallery = () => {
                 {/* Contact Buttons */}
                 <div className="text-center space-y-4">
                   <p className="text-muted-foreground">
-                    Ready to transform your vehicle? Contact us to discuss your project and get a personalized quote.
+                    {t('gallery.ready_transform')}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button 
@@ -383,7 +383,7 @@ const Gallery = () => {
                       className="flex-1 sm:flex-none"
                     >
                       <Phone className="w-5 h-5 mr-2" />
-                      Contact for Quote
+                      {t('gallery.contact_quote')}
                     </Button>
                     <Button 
                       variant="outline" 
@@ -392,7 +392,7 @@ const Gallery = () => {
                       className="flex-1 sm:flex-none"
                     >
                       <Mail className="w-5 h-5 mr-2" />
-                      Request Consultation
+                      {t('gallery.request_consultation')}
                     </Button>
                   </div>
                 </div>
@@ -406,9 +406,9 @@ const Gallery = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Our Professional Process</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">{t('gallery.professional_process')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              From concept to completion, we ensure exceptional results at every step
+              {t('gallery.process_desc')}
             </p>
           </div>
           
@@ -422,10 +422,10 @@ const Gallery = () => {
                       <IconComponent className="w-8 h-8 text-primary" />
                     </div>
                     <div className="mb-2">
-                      <Badge variant="secondary" className="mb-2">Step {step.step}</Badge>
-                      <h3 className="font-semibold text-lg">{step.title}</h3>
+                      <Badge variant="secondary" className="mb-2">{t('gallery.step')} {step.step}</Badge>
+                      <h3 className="font-semibold text-lg">{t(`gallery.${step.title}`)}</h3>
                     </div>
-                    <p className="text-muted-foreground text-sm">{step.description}</p>
+                    <p className="text-muted-foreground text-sm">{t(`gallery.${step.description}`)}</p>
                   </CardContent>
                 </Card>
               );
@@ -438,9 +438,9 @@ const Gallery = () => {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Premium Materials</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">{t('gallery.premium_materials_title')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We use only the finest automotive films from industry-leading manufacturers
+              {t('gallery.materials_subtitle')}
             </p>
           </div>
           

@@ -90,13 +90,13 @@ const Courses = () => {
                       <Award className="h-8 w-8 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold">Professional Certification Course</h3>
-                      <p className="text-muted-foreground">4-Day Interactive & Hands-On Training</p>
+                      <h3 className="text-2xl font-bold">{t('courses.professional_certification')}</h3>
+                      <p className="text-muted-foreground">{t('courses.interactive_training')}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-3xl font-bold text-primary">Contact for Pricing</div>
-                    <div className="text-sm text-muted-foreground">Includes certification</div>
+                    <div className="text-3xl font-bold text-primary">{t('courses.contact_pricing')}</div>
+                    <div className="text-sm text-muted-foreground">{t('courses.includes_certification')}</div>
                   </div>
                 </div>
 
@@ -104,40 +104,40 @@ const Courses = () => {
                   <div>
                     <h4 className="font-semibold mb-4 flex items-center">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                      What You'll Learn
+                      {t('courses.what_learn')}
                     </h4>
                     <ul className="space-y-2 text-muted-foreground">
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Professional detailing techniques and methodologies
+                        {t('courses.professional_techniques')}
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Advanced polishing methods and compound applications
+                        {t('courses.advanced_polishing')}
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Koch Chemie product knowledge and proper usage
+                        {t('courses.product_knowledge')}
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Paint correction and restoration techniques
+                        {t('courses.paint_correction')}
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Surface assessment and defect analysis
+                        {t('courses.surface_assessment')}
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Machine polishing mastery (rotary & dual-action)
+                        {t('courses.machine_polishing')}
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Quality control and finishing techniques
+                        {t('courses.quality_control')}
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        Business practices and customer service excellence
+                        {t('courses.business_practices')}
                       </li>
                     </ul>
                   </div>
@@ -145,24 +145,24 @@ const Courses = () => {
                   <div>
                     <h4 className="font-semibold mb-4 flex items-center">
                       <Calendar className="h-5 w-5 text-blue-500 mr-2" />
-                      4-Day Course Structure
+                      {t('courses.course_structure')}
                     </h4>
                     <div className="space-y-4">
                       <div className="border-l-4 border-primary pl-4">
-                        <h5 className="font-medium">Day 1: Fundamentals</h5>
-                        <p className="text-sm text-muted-foreground">Koch Chemie product knowledge, surface analysis, and basic detailing techniques</p>
+                        <h5 className="font-medium">{t('courses.day_1')}</h5>
+                        <p className="text-sm text-muted-foreground">{t('courses.day_1_desc')}</p>
                       </div>
                       <div className="border-l-4 border-primary pl-4">
-                        <h5 className="font-medium">Day 2: Advanced Detailing</h5>
-                        <p className="text-sm text-muted-foreground">Interior/exterior detailing mastery, protection applications, and quality standards</p>
+                        <h5 className="font-medium">{t('courses.day_2')}</h5>
+                        <p className="text-sm text-muted-foreground">{t('courses.day_2_desc')}</p>
                       </div>
                       <div className="border-l-4 border-primary pl-4">
-                        <h5 className="font-medium">Day 3: Polishing Mastery</h5>
-                        <p className="text-sm text-muted-foreground">Paint correction, compound techniques, machine operation, and defect removal</p>
+                        <h5 className="font-medium">{t('courses.day_3')}</h5>
+                        <p className="text-sm text-muted-foreground">{t('courses.day_3_desc')}</p>
                       </div>
                       <div className="border-l-4 border-primary pl-4">
-                        <h5 className="font-medium">Day 4: Certification</h5>
-                        <p className="text-sm text-muted-foreground">Practical assessment, final projects, and official Koch Chemie certification</p>
+                        <h5 className="font-medium">{t('courses.day_4')}</h5>
+                        <p className="text-sm text-muted-foreground">{t('courses.day_4_desc')}</p>
                       </div>
                     </div>
                   </div>
@@ -171,70 +171,70 @@ const Courses = () => {
                 <div className="bg-muted/50 rounded-lg p-6 mb-8">
                   <h4 className="font-semibold mb-4 flex items-center">
                     <Star className="h-5 w-5 text-yellow-500 mr-2" />
-                    Why Choose Our Koch Chemie Certification?
+                    {t('courses.why_choose')}
                   </h4>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="text-center">
                       <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
                         <Award className="h-6 w-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">Official Certification</h5>
-                      <p className="text-sm text-muted-foreground">Recognized Koch Chemie certification</p>
+                      <h5 className="font-medium mb-1">{t('courses.official_certification')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('courses.recognized_cert')}</p>
                     </div>
                     <div className="text-center">
                       <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
                         <Users className="h-6 w-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">Expert Instructors</h5>
-                      <p className="text-sm text-muted-foreground">Certified Koch Chemie professionals</p>
+                      <h5 className="font-medium mb-1">{t('courses.expert_instructors')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('courses.certified_professionals')}</p>
                     </div>
                     <div className="text-center">
                       <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
                         <BookOpen className="h-6 w-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">Interactive & Hands-On</h5>
-                      <p className="text-sm text-muted-foreground">Real-world practical training</p>
+                      <h5 className="font-medium mb-1">{t('courses.interactive_hands_on')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('courses.practical_training')}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-primary/5 rounded-lg p-6 mb-8">
-                  <h4 className="font-semibold mb-4">Course Includes:</h4>
+                  <h4 className="font-semibold mb-4">{t('courses.course_includes')}</h4>
                   <div className="grid md:grid-cols-2 gap-4">
                     <ul className="space-y-2">
                       <li className="flex items-center text-sm">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        Complete Koch Chemie product kit
+                        {t('courses.product_kit')}
                       </li>
                       <li className="flex items-center text-sm">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        Professional polishing equipment access
+                        {t('courses.equipment_access')}
                       </li>
                       <li className="flex items-center text-sm">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        All training materials and documentation
+                        {t('courses.training_materials')}
                       </li>
                       <li className="flex items-center text-sm">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        Practice vehicles for hands-on training
+                        {t('courses.practice_vehicles')}
                       </li>
                     </ul>
                     <ul className="space-y-2">
                       <li className="flex items-center text-sm">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        Official Koch Chemie certification
+                        {t('courses.certification_included')}
                       </li>
                       <li className="flex items-center text-sm">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        Lunch and refreshments all 4 days
+                        {t('courses.lunch_refreshments')}
                       </li>
                       <li className="flex items-center text-sm">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        Digital course materials and resources
+                        {t('courses.digital_materials')}
                       </li>
                       <li className="flex items-center text-sm">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        Post-course support and guidance
+                        {t('courses.post_support')}
                       </li>
                     </ul>
                   </div>
@@ -243,11 +243,11 @@ const Courses = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button size="lg" className="flex-1" onClick={handleEnrollment}>
                     <Calendar className="h-5 w-5 mr-2" />
-                    Enroll Now
+                    {t('courses.enroll_now')}
                   </Button>
                   <Button variant="outline" size="lg" className="flex-1">
                     <Phone className="h-5 w-5 mr-2" />
-                    Contact for Details
+                    {t('courses.contact_details')}
                   </Button>
                 </div>
               </div>
@@ -266,41 +266,40 @@ const Courses = () => {
               <CardHeader className="px-0 pt-0">
                 <CardTitle className="text-2xl font-bold text-primary flex items-center">
                   <Calendar className="w-6 h-6 mr-3" />
-                  Training Schedule
+                  {t('courses.training_schedule')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="px-0 space-y-4">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">Course Duration:</span>
-                    <span className="text-primary font-semibold">4 Days</span>
+                    <span className="font-medium">{t('courses.course_duration')}</span>
+                    <span className="text-primary font-semibold">{t('courses.four_days')}</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">Training Format:</span>
-                    <span className="text-primary font-semibold">Interactive & Hands-On</span>
+                    <span className="font-medium">{t('courses.training_format')}</span>
+                    <span className="text-primary font-semibold">{t('courses.interactive_format')}</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">Class Size:</span>
-                    <span className="text-primary font-semibold">Small Groups (Max 5)</span>
+                    <span className="font-medium">{t('courses.class_size')}</span>
+                    <span className="text-primary font-semibold">{t('courses.small_groups')}</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">Location:</span>
-                    <span className="text-primary font-semibold">Atarot Industrial Area, Jerusalem</span>
+                    <span className="font-medium">{t('courses.location')}</span>
+                    <span className="text-primary font-semibold">{t('courses.atarot_location')}</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">Training Hours:</span>
-                    <span className="text-primary font-semibold">To be announced</span>
+                    <span className="font-medium">{t('courses.training_hours')}</span>
+                    <span className="text-primary font-semibold">{t('courses.tba')}</span>
                   </div>
                 </div>
                 
                 <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
                   <h4 className="font-semibold text-primary mb-2 flex items-center">
                     <Clock className="h-4 w-4 mr-2" />
-                    Next Available Dates:
+                    {t('courses.next_dates')}
                   </h4>
                   <p className="text-sm text-muted-foreground">
-                    Contact us to schedule your preferred training dates. 
-                    We accommodate both individual and group bookings with flexible scheduling.
+                    {t('courses.contact_schedule')}
                   </p>
                 </div>
               </CardContent>
@@ -310,10 +309,10 @@ const Courses = () => {
             <Card className="p-6">
               <CardHeader className="px-0 pt-0">
                 <CardTitle className="text-2xl font-bold text-primary">
-                  Ready to Get Certified?
+                  {t('courses.ready_certified')}
                 </CardTitle>
                 <p className="text-muted-foreground">
-                  Contact us to discuss your training needs and reserve your spot in our next certification course
+                  {t('courses.contact_training')}
                 </p>
               </CardHeader>
               <CardContent className="px-0 space-y-6">
@@ -323,7 +322,7 @@ const Courses = () => {
                       <Phone className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">Call Us</p>
+                      <p className="font-medium">{t('courses.call_us')}</p>
                       <p className="text-sm text-muted-foreground">052-5701-073</p>
                     </div>
                   </div>
@@ -333,7 +332,7 @@ const Courses = () => {
                       <Mail className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">Email Us</p>
+                      <p className="font-medium">{t('courses.email_us')}</p>
                       <p className="text-sm text-muted-foreground">info@mtkcx.com</p>
                     </div>
                   </div>
