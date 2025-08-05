@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Map from '@/components/Map';
 import { useToast } from '@/hooks/use-toast';
 
 const Contact = () => {
@@ -378,13 +379,8 @@ const Contact = () => {
             </p>
           </div>
           
-          <div className="bg-muted rounded-lg h-64 flex items-center justify-center">
-            <div className="text-center">
-              <MapPin className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Atarot Industrial Area</h3>
-              <p className="text-muted-foreground">Hatamrukim, Jerusalem</p>
-              <p className="text-sm text-muted-foreground mt-2">Interactive map coming soon</p>
-            </div>
+          <div className="h-96">
+            <Map className="h-full" />
           </div>
         </div>
       </section>
