@@ -134,10 +134,8 @@ const translations = {
     'contact.error_title': 'Error',
     'contact.error_desc': 'Failed to send message. Please try again.',
     
-    // Products Page
-    'products.search_placeholder': 'Search products...',
+    // Products Page  
     'products.all_categories': 'All Categories',
-    'products.no_products': 'No products found matching your criteria.',
     'products.view_details': 'View Details',
     'products.add_to_cart': 'Add to Cart',
     'products.in_stock': 'In Stock',
@@ -163,6 +161,17 @@ const translations = {
     'stats.products': 'Premium Products',
     'stats.customers': 'Happy Customers',
     'stats.experience': 'Years Experience',
+
+    // Products
+    'products.title': 'Koch-Chemie Product Catalog',
+    'products.subtitle': 'Discover our complete range of professional automotive detailing products. Each product is available in multiple sizes to meet your specific needs.',
+    'products.search_placeholder': 'Search products by name, description, or product code...',
+    'products.filters': 'Filters',
+    'products.showing_results': 'Showing {count} of {total} products',
+    'products.clear_filters': 'Clear filters',
+    'products.clear_all_filters': 'Clear all filters',
+    'products.no_products': 'No products found matching your criteria.',
+    'products.loading': 'Loading...',
 
     // Common
     'common.learn_more': 'Learn More',
@@ -322,9 +331,7 @@ const translations = {
     'contact.error_desc': 'فشل في إرسال الرسالة. يرجى المحاولة مرة أخرى.',
     
     // Products Page
-    'products.search_placeholder': 'البحث عن المنتجات...',
     'products.all_categories': 'جميع الفئات',
-    'products.no_products': 'لم يتم العثور على منتجات تطابق معاييرك.',
     'products.view_details': 'عرض التفاصيل',
     'products.add_to_cart': 'أضف إلى السلة',
     'products.in_stock': 'متوفر',
@@ -350,6 +357,17 @@ const translations = {
     'stats.products': 'منتج متميز',
     'stats.customers': 'عميل سعيد',
     'stats.experience': 'سنوات خبرة',
+
+    // Products
+    'products.title': 'كتالوج منتجات كوخ كيمي',
+    'products.subtitle': 'اكتشف مجموعتنا الكاملة من منتجات تفصيل السيارات المهنية. كل منتج متوفر بأحجام متعددة لتلبية احتياجاتك المحددة.',
+    'products.search_placeholder': 'البحث في المنتجات بالاسم أو الوصف أو رمز المنتج...',
+    'products.filters': 'المرشحات',
+    'products.showing_results': 'عرض {count} من {total} منتج',
+    'products.clear_filters': 'مسح المرشحات',
+    'products.clear_all_filters': 'مسح جميع المرشحات',
+    'products.no_products': 'لم يتم العثور على منتجات تتطابق مع معاييرك.',
+    'products.loading': 'جاري التحميل...',
 
     // Common
     'common.learn_more': 'اعرف أكثر',
@@ -509,9 +527,7 @@ const translations = {
     'contact.error_desc': 'שליחת ההודעה נכשלה. אנא נסה שוב.',
     
     // Products Page
-    'products.search_placeholder': 'חפש מוצרים...',
     'products.all_categories': 'כל הקטגוריות',
-    'products.no_products': 'לא נמצאו מוצרים התואמים לקריטריונים שלך.',
     'products.view_details': 'צפה בפרטים',
     'products.add_to_cart': 'הוסף לעגלה',
     'products.in_stock': 'במלאי',
@@ -537,6 +553,17 @@ const translations = {
     'stats.products': 'מוצרים מעולים',
     'stats.customers': 'לקוחות מרוצים',
     'stats.experience': 'שנות ניסיון',
+
+    // Products
+    'products.title': 'קטלוג מוצרי קוך כימי',
+    'products.subtitle': 'גלה את המגוון השלם שלנו של מוצרי פירוט רכב מקצועיים. כל מוצר זמין בגדלים מרובים לענות על הצרכים הספציפיים שלך.',
+    'products.search_placeholder': 'חפש מוצרים לפי שם, תיאור או קוד מוצר...',
+    'products.filters': 'מסננים',
+    'products.showing_results': 'מציג {count} מתוך {total} מוצרים',
+    'products.clear_filters': 'נקה מסננים',
+    'products.clear_all_filters': 'נקה את כל המסננים',
+    'products.no_products': 'לא נמצאו מוצרים התואמים לקריטריונים שלך.',
+    'products.loading': 'טוען...',
 
     // Common
     'common.learn_more': 'למד עוד',

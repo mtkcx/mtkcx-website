@@ -5,6 +5,7 @@ import { Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ProductGrid from './ProductGrid';
 import CategoryFilter from './CategoryFilter';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Product {
   id: string;
@@ -32,6 +33,7 @@ interface Category {
 }
 
 const ProductCatalog = () => {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -123,10 +125,9 @@ const ProductCatalog = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-center mb-6">Koch-Chemie Product Catalog</h1>
+        <h1 className="text-4xl font-bold text-center mb-6">{t('products.title')}</h1>
         <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Discover our complete range of professional automotive detailing products. 
-          Each product is available in multiple sizes to meet your specific needs.
+          {t('products.subtitle')}
         </p>
         
         {/* Search and Filter Controls */}
@@ -134,7 +135,7 @@ const ProductCatalog = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder="Search products by name, description, or product code..."
+              placeholder={t('products.search_placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -146,7 +147,7 @@ const ProductCatalog = () => {
             className="lg:hidden"
           >
             <Filter className="w-4 h-4 mr-2" />
-            Filters
+            {t('products.filters')}
           </Button>
         </div>
       </div>
@@ -168,7 +169,7 @@ const ProductCatalog = () => {
         <div className="lg:col-span-3">
           <div className="flex justify-center items-center mb-6">
             <div className="text-sm text-muted-foreground text-center">
-              {loading ? 'Loading...' : `Showing ${filteredProducts.length} of ${products.length} products`}
+              {loading ? t('products.loading') : t('products.showing_results').replace('{count}', filteredProducts.length.toString()).replace('{total}', products.length.toString())}
             </div>
             {selectedCategory && (
               <Button
@@ -177,7 +178,7 @@ const ProductCatalog = () => {
                 onClick={() => setSelectedCategory(null)}
                 className="ml-4"
               >
-                Clear filters
+                {t('products.clear_filters')}
               </Button>
             )}
           </div>
@@ -187,14 +188,14 @@ const ProductCatalog = () => {
           {!loading && filteredProducts.length === 0 && (
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg mb-4 text-center">
-                No products found matching your criteria.
+                {t('products.no_products')}
               </p>
               <div className="text-center">
                 <Button onClick={() => {
                   setSearchTerm('');
                   setSelectedCategory(null);
                 }}>
-                  Clear all filters
+                  {t('products.clear_all_filters')}
                 </Button>
               </div>
             </div>
