@@ -25,6 +25,7 @@ import {
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface WrapService {
   id: string;
@@ -45,6 +46,7 @@ interface WrapMaterial {
 
 const Gallery = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const services: WrapService[] = [
     {
@@ -234,14 +236,12 @@ const Gallery = () => {
       <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-2">MT Wraps Services</Badge>
+            <Badge className="mb-6 px-4 py-2">{t('common.mt_wraps_services')}</Badge>
             <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
-              Professional Vehicle
-              <span className="text-gradient bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent"> Wrapping</span>
+              {t('gallery.title')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Transform your vehicle with premium automotive films. From complete color changes to 
-              protective solutions, we deliver exceptional results with industry-leading materials.
+              {t('gallery.subtitle')}
             </p>
           </div>
         </div>
@@ -278,9 +278,9 @@ const Gallery = () => {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Our Wrapping Services</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">{t('gallery.services_title')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Contact us to discuss your needs from our variety of professional vehicle wrapping and detailing services
+              {t('gallery.services_subtitle')}
             </p>
           </div>
           
@@ -291,11 +291,10 @@ const Gallery = () => {
                   <Car className="w-12 h-12 text-primary" />
                 </div>
                 <CardTitle className="text-3xl font-bold text-primary mb-4">
-                  Professional Vehicle Services
+                  {t('gallery.professional_title')}
                 </CardTitle>
                 <p className="text-lg text-muted-foreground">
-                  We offer a comprehensive range of vehicle wrapping and detailing services. 
-                  Contact us to discuss which service best fits your needs and budget.
+                  {t('gallery.professional_description')}
                 </p>
               </CardHeader>
               

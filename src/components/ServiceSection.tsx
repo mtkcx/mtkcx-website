@@ -13,30 +13,30 @@ const ServiceSection = () => {
   } = useLanguage();
   const services = [{
     icon: Package,
-    title: 'Koch-Chemie Products',
-    description: 'Professional-grade car care products from Germany\'s leading manufacturer.',
-    features: ['Premium car care', 'Professional detailing', 'Industry-leading quality'],
-    cta: 'View Products'
+    title: t('services.koch_title'),
+    description: t('services.koch_description'),
+    features: [t('services.koch_features.1'), t('services.koch_features.2'), t('services.koch_features.3')],
+    cta: t('services.koch_cta')
   }, {
     icon: GraduationCap,
-    title: 'Detailing Courses',
-    description: 'Expert training programs for professional car detailing and polishing techniques.',
-    features: ['Hands-on training', 'Online & in-person', 'Certification included'],
-    cta: 'Enroll Today'
+    title: t('services.courses_title'),
+    description: t('services.courses_description'),
+    features: [t('services.courses_features.1'), t('services.courses_features.2'), t('services.courses_features.3')],
+    cta: t('services.courses_cta')
   }, {
     icon: Car,
-    title: 'MT Wraps Services',
-    description: 'Premium car wrapping and vinyl installation services for a stunning finish.',
-    features: ['Custom designs', 'Premium materials', 'Expert installation'],
-    cta: 'View Gallery'
+    title: t('services.wrapping_title'),
+    description: t('services.wrapping_description'),
+    features: [t('services.wrapping_features.1'), t('services.wrapping_features.2'), t('services.wrapping_features.3')],
+    cta: t('services.wrapping_cta')
   }];
   return <section className="py-20 bg-background px-[99px]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-primary mb-6 md:text-5xl">
-            Our Services
+            {t('services.title')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Comprehensive Car Care solutions from products to training to premium wrapping services</p>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t('services.subtitle')}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

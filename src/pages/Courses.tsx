@@ -6,10 +6,10 @@ import { Award, CheckCircle, Star, Calendar, MapPin, Phone, Mail, BookOpen, User
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 const Courses = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
+  const { t } = useLanguage();
   const handleEnrollment = () => {
     toast({
       title: "Enrollment Interest Received!",
@@ -23,14 +23,12 @@ const Courses = () => {
       <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-2">Professional Training</Badge>
+            <Badge className="mb-6 px-4 py-2">{t('common.professional_training')}</Badge>
             <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
-              Koch Chemie Professional
-              <span className="text-gradient bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent"> Certification</span>
+              {t('courses.title')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Master both detailing and polishing techniques in our comprehensive 4-day certification program, 
-              taught according to Koch Chemie's world-renowned standards and methodologies.
+              {t('courses.subtitle')}
             </p>
           </div>
         </div>
@@ -41,8 +39,8 @@ const Courses = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-primary mb-4">Course Introduction</h2>
-              <p className="text-muted-foreground">Watch our detailed explanation of what you'll learn in this certification course</p>
+              <h2 className="text-3xl font-bold text-primary mb-4">{t('courses.intro_title')}</h2>
+              <p className="text-muted-foreground">{t('courses.intro_subtitle')}</p>
             </div>
             
             {/* Video Container - Replace src with your actual video URL */}
@@ -78,10 +76,9 @@ const Courses = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Detailing & Polishing Certification Course</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">{t('courses.course_title')}</h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Our comprehensive 4-day program combines interactive learning with hands-on training, 
-                culminating in official Koch Chemie certification recognized industry-wide.
+                {t('courses.course_description')}
               </p>
             </div>
 
