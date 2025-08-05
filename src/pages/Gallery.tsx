@@ -349,7 +349,7 @@ const Gallery = () => {
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="text-center">
                       <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
-                        <Shield className="w-6 w-6 text-primary" />
+                        <Shield className="w-6 h-6 text-primary" />
                       </div>
                       <h5 className="font-medium mb-1">{t('gallery.premium_materials')}</h5>
                       <p className="text-sm text-muted-foreground">{t('gallery.materials_desc')}</p>
