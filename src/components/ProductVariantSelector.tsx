@@ -59,10 +59,10 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
                 <div className="space-y-2">
                   <Package className="w-6 h-6 mx-auto text-muted-foreground" />
                   <div className="font-semibold text-lg">{variant.size}</div>
-                  {variant.price > 0 ? (
-                    <div className="text-primary font-bold text-xl">
-                      ${variant.price}
-                    </div>
+                   {variant.price > 0 ? (
+                     <div className="text-primary font-bold text-xl">
+                       ₪{variant.price}
+                     </div>
                   ) : (
                     <div className="text-muted-foreground text-sm">
                       {t('products.price_tba')}
@@ -96,9 +96,9 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
             
             <div className="flex justify-between items-center">
               <span className="font-medium">{t('products.price_label')}</span>
-              <span className="text-xl font-bold text-primary">
-                {selectedVariant.price > 0 ? `$${selectedVariant.price}` : t('products.price_tba_label')}
-              </span>
+               <span className="text-xl font-bold text-primary">
+                 {selectedVariant.price > 0 ? `₪${selectedVariant.price}` : t('products.price_tba_label')}
+               </span>
             </div>
             
             <Button 
