@@ -62,7 +62,14 @@ const ServiceSection = () => {
                       </li>)}
                   </ul>
                   
-                  <Button className="w-full group-hover:bg-primary/90 transition-colors" onClick={() => index === 0 ? navigate('/products') : undefined}>
+                  <Button 
+                    className="w-full group-hover:bg-primary/90 transition-colors" 
+                    onClick={() => {
+                      if (index === 0) navigate('/products');
+                      else if (index === 1) navigate('/courses');
+                      else if (index === 2) navigate('/gallery');
+                    }}
+                  >
                     {service.cta}
                     <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-1 transition-transform`} />
                   </Button>
