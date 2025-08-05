@@ -561,7 +561,7 @@ const Gallery = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="flex items-center justify-center space-x-3">
                 <Phone className="w-5 h-5" />
-                <span>052-5701-073</span>
+                <span>0527738586</span>
               </div>
               <div className="flex items-center justify-center space-x-3">
                 <Mail className="w-5 h-5" />

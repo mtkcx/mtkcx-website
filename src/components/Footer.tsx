@@ -17,7 +17,7 @@ const Footer = () => {
               {t('footer.company_desc')}
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.facebook.com/MTDetailing" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+              <a href="https://www.facebook.com/p/MT-Detailing-61558524899198/" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Facebook className="w-5 h-5 flex-shrink-0" />
               </a>
               <a href="https://www.instagram.com/mt.kcx" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
@@ -63,7 +63,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/80">052-5701-073</span>
+                <span className="text-primary-foreground/80">0527738586</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-primary-foreground/80" />

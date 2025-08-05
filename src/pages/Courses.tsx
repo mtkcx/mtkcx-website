@@ -323,7 +323,7 @@ const Courses = () => {
                     </div>
                     <div>
                       <p className="font-medium">{t('courses.call_us')}</p>
-                      <p className="text-sm text-muted-foreground">052-5701-073</p>
+                      <p className="text-sm text-muted-foreground">0527738586</p>
                     </div>
                   </div>
                   
