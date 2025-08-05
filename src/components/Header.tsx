@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
-import { Globe, Menu, X } from 'lucide-react';
+import { Globe, Menu, X, Search } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 const Header = () => {
@@ -40,7 +40,7 @@ const Header = () => {
     href: '/courses'
   }, {
     key: 'nav.wrapping',
-    href: '/wrapping'
+    href: '/gallery'
   }, {
     key: 'nav.about',
     href: '/about'
@@ -48,51 +48,83 @@ const Header = () => {
     key: 'nav.contact',
     href: '/contact'
   }];
-  return <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-background/95">
-      <div className="container my-[4px] mx-0 py-[13px] px-[48px]">
-        <div className="flex items-center justify-between mx-[8px] my-[7px]">
-          {/* Logo */}
-          <div className="flex items-center space-x-4">
-            <img src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" alt="MT KCx Logo" className="h-40 w-auto" />
+  return <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-background/95 w-full">
+      <div className="w-full px-6 py-4">
+        <div className="flex items-center justify-between w-full">
+          {/* Logo - Left */}
+          <div className="flex items-center">
+            <img src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" alt="MT KCx Logo" className="h-12 w-auto" />
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navigationItems.map(item => <a key={item.key} href={item.href} className="text-foreground hover:text-primary transition-colors font-medium">
+          {/* Desktop Navigation - Center */}
+          <nav className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
+            <div className="flex items-center space-x-8">
+              {navigationItems.map(item => <a 
+                key={item.key} 
+                href={item.href} 
+                className="text-foreground hover:text-primary transition-colors font-medium px-3 py-2 rounded-md hover:bg-primary/5"
+              >
                 {t(item.key)}
               </a>)}
+            </div>
           </nav>
 
-          {/* Language Selector & Mobile Menu */}
-          <div className="flex items-center space-x-4">
-            {/* Language Dropdown */}
+          {/* Search & Language Selector - Right */}
+          <div className="flex items-center space-x-3">
+            {/* Search Button */}
+            <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-4 py-2">
+              <Search className="h-5 w-5" />
+              <span className="hidden sm:inline">Search</span>
+            </Button>
+
+            {/* Language Dropdown - Bigger */}
             <div className="relative group">
-              <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                <Globe className="h-4 w-4" />
-                <span className="hidden sm:inline">
-                  {languages.find(lang => lang.code === currentLanguage)?.flag}
+              <Button variant="ghost" size="lg" className="flex items-center space-x-3 px-4 py-2 min-w-[120px]">
+                <Globe className="h-5 w-5" />
+                <span className="flex items-center space-x-2">
+                  <span className="text-lg">
+                    {languages.find(lang => lang.code === currentLanguage)?.flag}
+                  </span>
+                  <span className="hidden sm:inline font-medium">
+                    {languages.find(lang => lang.code === currentLanguage)?.name}
+                  </span>
                 </span>
               </Button>
-              <div className="absolute right-0 top-full mt-2 bg-background border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[140px] z-50">
-                {languages.map(lang => <button key={lang.code} onClick={() => setLanguage(lang.code)} className={`w-full text-left px-4 py-2 text-sm hover:bg-accent transition-colors first:rounded-t-md last:rounded-b-md flex items-center space-x-2 ${currentLanguage === lang.code ? 'bg-accent text-accent-foreground' : ''}`}>
-                    <span>{lang.flag}</span>
-                    <span>{lang.name}</span>
-                  </button>)}
+              <div className="absolute right-0 top-full mt-2 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[160px] z-50">
+                {languages.map(lang => <button 
+                  key={lang.code} 
+                  onClick={() => setLanguage(lang.code)} 
+                  className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg last:rounded-b-lg flex items-center space-x-3 ${currentLanguage === lang.code ? 'bg-accent text-accent-foreground' : ''}`}
+                >
+                  <span className="text-lg">{lang.flag}</span>
+                  <span className="font-medium">{lang.name}</span>
+                </button>)}
               </div>
             </div>
 
             {/* Mobile Menu */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-              <SheetTrigger asChild className="md:hidden">
-                <Button variant="ghost" size="sm">
+              <SheetTrigger asChild className="lg:hidden">
+                <Button variant="ghost" size="lg" className="px-3 py-2">
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
               <SheetContent side={isRTL ? "left" : "right"} className="w-[300px]">
                 <div className="flex flex-col space-y-4 mt-8">
-                  {navigationItems.map(item => <a key={item.key} href={item.href} className="text-foreground hover:text-primary transition-colors font-medium py-2 border-b border-border" onClick={() => setIsMenuOpen(false)}>
-                      {t(item.key)}
-                    </a>)}
+                  {navigationItems.map(item => <a 
+                    key={item.key} 
+                    href={item.href} 
+                    className="text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" 
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {t(item.key)}
+                  </a>)}
+                  
+                  {/* Mobile Search */}
+                  <Button variant="ghost" className="justify-start py-3 px-2 border-b border-border">
+                    <Search className="h-5 w-5 mr-3" />
+                    Search
+                  </Button>
                 </div>
               </SheetContent>
             </Sheet>
