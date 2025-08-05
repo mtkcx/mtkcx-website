@@ -123,7 +123,7 @@ const ProductCatalog = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-center mb-6">KochChemie Product Catalog</h1>
+        <h1 className="text-4xl font-bold text-center mb-6">Koch-Chemie Product Catalog</h1>
         <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
           Discover our complete range of professional automotive detailing products. 
           Each product is available in multiple sizes to meet your specific needs.
