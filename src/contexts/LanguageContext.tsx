@@ -1033,7 +1033,7 @@ const translations = {
     'courses.business_growth': 'نمو الأعمال واستراتيجيات التسويق',
     
     // Add missing translation keys for all pages - Arabic
-    'about.location_jerusalem': 'منطقة أتاروت الصناعية، القدس',
+    'about.location_jerusalem': 'منطقة عطروت الصناعية، القدس',
     'about.core_values': 'قيمنا الأساسية',
     'about.core_values_desc': 'المبادئ التي توجه كل ما نقوم به',
     'about.what_we_offer': 'ما نقدمه',
@@ -1041,12 +1041,12 @@ const translations = {
     'common.ready_experience_excellence': 'مستعد لتجربة التميز؟',
     'common.join_mt_wraps_family': 'انضم إلى عائلة MT Wraps واكتشف لماذا يثق المحترفون بنا لاحتياجات العناية بسياراتهم.',
     'common.established_2020': 'تأسست عام 2020',
-    'contact.location_address': 'منطقة أتاروت الصناعية، هتمروكيم، القدس',
+    'contact.location_address': 'منطقة عطروت الصناعية، هتمروكيم، القدس',
     'contact.hours_details': 'الأحد - الخميس: 10:00 صباحًا - 6:00 مساءً',
-    'contact.location_short': 'منطقة أتاروت الصناعية',
+    'contact.location_short': 'منطقة عطروت الصناعية',
     'contact.our_services': 'خدماتنا',
     'common.visit_our_location': 'زر موقعنا',
-    'common.visit_showroom_workshop': 'تعال لمشاهدة صالة العرض وورشة العمل لدينا في منطقة أتاروت الصناعية',
+    'common.visit_showroom_workshop': 'تعال لمشاهدة صالة العرض وورشة العمل لدينا في منطقة عطروت الصناعية',
     'common.visit_us_location': 'زرنا في موقعنا',
   },
   he: {
@@ -1519,7 +1519,7 @@ const translations = {
     'courses.business_growth': 'צמיחת עסק ואסטרטגיות שיווק',
     
     // Add missing translation keys for all pages - Hebrew
-    'about.location_jerusalem': 'אזור התעשייה אתרות, ירושלים',
+    'about.location_jerusalem': 'אזור התעשייה עטרות, ירושלים',
     'about.core_values': 'הערכים המרכזיים שלנו',
     'about.core_values_desc': 'העקרונות המנחים את כל מה שאנחנו עושים',
     'about.what_we_offer': 'מה אנחנו מציעים',
@@ -1527,12 +1527,12 @@ const translations = {
     'common.ready_experience_excellence': 'מוכן לחוות מצוינות?',
     'common.join_mt_wraps_family': 'הצטרף למשפחת MT Wraps וגלה למה מקצוענים סומכים עלינו לצרכי הטיפוח של הרכב שלהם.',
     'common.established_2020': 'נוסד ב-2020',
-    'contact.location_address': 'אזור התעשייה אתרות, התמרוקים, ירושלים',
+    'contact.location_address': 'אזור התעשייה עטרות, התמרוקים, ירושלים',
     'contact.hours_details': 'ראשון - חמישי: 10:00 - 18:00',
-    'contact.location_short': 'אזור התעשייה אתרות',
+    'contact.location_short': 'אזור התעשייה עטרות',
     'contact.our_services': 'השירותים שלנו',
     'common.visit_our_location': 'בקר במיקום שלנו',
-    'common.visit_showroom_workshop': 'בוא לראות את אולם התצוגה ובית המלאכה שלנו באזור התעשייה אתרות',
+    'common.visit_showroom_workshop': 'בוא לראות את אולם התצוגה ובית המלאכה שלנו באזור התעשייה עטרות',
     'common.visit_us_location': 'בקר אותנו במיקום שלנו',
   }
 };
