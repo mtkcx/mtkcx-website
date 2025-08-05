@@ -36,12 +36,12 @@ const About = () => {
   ];
 
   const services = [
-    "Official Koch-Chemie product distribution",
-    "Professional detailing and polishing training",
-    "Premium vehicle wrapping services",
-    "Custom car care solutions",
-    "Technical support and consultation",
-    "Industry-leading surface treatments"
+    t('about.services_array_1'),
+    t('about.services_array_2'),
+    t('about.services_array_3'),
+    t('about.services_array_4'),
+    t('about.services_array_5'),
+    t('about.services_array_6')
   ];
 
   return (
@@ -108,9 +108,9 @@ const About = () => {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Our Achievements</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">{t('about.our_achievements')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Building trust through excellence, innovation, and unwavering commitment to quality
+              {t('about.building_trust')}
             </p>
           </div>
           
@@ -149,22 +149,20 @@ const About = () => {
                     <h3 className="text-xl font-semibold">{t('common.professional_training')}</h3>
                   </div>
                   <p className="text-muted-foreground mb-4">
-                    Beyond product sales, we are committed to education and excellence. That's why we offer 
-                    intensive detailing and polishing courses, combining theory and hands-on experience to help 
-                    professionals raise their standards and deliver top-tier results.
+                    {t('about.beyond_sales')}
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                      <span>Hands-on practical training</span>
+                      <span>{t('about.hands_on_training')}</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                      <span>Professional certification</span>
+                      <span>{t('common.professional_training')}</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                      <span>Industry expert instructors</span>
+                      <span>{t('about.industry_experts')}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -174,25 +172,23 @@ const About = () => {
                 <CardContent className="p-0">
                   <div className="flex items-center mb-4">
                     <Car className="w-8 h-8 text-primary mr-3" />
-                    <h3 className="text-xl font-semibold">MT Wraps Services</h3>
+                    <h3 className="text-xl font-semibold">{t('about.mt_wraps_service')}</h3>
                   </div>
                   <p className="text-muted-foreground mb-4">
-                    Our MT Wraps division represents the pinnacle of vehicle customization. From concept to completion, 
-                    we deliver stunning transformations that protect and enhance your vehicle's appearance with 
-                    precision craftsmanship.
+                    {t('about.wraps_excellence')}
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                      <span>Custom design solutions</span>
+                      <span>{t('about.custom_designs')}</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                      <span>Premium 3M & Avery materials</span>
+                      <span>{t('about.premium_materials')}</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                      <span>Expert installation team</span>
+                      <span>{t('about.expert_installation')}</span>
                     </div>
                   </div>
                 </CardContent>
