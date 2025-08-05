@@ -166,8 +166,8 @@ const ProductCatalog = () => {
 
         {/* Product Grid */}
         <div className="lg:col-span-3">
-          <div className="flex justify-between items-center mb-6">
-            <div className="text-sm text-muted-foreground">
+          <div className="flex justify-center items-center mb-6">
+            <div className="text-sm text-muted-foreground text-center">
               {loading ? 'Loading...' : `Showing ${filteredProducts.length} of ${products.length} products`}
             </div>
             {selectedCategory && (
@@ -175,6 +175,7 @@ const ProductCatalog = () => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setSelectedCategory(null)}
+                className="ml-4"
               >
                 Clear filters
               </Button>
@@ -185,15 +186,17 @@ const ProductCatalog = () => {
           
           {!loading && filteredProducts.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">
+              <p className="text-muted-foreground text-lg mb-4 text-center">
                 No products found matching your criteria.
               </p>
-              <Button onClick={() => {
-                setSearchTerm('');
-                setSelectedCategory(null);
-              }}>
-                Clear all filters
-              </Button>
+              <div className="text-center">
+                <Button onClick={() => {
+                  setSearchTerm('');
+                  setSelectedCategory(null);
+                }}>
+                  Clear all filters
+                </Button>
+              </div>
             </div>
           )}
         </div>
