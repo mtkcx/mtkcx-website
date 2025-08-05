@@ -3,25 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Car, 
-  Palette, 
-  Shield, 
-  Clock, 
-  Award, 
-  CheckCircle, 
-  Star,
-  Phone,
-  Mail,
-  MapPin,
-  Sparkles,
-  Layers,
-  Wrench,
-  Eye,
-  Target,
-  Users,
-  Calendar
-} from 'lucide-react';
+import { Car, Palette, Shield, Clock, Award, CheckCircle, Star, Phone, Mail, MapPin, Sparkles, Layers, Wrench, Eye, Target, Users, Calendar } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
@@ -29,7 +11,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
-
 interface WrapService {
   id: string;
   title: string;
@@ -40,240 +21,169 @@ interface WrapService {
   warranty: string;
   popular: boolean;
 }
-
 interface WrapMaterial {
   brand: string;
   description: string;
   features: string[];
 }
-
 const Gallery = () => {
-  const { toast } = useToast();
-  const { t } = useLanguage();
-  const { user } = useAuth();
+  const {
+    toast
+  } = useToast();
+  const {
+    t
+  } = useLanguage();
+  const {
+    user
+  } = useAuth();
   const navigate = useNavigate();
-
-   const services: WrapService[] = [
-     {
-       id: 'full-wrap',
-       title: t('gallery.full_vehicle_wrap'),
-       subtitle: t('gallery.complete_transformation'),
-       description: t('gallery.full_wrap_desc'),
-       features: [
-         t('gallery.complete_color_transformation'),
-         t('gallery.paint_protection_benefits'),
-         t('gallery.custom_design_options'),
-         t('gallery.professional_installation'),
-         t('gallery.removable_without_damage'),
-         t('gallery.increased_resale_value')
-       ],
-       duration: t('gallery.3_5_days'),
-       warranty: t('gallery.5_7_years'),
-       popular: true
-     },
-     {
-       id: 'partial-wrap',
-       title: t('gallery.partial_vehicle_wrap'),
-       subtitle: t('gallery.strategic_accent_branding'),
-       description: t('gallery.partial_wrap_desc'),
-       features: [
-         t('gallery.custom_panel_coverage'),
-         t('gallery.racing_stripes_accents'),
-         t('gallery.business_branding_solutions'),
-         t('gallery.cost_effective_customization'),
-         t('gallery.quick_installation'),
-         t('gallery.easy_maintenance')
-       ],
-       duration: t('gallery.1_2_days'),
-       warranty: t('gallery.5_7_years'),
-       popular: false
-     },
-     {
-       id: 'color-change',
-       title: t('gallery.color_change_wrap'),
-       subtitle: t('gallery.premium_color_transformation'),
-       description: t('gallery.color_change_desc'),
-       features: [
-         t('gallery.vast_color_selection'),
-         t('gallery.multiple_finish_options'),
-         t('gallery.paint_preservation'),
-         t('gallery.reversible_process'),
-         t('gallery.no_permanent_modifications'),
-         t('gallery.factory_paint_protection')
-       ],
-       duration: t('gallery.3_4_days'),
-       warranty: t('gallery.5_7_years'),
-       popular: false
-     },
-     {
-       id: 'commercial-fleet',
-       title: t('gallery.commercial_fleet_wrapping'),
-       subtitle: t('gallery.professional_branding_businesses'),
-       description: t('gallery.commercial_fleet_desc'),
-       features: [
-         t('gallery.brand_consistency_fleet'),
-         t('gallery.high_impact_advertising'),
-         t('gallery.professional_design_service'),
-         t('gallery.volume_pricing_available'),
-         t('gallery.quick_turnaround_times'),
-         t('gallery.long_lasting_visibility')
-       ],
-       duration: t('gallery.2_3_days_per_vehicle'),
-       warranty: t('gallery.5_7_years'),
-       popular: true
-     },
-     {
-       id: 'protective-film',
-       title: t('gallery.paint_protection_film_ppf'),
-       subtitle: t('gallery.invisible_protection_investment'),
-       description: t('gallery.ppf_desc'),
-       features: [
-         t('gallery.invisible_protection'),
-         t('gallery.self_healing_technology'),
-         t('gallery.uv_resistance'),
-         t('gallery.maintains_original_appearance'),
-         t('gallery.easy_cleaning'),
-         t('gallery.preserves_vehicle_value')
-       ],
-       duration: t('gallery.2_4_days'),
-       warranty: t('gallery.10_years'),
-       popular: false
-     },
-     {
-       id: 'specialty-finishes',
-       title: t('gallery.specialty_finishes'),
-       subtitle: t('gallery.unique_textures_effects'),
-       description: t('gallery.specialty_finishes_desc'),
-       features: [
-         t('gallery.carbon_fiber_textures'),
-         t('gallery.metallic_finishes'),
-         t('gallery.chrome_mirror_effects'),
-         t('gallery.textured_surfaces'),
-         t('gallery.custom_patterns'),
-         t('gallery.limited_edition_materials')
-       ],
-       duration: t('gallery.3_5_days'),
-       warranty: t('gallery.3_5_years'),
-       popular: false
-     }
-   ];
-
-   const materials: WrapMaterial[] = [
-     {
-       brand: '3M',
-       description: t('gallery.3m_description'),
-       features: [t('gallery.10_year_warranty'), t('gallery.self_healing_tech'), t('gallery.uv_resistance'), t('gallery.easy_maintenance')]
-     },
-     {
-       brand: 'Avery Dennison',
-       description: t('gallery.avery_description'),
-       features: [t('gallery.vibrant_color_range'), t('gallery.superior_adhesion'), t('gallery.clean_removal'), t('gallery.weather_resistance')]
-     },
-     {
-       brand: 'KPMF',
-       description: t('gallery.kpmf_description'),
-       features: [t('gallery.unique_finish_options'), t('gallery.high_performance_adhesive'), t('gallery.color_stability'), t('gallery.professional_grade')]
-     }
-   ];
-
-  const process = [
-    {
-      step: 1,
-      title: 'consultation_design',
-      description: 'consultation_desc',
-      icon: Eye
-    },
-    {
-      step: 2,
-      title: 'preparation',
-      description: 'preparation_desc',
-      icon: Wrench
-    },
-    {
-      step: 3,
-      title: 'professional_installation',
-      description: 'installation_process_desc',
-      icon: Target
-    },
-    {
-      step: 4,
-      title: 'quality_control',
-      description: 'quality_control_desc',
-      icon: CheckCircle
-    }
-  ];
-
-  const benefits = [
-    {
-      icon: Shield,
-      title: 'paint_protection',
-      description: 'paint_protection_desc'
-    },
-    {
-      icon: Palette,
-      title: 'unlimited_customization',
-      description: 'customization_desc'
-    },
-    {
-      icon: Clock,
-      title: 'reversible_process',
-      description: 'reversible_desc'
-    },
-    {
-      icon: Award,
-      title: 'professional_quality',
-      description: 'quality_desc'
-    }
-  ];
-
+  const services: WrapService[] = [{
+    id: 'full-wrap',
+    title: t('gallery.full_vehicle_wrap'),
+    subtitle: t('gallery.complete_transformation'),
+    description: t('gallery.full_wrap_desc'),
+    features: [t('gallery.complete_color_transformation'), t('gallery.paint_protection_benefits'), t('gallery.custom_design_options'), t('gallery.professional_installation'), t('gallery.removable_without_damage'), t('gallery.increased_resale_value')],
+    duration: t('gallery.3_5_days'),
+    warranty: t('gallery.5_7_years'),
+    popular: true
+  }, {
+    id: 'partial-wrap',
+    title: t('gallery.partial_vehicle_wrap'),
+    subtitle: t('gallery.strategic_accent_branding'),
+    description: t('gallery.partial_wrap_desc'),
+    features: [t('gallery.custom_panel_coverage'), t('gallery.racing_stripes_accents'), t('gallery.business_branding_solutions'), t('gallery.cost_effective_customization'), t('gallery.quick_installation'), t('gallery.easy_maintenance')],
+    duration: t('gallery.1_2_days'),
+    warranty: t('gallery.5_7_years'),
+    popular: false
+  }, {
+    id: 'color-change',
+    title: t('gallery.color_change_wrap'),
+    subtitle: t('gallery.premium_color_transformation'),
+    description: t('gallery.color_change_desc'),
+    features: [t('gallery.vast_color_selection'), t('gallery.multiple_finish_options'), t('gallery.paint_preservation'), t('gallery.reversible_process'), t('gallery.no_permanent_modifications'), t('gallery.factory_paint_protection')],
+    duration: t('gallery.3_4_days'),
+    warranty: t('gallery.5_7_years'),
+    popular: false
+  }, {
+    id: 'commercial-fleet',
+    title: t('gallery.commercial_fleet_wrapping'),
+    subtitle: t('gallery.professional_branding_businesses'),
+    description: t('gallery.commercial_fleet_desc'),
+    features: [t('gallery.brand_consistency_fleet'), t('gallery.high_impact_advertising'), t('gallery.professional_design_service'), t('gallery.volume_pricing_available'), t('gallery.quick_turnaround_times'), t('gallery.long_lasting_visibility')],
+    duration: t('gallery.2_3_days_per_vehicle'),
+    warranty: t('gallery.5_7_years'),
+    popular: true
+  }, {
+    id: 'protective-film',
+    title: t('gallery.paint_protection_film_ppf'),
+    subtitle: t('gallery.invisible_protection_investment'),
+    description: t('gallery.ppf_desc'),
+    features: [t('gallery.invisible_protection'), t('gallery.self_healing_technology'), t('gallery.uv_resistance'), t('gallery.maintains_original_appearance'), t('gallery.easy_cleaning'), t('gallery.preserves_vehicle_value')],
+    duration: t('gallery.2_4_days'),
+    warranty: t('gallery.10_years'),
+    popular: false
+  }, {
+    id: 'specialty-finishes',
+    title: t('gallery.specialty_finishes'),
+    subtitle: t('gallery.unique_textures_effects'),
+    description: t('gallery.specialty_finishes_desc'),
+    features: [t('gallery.carbon_fiber_textures'), t('gallery.metallic_finishes'), t('gallery.chrome_mirror_effects'), t('gallery.textured_surfaces'), t('gallery.custom_patterns'), t('gallery.limited_edition_materials')],
+    duration: t('gallery.3_5_days'),
+    warranty: t('gallery.3_5_years'),
+    popular: false
+  }];
+  const materials: WrapMaterial[] = [{
+    brand: '3M',
+    description: t('gallery.3m_description'),
+    features: [t('gallery.10_year_warranty'), t('gallery.self_healing_tech'), t('gallery.uv_resistance'), t('gallery.easy_maintenance')]
+  }, {
+    brand: 'Avery Dennison',
+    description: t('gallery.avery_description'),
+    features: [t('gallery.vibrant_color_range'), t('gallery.superior_adhesion'), t('gallery.clean_removal'), t('gallery.weather_resistance')]
+  }, {
+    brand: 'KPMF',
+    description: t('gallery.kpmf_description'),
+    features: [t('gallery.unique_finish_options'), t('gallery.high_performance_adhesive'), t('gallery.color_stability'), t('gallery.professional_grade')]
+  }];
+  const process = [{
+    step: 1,
+    title: 'consultation_design',
+    description: 'consultation_desc',
+    icon: Eye
+  }, {
+    step: 2,
+    title: 'preparation',
+    description: 'preparation_desc',
+    icon: Wrench
+  }, {
+    step: 3,
+    title: 'professional_installation',
+    description: 'installation_process_desc',
+    icon: Target
+  }, {
+    step: 4,
+    title: 'quality_control',
+    description: 'quality_control_desc',
+    icon: CheckCircle
+  }];
+  const benefits = [{
+    icon: Shield,
+    title: 'paint_protection',
+    description: 'paint_protection_desc'
+  }, {
+    icon: Palette,
+    title: 'unlimited_customization',
+    description: 'customization_desc'
+  }, {
+    icon: Clock,
+    title: 'reversible_process',
+    description: 'reversible_desc'
+  }, {
+    icon: Award,
+    title: 'professional_quality',
+    description: 'quality_desc'
+  }];
   const handleQuoteRequest = async (serviceTitle: string) => {
     if (!user) {
       toast({
         title: t('auth.signin_required'),
         description: t('auth.signin_to_request_quote'),
-        action: (
-          <Button onClick={() => navigate('/auth')} variant="outline" size="sm">
+        action: <Button onClick={() => navigate('/auth')} variant="outline" size="sm">
             {t('auth.sign_in')}
           </Button>
-        ),
       });
       return;
     }
-
     try {
-      const { error } = await supabase
-        .from('quotes')
-        .insert({
-          user_id: user.id,
-          service_type: serviceTitle,
-          message: t('gallery.quote_request_message').replace('{service}', serviceTitle),
-          status: 'pending'
-        });
-
+      const {
+        error
+      } = await supabase.from('quotes').insert({
+        user_id: user.id,
+        service_type: serviceTitle,
+        message: t('gallery.quote_request_message').replace('{service}', serviceTitle),
+        status: 'pending'
+      });
       if (error) {
         toast({
           title: t('dashboard.error'),
           description: t('dashboard.quotes_fetch_error'),
-          variant: 'destructive',
+          variant: 'destructive'
         });
         return;
       }
-
       toast({
         title: t('common.quote_request_received'),
-        description: t('common.contact_service_hours').replace('{service}', serviceTitle),
+        description: t('common.contact_service_hours').replace('{service}', serviceTitle)
       });
     } catch (error) {
       toast({
         title: t('dashboard.error'),
         description: t('auth.something_went_wrong'),
-        variant: 'destructive',
+        variant: 'destructive'
       });
     }
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Section */}
@@ -303,17 +213,15 @@ const Gallery = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => {
-              const IconComponent = benefit.icon;
-              return (
-                <div key={index} className="text-center p-6">
+            const IconComponent = benefit.icon;
+            return <div key={index} className="text-center p-6">
                   <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
                     <IconComponent className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-lg mb-2">{t(`gallery.${benefit.title}`)}</h3>
                   <p className="text-muted-foreground text-sm">{t(`gallery.${benefit.description}`)}</p>
-                </div>
-              );
-            })}
+                </div>;
+          })}
           </div>
         </div>
       </section>
@@ -351,16 +259,10 @@ const Gallery = () => {
                       {t('gallery.wrapping_services')}
                     </h4>
                     <div className="space-y-3">
-                      {[
-                        t('gallery.paint_protection_film'),
-                        t('gallery.color_change_wrap'), 
-                        t('gallery.commercial_fleet')
-                      ].map((service, index) => (
-                        <div key={index} className="flex items-center text-muted-foreground">
+                      {[t('gallery.paint_protection_film'), t('gallery.color_change_wrap'), t('gallery.commercial_fleet')].map((service, index) => <div key={index} className="flex items-center text-muted-foreground">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
                           {service}
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </div>
                   
@@ -370,16 +272,10 @@ const Gallery = () => {
                       {t('gallery.additional_services')}
                     </h4>
                     <div className="space-y-3">
-                      {[
-                        t('gallery.specialty_finishes'),
-                        t('gallery.polish_detailing'),
-                        t('gallery.professional_detailing')
-                      ].map((service, index) => (
-                        <div key={index} className="flex items-center text-muted-foreground">
+                      {[t('gallery.specialty_finishes'), t('gallery.polish_detailing'), t('gallery.professional_detailing')].map((service, index) => <div key={index} className="flex items-center text-muted-foreground">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
                           {service}
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </div>
                 </div>
@@ -421,20 +317,11 @@ const Gallery = () => {
                     {t('gallery.ready_transform')}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button 
-                      size="lg" 
-                      onClick={() => handleQuoteRequest(t('gallery.vehicle_wrapping_services'))}
-                      className="flex-1 sm:flex-none"
-                    >
+                    <Button size="lg" onClick={() => handleQuoteRequest(t('gallery.vehicle_wrapping_services'))} className="flex-1 sm:flex-none">
                       <Phone className="w-5 h-5 mr-2" />
                       {t('gallery.contact_quote')}
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      size="lg"
-                      onClick={() => handleQuoteRequest(t('gallery.service_consultation'))}
-                      className="flex-1 sm:flex-none"
-                    >
+                    <Button variant="outline" size="lg" onClick={() => handleQuoteRequest(t('gallery.service_consultation'))} className="flex-1 sm:flex-none">
                       <Mail className="w-5 h-5 mr-2" />
                       {t('gallery.request_consultation')}
                     </Button>
@@ -457,10 +344,9 @@ const Gallery = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {process.map((step) => {
-              const IconComponent = step.icon;
-              return (
-                <Card key={step.step} className="text-center p-6 hover:shadow-lg transition-all duration-300">
+            {process.map(step => {
+            const IconComponent = step.icon;
+            return <Card key={step.step} className="text-center p-6 hover:shadow-lg transition-all duration-300">
                   <CardContent className="p-0">
                     <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit">
                       <IconComponent className="w-8 h-8 text-primary" />
@@ -471,9 +357,8 @@ const Gallery = () => {
                     </div>
                     <p className="text-muted-foreground text-sm">{t(`gallery.${step.description}`)}</p>
                   </CardContent>
-                </Card>
-              );
-            })}
+                </Card>;
+          })}
           </div>
         </div>
       </section>
@@ -489,8 +374,7 @@ const Gallery = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {materials.map((material, index) => (
-              <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300">
+            {materials.map((material, index) => <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300">
                 <CardHeader className="pb-4">
                   <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
                     <Layers className="w-6 h-6 text-primary" />
@@ -502,16 +386,13 @@ const Gallery = () => {
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="space-y-2">
-                    {material.features.map((feature, featureIndex) => (
-                      <div key={featureIndex} className="flex items-center text-sm justify-center">
+                    {material.features.map((feature, featureIndex) => <div key={featureIndex} className="flex items-center text-sm justify-center">
                         <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                         <span>{feature}</span>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -527,8 +408,7 @@ const Gallery = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, index) => (
-              <Card key={index} className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300">
+            {[...Array(6)].map((_, index) => <Card key={index} className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300">
                 <div className="w-full h-full bg-muted/50 flex items-center justify-center">
                   <div className="text-center">
                     <Car className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
@@ -536,8 +416,7 @@ const Gallery = () => {
                     <p className="text-xs text-muted-foreground">{t('common.images_coming_soon')}</p>
                   </div>
                 </div>
-              </Card>
-            ))}
+              </Card>)}
           </div>
           
           <div className="text-center mt-8">
@@ -561,7 +440,7 @@ const Gallery = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="flex items-center justify-center space-x-3">
                 <Phone className="w-5 h-5" />
-                <span>0527738586</span>
+                <span>052-7738-586</span>
               </div>
               <div className="flex items-center justify-center space-x-3">
                 <Mail className="w-5 h-5" />
@@ -588,8 +467,6 @@ const Gallery = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Gallery;
