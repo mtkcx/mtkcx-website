@@ -54,12 +54,12 @@ const ProductCatalog = () => {
 
         if (categoriesError) throw categoriesError;
 
-        // Fetch products with categories and variants
+        // Fetch products with categories, variants, and images
         const { data: productsData, error: productsError } = await supabase
           .from('products')
           .select(`
             *,
-            categories!inner (
+            categories (
               id,
               name,
               slug
@@ -68,6 +68,12 @@ const ProductCatalog = () => {
               id,
               size,
               price
+            ),
+            product_images (
+              id,
+              image_url,
+              is_primary,
+              alt_text
             )
           `)
           .eq('status', 'active')
@@ -75,20 +81,34 @@ const ProductCatalog = () => {
 
         if (productsError) throw productsError;
 
-        // Transform the data to match our interface
-        const transformedProducts = productsData?.map(product => ({
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          product_code: product.product_code,
-          image_url: product.image_url,
-          category: {
-            id: product.categories.id,
-            name: product.categories.name,
-            slug: product.categories.slug,
-          },
-          variants: product.product_variants || []
-        })) || [];
+        // Transform and filter the data to match our interface
+        const transformedProducts = productsData?.filter(product => {
+          // Only show products that have at least one variant and one primary image
+          const hasVariants = product.product_variants && product.product_variants.length > 0;
+          const hasPrimaryImage = product.product_images && product.product_images.some(img => img.is_primary);
+          return hasVariants && hasPrimaryImage;
+        }).map(product => {
+          // Get primary image
+          const primaryImage = product.product_images?.find(img => img.is_primary);
+          
+          return {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            product_code: product.product_code,
+            image_url: primaryImage?.image_url || product.image_url,
+            category: product.categories ? {
+              id: product.categories.id,
+              name: product.categories.name,
+              slug: product.categories.slug,
+            } : {
+              id: 'uncategorized',
+              name: 'Uncategorized',
+              slug: 'uncategorized',
+            },
+            variants: product.product_variants || []
+          };
+        }) || [];
 
         setCategories(categoriesData || []);
         setProducts(transformedProducts);
@@ -106,7 +126,9 @@ const ProductCatalog = () => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.product_code?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || product.category.slug === selectedCategory;
+    const matchesCategory = !selectedCategory || 
+                           product.category.slug === selectedCategory ||
+                           (selectedCategory === 'uncategorized' && product.category.slug === 'uncategorized');
     return matchesSearch && matchesCategory;
   });
 
