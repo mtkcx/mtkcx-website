@@ -223,8 +223,8 @@ const Gallery = () => {
 
   const handleQuoteRequest = (serviceTitle: string) => {
     toast({
-      title: "Quote Request Received!",
-      description: `We'll contact you about ${serviceTitle} within 24 hours.`,
+      title: t('common.quote_request_received'),
+      description: t('common.contact_service_hours').replace('{service}', serviceTitle),
     });
   };
 
@@ -476,9 +476,9 @@ const Gallery = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Our Work Gallery</h2>
+            <h2 className="text-3xl font-bold text-primary mb-4">{t('common.our_work_gallery')}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Explore our portfolio of vehicle transformations and custom projects
+              {t('common.explore_portfolio')}
             </p>
           </div>
           
@@ -488,8 +488,8 @@ const Gallery = () => {
                 <div className="w-full h-full bg-muted/50 flex items-center justify-center">
                   <div className="text-center">
                     <Car className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                    <p className="text-sm text-muted-foreground">Project Gallery Image</p>
-                    <p className="text-xs text-muted-foreground">(Images coming soon)</p>
+                    <p className="text-sm text-muted-foreground">{t('common.project_gallery_image')}</p>
+                    <p className="text-xs text-muted-foreground">{t('common.images_coming_soon')}</p>
                   </div>
                 </div>
               </Card>
@@ -499,7 +499,7 @@ const Gallery = () => {
           <div className="text-center mt-8">
             <Button variant="outline" size="lg">
               <Eye className="w-5 h-5 mr-2" />
-              View Full Gallery
+              {t('common.view_full_gallery')}
             </Button>
           </div>
         </div>
@@ -509,9 +509,9 @@ const Gallery = () => {
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Vehicle?</h2>
+            <h2 className="text-3xl font-bold mb-4">{t('common.ready_transform_vehicle')}</h2>
             <p className="text-xl mb-8 text-primary-foreground/90">
-              Contact us today for a personalized consultation and quote for your vehicle wrapping project.
+              {t('common.contact_consultation')}
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -532,11 +532,11 @@ const Gallery = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="secondary" size="lg">
                 <Phone className="w-5 h-5 mr-2" />
-                Call for Quote
+                {t('common.call_for_quote')}
               </Button>
               <Button variant="outline" size="lg" className="bg-transparent border-white text-white hover:bg-white hover:text-primary">
                 <Calendar className="w-5 h-5 mr-2" />
-                Schedule Consultation
+                {t('common.schedule_consultation')}
               </Button>
             </div>
           </div>

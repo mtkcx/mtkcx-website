@@ -343,25 +343,25 @@ const Contact = () => {
               <Card className="p-6 bg-primary/5">
                 <CardHeader className="px-0 pt-0">
                   <CardTitle className="text-xl font-bold text-primary">
-                    Why Choose MT Wraps?
+                    {t('common.why_choose_mt')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="px-0 space-y-3">
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span className="text-sm">Official Koch-Chemie Partner</span>
+                    <span className="text-sm">{t('common.official_partner')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span className="text-sm">Professional Training Programs</span>
+                    <span className="text-sm">{t('common.professional_training_programs')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span className="text-sm">Expert Wrapping Services</span>
+                    <span className="text-sm">{t('common.expert_wrapping_services')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span className="text-sm">Fast Response Time</span>
+                    <span className="text-sm">{t('common.fast_response_time')}</span>
                   </div>
                 </CardContent>
               </Card>

@@ -12,8 +12,8 @@ const Courses = () => {
   const { t } = useLanguage();
   const handleEnrollment = () => {
     toast({
-      title: "Enrollment Interest Received!",
-      description: "We'll contact you about the Koch Chemie Professional Detailing & Polishing Certification within 24 hours."
+      title: t('common.enrollment_interest'),
+      description: t('common.contact_course_info')
     });
   };
   return <div className="min-h-screen bg-background">
@@ -52,8 +52,8 @@ const Courses = () => {
                       <path d="M8 5v14l11-7z"/>
                     </svg>
                   </div>
-                  <p className="text-muted-foreground">Course Introduction Video</p>
-                  <p className="text-sm text-muted-foreground mt-2">Replace this placeholder with your video embed</p>
+                  <p className="text-muted-foreground">{t('courses.course_intro_video')}</p>
+                  <p className="text-sm text-muted-foreground mt-2">{t('courses.video_placeholder')}</p>
                 </div>
               </div>
               {/* Uncomment and add your video URL when ready */}
@@ -342,23 +342,22 @@ const Courses = () => {
                       <MapPin className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <p className="font-medium">Visit Us</p>
-                      <p className="text-sm text-muted-foreground">Atarot Industrial Area, Jerusalem</p>
+                      <p className="font-medium">{t('common.visit_us')}</p>
+                      <p className="text-sm text-muted-foreground">{t('courses.atarot_location')}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-primary text-primary-foreground p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">Koch Chemie Official Training</h4>
+                  <h4 className="font-semibold mb-2">{t('common.koch_official_training')}</h4>
                   <p className="text-sm text-primary-foreground/90">
-                    This is the only official Koch Chemie certification course in the region. 
-                    Upon completion, you'll be a certified Koch Chemie professional detailer.
+                    {t('common.only_official_course')}
                   </p>
                 </div>
 
                 <Button className="w-full" size="lg" onClick={handleEnrollment}>
                   <Mail className="w-5 h-5 mr-2" />
-                  Get Course Information
+                  {t('common.get_course_info')}
                 </Button>
               </CardContent>
             </Card>

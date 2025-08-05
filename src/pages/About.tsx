@@ -138,7 +138,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-primary mb-4">Beyond Products - Education & Excellence</h2>
+              <h2 className="text-3xl font-bold text-primary mb-4">{t('common.beyond_products')}</h2>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
@@ -146,7 +146,7 @@ const About = () => {
                 <CardContent className="p-0">
                   <div className="flex items-center mb-4">
                     <GraduationCap className="w-8 h-8 text-primary mr-3" />
-                    <h3 className="text-xl font-semibold">Professional Training</h3>
+                    <h3 className="text-xl font-semibold">{t('common.professional_training')}</h3>
                   </div>
                   <p className="text-muted-foreground mb-4">
                     Beyond product sales, we are committed to education and excellence. That's why we offer 
