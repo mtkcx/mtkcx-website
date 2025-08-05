@@ -13,7 +13,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-bold text-lg">MTKcx</h3>
             <p className="text-primary-foreground/80 leading-relaxed text-sm">
-              Official KochChemie distributor providing premium car care products, professional training, and expert wrapping services.
+              Official Koch-Chemie distributor providing premium car care products, professional training, and expert wrapping services.
             </p>
             <div className="flex space-x-4">
               <a href="https://www.facebook.com/MTDetailing" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">

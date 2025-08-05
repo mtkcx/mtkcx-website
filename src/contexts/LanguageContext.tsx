@@ -23,7 +23,7 @@ const translations = {
     
     // Hero Section
     'hero.title': 'Premium Car Care & Training Solutions',
-    'hero.subtitle': 'Official KochChemie distributor offering professional detailing products, expert training courses, and premium car wrapping services.',
+    'hero.subtitle': 'Official Koch-Chemie distributor offering professional detailing products, expert training courses, and premium car wrapping services.',
     'hero.cta.products': 'Shop Products',
     'hero.cta.courses': 'View Courses',
     
@@ -63,7 +63,7 @@ const translations = {
     
     // Hero Section
     'hero.title': 'פתרונות טיפוח רכב והכשרה מתקדמים',
-    'hero.subtitle': 'מפיץ רשמי של KochChemie המציע מוצרי ניקיון מקצועיים, קורסי הכשרה מומחים ושירותי עיטוף רכבים מתקדמים.',
+    'hero.subtitle': 'מפיץ רשמי של Koch-Chemie המציע מוצרי ניקיון מקצועיים, קורסי הכשרה מומחים ושירותי עיטוף רכבים מתקדמים.',
     'hero.cta.products': 'קנה מוצרים',
     'hero.cta.courses': 'צפה בקורסים',
     
