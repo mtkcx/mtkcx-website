@@ -62,7 +62,7 @@ const ProductCatalog = () => {
               name,
               slug
             ),
-            product_variants (
+            product_variants!fk_product_variants_product_id (
               id,
               size,
               price
