@@ -74,7 +74,7 @@ const Contact = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: t('contact.failed_send'),
+        description: t('contact.error_desc'),
         variant: "destructive",
       });
     } finally {
@@ -125,12 +125,12 @@ const Contact = () => {
       <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-primary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-2">{t('contact.get_in_touch')}</Badge>
+            <Badge className="mb-6 px-4 py-2">{t('contact.badge')}</Badge>
             <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
-              {t('contact.contact_mt_wraps')}
+              {t('contact.title')}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('contact.ready_elevate')}
+              {t('contact.subtitle')}
             </p>
           </div>
         </div>
@@ -146,10 +146,10 @@ const Contact = () => {
                 <CardHeader className="px-0 pt-0">
                   <CardTitle className="text-2xl font-bold text-primary flex items-center">
                     <Send className="w-6 h-6 mr-3" />
-                    {t('contact.send_message')}
+                    {t('contact.form_title')}
                   </CardTitle>
                   <p className="text-muted-foreground">
-                    {t('contact.fill_form')}
+                    {t('contact.form_subtitle')}
                   </p>
                 </CardHeader>
                 
@@ -160,7 +160,7 @@ const Contact = () => {
                       <div className="space-y-2">
                         <Label htmlFor="name" className="flex items-center">
                           <User className="w-4 h-4 mr-2" />
-                          {t('contact.full_name')}
+                          {t('contact.name')}
                         </Label>
                         <Input
                           id="name"
@@ -168,14 +168,14 @@ const Contact = () => {
                           value={formData.name}
                           onChange={handleInputChange}
                           required
-                          placeholder={t('contact.enter_full_name')}
+                          placeholder={t('contact.name_placeholder')}
                         />
                       </div>
                       
                       <div className="space-y-2">
                         <Label htmlFor="email" className="flex items-center">
                           <Mail className="w-4 h-4 mr-2" />
-                          {t('contact.email_address')}
+                          {t('contact.email')}
                         </Label>
                         <Input
                           id="email"
@@ -193,7 +193,7 @@ const Contact = () => {
                       <div className="space-y-2">
                         <Label htmlFor="phone" className="flex items-center">
                           <Phone className="w-4 h-4 mr-2" />
-                          {t('contact.phone_number')}
+                          {t('contact.phone')}
                         </Label>
                         <Input
                           id="phone"
@@ -208,21 +208,21 @@ const Contact = () => {
                       <div className="space-y-2">
                         <Label htmlFor="company" className="flex items-center">
                           <Building className="w-4 h-4 mr-2" />
-                          {t('contact.company_name')}/Business
+                          {t('contact.company')}/Business
                         </Label>
                         <Input
                           id="company"
                           name="company"
                           value={formData.company}
                           onChange={handleInputChange}
-                          placeholder={t('contact.your_business')}
+                          placeholder={t('contact.company_placeholder')}
                         />
                       </div>
                     </div>
 
                     {/* Service Interest */}
                     <div className="space-y-2">
-                      <Label htmlFor="serviceInterest">{t('contact.service_of_interest')}</Label>
+                      <Label htmlFor="serviceInterest">{t('contact.service_interest')}</Label>
                       <select
                         id="serviceInterest"
                         name="serviceInterest"
@@ -230,7 +230,7 @@ const Contact = () => {
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                       >
-                        <option value="">{t('contact.select_service')}</option>
+                        <option value="">{t('contact.service_interest_placeholder')}</option>
                         {services.map((service) => (
                           <option key={service.value} value={service.value}>
                             {service.label}
@@ -251,7 +251,7 @@ const Contact = () => {
                         value={formData.subject}
                         onChange={handleInputChange}
                         required
-                        placeholder={t('contact.brief_description')}
+                        placeholder={t('contact.subject_placeholder')}
                       />
                     </div>
 
