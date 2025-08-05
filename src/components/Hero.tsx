@@ -47,7 +47,7 @@ const Hero = () => {
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-primary mb-2">80+</div>
-              <div className="text-muted-foreground">Students Trained</div>
+              <div className="text-muted-foreground">Products Available</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-primary mb-2">4+</div>
