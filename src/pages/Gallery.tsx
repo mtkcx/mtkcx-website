@@ -1,0 +1,504 @@
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { 
+  Car, 
+  Palette, 
+  Shield, 
+  Clock, 
+  Award, 
+  CheckCircle, 
+  Star,
+  Phone,
+  Mail,
+  MapPin,
+  Sparkles,
+  Layers,
+  Wrench,
+  Eye,
+  Target,
+  Users,
+  Calendar
+} from 'lucide-react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { useToast } from '@/hooks/use-toast';
+
+interface WrapService {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  features: string[];
+  duration: string;
+  warranty: string;
+  popular: boolean;
+}
+
+interface WrapMaterial {
+  brand: string;
+  description: string;
+  features: string[];
+}
+
+const Gallery = () => {
+  const { toast } = useToast();
+
+  const services: WrapService[] = [
+    {
+      id: 'full-wrap',
+      title: 'Full Vehicle Wrap',
+      subtitle: 'Complete transformation of your vehicle',
+      description: 'Transform your entire vehicle with a complete color change or custom design. Our full wraps provide maximum impact and protection for your vehicle\'s original paint.',
+      features: [
+        'Complete color transformation',
+        'Paint protection benefits',
+        'Custom design options',
+        'Professional installation',
+        'Removable without damage',
+        'Increased resale value protection'
+      ],
+      duration: '3-5 Days',
+      warranty: '5-7 Years',
+      popular: true
+    },
+    {
+      id: 'partial-wrap',
+      title: 'Partial Vehicle Wrap',
+      subtitle: 'Strategic accent and branding solutions',
+      description: 'Perfect for businesses or personal customization. Cover specific panels, create racing stripes, or add accent colors to make your vehicle stand out.',
+      features: [
+        'Custom panel coverage',
+        'Racing stripes and accents',
+        'Business branding solutions',
+        'Cost-effective customization',
+        'Quick installation',
+        'Easy maintenance'
+      ],
+      duration: '1-2 Days',
+      warranty: '5-7 Years',
+      popular: false
+    },
+    {
+      id: 'color-change',
+      title: 'Color Change Wrap',
+      subtitle: 'Premium color transformation',
+      description: 'Change your vehicle\'s color completely with premium automotive films. Choose from matte, gloss, satin, or specialty finishes for a unique look.',
+      features: [
+        'Vast color selection',
+        'Multiple finish options',
+        'Paint preservation',
+        'Reversible process',
+        'No permanent modifications',
+        'Factory paint protection'
+      ],
+      duration: '3-4 Days',
+      warranty: '5-7 Years',
+      popular: false
+    },
+    {
+      id: 'commercial-fleet',
+      title: 'Commercial Fleet Wrapping',
+      subtitle: 'Professional branding for businesses',
+      description: 'Turn your fleet into moving billboards. Professional vehicle wrapping for businesses, delivery services, and commercial operations.',
+      features: [
+        'Brand consistency across fleet',
+        'High-impact advertising',
+        'Professional design service',
+        'Volume pricing available',
+        'Quick turnaround times',
+        'Long-lasting visibility'
+      ],
+      duration: '2-3 Days per vehicle',
+      warranty: '5-7 Years',
+      popular: true
+    },
+    {
+      id: 'protective-film',
+      title: 'Paint Protection Film (PPF)',
+      subtitle: 'Invisible protection for your investment',
+      description: 'Clear protective film that shields your vehicle\'s paint from rock chips, scratches, and environmental damage while maintaining the original appearance.',
+      features: [
+        'Invisible protection',
+        'Self-healing technology',
+        'UV resistance',
+        'Maintains original appearance',
+        'Easy cleaning',
+        'Preserves vehicle value'
+      ],
+      duration: '2-4 Days',
+      warranty: '10 Years',
+      popular: false
+    },
+    {
+      id: 'specialty-finishes',
+      title: 'Specialty Finishes',
+      subtitle: 'Unique textures and effects',
+      description: 'Stand out with specialty finishes including carbon fiber, brushed metal, chrome, and textured films for a truly unique appearance.',
+      features: [
+        'Carbon fiber textures',
+        'Metallic finishes',
+        'Chrome and mirror effects',
+        'Textured surfaces',
+        'Custom patterns',
+        'Limited edition materials'
+      ],
+      duration: '3-5 Days',
+      warranty: '3-5 Years',
+      popular: false
+    }
+  ];
+
+  const materials: WrapMaterial[] = [
+    {
+      brand: '3M',
+      description: 'Industry-leading automotive films with superior durability and finish quality.',
+      features: ['10+ year warranty options', 'Self-healing technology', 'UV resistance', 'Easy maintenance']
+    },
+    {
+      brand: 'Avery Dennison',
+      description: 'Premium vinyl films known for excellent conformability and color accuracy.',
+      features: ['Vibrant color range', 'Superior adhesion', 'Clean removal', 'Weather resistance']
+    },
+    {
+      brand: 'KPMF',
+      description: 'German-engineered films offering exceptional quality and innovative finishes.',
+      features: ['Unique finish options', 'High-performance adhesive', 'Color stability', 'Professional grade']
+    }
+  ];
+
+  const process = [
+    {
+      step: 1,
+      title: 'Consultation & Design',
+      description: 'We discuss your vision, assess your vehicle, and create a custom design proposal with material recommendations.',
+      icon: Eye
+    },
+    {
+      step: 2,
+      title: 'Preparation',
+      description: 'Thorough cleaning and preparation of your vehicle surface to ensure optimal adhesion and finish quality.',
+      icon: Wrench
+    },
+    {
+      step: 3,
+      title: 'Professional Installation',
+      description: 'Expert application using specialized tools and techniques in our controlled environment facility.',
+      icon: Target
+    },
+    {
+      step: 4,
+      title: 'Quality Control',
+      description: 'Comprehensive inspection and finishing touches to ensure perfect results and your complete satisfaction.',
+      icon: CheckCircle
+    }
+  ];
+
+  const benefits = [
+    {
+      icon: Shield,
+      title: 'Paint Protection',
+      description: 'Protects original paint from chips, scratches, and UV damage'
+    },
+    {
+      icon: Palette,
+      title: 'Unlimited Customization',
+      description: 'Endless color and design possibilities for unique personalization'
+    },
+    {
+      icon: Clock,
+      title: 'Reversible Process',
+      description: 'Can be removed without damaging original paint finish'
+    },
+    {
+      icon: Award,
+      title: 'Professional Quality',
+      description: 'Industry-leading materials and expert installation techniques'
+    }
+  ];
+
+  const handleQuoteRequest = (serviceTitle: string) => {
+    toast({
+      title: "Quote Request Received!",
+      description: `We'll contact you about ${serviceTitle} within 24 hours.`,
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      {/* Hero Section */}
+      <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <Badge className="mb-6 px-4 py-2">MT Wraps Services</Badge>
+            <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
+              Professional Vehicle
+              <span className="text-gradient bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent"> Wrapping</span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Transform your vehicle with premium automotive films. From complete color changes to 
+              protective solutions, we deliver exceptional results with industry-leading materials.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-primary mb-4">Why Choose Vehicle Wrapping?</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Discover the advantages of professional vehicle wrapping
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {benefits.map((benefit, index) => {
+              const IconComponent = benefit.icon;
+              return (
+                <div key={index} className="text-center p-6">
+                  <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
+                    <IconComponent className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-2">{benefit.title}</h3>
+                  <p className="text-muted-foreground text-sm">{benefit.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Services Grid */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-primary mb-4">Our Wrapping Services</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Comprehensive vehicle transformation solutions for every need and budget
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {services.map((service) => (
+              <Card 
+                key={service.id} 
+                className={`relative overflow-hidden transition-all duration-300 hover:shadow-lg ${
+                  service.popular ? 'border-primary border-2' : 'border-2 hover:border-primary/20'
+                }`}
+              >
+                {service.popular && (
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-primary text-primary-foreground">
+                      <Star className="w-3 h-3 mr-1" />
+                      Popular
+                    </Badge>
+                  </div>
+                )}
+                
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-2xl font-bold text-primary mb-2">
+                    {service.title}
+                  </CardTitle>
+                  <p className="text-muted-foreground mb-3">{service.subtitle}</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {service.description}
+                  </p>
+                </CardHeader>
+                
+                <CardContent className="space-y-6">
+                  {/* Service Details */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center text-sm">
+                      <Clock className="w-4 h-4 text-primary mr-2" />
+                      <span>{service.duration}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Shield className="w-4 h-4 text-primary mr-2" />
+                      <span>{service.warranty}</span>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Service Features */}
+                  <div>
+                    <h4 className="font-semibold text-sm mb-3">Service Includes:</h4>
+                    <div className="space-y-2">
+                      {service.features.map((feature, index) => (
+                        <div key={index} className="flex items-center text-sm">
+                          <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Quote Button */}
+                  <Button 
+                    className="w-full"
+                    size="lg"
+                    onClick={() => handleQuoteRequest(service.title)}
+                  >
+                    <Car className="w-5 h-5 mr-2" />
+                    Request Quote
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-primary mb-4">Our Professional Process</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              From concept to completion, we ensure exceptional results at every step
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {process.map((step) => {
+              const IconComponent = step.icon;
+              return (
+                <Card key={step.step} className="text-center p-6 hover:shadow-lg transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit">
+                      <IconComponent className="w-8 h-8 text-primary" />
+                    </div>
+                    <div className="mb-2">
+                      <Badge variant="secondary" className="mb-2">Step {step.step}</Badge>
+                      <h3 className="font-semibold text-lg">{step.title}</h3>
+                    </div>
+                    <p className="text-muted-foreground text-sm">{step.description}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Materials & Brands */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-primary mb-4">Premium Materials</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              We use only the finest automotive films from industry-leading manufacturers
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {materials.map((material, index) => (
+              <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300">
+                <CardHeader className="pb-4">
+                  <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
+                    <Layers className="w-6 h-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl font-bold text-primary mb-2">
+                    {material.brand}
+                  </CardTitle>
+                  <p className="text-muted-foreground text-sm">{material.description}</p>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="space-y-2">
+                    {material.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center text-sm justify-center">
+                        <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Placeholder */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-primary mb-4">Our Work Gallery</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Explore our portfolio of vehicle transformations and custom projects
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, index) => (
+              <Card key={index} className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300">
+                <div className="w-full h-full bg-muted/50 flex items-center justify-center">
+                  <div className="text-center">
+                    <Car className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">Project Gallery Image</p>
+                    <p className="text-xs text-muted-foreground">(Images coming soon)</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+          
+          <div className="text-center mt-8">
+            <Button variant="outline" size="lg">
+              <Eye className="w-5 h-5 mr-2" />
+              View Full Gallery
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact & Quote Section */}
+      <section className="py-16 bg-primary text-primary-foreground">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Vehicle?</h2>
+            <p className="text-xl mb-8 text-primary-foreground/90">
+              Contact us today for a personalized consultation and quote for your vehicle wrapping project.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="flex items-center justify-center space-x-3">
+                <Phone className="w-5 h-5" />
+                <span>052-5701-073</span>
+              </div>
+              <div className="flex items-center justify-center space-x-3">
+                <Mail className="w-5 h-5" />
+                <span>info@mtkcx.com</span>
+              </div>
+              <div className="flex items-center justify-center space-x-3">
+                <MapPin className="w-5 h-5" />
+                <span>Atarot Industrial Area</span>
+              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button variant="secondary" size="lg">
+                <Phone className="w-5 h-5 mr-2" />
+                Call for Quote
+              </Button>
+              <Button variant="outline" size="lg" className="bg-transparent border-white text-white hover:bg-white hover:text-primary">
+                <Calendar className="w-5 h-5 mr-2" />
+                Schedule Consultation
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Gallery;
