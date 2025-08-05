@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
+import { MapPin } from 'lucide-react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 interface MapProps {
@@ -13,9 +14,16 @@ const Map: React.FC<MapProps> = ({ className = "" }) => {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // You'll need to add your Mapbox public token to Supabase Edge Function Secrets
-    // For now, using a placeholder - replace with actual token
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || 'your-mapbox-token-here';
+    // Mapbox token will be retrieved from Supabase secrets
+    // For now, we'll show a placeholder until the token is configured
+    const mapboxToken = 'pk.your_mapbox_token_here'; // This will be replaced with actual token
+    
+    if (mapboxToken === 'pk.your_mapbox_token_here') {
+      // Show fallback when no token is configured
+      return;
+    }
+
+    mapboxgl.accessToken = mapboxToken;
     
     // Coordinates for Atarot Industrial Area, Jerusalem
     const coordinates: [number, number] = [35.2137, 31.8000]; // Jerusalem, Atarot area
@@ -71,16 +79,16 @@ const Map: React.FC<MapProps> = ({ className = "" }) => {
   return (
     <div className={`relative ${className}`}>
       <div ref={mapContainer} className="w-full h-full rounded-lg shadow-lg" />
-      {!process.env.NEXT_PUBLIC_MAPBOX_TOKEN && (
-        <div className="absolute inset-0 bg-muted/90 rounded-lg flex items-center justify-center">
-          <div className="text-center p-4">
-            <p className="text-sm font-medium mb-2">Interactive Map</p>
-            <p className="text-xs text-muted-foreground">
-              Mapbox token required to display map
-            </p>
-          </div>
+      <div className="absolute inset-0 bg-muted/90 rounded-lg flex items-center justify-center">
+        <div className="text-center p-4">
+          <MapPin className="w-12 h-12 text-primary mx-auto mb-4" />
+          <h3 className="text-lg font-semibold mb-2">MT Wraps Location</h3>
+          <p className="text-muted-foreground mb-2">Atarot Industrial Area, Jerusalem</p>
+          <p className="text-xs text-muted-foreground">
+            Configure Mapbox token to display interactive map
+          </p>
         </div>
-      )}
+      </div>
     </div>
   );
 };
