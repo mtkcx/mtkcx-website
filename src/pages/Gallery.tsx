@@ -274,83 +274,131 @@ const Gallery = () => {
         </div>
       </section>
 
-      {/* Services Grid */}
+      {/* Services Contact Section */}
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-primary mb-4">Our Wrapping Services</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive vehicle transformation solutions for every need and budget
+              Contact us to discuss your needs from our variety of professional vehicle wrapping and detailing services
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {services.map((service) => (
-              <Card 
-                key={service.id} 
-                className={`relative overflow-hidden transition-all duration-300 hover:shadow-lg ${
-                  service.popular ? 'border-primary border-2' : 'border-2 hover:border-primary/20'
-                }`}
-              >
-                {service.popular && (
-                  <div className="absolute top-4 right-4">
-                    <Badge className="bg-primary text-primary-foreground">
-                      <Star className="w-3 h-3 mr-1" />
-                      Popular
-                    </Badge>
-                  </div>
-                )}
-                
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-2xl font-bold text-primary mb-2">
-                    {service.title}
-                  </CardTitle>
-                  <p className="text-muted-foreground mb-3">{service.subtitle}</p>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
-                </CardHeader>
-                
-                <CardContent className="space-y-6">
-                  {/* Service Details */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-center text-sm">
-                      <Clock className="w-4 h-4 text-primary mr-2" />
-                      <span>{service.duration}</span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <Shield className="w-4 h-4 text-primary mr-2" />
-                      <span>{service.warranty}</span>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  {/* Service Features */}
-                  <div>
-                    <h4 className="font-semibold text-sm mb-3">Service Includes:</h4>
-                    <div className="space-y-2">
-                      {service.features.map((feature, index) => (
-                        <div key={index} className="flex items-center text-sm">
-                          <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                          <span>{feature}</span>
+          <div className="max-w-4xl mx-auto">
+            <Card className="p-8 shadow-lg">
+              <CardHeader className="text-center pb-6">
+                <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit">
+                  <Car className="w-12 h-12 text-primary" />
+                </div>
+                <CardTitle className="text-3xl font-bold text-primary mb-4">
+                  Professional Vehicle Services
+                </CardTitle>
+                <p className="text-lg text-muted-foreground">
+                  We offer a comprehensive range of vehicle wrapping and detailing services. 
+                  Contact us to discuss which service best fits your needs and budget.
+                </p>
+              </CardHeader>
+              
+              <CardContent className="space-y-8">
+                {/* Services List */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-lg text-primary flex items-center">
+                      <Sparkles className="w-5 h-5 mr-2" />
+                      Wrapping Services
+                    </h4>
+                    <div className="space-y-3">
+                      {[
+                        'Paint Protection Film',
+                        'Color Change Wrap', 
+                        'Commercial Fleet Wrapping'
+                      ].map((service, index) => (
+                        <div key={index} className="flex items-center text-muted-foreground">
+                          <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
+                          {service}
                         </div>
                       ))}
                     </div>
                   </div>
+                  
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-lg text-primary flex items-center">
+                      <Palette className="w-5 h-5 mr-2" />
+                      Additional Services
+                    </h4>
+                    <div className="space-y-3">
+                      {[
+                        'Specialty Finishes',
+                        'Polish & Detailing',
+                        'Professional Detailing'
+                      ].map((service, index) => (
+                        <div key={index} className="flex items-center text-muted-foreground">
+                          <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
+                          {service}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-                  {/* Quote Button */}
-                  <Button 
-                    className="w-full"
-                    size="lg"
-                    onClick={() => handleQuoteRequest(service.title)}
-                  >
-                    <Car className="w-5 h-5 mr-2" />
-                    Request Quote
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                {/* Why Choose Us */}
+                <div className="bg-primary/5 rounded-lg p-6">
+                  <h4 className="font-semibold text-lg text-primary mb-4 flex items-center">
+                    <Award className="w-5 h-5 mr-2" />
+                    Why Choose Our Services?
+                  </h4>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
+                        <Shield className="w-6 w-6 text-primary" />
+                      </div>
+                      <h5 className="font-medium mb-1">Premium Materials</h5>
+                      <p className="text-sm text-muted-foreground">Industry-leading automotive films</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
+                        <Users className="w-6 h-6 text-primary" />
+                      </div>
+                      <h5 className="font-medium mb-1">Expert Installation</h5>
+                      <p className="text-sm text-muted-foreground">Professional certified technicians</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
+                        <Clock className="w-6 h-6 text-primary" />
+                      </div>
+                      <h5 className="font-medium mb-1">Quality Guarantee</h5>
+                      <p className="text-sm text-muted-foreground">Warranty on all services</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Buttons */}
+                <div className="text-center space-y-4">
+                  <p className="text-muted-foreground">
+                    Ready to transform your vehicle? Contact us to discuss your project and get a personalized quote.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button 
+                      size="lg" 
+                      onClick={() => handleQuoteRequest("Vehicle Wrapping Services")}
+                      className="flex-1 sm:flex-none"
+                    >
+                      <Phone className="w-5 h-5 mr-2" />
+                      Contact for Quote
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="lg"
+                      onClick={() => handleQuoteRequest("Service Consultation")}
+                      className="flex-1 sm:flex-none"
+                    >
+                      <Mail className="w-5 h-5 mr-2" />
+                      Request Consultation
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
