@@ -2,9 +2,11 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, GraduationCap, Sparkles } from 'lucide-react';
+import { ShoppingCart, GraduationCap, Sparkles, User } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 const Hero = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const {
     t,
     isRTL
@@ -56,6 +58,18 @@ const Hero = () => {
               <GraduationCap className="w-5 h-5 mr-2" />
               {t('hero.cta.courses')}
             </Button>
+
+            {user && (
+              <Button 
+                variant="secondary" 
+                size="lg" 
+                className="px-8 py-6 h-auto min-w-[200px] text-sm"
+                onClick={() => navigate('/dashboard')}
+              >
+                <User className="w-5 h-5 mr-2" />
+                {t('auth.dashboard')}
+              </Button>
+            )}
           </div>
 
           {/* Stats Section */}
