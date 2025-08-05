@@ -3,7 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Package, GraduationCap, Car, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 const ServiceSection = () => {
+  const navigate = useNavigate();
   const {
     t,
     isRTL
@@ -13,7 +15,7 @@ const ServiceSection = () => {
     title: 'Koch-Chemie Products',
     description: 'Professional-grade car care products from Germany\'s leading manufacturer.',
     features: ['Premium car care', 'Professional detailing', 'Industry-leading quality'],
-    cta: 'Shop Now'
+    cta: 'View Products'
   }, {
     icon: GraduationCap,
     title: 'Detailing Courses',
@@ -62,7 +64,10 @@ const ServiceSection = () => {
                       </li>)}
                   </ul>
                   
-                  <Button className="w-full group-hover:bg-primary/90 transition-colors">
+                  <Button 
+                    className="w-full group-hover:bg-primary/90 transition-colors"
+                    onClick={() => index === 0 ? navigate('/products') : undefined}
+                  >
                     {service.cta}
                     <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-1 transition-transform`} />
                   </Button>
