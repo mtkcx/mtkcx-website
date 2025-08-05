@@ -26,6 +26,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 interface WrapService {
   id: string;
@@ -47,6 +50,8 @@ interface WrapMaterial {
 const Gallery = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const services: WrapService[] = [
     {
@@ -221,11 +226,50 @@ const Gallery = () => {
     }
   ];
 
-  const handleQuoteRequest = (serviceTitle: string) => {
-    toast({
-      title: t('common.quote_request_received'),
-      description: t('common.contact_service_hours').replace('{service}', serviceTitle),
-    });
+  const handleQuoteRequest = async (serviceTitle: string) => {
+    if (!user) {
+      toast({
+        title: t('auth.signin_required'),
+        description: t('auth.signin_to_request_quote'),
+        action: (
+          <Button onClick={() => navigate('/auth')} variant="outline" size="sm">
+            {t('auth.sign_in')}
+          </Button>
+        ),
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('quotes')
+        .insert({
+          user_id: user.id,
+          service_type: serviceTitle,
+          message: `Quote request for ${serviceTitle}`,
+          status: 'pending'
+        });
+
+      if (error) {
+        toast({
+          title: t('dashboard.error'),
+          description: t('dashboard.quotes_fetch_error'),
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: t('common.quote_request_received'),
+        description: t('common.contact_service_hours').replace('{service}', serviceTitle),
+      });
+    } catch (error) {
+      toast({
+        title: t('dashboard.error'),
+        description: t('auth.something_went_wrong'),
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
