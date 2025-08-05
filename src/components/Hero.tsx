@@ -42,7 +42,7 @@ const Hero = () => {
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
             <Button 
               size="lg" 
-              className="px-8 py-6 h-auto min-w-[200px] text-sm"
+              className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm"
               onClick={() => navigate('/products')}
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
@@ -63,7 +63,7 @@ const Hero = () => {
               <Button 
                 variant="secondary" 
                 size="lg" 
-                className="px-8 py-6 h-auto min-w-[200px] text-sm"
+                className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm"
                 onClick={() => navigate('/dashboard')}
               >
                 <User className="w-5 h-5 mr-2" />
