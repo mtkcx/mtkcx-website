@@ -10,7 +10,7 @@ const ServiceSection = () => {
   } = useLanguage();
   const services = [{
     icon: Package,
-    title: 'KochChemie Products',
+    title: 'Koch-Chemie Products',
     description: 'Professional-grade car care products from Germany\'s leading manufacturer.',
     features: ['Premium car care', 'Professional detailing', 'Industry-leading quality'],
     cta: 'Shop Now'
