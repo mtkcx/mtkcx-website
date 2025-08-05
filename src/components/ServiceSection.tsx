@@ -35,9 +35,7 @@ const ServiceSection = () => {
           <h2 className="text-4xl font-bold text-primary mb-6 md:text-5xl">
             Our Services
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive car care solutions from products to training to premium wrapping services
-          </p>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Comprehensive Car Care solutions from products to training to premium wrapping services</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -64,10 +62,7 @@ const ServiceSection = () => {
                       </li>)}
                   </ul>
                   
-                  <Button 
-                    className="w-full group-hover:bg-primary/90 transition-colors"
-                    onClick={() => index === 0 ? navigate('/products') : undefined}
-                  >
+                  <Button className="w-full group-hover:bg-primary/90 transition-colors" onClick={() => index === 0 ? navigate('/products') : undefined}>
                     {service.cta}
                     <ArrowRight className={`w-4 h-4 ${isRTL ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-1 transition-transform`} />
                   </Button>
