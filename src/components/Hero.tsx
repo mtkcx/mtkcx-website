@@ -9,7 +9,7 @@ const Hero = () => {
     t,
     isRTL
   } = useLanguage();
-  return <section className="relative min-h-[80vh] flex items-center">
+  return <section className="relative min-h-[80vh] flex items-center justify-center">
       {/* Hero Banner Image */}
       <div className="absolute inset-0">
         <img 
@@ -20,8 +20,8 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
       
-      <div className="container relative z-10 px-0 mx-[26px] py-[78px]">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="container relative z-10 px-4 mx-auto py-[78px] w-full">
+        <div className="max-w-4xl mx-auto text-center w-full">
           <div className="mb-8">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium mb-6 backdrop-blur-sm">
               <Sparkles className="w-4 h-4 mr-2" />
