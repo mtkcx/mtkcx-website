@@ -2,34 +2,21 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Award, 
-  CheckCircle, 
-  Star,
-  Calendar,
-  MapPin,
-  Phone,
-  Mail,
-  BookOpen,
-  Users,
-  Clock
-} from 'lucide-react';
+import { Award, CheckCircle, Star, Calendar, MapPin, Phone, Mail, BookOpen, Users, Clock } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
-
 const Courses = () => {
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const handleEnrollment = () => {
     toast({
       title: "Enrollment Interest Received!",
-      description: "We'll contact you about the Koch Chemie Professional Detailing & Polishing Certification within 24 hours.",
+      description: "We'll contact you about the Koch Chemie Professional Detailing & Polishing Certification within 24 hours."
     });
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Section */}
@@ -260,15 +247,15 @@ const Courses = () => {
                   </div>
                   <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
                     <span className="font-medium">Class Size:</span>
-                    <span className="text-primary font-semibold">Small Groups (Max 8)</span>
+                    <span className="text-primary font-semibold">Small Groups (Max 5)</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
                     <span className="font-medium">Location:</span>
-                    <span className="text-primary font-semibold">Atarot Industrial Area</span>
+                    <span className="text-primary font-semibold">Atarot Industrial Area, Jerusalem</span>
                   </div>
                   <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
                     <span className="font-medium">Training Hours:</span>
-                    <span className="text-primary font-semibold">10:00 AM - 6:00 PM</span>
+                    <span className="text-primary font-semibold">To be announced</span>
                   </div>
                 </div>
                 
@@ -347,8 +334,6 @@ const Courses = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Courses;
