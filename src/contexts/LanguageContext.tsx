@@ -350,6 +350,28 @@ const translations = {
     // Product Variant Selector
     'products.price_tba_label': 'TBA',
     
+    // Missing Common Translations
+    'common.quote_request_received': 'Quote Request Received!',
+    'common.contact_service_hours': 'We\'ll contact you about {service} within 24 hours.',
+    'common.beyond_products': 'Beyond Products - Education & Excellence',
+    'common.why_choose_mt': 'Why Choose MT Wraps?',
+    'common.professional_training_programs': 'Professional Training Programs',
+    'common.expert_wrapping_services': 'Expert Wrapping Services',
+    'common.fast_response_time': 'Fast Response Time',
+    'common.our_work_gallery': 'Our Work Gallery',
+    'common.explore_portfolio': 'Explore our portfolio of vehicle transformations and custom projects',
+    'common.ready_transform_vehicle': 'Ready to Transform Your Vehicle?',
+    'common.contact_consultation': 'Contact us today for a personalized consultation and quote for your vehicle wrapping project.',
+    'common.call_for_quote': 'Call for Quote',
+    'common.schedule_consultation': 'Schedule Consultation',
+    
+    // Contact Service Options
+    'contact.koch_products': 'Koch-Chemie Products',
+    'contact.detailing_training': 'Detailing Training',
+    'contact.vehicle_wrapping': 'Vehicle Wrapping',
+    'contact.professional_consultation': 'Professional Consultation',
+    'contact.other_services': 'Other Services',
+    
     // About page specific
     'about.our_achievements': 'Our Achievements',
     'about.building_trust': 'Building trust through excellence, innovation, and unwavering commitment to quality',
@@ -792,6 +814,28 @@ const translations = {
     // Product Variant Selector (Arabic)
     'products.price_tba_label': 'سيُعلن لاحقاً',
     
+    // Missing Common Translations (Arabic)
+    'common.quote_request_received': 'تم استلام طلب العرض!',
+    'common.contact_service_hours': 'سنتواصل معك حول {service} خلال 24 ساعة.',
+    'common.beyond_products': 'أبعد من المنتجات - التعليم والتميز',
+    'common.why_choose_mt': 'لماذا تختار إم تي رابس؟',
+    'common.professional_training_programs': 'برامج التدريب المهني',
+    'common.expert_wrapping_services': 'خدمات التغليف المتخصصة',
+    'common.fast_response_time': 'وقت استجابة سريع',
+    'common.our_work_gallery': 'معرض أعمالنا',
+    'common.explore_portfolio': 'استكشف مجموعة أعمالنا لتحويلات السيارات والمشاريع المخصصة',
+    'common.ready_transform_vehicle': 'جاهز لتحويل سيارتك؟',
+    'common.contact_consultation': 'اتصل بنا اليوم للحصول على استشارة شخصية وعرض أسعار لمشروع تغليف سيارتك.',
+    'common.call_for_quote': 'اتصل للحصول على عرض أسعار',
+    'common.schedule_consultation': 'حدد موعد استشارة',
+    
+    // Contact Service Options (Arabic)
+    'contact.koch_products': 'منتجات كوخ كيمي',
+    'contact.detailing_training': 'تدريب التنظيف',
+    'contact.vehicle_wrapping': 'تغليف السيارات',
+    'contact.professional_consultation': 'استشارة مهنية',
+    'contact.other_services': 'خدمات أخرى',
+    
     // Authentication translations (Arabic)
     'auth.welcome_badge': 'بوابة عملاء MT Wraps',
     'auth.welcome_back': 'أهلاً بعودتك!',
@@ -1147,6 +1191,28 @@ const translations = {
     
     // Product Variant Selector (Hebrew)
     'products.price_tba_label': 'יוכרז בהמשך',
+    
+    // Missing Common Translations (Hebrew)
+    'common.quote_request_received': 'בקשת הצעת מחיר התקבלה!',
+    'common.contact_service_hours': 'ניצור איתך קשר לגבי {service} תוך 24 שעות.',
+    'common.beyond_products': 'מעבר למוצרים - חינוך ומצוינות',
+    'common.why_choose_mt': 'למה לבחור ב-MT Wraps?',
+    'common.professional_training_programs': 'תוכניות הכשרה מקצועיות',
+    'common.expert_wrapping_services': 'שירותי עיטוף מומחים',
+    'common.fast_response_time': 'זמן תגובה מהיר',
+    'common.our_work_gallery': 'גלריית העבודות שלנו',
+    'common.explore_portfolio': 'חקור את תיק העבודות שלנו של שינויי רכבים ופרויקטים מותאמים אישית',
+    'common.ready_transform_vehicle': 'מוכן לשנות את הרכב שלך?',
+    'common.contact_consultation': 'צור איתנו קשר היום לייעוץ אישי והצעת מחיר לפרויקט עיטוף הרכב שלך.',
+    'common.call_for_quote': 'התקשר להצעת מחיר',
+    'common.schedule_consultation': 'תזמן ייעוץ',
+    
+    // Contact Service Options (Hebrew)
+    'contact.koch_products': 'מוצרי קוך כימי',
+    'contact.detailing_training': 'הכשרת ניקוי',
+    'contact.vehicle_wrapping': 'עיטוף רכבים',
+    'contact.professional_consultation': 'ייעוץ מקצועי',
+    'contact.other_services': 'שירותים נוספים',
     
     // Authentication translations (Hebrew)
     'auth.welcome_badge': 'פורטל לקוחות MT Wraps',
