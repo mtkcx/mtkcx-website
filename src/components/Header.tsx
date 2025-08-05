@@ -30,9 +30,11 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-4">
-            <div className="text-2xl font-bold text-primary">
-              KochChemie East
-            </div>
+            <img 
+              src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" 
+              alt="MT KCx Logo" 
+              className="h-10 w-auto"
+            />
           </div>
 
           {/* Desktop Navigation */}
