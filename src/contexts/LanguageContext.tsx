@@ -470,6 +470,8 @@ const translations = {
     'common.call_for_quote': 'Call for Quote',
     'common.schedule_consultation': 'Schedule Consultation',
     'common.view_full_gallery': 'View Full Gallery',
+    'common.project_gallery_image': 'Project Gallery Image',
+    'common.images_coming_soon': 'Images coming soon',
     
     // Category Filter & Navigation
     'categories.categories': 'Categories',
@@ -920,6 +922,8 @@ const translations = {
     'common.call_for_quote': 'اتصل للحصول على عرض أسعار',
     'common.schedule_consultation': 'حدد موعد استشارة',
     'common.view_full_gallery': 'عرض المعرض الكامل',
+    'common.project_gallery_image': 'صورة معرض المشروع',
+    'common.images_coming_soon': 'الصور قادمة قريباً',
     
     // Category Filter & Navigation
     'categories.categories': 'الفئات',
@@ -1387,6 +1391,8 @@ const translations = {
     'common.call_for_quote': 'התקשר להצעת מחיר',
     'common.schedule_consultation': 'תזמן ייעוץ',
     'common.view_full_gallery': 'צפה בגלריה המלאה',
+    'common.project_gallery_image': 'תמונת גלריית פרויקט',
+    'common.images_coming_soon': 'תמונות בקרוב',
     
     // Category Filter & Navigation
     'categories.categories': 'קטגוריות',
