@@ -1,18 +1,18 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Mail, Phone, MapPin, Facebook, Instagram, Twitter } from 'lucide-react';
-
 const Footer = () => {
-  const { t, isRTL } = useLanguage();
-
-  return (
-    <footer className="bg-primary text-primary-foreground">
+  const {
+    t,
+    isRTL
+  } = useLanguage();
+  return <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold">KochChemie East</h3>
-            <p className="text-primary-foreground/80 leading-relaxed">
+            <h3 className="font-bold text-lg">MTKcx</h3>
+            <p className="text-primary-foreground/80 leading-relaxed text-sm">
               Official KochChemie distributor providing premium car care products, professional training, and expert wrapping services.
             </p>
             <div className="flex space-x-4">
@@ -56,28 +56,24 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/80">info@kochchemie-east.com</span>
+                <span className="text-primary-foreground/80">info@mtkcx.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/80">+1 (555) 123-4567</span>
+                <span className="text-primary-foreground/80">052-5701-073</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/80">Professional Center, Business District</span>
+                <span className="text-primary-foreground/80">Atarot Industrial Area, Hatamrukim, Jerusalem.</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center">
-          <p className="text-primary-foreground/80">
-            © 2024 KochChemie East. All rights reserved. | MT Wraps Division
-          </p>
+          <p className="text-primary-foreground/80">© 2025 MT Wraps. All rights reserved. | Koch-Chemie</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
