@@ -73,7 +73,7 @@ const Contact = () => {
       });
     } catch (error) {
       toast({
-        title: "Error",
+        title: t('contact.error_title'),
         description: t('contact.error_desc'),
         variant: "destructive",
       });
@@ -82,32 +82,32 @@ const Contact = () => {
     }
   };
 
-  const contactInfo = [
-    {
-      icon: Phone,
-      title: "Phone",
-      details: "0527738586",
-      description: "Call us during business hours"
-    },
-    {
-      icon: Mail,
-      title: "Email",
-      details: "info@mtkcx.com",
-      description: "We respond within 24 hours"
-    },
-    {
-      icon: MapPin,
-      title: "Location",
-      details: "Atarot Industrial Area, Hatamrukim, Jerusalem",
-      description: "Visit our showroom and workshop"
-    },
-    {
-      icon: Clock,
-      title: "Business Hours",
-      details: "Sunday - Thursday: 10:00 AM - 6:00 PM",
-      description: "Fridays are off"
-    }
-  ];
+   const contactInfo = [
+     {
+       icon: Phone,
+       title: t('contact.phone_title'),
+       details: "0527738586",
+       description: t('contact.phone_desc')
+     },
+     {
+       icon: Mail,
+       title: t('contact.email_title'),
+       details: "info@mtkcx.com",
+       description: t('contact.email_desc')
+     },
+     {
+       icon: MapPin,
+       title: t('contact.location_title'),
+       details: t('contact.location_address'),
+       description: t('contact.location_desc')
+     },
+     {
+       icon: Clock,
+       title: t('contact.hours_title'),
+       details: t('contact.hours_details'),
+       description: t('contact.hours_desc')
+     }
+   ];
 
   const services = [
     { value: "products", label: t('contact.koch_products'), icon: Package },
@@ -208,7 +208,7 @@ const Contact = () => {
                       <div className="space-y-2">
                         <Label htmlFor="company" className="flex items-center">
                           <Building className="w-4 h-4 mr-2" />
-                          {t('contact.company')}/Business
+                          {t('contact.company')}
                         </Label>
                         <Input
                           id="company"
@@ -296,7 +296,7 @@ const Contact = () => {
               <Card className="p-6">
                 <CardHeader className="px-0 pt-0">
                   <CardTitle className="text-xl font-bold text-primary">
-                    Contact Information
+                     {t('contact.info_title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="px-0 space-y-6">
@@ -322,7 +322,7 @@ const Contact = () => {
               <Card className="p-6">
                 <CardHeader className="px-0 pt-0">
                   <CardTitle className="text-xl font-bold text-primary">
-                    Our Services
+                    {t('contact.our_services')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="px-0 space-y-3">
@@ -373,18 +373,18 @@ const Contact = () => {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-primary mb-4">Visit Our Location</h2>
-            <p className="text-muted-foreground">
-              Come see our showroom and workshop at Atarot Industrial Area
-            </p>
+             <h2 className="text-3xl font-bold text-primary mb-4">{t('common.visit_our_location')}</h2>
+             <p className="text-muted-foreground">
+               {t('common.visit_showroom_workshop')}
+             </p>
           </div>
           
           <div className="bg-muted rounded-lg h-64 flex items-center justify-center">
             <div className="text-center">
               <MapPin className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Atarot Industrial Area</h3>
-              <p className="text-muted-foreground">Hatamrukim, Jerusalem</p>
-              <p className="text-sm text-muted-foreground mt-2">Visit us at our location</p>
+               <h3 className="text-lg font-semibold mb-2">{t('contact.location_short')}</h3>
+               <p className="text-muted-foreground">{t('contact.location_address')}</p>
+               <p className="text-sm text-muted-foreground mt-2">{t('common.visit_us_location')}</p>
             </div>
           </div>
         </div>

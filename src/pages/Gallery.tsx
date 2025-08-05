@@ -53,128 +53,128 @@ const Gallery = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const services: WrapService[] = [
-    {
-      id: 'full-wrap',
-      title: 'Full Vehicle Wrap',
-      subtitle: 'Complete transformation of your vehicle',
-      description: 'Transform your entire vehicle with a complete color change or custom design. Our full wraps provide maximum impact and protection for your vehicle\'s original paint.',
-      features: [
-        'Complete color transformation',
-        'Paint protection benefits',
-        'Custom design options',
-        'Professional installation',
-        'Removable without damage',
-        'Increased resale value protection'
-      ],
-      duration: '3-5 Days',
-      warranty: '5-7 Years',
-      popular: true
-    },
-    {
-      id: 'partial-wrap',
-      title: 'Partial Vehicle Wrap',
-      subtitle: 'Strategic accent and branding solutions',
-      description: 'Perfect for businesses or personal customization. Cover specific panels, create racing stripes, or add accent colors to make your vehicle stand out.',
-      features: [
-        'Custom panel coverage',
-        'Racing stripes and accents',
-        'Business branding solutions',
-        'Cost-effective customization',
-        'Quick installation',
-        'Easy maintenance'
-      ],
-      duration: '1-2 Days',
-      warranty: '5-7 Years',
-      popular: false
-    },
-    {
-      id: 'color-change',
-      title: 'Color Change Wrap',
-      subtitle: 'Premium color transformation',
-      description: 'Change your vehicle\'s color completely with premium automotive films. Choose from matte, gloss, satin, or specialty finishes for a unique look.',
-      features: [
-        'Vast color selection',
-        'Multiple finish options',
-        'Paint preservation',
-        'Reversible process',
-        'No permanent modifications',
-        'Factory paint protection'
-      ],
-      duration: '3-4 Days',
-      warranty: '5-7 Years',
-      popular: false
-    },
-    {
-      id: 'commercial-fleet',
-      title: 'Commercial Fleet Wrapping',
-      subtitle: 'Professional branding for businesses',
-      description: 'Turn your fleet into moving billboards. Professional vehicle wrapping for businesses, delivery services, and commercial operations.',
-      features: [
-        'Brand consistency across fleet',
-        'High-impact advertising',
-        'Professional design service',
-        'Volume pricing available',
-        'Quick turnaround times',
-        'Long-lasting visibility'
-      ],
-      duration: '2-3 Days per vehicle',
-      warranty: '5-7 Years',
-      popular: true
-    },
-    {
-      id: 'protective-film',
-      title: 'Paint Protection Film (PPF)',
-      subtitle: 'Invisible protection for your investment',
-      description: 'Clear protective film that shields your vehicle\'s paint from rock chips, scratches, and environmental damage while maintaining the original appearance.',
-      features: [
-        'Invisible protection',
-        'Self-healing technology',
-        'UV resistance',
-        'Maintains original appearance',
-        'Easy cleaning',
-        'Preserves vehicle value'
-      ],
-      duration: '2-4 Days',
-      warranty: '10 Years',
-      popular: false
-    },
-    {
-      id: 'specialty-finishes',
-      title: 'Specialty Finishes',
-      subtitle: 'Unique textures and effects',
-      description: 'Stand out with specialty finishes including carbon fiber, brushed metal, chrome, and textured films for a truly unique appearance.',
-      features: [
-        'Carbon fiber textures',
-        'Metallic finishes',
-        'Chrome and mirror effects',
-        'Textured surfaces',
-        'Custom patterns',
-        'Limited edition materials'
-      ],
-      duration: '3-5 Days',
-      warranty: '3-5 Years',
-      popular: false
-    }
-  ];
+   const services: WrapService[] = [
+     {
+       id: 'full-wrap',
+       title: t('gallery.full_vehicle_wrap'),
+       subtitle: t('gallery.complete_transformation'),
+       description: t('gallery.full_wrap_desc'),
+       features: [
+         t('gallery.complete_color_transformation'),
+         t('gallery.paint_protection_benefits'),
+         t('gallery.custom_design_options'),
+         t('gallery.professional_installation'),
+         t('gallery.removable_without_damage'),
+         t('gallery.increased_resale_value')
+       ],
+       duration: t('gallery.3_5_days'),
+       warranty: t('gallery.5_7_years'),
+       popular: true
+     },
+     {
+       id: 'partial-wrap',
+       title: t('gallery.partial_vehicle_wrap'),
+       subtitle: t('gallery.strategic_accent_branding'),
+       description: t('gallery.partial_wrap_desc'),
+       features: [
+         t('gallery.custom_panel_coverage'),
+         t('gallery.racing_stripes_accents'),
+         t('gallery.business_branding_solutions'),
+         t('gallery.cost_effective_customization'),
+         t('gallery.quick_installation'),
+         t('gallery.easy_maintenance')
+       ],
+       duration: t('gallery.1_2_days'),
+       warranty: t('gallery.5_7_years'),
+       popular: false
+     },
+     {
+       id: 'color-change',
+       title: t('gallery.color_change_wrap'),
+       subtitle: t('gallery.premium_color_transformation'),
+       description: t('gallery.color_change_desc'),
+       features: [
+         t('gallery.vast_color_selection'),
+         t('gallery.multiple_finish_options'),
+         t('gallery.paint_preservation'),
+         t('gallery.reversible_process'),
+         t('gallery.no_permanent_modifications'),
+         t('gallery.factory_paint_protection')
+       ],
+       duration: t('gallery.3_4_days'),
+       warranty: t('gallery.5_7_years'),
+       popular: false
+     },
+     {
+       id: 'commercial-fleet',
+       title: t('gallery.commercial_fleet_wrapping'),
+       subtitle: t('gallery.professional_branding_businesses'),
+       description: t('gallery.commercial_fleet_desc'),
+       features: [
+         t('gallery.brand_consistency_fleet'),
+         t('gallery.high_impact_advertising'),
+         t('gallery.professional_design_service'),
+         t('gallery.volume_pricing_available'),
+         t('gallery.quick_turnaround_times'),
+         t('gallery.long_lasting_visibility')
+       ],
+       duration: t('gallery.2_3_days_per_vehicle'),
+       warranty: t('gallery.5_7_years'),
+       popular: true
+     },
+     {
+       id: 'protective-film',
+       title: t('gallery.paint_protection_film_ppf'),
+       subtitle: t('gallery.invisible_protection_investment'),
+       description: t('gallery.ppf_desc'),
+       features: [
+         t('gallery.invisible_protection'),
+         t('gallery.self_healing_technology'),
+         t('gallery.uv_resistance'),
+         t('gallery.maintains_original_appearance'),
+         t('gallery.easy_cleaning'),
+         t('gallery.preserves_vehicle_value')
+       ],
+       duration: t('gallery.2_4_days'),
+       warranty: t('gallery.10_years'),
+       popular: false
+     },
+     {
+       id: 'specialty-finishes',
+       title: t('gallery.specialty_finishes'),
+       subtitle: t('gallery.unique_textures_effects'),
+       description: t('gallery.specialty_finishes_desc'),
+       features: [
+         t('gallery.carbon_fiber_textures'),
+         t('gallery.metallic_finishes'),
+         t('gallery.chrome_mirror_effects'),
+         t('gallery.textured_surfaces'),
+         t('gallery.custom_patterns'),
+         t('gallery.limited_edition_materials')
+       ],
+       duration: t('gallery.3_5_days'),
+       warranty: t('gallery.3_5_years'),
+       popular: false
+     }
+   ];
 
-  const materials: WrapMaterial[] = [
-    {
-      brand: '3M',
-      description: 'Industry-leading automotive films with superior durability and finish quality.',
-      features: ['10+ year warranty options', 'Self-healing technology', 'UV resistance', 'Easy maintenance']
-    },
-    {
-      brand: 'Avery Dennison',
-      description: 'Premium vinyl films known for excellent conformability and color accuracy.',
-      features: ['Vibrant color range', 'Superior adhesion', 'Clean removal', 'Weather resistance']
-    },
-    {
-      brand: 'KPMF',
-      description: 'German-engineered films offering exceptional quality and innovative finishes.',
-      features: ['Unique finish options', 'High-performance adhesive', 'Color stability', 'Professional grade']
-    }
-  ];
+   const materials: WrapMaterial[] = [
+     {
+       brand: '3M',
+       description: t('gallery.3m_description'),
+       features: [t('gallery.10_year_warranty'), t('gallery.self_healing_tech'), t('gallery.uv_resistance'), t('gallery.easy_maintenance')]
+     },
+     {
+       brand: 'Avery Dennison',
+       description: t('gallery.avery_description'),
+       features: [t('gallery.vibrant_color_range'), t('gallery.superior_adhesion'), t('gallery.clean_removal'), t('gallery.weather_resistance')]
+     },
+     {
+       brand: 'KPMF',
+       description: t('gallery.kpmf_description'),
+       features: [t('gallery.unique_finish_options'), t('gallery.high_performance_adhesive'), t('gallery.color_stability'), t('gallery.professional_grade')]
+     }
+   ];
 
   const process = [
     {
@@ -246,7 +246,7 @@ const Gallery = () => {
         .insert({
           user_id: user.id,
           service_type: serviceTitle,
-          message: `Quote request for ${serviceTitle}`,
+          message: t('gallery.quote_request_message').replace('{service}', serviceTitle),
           status: 'pending'
         });
 
@@ -423,7 +423,7 @@ const Gallery = () => {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button 
                       size="lg" 
-                      onClick={() => handleQuoteRequest("Vehicle Wrapping Services")}
+                      onClick={() => handleQuoteRequest(t('gallery.vehicle_wrapping_services'))}
                       className="flex-1 sm:flex-none"
                     >
                       <Phone className="w-5 h-5 mr-2" />
@@ -432,7 +432,7 @@ const Gallery = () => {
                     <Button 
                       variant="outline" 
                       size="lg"
-                      onClick={() => handleQuoteRequest("Service Consultation")}
+                      onClick={() => handleQuoteRequest(t('gallery.service_consultation'))}
                       className="flex-1 sm:flex-none"
                     >
                       <Mail className="w-5 h-5 mr-2" />

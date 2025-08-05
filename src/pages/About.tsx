@@ -94,7 +94,7 @@ const About = () => {
                     </p>
                     <div className="flex items-center text-sm text-primary">
                       <MapPin className="w-4 h-4 mr-2" />
-                      <span>Atarot Industrial Area, Jerusalem</span>
+                       <span>{t('about.location_jerusalem')}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -202,10 +202,10 @@ const About = () => {
       <section className="py-16 bg-primary/5">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Our Core Values</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              The principles that guide everything we do
-            </p>
+             <h2 className="text-3xl font-bold text-primary mb-4">{t('about.core_values')}</h2>
+             <p className="text-muted-foreground max-w-2xl mx-auto">
+               {t('about.core_values_desc')}
+             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
@@ -230,11 +230,10 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-primary mb-4">What We Offer</h2>
-              <p className="text-muted-foreground">
-                Whether you're a professional detailer, a workshop owner, or a passionate car lover — 
-                our platform is here to support your journey with premium products, expert knowledge, and trusted service.
-              </p>
+               <h2 className="text-3xl font-bold text-primary mb-4">{t('about.what_we_offer')}</h2>
+               <p className="text-muted-foreground">
+                 {t('about.what_we_offer_desc')}
+               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -253,18 +252,18 @@ const About = () => {
       <section className="py-16 bg-gradient-to-r from-primary to-primary/80">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto text-white">
-            <h2 className="text-3xl font-bold mb-4">Ready to Experience Excellence?</h2>
-            <p className="text-xl mb-8 text-white/90">
-              Join the MT Wraps family and discover why professionals trust us for their automotive care needs.
-            </p>
+             <h2 className="text-3xl font-bold mb-4">{t('common.ready_experience_excellence')}</h2>
+             <p className="text-xl mb-8 text-white/90">
+               {t('common.join_mt_wraps_family')}
+             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <div className="flex items-center text-white/90">
                 <MapPin className="w-5 h-5 mr-2" />
-                <span>Atarot Industrial Area, Jerusalem</span>
+                <span>{t('about.location_jerusalem')}</span>
               </div>
               <div className="flex items-center text-white/90">
                 <Calendar className="w-5 h-5 mr-2" />
-                <span>Established 2020</span>
+                <span>{t('common.established_2020')}</span>
               </div>
             </div>
           </div>
