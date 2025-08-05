@@ -867,6 +867,23 @@ const translations = {
     'products.sku_label': 'الرقم التسلسلي:',
     'products.price_tba_label': 'سيتم الإعلان عنه',
     
+    // Gallery - Brand Descriptions (Arabic)
+    'gallery.3m_description': 'أفلام السيارات الرائدة في الصناعة مع متانة فائقة وجودة لمسة نهائية.',
+    'gallery.avery_description': 'أفلام الفينيل المتميزة المعروفة بقابلية التشكيل الممتازة ودقة الألوان.',
+    'gallery.kpmf_description': 'أفلام مهندسة ألمانياً تقدم جودة استثنائية ولمسات نهائية مبتكرة.',
+    'gallery.10_year_warranty': 'خيارات ضمان 10+ سنوات',
+    'gallery.self_healing_tech': 'تقنية الشفاء الذاتي',
+    'gallery.uv_resistance': 'مقاومة الأشعة فوق البنفسجية',
+    'gallery.easy_maintenance': 'صيانة سهلة',
+    'gallery.vibrant_color_range': 'مجموعة ألوان نابضة بالحياة',
+    'gallery.superior_adhesion': 'التصاق فائق',
+    'gallery.clean_removal': 'إزالة نظيفة',
+    'gallery.weather_resistance': 'مقاومة الطقس',
+    'gallery.unique_finish_options': 'خيارات لمسة نهائية فريدة',
+    'gallery.high_performance_adhesive': 'لاصق عالي الأداء',
+    'gallery.color_stability': 'ثبات اللون',
+    'gallery.professional_grade': 'درجة مهنية',
+    
     // Footer
     'footer.company_name': 'MTKcx',
     'footer.company_desc': 'موزع رسمي لشركة Koch-Chemie يقدم منتجات رعاية السيارات المتميزة والتدريب المهني وخدمات التغليف الخبيرة.',
@@ -1335,6 +1352,23 @@ const translations = {
     'products.price_label': 'מחיר:',
     'products.sku_label': 'מק"ט:',
     'products.price_tba_label': 'יוכרז בהמשך',
+    
+    // Gallery - Brand Descriptions (Hebrew)
+    'gallery.3m_description': 'סרטי רכב מובילים בתעשייה עם עמידות מעולה ואיכות גימור.',
+    'gallery.avery_description': 'סרטי ויניל מעולים הידועים בהתאמה מצוינת ודיוק צבעים.',
+    'gallery.kpmf_description': 'סרטים מהונדסים בגרמניה המציעים איכות יוצאת דופן וגימורים חדשניים.',
+    'gallery.10_year_warranty': 'אפשרויות אחריות 10+ שנים',
+    'gallery.self_healing_tech': 'טכנולוגיית ריפוי עצמי',
+    'gallery.uv_resistance': 'עמידות בקרינה אולטרה סגולה',
+    'gallery.easy_maintenance': 'תחזוקה קלה',
+    'gallery.vibrant_color_range': 'מגוון צבעים תוססים',
+    'gallery.superior_adhesion': 'הדבקה מעולה',
+    'gallery.clean_removal': 'הסרה נקייה',
+    'gallery.weather_resistance': 'עמידות בפני מזג אוויר',
+    'gallery.unique_finish_options': 'אפשרויות גימור ייחודיות',
+    'gallery.high_performance_adhesive': 'דבק בביצועים גבוהים',
+    'gallery.color_stability': 'יציבות צבע',
+    'gallery.professional_grade': 'דרגה מקצועית',
     
     // Footer
     'footer.company_name': 'MTKcx',
