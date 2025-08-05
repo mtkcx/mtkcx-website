@@ -4,7 +4,9 @@ import { useLanguage, Language } from '@/contexts/LanguageContext';
 import { Globe, Menu, X, Search } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 const Header = () => {
+  const navigate = useNavigate();
   const {
     currentLanguage,
     setLanguage,
@@ -53,19 +55,21 @@ const Header = () => {
         <div className="flex items-center justify-between w-full">
           {/* Logo - Left */}
           <div className="flex items-center">
-            <img src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" alt="MT KCx Logo" className="h-40 w-auto" />
+            <Link to="/">
+              <img src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" alt="MT KCx Logo" className="h-40 w-auto" />
+            </Link>
           </div>
 
           {/* Desktop Navigation - Center */}
           <nav className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
             <div className="flex items-center space-x-4">
-              {navigationItems.map(item => <a 
+              {navigationItems.map(item => <Link 
                 key={item.key} 
-                href={item.href} 
+                to={item.href} 
                 className="text-foreground hover:text-primary transition-colors font-medium px-3 py-2 rounded-md hover:bg-primary/5"
               >
                 {t(item.key)}
-              </a>)}
+              </Link>)}
             </div>
           </nav>
 
@@ -74,7 +78,7 @@ const Header = () => {
             {/* Search Button */}
             <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-4 py-2">
               <Search className="h-5 w-5" />
-              <span className="hidden sm:inline">Search</span>
+              <span className="hidden sm:inline">{t('common.search')}</span>
             </Button>
 
             {/* Language Dropdown - Bigger */}
@@ -111,19 +115,19 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent side={isRTL ? "left" : "right"} className="w-[300px]">
                 <div className="flex flex-col space-y-4 mt-8">
-                  {navigationItems.map(item => <a 
+                  {navigationItems.map(item => <Link 
                     key={item.key} 
-                    href={item.href} 
+                    to={item.href} 
                     className="text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" 
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {t(item.key)}
-                  </a>)}
+                  </Link>)}
                   
                   {/* Mobile Search */}
                   <Button variant="ghost" className="justify-start py-3 px-2 border-b border-border">
                     <Search className="h-5 w-5 mr-3" />
-                    Search
+                    {t('common.search')}
                   </Button>
                 </div>
               </SheetContent>

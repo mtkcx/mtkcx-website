@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
+import { Link } from 'react-router-dom';
 const Footer = () => {
   const {
     t,
@@ -34,10 +35,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold">Quick Links</h4>
             <ul className="space-y-2">
-              <li><a href="/products" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.products')}</a></li>
-              <li><a href="/courses" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.courses')}</a></li>
-              <li><a href="/wrapping" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.wrapping')}</a></li>
-              <li><a href="/about" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.about')}</a></li>
+              <li><Link to="/products" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.products')}</Link></li>
+              <li><Link to="/courses" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.courses')}</Link></li>
+              <li><Link to="/gallery" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.wrapping')}</Link></li>
+              <li><Link to="/about" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.about')}</Link></li>
             </ul>
           </div>
 

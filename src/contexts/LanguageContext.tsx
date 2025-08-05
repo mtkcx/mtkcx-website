@@ -31,6 +31,7 @@ const translations = {
     'common.learn_more': 'Learn More',
     'common.contact_us': 'Contact Us',
     'common.get_started': 'Get Started',
+    'common.search': 'Search',
   },
   ar: {
     // Navigation
@@ -51,6 +52,7 @@ const translations = {
     'common.learn_more': 'اعرف أكثر',
     'common.contact_us': 'اتصل بنا',
     'common.get_started': 'ابدأ الآن',
+    'common.search': 'بحث',
   },
   he: {
     // Navigation
@@ -71,6 +73,7 @@ const translations = {
     'common.learn_more': 'למד עוד',
     'common.contact_us': 'צור קשר',
     'common.get_started': 'התחל',
+    'common.search': 'חיפוש',
   }
 };
 
