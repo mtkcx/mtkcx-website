@@ -7,22 +7,30 @@ const Hero = () => {
     t,
     isRTL
   } = useLanguage();
-  return <section className="relative bg-gradient-to-br from-background via-background to-secondary min-h-[80vh] flex items-center">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23000000%22%20fill-opacity%3D%220.03%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
+  return <section className="relative min-h-[80vh] flex items-center">
+      {/* Hero Banner Image */}
+      <div className="absolute inset-0">
+        <img 
+          src="/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png" 
+          alt="Professional car detailing banner"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60"></div>
+      </div>
       
       <div className="container relative z-10 px-0 mx-[26px] py-[78px]">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium mb-6 backdrop-blur-sm">
               <Sparkles className="w-4 h-4 mr-2" />
               Official Koch-Chemie Partner
             </div>
             
-            <h1 className="text-5xl font-bold text-primary mb-6 leading-tight md:text-4xl">
+            <h1 className="text-5xl font-bold text-white mb-6 leading-tight md:text-4xl">
               {t('hero.title')}
             </h1>
             
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed md:text-base">
+            <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed md:text-base">
               {t('hero.subtitle')}
             </p>
           </div>
