@@ -62,10 +62,10 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
   const currency = 'ILS';
 
   const handlePayment = async (gateway: 'stripe' | 'paypal') => {
-    if (!customerDetails.email || !customerDetails.name || !customerDetails.phone) {
+    if (!customerDetails.email || !customerDetails.name) {
       toast({
         title: t('common.error'),
-        description: 'Please fill in all required fields (Name, Email, and Phone Number)',
+        description: 'Please fill in all required fields (Name and Email)',
         variant: 'destructive',
       });
       return;
@@ -207,14 +207,13 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
               />
             </div>
             <div>
-              <Label htmlFor="phone">Phone Number *</Label>
+              <Label htmlFor="phone">Phone Number</Label>
               <Input
                 id="phone"
                 type="tel"
                 value={customerDetails.phone}
                 onChange={(e) => setCustomerDetails(prev => ({ ...prev, phone: e.target.value }))}
                 placeholder="+972-XX-XXX-XXXX"
-                required
               />
             </div>
             <div>
@@ -295,7 +294,7 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
             <Button
               size="lg"
               onClick={() => handlePayment(selectedGateway)}
-              disabled={isLoading || !customerDetails.email || !customerDetails.name || !customerDetails.phone}
+              disabled={isLoading || !customerDetails.email || !customerDetails.name}
               className="w-full"
             >
               {isLoading ? (
