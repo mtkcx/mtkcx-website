@@ -400,6 +400,7 @@ const translations = {
     'gallery.10_year_warranty': '10+ year warranty options',
     'gallery.self_healing_tech': 'Self-healing technology',
     'gallery.easy_maintenance_option': 'Easy maintenance',
+    'gallery.easy_maintenance': 'Easy maintenance',
     'gallery.avery_description': 'Premium vinyl films known for excellent conformability and color accuracy.',
     'gallery.vibrant_color_range': 'Vibrant color range',
     'gallery.superior_adhesion': 'Superior adhesion',
