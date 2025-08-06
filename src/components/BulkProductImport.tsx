@@ -36,6 +36,7 @@ export const BulkProductImport: React.FC<BulkProductImportProps> = ({
   const [progress, setProgress] = useState(0);
   const [parsedProducts, setParsedProducts] = useState<ParsedProduct[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [isClearing, setIsClearing] = useState(false);
 
   const parseProductData = (data: string): ParsedProduct[] => {
     const lines = data.trim().split('\n');
@@ -192,10 +193,78 @@ export const BulkProductImport: React.FC<BulkProductImportProps> = ({
     }
   };
 
+  const handleClearAllProducts = async () => {
+    if (!confirm('⚠️ WARNING: This will delete ALL products and their variants. This cannot be undone. Are you sure?')) {
+      return;
+    }
+
+    setIsClearing(true);
+    try {
+      // First delete all variants (due to foreign key constraints)
+      const { error: variantsError } = await supabase
+        .from('product_variants')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+
+      if (variantsError) {
+        console.error('Error deleting variants:', variantsError);
+        throw variantsError;
+      }
+
+      // Then delete all products
+      const { error: productsError } = await supabase
+        .from('products')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+
+      if (productsError) {
+        console.error('Error deleting products:', productsError);
+        throw productsError;
+      }
+
+      // Also delete any product images
+      const { error: imagesError } = await supabase
+        .from('product_images')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+
+      if (imagesError) {
+        console.error('Error deleting images:', imagesError);
+        // Don't throw - images are optional
+      }
+
+      toast({
+        title: "All Products Cleared",
+        description: "All products, variants, and images have been deleted successfully.",
+      });
+
+      onImportComplete(); // Refresh the product list
+    } catch (error) {
+      console.error('Clear all error:', error);
+      toast({
+        title: "Clear Failed",
+        description: "An error occurred while clearing products.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsClearing(false);
+    }
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Bulk Product Import</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle>Bulk Product Import</CardTitle>
+          <Button
+            variant="destructive"
+            onClick={handleClearAllProducts}
+            disabled={isClearing}
+            size="sm"
+          >
+            {isClearing ? 'Clearing...' : 'Clear All Products'}
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
