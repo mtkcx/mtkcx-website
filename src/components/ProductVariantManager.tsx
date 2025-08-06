@@ -43,6 +43,12 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
     onVariantsChange(newVariants);
   };
 
+  const isDuplicateSize = (size: string, currentIndex: number) => {
+    return variants.some((variant, index) => 
+      index !== currentIndex && variant.size.toLowerCase() === size.toLowerCase()
+    );
+  };
+
   const generateSKU = (index: number) => {
     const variant = variants[index];
     if (variant.size) {
@@ -55,7 +61,7 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <Label className="text-base font-semibold">Product Variants</Label>
-        <Button onClick={addVariant} size="sm">
+        <Button onClick={addVariant} size="sm" type="button">
           <Plus className="h-4 w-4 mr-2" />
           Add Variant
         </Button>
@@ -77,7 +83,11 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
                 value={variant.size}
                 onChange={(e) => updateVariant(index, 'size', e.target.value)}
                 placeholder="e.g., S, M, L, XL"
+                className={isDuplicateSize(variant.size, index) ? "border-red-500" : ""}
               />
+              {isDuplicateSize(variant.size, index) && (
+                <p className="text-red-500 text-sm mt-1">This size already exists</p>
+              )}
             </div>
 
             <div>
@@ -128,6 +138,7 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
 
             <div className="flex justify-end">
               <Button
+                type="button"
                 variant="destructive"
                 size="sm"
                 onClick={() => removeVariant(index)}
