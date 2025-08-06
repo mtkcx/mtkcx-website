@@ -5,6 +5,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -37,6 +39,7 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
   const [updating, setUpdating] = useState(false);
   const [filterCategory, setFilterCategory] = useState('all');
   const [showRecentOnly, setShowRecentOnly] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchProducts();
@@ -93,9 +96,16 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
   };
 
   const filteredProducts = products.filter(product => {
-    if (filterCategory === 'all') return true;
-    if (filterCategory === 'uncategorized') return !product.category_id;
-    return product.category_id === filterCategory;
+    // Filter by search term
+    const matchesSearch = searchTerm === '' || 
+      product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Filter by category
+    let matchesCategory = true;
+    if (filterCategory === 'uncategorized') matchesCategory = !product.category_id;
+    else if (filterCategory !== 'all') matchesCategory = product.category_id === filterCategory;
+    
+    return matchesSearch && matchesCategory;
   });
 
   const handleSelectAll = (checked: boolean) => {
@@ -169,6 +179,15 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
       <CardHeader>
         <CardTitle>Bulk Category Management</CardTitle>
         <div className="flex gap-4 items-center flex-wrap">
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-8 w-[250px]"
+            />
+          </div>
           <Button
             variant={showRecentOnly ? "default" : "outline"}
             onClick={() => setShowRecentOnly(!showRecentOnly)}
