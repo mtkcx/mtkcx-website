@@ -68,6 +68,13 @@ const ProductDetail = () => {
               price,
               stock_quantity,
               sku
+            ),
+            product_images (
+              id,
+              image_url,
+              is_primary,
+              alt_text,
+              display_order
             )
           `)
           .eq('id', productId)
@@ -77,12 +84,16 @@ const ProductDetail = () => {
         if (productError) throw productError;
 
         if (productData) {
+          // Get primary image or first available image
+          const primaryImage = productData.product_images?.find(img => img.is_primary) || 
+                               productData.product_images?.[0];
+          
           const transformedProduct: Product = {
             id: productData.id,
             name: productData.name,
             description: productData.description,
             product_code: productData.product_code,
-            image_url: productData.image_url,
+            image_url: primaryImage?.image_url || productData.image_url || '/placeholder.svg',
             safety_icons: productData.safety_icons,
             category: productData.product_categories && productData.product_categories.length > 0 ? {
               id: productData.product_categories[0].categories.id,
