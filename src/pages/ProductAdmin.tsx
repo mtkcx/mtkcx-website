@@ -393,6 +393,37 @@ export default function ProductAdmin() {
     });
   };
 
+  const handleEdit = async (product: Product) => {
+    try {
+      // Fetch product images when editing
+      const { data: imagesData, error: imagesError } = await supabase
+        .from('product_images')
+        .select('*')
+        .eq('product_id', product.id)
+        .order('display_order');
+
+      if (imagesError) {
+        console.error('Error fetching images:', imagesError);
+        toast({
+          title: "Warning",
+          description: "Could not load product images",
+          variant: "destructive",
+        });
+      }
+
+      const productWithImages = {
+        ...product,
+        images: imagesData || []
+      };
+
+      setEditingProduct(productWithImages);
+    } catch (error) {
+      console.error('Error preparing product for edit:', error);
+      // Still allow editing even if images don't load
+      setEditingProduct(product);
+    }
+  };
+
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -548,7 +579,7 @@ export default function ProductAdmin() {
                           <div className="flex gap-2">
                             <Dialog>
                               <DialogTrigger asChild>
-                                <Button variant="outline" size="sm" onClick={() => setEditingProduct(product)}>
+                                <Button variant="outline" size="sm" onClick={() => handleEdit(product)}>
                                   <Edit className="h-4 w-4" />
                                 </Button>
                               </DialogTrigger>
