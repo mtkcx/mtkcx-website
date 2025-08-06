@@ -136,9 +136,13 @@ const ProductCatalog = () => {
       total: products.length
     };
     
+    // Count products for each category (including categories with 0 products)
     categories.forEach(category => {
       counts[category.slug] = products.filter(p => p.category.slug === category.slug).length;
     });
+    
+    // Count uncategorized products
+    counts['uncategorized'] = products.filter(p => p.category.slug === 'uncategorized').length;
     
     return counts;
   };

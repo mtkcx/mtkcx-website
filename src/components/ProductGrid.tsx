@@ -69,62 +69,62 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
         const lowestPrice = getLowestPrice(product.variants);
         
         return (
-          <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-            <div className="relative aspect-square overflow-hidden bg-muted">
+          <Card key={product.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col">
+            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
               <img
                 src={product.image_url}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="absolute top-3 left-3">
-                <Badge variant="secondary" className="bg-white/90 text-primary">
+              <div className="absolute top-2 left-2">
+                <Badge variant="secondary" className="bg-white/90 text-primary text-xs">
                   {product.product_code}
                 </Badge>
               </div>
-              <div className="absolute top-3 right-3">
-                <Badge variant="outline" className="bg-white/90">
+              <div className="absolute top-2 right-2">
+                <Badge variant="outline" className="bg-white/90 text-xs">
                   {product.category.name}
                 </Badge>
               </div>
             </div>
             
-            <CardContent className="p-4">
-              <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+            <CardContent className="p-3 flex-1 flex flex-col">
+              <h3 className="font-semibold text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                 {product.name}
               </h3>
-              <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+              <p className="text-muted-foreground text-xs mb-3 line-clamp-2 flex-1">
                 {getShortDescription(product.description)}
               </p>
               
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-sm text-muted-foreground">
-                  {t('products.available_in_sizes').replace('{count}', product.variants.length.toString())}
+              <div className="flex items-center justify-between">
+                <div className="text-xs text-muted-foreground">
+                  {product.variants.length} sizes
                 </div>
                 {lowestPrice && (
-                  <div className="text-lg font-bold text-primary">
-                    {t('products.from_price')}{lowestPrice}
+                  <div className="text-sm font-bold text-primary">
+                    ₪{lowestPrice}
                   </div>
                 )}
               </div>
             </CardContent>
             
-            <CardFooter className="p-4 pt-0 flex gap-2">
+            <CardFooter className="p-3 pt-0 flex gap-2">
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="flex-1"
+                className="flex-1 text-xs"
                 onClick={() => handleViewProduct(product.id)}
               >
-                <Eye className="w-4 h-4 mr-2" />
-                {t('products.view_details')}
+                <Eye className="w-3 h-3 mr-1" />
+                View
               </Button>
               <Button 
                 size="sm" 
-                className="flex-1"
+                className="flex-1 text-xs"
                 onClick={() => handleViewProduct(product.id)}
               >
-                <ShoppingCart className="w-4 h-4 mr-2" />
-                {t('products.select_size')}
+                <ShoppingCart className="w-3 h-3 mr-1" />
+                Select Size
               </Button>
             </CardFooter>
           </Card>
