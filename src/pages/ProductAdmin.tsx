@@ -14,6 +14,7 @@ import { ImageUpload } from '@/components/ImageUpload';
 import { ProductVariantManager, ProductVariant } from '@/components/ProductVariantManager';
 import { BulkProductImport } from '@/components/BulkProductImport';
 import { BulkCategoryManager } from '@/components/BulkCategoryManager';
+import { CategoryManager } from '@/components/CategoryManager';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -417,7 +418,8 @@ export default function ProductAdmin() {
         <TabsList>
           <TabsTrigger value="products">Products</TabsTrigger>
           <TabsTrigger value="bulk-import">Bulk Import</TabsTrigger>
-          <TabsTrigger value="category-manager">Category Manager</TabsTrigger>
+          <TabsTrigger value="category-manager">Bulk Category Manager</TabsTrigger>
+          <TabsTrigger value="categories">Categories</TabsTrigger>
         </TabsList>
         
         <TabsContent value="products">
@@ -547,6 +549,13 @@ export default function ProductAdmin() {
           <BulkCategoryManager
             categories={categories}
             onUpdateComplete={fetchProducts}
+          />
+        </TabsContent>
+        
+        <TabsContent value="categories">
+          <CategoryManager
+            categories={categories}
+            onCategoriesUpdate={fetchCategories}
           />
         </TabsContent>
       </Tabs>
