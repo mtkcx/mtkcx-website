@@ -82,20 +82,20 @@ const ProductCatalog = () => {
 
         // Transform and filter the data to match our interface
         const transformedProducts = productsData?.filter(product => {
-          // Only show products that have at least one variant and one primary image
+          // Only show products that have at least one variant
           const hasVariants = product.product_variants && product.product_variants.length > 0;
-          const hasPrimaryImage = product.product_images && product.product_images.some(img => img.is_primary);
-          return hasVariants && hasPrimaryImage;
+          return hasVariants;
         }).map(product => {
-          // Get primary image
-          const primaryImage = product.product_images?.find(img => img.is_primary);
+          // Get primary image or first available image
+          const primaryImage = product.product_images?.find(img => img.is_primary) || 
+                               product.product_images?.[0];
           
           return {
             id: product.id,
             name: product.name,
-            description: product.description,
-            product_code: product.product_code,
-            image_url: primaryImage?.image_url || product.image_url,
+            description: product.description || '',
+            product_code: product.product_code || '',
+            image_url: primaryImage?.image_url || product.image_url || '/placeholder.svg',
             category: product.product_categories && product.product_categories.length > 0 ? {
               id: product.product_categories[0].categories.id,
               name: product.product_categories[0].categories.name,
