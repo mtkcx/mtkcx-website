@@ -13,7 +13,7 @@ import { toast } from '@/hooks/use-toast';
 interface Product {
   id: string;
   name: string;
-  category_id: string;
+  category_ids: string[]; // Changed to array to support multiple categories
   variants: Array<{ size: string; price: number }>;
 }
 
@@ -34,7 +34,7 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
 }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]); // Changed to array
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [filterCategory, setFilterCategory] = useState('all');
@@ -48,14 +48,14 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
   const fetchProducts = async () => {
     console.log('🔍 BulkCategoryManager: Starting fetchProducts...');
     try {
-      // Get products with creation date for filtering
+      // Get products with their categories via junction table
       let query = supabase
         .from('products')
         .select(`
           id,
           name,
-          category_id,
-          created_at
+          created_at,
+          product_categories(category_id)
         `)
         .order('created_at', { ascending: false });
 
@@ -75,12 +75,15 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
 
       console.log('✅ BulkCategoryManager: Products fetched:', data?.length || 0);
       
-      const formattedProducts = data.map(product => ({
+      // Transform data to include category_ids array
+      const formattedProducts = data?.map(product => ({
         id: product.id,
         name: product.name,
-        category_id: product.category_id || '',
-        variants: [] // We don't need variants for category management
-      }));
+        category_ids: Array.isArray(product.product_categories) 
+          ? product.product_categories.map((pc: any) => pc.category_id).filter(Boolean)
+          : [],
+        variants: []
+      })) || [];
 
       setProducts(formattedProducts);
     } catch (error) {
@@ -102,8 +105,8 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
     
     // Filter by category
     let matchesCategory = true;
-    if (filterCategory === 'uncategorized') matchesCategory = !product.category_id;
-    else if (filterCategory !== 'all') matchesCategory = product.category_id === filterCategory;
+    if (filterCategory === 'uncategorized') matchesCategory = product.category_ids.length === 0;
+    else if (filterCategory !== 'all') matchesCategory = product.category_ids.includes(filterCategory);
     
     return matchesSearch && matchesCategory;
   });
@@ -127,10 +130,10 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
   };
 
   const handleBulkUpdate = async () => {
-    if (selectedProducts.size === 0 || !selectedCategory) {
+    if (selectedProducts.size === 0 || selectedCategories.length === 0) {
       toast({
         title: "Selection Required",
-        description: "Please select products and a target category",
+        description: "Please select products and at least one target category",
         variant: "destructive",
       });
       return;
@@ -138,20 +141,33 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
 
     setUpdating(true);
     try {
+      // Add selected products to selected categories
+      const productIds = Array.from(selectedProducts);
+      const insertData = [];
+      
+      for (const productId of productIds) {
+        for (const categoryId of selectedCategories) {
+          insertData.push({
+            product_id: productId,
+            category_id: categoryId
+          });
+        }
+      }
+
+      // Insert new product-category relationships (ON CONFLICT DO NOTHING to avoid duplicates)
       const { error } = await supabase
-        .from('products')
-        .update({ category_id: selectedCategory })
-        .in('id', Array.from(selectedProducts));
+        .from('product_categories')
+        .upsert(insertData, { onConflict: 'product_id,category_id' });
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: `Updated ${selectedProducts.size} products`,
+        description: `Added ${selectedProducts.size} products to ${selectedCategories.length} categories`,
       });
 
       setSelectedProducts(new Set());
-      setSelectedCategory('');
+      setSelectedCategories([]);
       fetchProducts();
       onUpdateComplete();
     } catch (error) {
@@ -166,8 +182,17 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
     }
   };
 
-  const getCategoryName = (categoryId: string) => {
-    return categories.find(c => c.id === categoryId)?.name || 'Uncategorized';
+  const getCategoryNames = (categoryIds: string[]) => {
+    if (categoryIds.length === 0) return 'Uncategorized';
+    return categoryIds.map(id => categories.find(c => c.id === id)?.name || 'Unknown').join(', ');
+  };
+
+  const handleCategoryToggle = (categoryId: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(categoryId) 
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
   };
 
   if (loading) {
@@ -212,24 +237,27 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
 
           {selectedProducts.size > 0 && (
             <>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-[250px]">
-                  <SelectValue placeholder="Select target category" />
-                </SelectTrigger>
-                <SelectContent>
+              <div className="space-y-2">
+                <div className="text-sm font-medium">Add to Categories:</div>
+                <div className="flex flex-wrap gap-2">
                   {categories.map(category => (
-                    <SelectItem key={category.id} value={category.id}>
+                    <Button
+                      key={category.id}
+                      variant={selectedCategories.includes(category.id) ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handleCategoryToggle(category.id)}
+                    >
                       {category.name}
-                    </SelectItem>
+                    </Button>
                   ))}
-                </SelectContent>
-              </Select>
+                </div>
+              </div>
 
               <Button 
                 onClick={handleBulkUpdate} 
-                disabled={updating || !selectedCategory}
+                disabled={updating || selectedCategories.length === 0}
               >
-                {updating ? 'Updating...' : `Update ${selectedProducts.size} Products`}
+                {updating ? 'Adding...' : `Add ${selectedProducts.size} Products to ${selectedCategories.length} Categories`}
               </Button>
             </>
           )}
@@ -265,9 +293,17 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
                 </TableCell>
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>
-                  <Badge variant={product.category_id ? 'default' : 'secondary'}>
-                    {getCategoryName(product.category_id)}
-                  </Badge>
+                  <div className="flex flex-wrap gap-1">
+                    {product.category_ids.length === 0 ? (
+                      <Badge variant="secondary">Uncategorized</Badge>
+                    ) : (
+                      product.category_ids.map(categoryId => (
+                        <Badge key={categoryId} variant="default">
+                          {categories.find(c => c.id === categoryId)?.name || 'Unknown'}
+                        </Badge>
+                      ))
+                    )}
+                  </div>
                 </TableCell>
                 <TableCell>{product.variants.length} variant(s)</TableCell>
               </TableRow>
