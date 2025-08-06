@@ -211,11 +211,12 @@ export default function ProductAdmin() {
 
         if (productError) throw productError;
 
-        // Update variants
+        // Update variants and get their IDs
         await supabase.from('product_variants').delete().eq('product_id', product.id);
         
+        let variantIdMap = new Map();
         if (product.variants.length > 0) {
-          const { error: variantsError } = await supabase
+          const { data: variantsData, error: variantsError } = await supabase
             .from('product_variants')
             .insert(
               product.variants.map(variant => ({
@@ -225,12 +226,21 @@ export default function ProductAdmin() {
                 stock_quantity: variant.stock_quantity,
                 sku: variant.sku,
               }))
-            );
+            )
+            .select();
 
           if (variantsError) throw variantsError;
+          
+          // Map old variant IDs to new ones for existing products
+          variantsData?.forEach((newVariant, index) => {
+            const oldVariant = product.variants[index];
+            if (oldVariant.id) {
+              variantIdMap.set(oldVariant.id, newVariant.id);
+            }
+          });
         }
 
-        // Update images
+        // Update images with correct variant IDs
         await supabase.from('product_images').delete().eq('product_id', product.id);
         
         if (product.images.length > 0) {
@@ -243,7 +253,7 @@ export default function ProductAdmin() {
                 display_order: image.display_order,
                 is_primary: image.is_primary,
                 alt_text: image.alt_text,
-                variant_id: image.variant_id,
+                variant_id: image.variant_id ? variantIdMap.get(image.variant_id) || null : null,
               }))
             );
 
@@ -273,9 +283,10 @@ export default function ProductAdmin() {
 
         const productId = productData.id;
 
-        // Add variants
+        // Add variants and get their IDs
+        let variantIdMap = new Map();
         if (product.variants.length > 0) {
-          const { error: variantsError } = await supabase
+          const { data: variantsData, error: variantsError } = await supabase
             .from('product_variants')
             .insert(
               product.variants.map(variant => ({
@@ -285,12 +296,21 @@ export default function ProductAdmin() {
                 stock_quantity: variant.stock_quantity,
                 sku: variant.sku,
               }))
-            );
+            )
+            .select();
 
           if (variantsError) throw variantsError;
+          
+          // Map old variant IDs to new ones
+          variantsData?.forEach((newVariant, index) => {
+            const oldVariant = product.variants[index];
+            if (oldVariant.id) {
+              variantIdMap.set(oldVariant.id, newVariant.id);
+            }
+          });
         }
 
-        // Add images
+        // Add images with correct variant IDs
         if (product.images.length > 0) {
           const { error: imagesError } = await supabase
             .from('product_images')
@@ -301,7 +321,7 @@ export default function ProductAdmin() {
                 display_order: image.display_order,
                 is_primary: image.is_primary,
                 alt_text: image.alt_text,
-                variant_id: image.variant_id,
+                variant_id: image.variant_id ? variantIdMap.get(image.variant_id) || null : null,
               }))
             );
 
