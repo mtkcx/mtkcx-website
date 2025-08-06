@@ -46,89 +46,138 @@ const ProductCatalog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch categories
+      console.log('📝 Fetching categories...');
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('categories')
+        .select('*')
+        .order('display_order');
+
+      if (categoriesError) throw categoriesError;
+      console.log('✅ Categories fetched:', categoriesData?.length || 0, categoriesData);
+
+      // Fetch products with categories via junction table, variants, and images
+      const { data: productsData, error: productsError } = await supabase
+        .from('products')
+        .select(`
+          *,
+          product_categories(
+            category_id,
+            categories(id, name, slug)
+          ),
+          product_variants!fk_product_variants_product_id (
+            id,
+            size,
+            price
+          ),
+          product_images (
+            id,
+            image_url,
+            is_primary,
+            alt_text
+          )
+        `)
+        .eq('status', 'active')
+        .order('name');
+
+      if (productsError) throw productsError;
+
+      // Transform and filter the data to match our interface
+      const transformedProducts = productsData?.filter(product => {
+        // Only show products that have at least one variant
+        const hasVariants = product.product_variants && product.product_variants.length > 0;
+        return hasVariants;
+      }).map(product => {
+        // Get primary image or first available image
+        const primaryImage = product.product_images?.find(img => img.is_primary) || 
+                             product.product_images?.[0];
         
-        // Fetch categories
-        console.log('📝 Fetching categories...');
-        const { data: categoriesData, error: categoriesError } = await supabase
-          .from('categories')
-          .select('*')
-          .order('display_order');
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description || '',
+          product_code: product.product_code || '',
+          image_url: primaryImage?.image_url || product.image_url || '/placeholder.svg',
+          category: product.product_categories && product.product_categories.length > 0 ? {
+            id: product.product_categories[0].categories.id,
+            name: product.product_categories[0].categories.name,
+            slug: product.product_categories[0].categories.slug,
+          } : {
+            id: 'uncategorized',
+            name: 'Uncategorized',
+            slug: 'uncategorized',
+          },
+          // Store all categories this product belongs to for filtering
+          allCategories: product.product_categories?.map(pc => pc.categories) || [],
+          variants: product.product_variants || []
+        };
+      }) || [];
 
-        if (categoriesError) throw categoriesError;
-        console.log('✅ Categories fetched:', categoriesData?.length || 0, categoriesData);
+      setCategories(categoriesData || []);
+      setProducts(transformedProducts);
+      console.log('✅ Final state - Categories:', categoriesData?.length, 'Products:', transformedProducts.length);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        // Fetch products with categories via junction table, variants, and images
-        const { data: productsData, error: productsError } = await supabase
-          .from('products')
-          .select(`
-            *,
-            product_categories(
-              category_id,
-              categories(id, name, slug)
-            ),
-            product_variants!fk_product_variants_product_id (
-              id,
-              size,
-              price
-            ),
-            product_images (
-              id,
-              image_url,
-              is_primary,
-              alt_text
-            )
-          `)
-          .eq('status', 'active')
-          .order('name');
-
-        if (productsError) throw productsError;
-
-        // Transform and filter the data to match our interface
-        const transformedProducts = productsData?.filter(product => {
-          // Only show products that have at least one variant
-          const hasVariants = product.product_variants && product.product_variants.length > 0;
-          return hasVariants;
-        }).map(product => {
-          // Get primary image or first available image
-          const primaryImage = product.product_images?.find(img => img.is_primary) || 
-                               product.product_images?.[0];
-          
-          return {
-            id: product.id,
-            name: product.name,
-            description: product.description || '',
-            product_code: product.product_code || '',
-            image_url: primaryImage?.image_url || product.image_url || '/placeholder.svg',
-            category: product.product_categories && product.product_categories.length > 0 ? {
-              id: product.product_categories[0].categories.id,
-              name: product.product_categories[0].categories.name,
-              slug: product.product_categories[0].categories.slug,
-            } : {
-              id: 'uncategorized',
-              name: 'Uncategorized',
-              slug: 'uncategorized',
-            },
-            // Store all categories this product belongs to for filtering
-            allCategories: product.product_categories?.map(pc => pc.categories) || [],
-            variants: product.product_variants || []
-          };
-        }) || [];
-
-        setCategories(categoriesData || []);
-        setProducts(transformedProducts);
-        console.log('✅ Final state - Categories:', categoriesData?.length, 'Products:', transformedProducts.length);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+  useEffect(() => {
     fetchData();
+
+    // Set up real-time subscriptions
+    const channel = supabase
+      .channel('product-catalog-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'products' },
+        () => {
+          console.log('🔄 Products changed, refetching data...');
+          fetchData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'categories' },
+        () => {
+          console.log('🔄 Categories changed, refetching data...');
+          fetchData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'product_categories' },
+        () => {
+          console.log('🔄 Product categories changed, refetching data...');
+          fetchData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'product_variants' },
+        () => {
+          console.log('🔄 Product variants changed, refetching data...');
+          fetchData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'product_images' },
+        () => {
+          console.log('🔄 Product images changed, refetching data...');
+          fetchData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const filteredProducts = products.filter(product => {
