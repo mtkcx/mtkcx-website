@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { X, Mail } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -114,8 +114,12 @@ const NewsletterPopup = () => {
         </button>
         
         <DialogHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-            <Mail className="w-8 h-8 text-primary" />
+          <div className="mx-auto w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm border border-border">
+            <img 
+              src="/lovable-uploads/23f813bc-cb98-4a51-a3df-e4bd62311e7d.png" 
+              alt="MT KCx Logo" 
+              className="w-16 h-12 object-contain"
+            />
           </div>
           <DialogTitle className="text-2xl font-bold text-foreground">
             Stay Updated!
