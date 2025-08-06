@@ -47,12 +47,14 @@ const ProductCatalog = () => {
         setLoading(true);
         
         // Fetch categories
+        console.log('📝 Fetching categories...');
         const { data: categoriesData, error: categoriesError } = await supabase
           .from('categories')
           .select('*')
           .order('display_order');
 
         if (categoriesError) throw categoriesError;
+        console.log('✅ Categories fetched:', categoriesData?.length || 0, categoriesData);
 
         // Fetch products with categories via junction table, variants, and images
         const { data: productsData, error: productsError } = await supabase
@@ -111,6 +113,7 @@ const ProductCatalog = () => {
 
         setCategories(categoriesData || []);
         setProducts(transformedProducts);
+        console.log('✅ Final state - Categories:', categoriesData?.length, 'Products:', transformedProducts.length);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {

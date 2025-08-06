@@ -34,12 +34,12 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
         <div className="space-y-2">
           <Button
             variant={selectedCategory === null ? "default" : "ghost"}
-            className="w-full justify-start"
+            className="w-full justify-between text-left h-auto py-2 px-3"
             onClick={() => onCategorySelect(null)}
           >
-            {t('categories.all_products')}
-            {productCounts.total && (
-              <Badge variant="secondary" className="ml-auto">
+            <span className="truncate">{t('categories.all_products')}</span>
+            {productCounts.total !== undefined && (
+              <Badge variant="secondary" className="ml-2 flex-shrink-0">
                 {productCounts.total}
               </Badge>
             )}
@@ -49,15 +49,13 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             <Button
               key={category.id}
               variant={selectedCategory === category.slug ? "default" : "ghost"}
-              className="w-full justify-start"
+              className="w-full justify-between text-left h-auto py-2 px-3"
               onClick={() => onCategorySelect(category.slug)}
             >
-              <span className="truncate">{category.name}</span>
-              {productCounts[category.slug] && (
-                <Badge variant="secondary" className="ml-auto">
-                  {productCounts[category.slug]}
-                </Badge>
-              )}
+              <span className="truncate pr-2">{category.name}</span>
+              <Badge variant="secondary" className="ml-2 flex-shrink-0">
+                {productCounts[category.slug] || 0}
+              </Badge>
             </Button>
           ))}
         </div>
