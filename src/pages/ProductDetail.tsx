@@ -267,7 +267,11 @@ const ProductDetail = () => {
                 variants={product.variants}
                 selectedVariant={selectedVariant}
                 onVariantSelect={setSelectedVariant}
-                onAddToCart={handleAddToCart}
+                productId={product.id}
+                productName={product.name}
+                productCode={product.product_code}
+                imageUrl={product.image_url}
+                categoryName={product.category.name}
               />
             </div>
           </div>

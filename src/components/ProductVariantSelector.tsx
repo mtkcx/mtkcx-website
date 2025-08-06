@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,20 +18,38 @@ interface ProductVariantSelectorProps {
   variants: ProductVariant[];
   selectedVariant: ProductVariant | null;
   onVariantSelect: (variant: ProductVariant) => void;
-  onAddToCart?: (variant: ProductVariant) => void;
+  productId: string;
+  productName: string;
+  productCode: string;
+  imageUrl: string;
+  categoryName: string;
 }
 
 const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
   variants,
   selectedVariant,
   onVariantSelect,
-  onAddToCart
+  productId,
+  productName,
+  productCode,
+  imageUrl,
+  categoryName,
 }) => {
   const { t } = useLanguage();
+  const { addToCart } = useCart();
   
   const handleAddToCart = () => {
-    if (selectedVariant && onAddToCart) {
-      onAddToCart(selectedVariant);
+    if (selectedVariant) {
+      addToCart({
+        productId,
+        productName,
+        productCode,
+        variantId: selectedVariant.id,
+        variantSize: selectedVariant.size,
+        price: selectedVariant.price,
+        imageUrl,
+        categoryName,
+      });
     }
   };
 

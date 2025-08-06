@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import CartButton from '@/components/CartButton';
 const Header = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
@@ -77,6 +78,9 @@ const Header = () => {
 
           {/* Right Side Controls */}
           <div className="flex items-center space-x-3">
+            {/* Cart Button */}
+            <CartButton />
+            
             {/* Authentication Controls */}
             {user ? (
               <div className="relative group">
