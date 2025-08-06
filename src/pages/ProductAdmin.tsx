@@ -98,20 +98,26 @@ export default function ProductAdmin() {
     try {
       setLoading(true);
       
-      // First, let's try a simple query without any joins
-      console.log('📝 Fetching basic products...');
-      const { data: basicProducts, error: basicError } = await supabase
+      // Fetch products with their categories via junction table
+      console.log('📝 Fetching products with categories...');
+      const { data: productsWithCategories, error: productsError } = await supabase
         .from('products')
-        .select('*')
+        .select(`
+          *,
+          product_categories(
+            category_id,
+            categories(id, name)
+          )
+        `)
         .order('created_at', { ascending: false });
 
-      if (basicError) {
-        console.error('❌ Basic products fetch error:', basicError);
-        throw basicError;
+      if (productsError) {
+        console.error('❌ Products fetch error:', productsError);
+        throw productsError;
       }
-      console.log('✅ Basic products fetched:', basicProducts?.length || 0);
+      console.log('✅ Products fetched:', productsWithCategories?.length || 0);
 
-      // Then fetch variants separately
+      // Fetch variants separately
       console.log('📝 Fetching variants...');
       const { data: variantsData, error: variantsError } = await supabase
         .from('product_variants')
@@ -125,14 +131,20 @@ export default function ProductAdmin() {
 
       // Format the products
       console.log('🔄 Formatting products...');
-      const formattedProducts: Product[] = basicProducts.map(product => {
+      const formattedProducts: Product[] = productsWithCategories.map(product => {
         const productVariants = variantsData?.filter(variant => variant.product_id === product.id) || [];
+        
+        // Get category names from the junction table
+        const categoryNames = product.product_categories
+          ?.map((pc: any) => pc.categories?.name)
+          .filter(Boolean)
+          .join(', ') || '';
         
         return {
           id: product.id,
           name: product.name,
           description: product.description || '',
-          category: product.category || '',
+          category: categoryNames,
           product_code: product.product_code || '',
           status: (product.status as 'active' | 'inactive') || 'active',
           featured: product.featured || false,
@@ -487,7 +499,7 @@ export default function ProductAdmin() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          {categories.find(c => c.id === product.category)?.name || 'Uncategorized'}
+                          {product.category || 'Uncategorized'}
                         </TableCell>
                         <TableCell>{product.variants.length} variant(s)</TableCell>
                         <TableCell>
