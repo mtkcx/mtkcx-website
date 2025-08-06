@@ -36,23 +36,34 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [filterCategory, setFilterCategory] = useState('all');
+  const [showRecentOnly, setShowRecentOnly] = useState(true);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [showRecentOnly]);
 
   const fetchProducts = async () => {
     console.log('🔍 BulkCategoryManager: Starting fetchProducts...');
     try {
-      // Simple query without joins
-      const { data, error } = await supabase
+      // Get products with creation date for filtering
+      let query = supabase
         .from('products')
         .select(`
           id,
           name,
-          category_id
+          category_id,
+          created_at
         `)
-        .order('name');
+        .order('created_at', { ascending: false });
+
+      // If showing recent only, filter to last 24 hours
+      if (showRecentOnly) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        query = query.gte('created_at', yesterday.toISOString());
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         console.error('❌ BulkCategoryManager: Products fetch error:', error);
@@ -157,7 +168,14 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
     <Card>
       <CardHeader>
         <CardTitle>Bulk Category Management</CardTitle>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center flex-wrap">
+          <Button
+            variant={showRecentOnly ? "default" : "outline"}
+            onClick={() => setShowRecentOnly(!showRecentOnly)}
+            size="sm"
+          >
+            {showRecentOnly ? "Recent Imports (24h)" : "All Products"}
+          </Button>
           <Select value={filterCategory} onValueChange={setFilterCategory}>
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="Filter by category" />
