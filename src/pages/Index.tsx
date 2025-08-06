@@ -2,6 +2,8 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import ServiceSection from '@/components/ServiceSection';
 import Footer from '@/components/Footer';
+import NewsletterPopup from '@/components/NewsletterPopup';
+import ChatBot from '@/components/ChatBot';
 
 const Index = () => {
   return (
@@ -10,6 +12,8 @@ const Index = () => {
       <Hero />
       <ServiceSection />
       <Footer />
+      <NewsletterPopup />
+      <ChatBot />
     </div>
   );
 };
