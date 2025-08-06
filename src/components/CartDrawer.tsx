@@ -59,13 +59,13 @@ const CartDrawer: React.FC = () => {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full max-h-[80vh]">
           {items.length === 0 ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center space-y-4">
-                <ShoppingCart className="h-16 w-16 mx-auto text-muted-foreground" />
+                <ShoppingCart className="h-12 w-12 mx-auto text-muted-foreground" />
                 <h3 className="text-lg font-medium">Your cart is empty</h3>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Add some products to get started
                 </p>
                 <Button onClick={() => setIsOpen(false)}>
@@ -75,11 +75,11 @@ const CartDrawer: React.FC = () => {
             </div>
           ) : (
             <>
-              <ScrollArea className="flex-1 my-6">
-                <div className="space-y-4">
+              <ScrollArea className="flex-1 my-4 max-h-[50vh]">
+                <div className="space-y-3">
                   {items.map((item) => (
-                    <div key={item.id} className="flex gap-4 p-4 border rounded-lg">
-                      <div className="w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
+                    <div key={item.id} className="flex gap-3 p-3 border rounded-lg">
+                      <div className="w-12 h-12 bg-muted rounded-md overflow-hidden flex-shrink-0">
                         <img
                           src={item.imageUrl}
                           alt={item.productName}
@@ -87,56 +87,56 @@ const CartDrawer: React.FC = () => {
                         />
                       </div>
                       
-                      <div className="flex-1 space-y-2">
+                      <div className="flex-1 space-y-1">
                         <div>
-                          <h4 className="font-medium line-clamp-1">{item.productName}</h4>
-                          <p className="text-sm text-muted-foreground">
+                          <h4 className="font-medium text-sm line-clamp-1">{item.productName}</h4>
+                          <p className="text-xs text-muted-foreground">
                             Size: {item.variantSize}
                           </p>
-                          <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs">
+                          <div className="flex items-center gap-1">
+                            <Badge variant="outline" className="text-xs py-0 px-1">
                               {item.productCode}
                             </Badge>
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="secondary" className="text-xs py-0 px-1">
                               {item.categoryName}
                             </Badge>
                           </div>
                         </div>
                         
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1">
                             <Button
                               variant="outline"
                               size="sm"
-                              className="h-8 w-8 p-0"
+                              className="h-6 w-6 p-0"
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
                             >
-                              <Minus className="h-3 w-3" />
+                              <Minus className="h-2 w-2" />
                             </Button>
-                            <span className="w-8 text-center font-medium">
+                            <span className="w-6 text-center text-xs font-medium">
                               {item.quantity}
                             </span>
                             <Button
                               variant="outline"
                               size="sm"
-                              className="h-8 w-8 p-0"
+                              className="h-6 w-6 p-0"
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             >
-                              <Plus className="h-3 w-3" />
+                              <Plus className="h-2 w-2" />
                             </Button>
                           </div>
                           
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">
+                          <div className="flex items-center gap-1">
+                            <span className="font-medium text-sm">
                               {formatPrice(item.price * item.quantity)}
                             </span>
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                              className="h-6 w-6 p-0 text-destructive hover:text-destructive"
                               onClick={() => removeFromCart(item.id)}
                             >
-                              <Trash2 className="h-3 w-3" />
+                              <Trash2 className="h-2 w-2" />
                             </Button>
                           </div>
                         </div>
@@ -146,12 +146,12 @@ const CartDrawer: React.FC = () => {
                 </div>
               </ScrollArea>
 
-              <div className="space-y-4 pt-4 border-t">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
+              <div className="space-y-3 pt-3 border-t mt-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">
                     Total ({getTotalItems()} items)
                   </span>
-                  <span className="text-lg font-bold">
+                  <span className="font-bold text-base">
                     {formatPrice(getTotalPrice())}
                   </span>
                 </div>
@@ -161,13 +161,14 @@ const CartDrawer: React.FC = () => {
                     variant="outline"
                     onClick={clearCart}
                     className="flex-1"
+                    size="sm"
                   >
                     Clear Cart
                   </Button>
                   <Button
                     onClick={handleCheckout}
                     className="flex-1"
-                    size="lg"
+                    size="sm"
                   >
                     Checkout
                   </Button>
