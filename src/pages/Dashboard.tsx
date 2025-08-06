@@ -19,7 +19,8 @@ import {
   Clock, 
   CheckCircle,
   AlertCircle,
-  Edit3
+  Edit3,
+  Settings
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -293,7 +294,7 @@ const Dashboard = () => {
                 <CardTitle>{t('dashboard.quick_actions')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <Button
                     variant="outline"
                     className="h-auto p-6 flex-col space-y-2"
@@ -310,6 +311,15 @@ const Dashboard = () => {
                   >
                     <Building className="w-8 h-8" />
                     <span>{t('dashboard.browse_products')}</span>
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    className="h-auto p-6 flex-col space-y-2"
+                    onClick={() => navigate('/admin/products')}
+                  >
+                    <Settings className="w-8 h-8" />
+                    <span>Product Admin</span>
                   </Button>
                   
                   <Button
