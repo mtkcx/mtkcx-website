@@ -94,37 +94,57 @@ export default function ProductAdmin() {
 
   const fetchProducts = async () => {
     try {
+      setLoading(true);
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
           *,
-          product_variants(*),
-          product_images(*)
+          product_variants(*)
         `)
         .order('created_at', { ascending: false });
 
-      if (productsError) throw productsError;
+      if (productsError) {
+        console.error('Products fetch error:', productsError);
+        throw productsError;
+      }
 
-      const formattedProducts: Product[] = productsData.map(product => ({
-        id: product.id,
-        name: product.name,
-        description: product.description || '',
-        category_id: product.category_id || '',
-        product_code: product.product_code || '',
-        status: (product.status as 'active' | 'inactive') || 'active',
-        featured: product.featured,
-        images: product.product_images?.map((img: any) => img.image_url) || [],
-        variants: product.product_variants?.map((variant: any) => ({
-          id: variant.id,
-          size: variant.size,
-          price: variant.price,
-          stock_quantity: variant.stock_quantity,
-          sku: variant.sku,
-        })) || [],
-      }));
+      // Fetch product images separately to avoid relationship issues
+      const { data: imagesData, error: imagesError } = await supabase
+        .from('product_images')
+        .select('*')
+        .order('display_order', { ascending: true });
+
+      if (imagesError) {
+        console.error('Images fetch error:', imagesError);
+        // Don't throw - images are not critical
+      }
+
+      const formattedProducts: Product[] = productsData.map(product => {
+        const productImages = imagesData?.filter(img => img.product_id === product.id) || [];
+        
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description || '',
+          category_id: product.category_id || '',
+          product_code: product.product_code || '',
+          status: (product.status as 'active' | 'inactive') || 'active',
+          featured: product.featured || false,
+          images: productImages.map(img => img.image_url) || [],
+          variants: product.product_variants?.map((variant: any) => ({
+            id: variant.id,
+            size: variant.size,
+            price: variant.price,
+            stock_quantity: variant.stock_quantity,
+            sku: variant.sku,
+          })) || [],
+        };
+      });
 
       setProducts(formattedProducts);
+      console.log('Fetched products successfully:', formattedProducts.length);
     } catch (error) {
+      console.error('Fetch products error:', error);
       toast({
         title: "Error",
         description: "Failed to fetch products",
