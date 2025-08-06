@@ -216,20 +216,25 @@ export default function ProductAdmin() {
         
         let variantIdMap = new Map();
         if (product.variants.length > 0) {
+          console.log('Updating variants:', product.variants);
+          const variantInserts = product.variants.map(variant => ({
+            product_id: product.id,
+            size: variant.size,
+            price: variant.price,
+            stock_quantity: variant.stock_quantity,
+            sku: variant.sku,
+          }));
+          console.log('Variant inserts:', variantInserts);
+          
           const { data: variantsData, error: variantsError } = await supabase
             .from('product_variants')
-            .insert(
-              product.variants.map(variant => ({
-                product_id: product.id,
-                size: variant.size,
-                price: variant.price,
-                stock_quantity: variant.stock_quantity,
-                sku: variant.sku,
-              }))
-            )
+            .insert(variantInserts)
             .select();
 
-          if (variantsError) throw variantsError;
+          if (variantsError) {
+            console.error('Variants error:', variantsError);
+            throw variantsError;
+          }
           
           // Map old variant IDs to new ones for existing products
           variantsData?.forEach((newVariant, index) => {
@@ -286,20 +291,25 @@ export default function ProductAdmin() {
         // Add variants and get their IDs
         let variantIdMap = new Map();
         if (product.variants.length > 0) {
+          console.log('Creating variants:', product.variants);
+          const variantInserts = product.variants.map(variant => ({
+            product_id: productId,
+            size: variant.size,
+            price: variant.price,
+            stock_quantity: variant.stock_quantity,
+            sku: variant.sku,
+          }));
+          console.log('Variant inserts:', variantInserts);
+          
           const { data: variantsData, error: variantsError } = await supabase
             .from('product_variants')
-            .insert(
-              product.variants.map(variant => ({
-                product_id: productId,
-                size: variant.size,
-                price: variant.price,
-                stock_quantity: variant.stock_quantity,
-                sku: variant.sku,
-              }))
-            )
+            .insert(variantInserts)
             .select();
 
-          if (variantsError) throw variantsError;
+          if (variantsError) {
+            console.error('Variants error:', variantsError);
+            throw variantsError;
+          }
           
           // Map old variant IDs to new ones
           variantsData?.forEach((newVariant, index) => {
