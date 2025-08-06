@@ -54,10 +54,13 @@ const ProductDetail = () => {
           .from('products')
           .select(`
             *,
-            categories!inner (
-              id,
-              name,
-              slug
+            product_categories (
+              category_id,
+              categories (
+                id,
+                name,
+                slug
+              )
             ),
             product_variants (
               id,
@@ -81,10 +84,10 @@ const ProductDetail = () => {
             product_code: productData.product_code,
             image_url: productData.image_url,
             safety_icons: productData.safety_icons,
-            category: Array.isArray(productData.categories) && productData.categories.length > 0 ? {
-              id: productData.categories[0].id,
-              name: productData.categories[0].name,
-              slug: productData.categories[0].slug,
+            category: productData.product_categories && productData.product_categories.length > 0 ? {
+              id: productData.product_categories[0].categories.id,
+              name: productData.product_categories[0].categories.name,
+              slug: productData.product_categories[0].categories.slug,
             } : {
               id: 'uncategorized',
               name: 'Uncategorized',
