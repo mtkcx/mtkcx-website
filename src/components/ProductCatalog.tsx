@@ -97,10 +97,10 @@ const ProductCatalog = () => {
             description: product.description,
             product_code: product.product_code,
             image_url: primaryImage?.image_url || product.image_url,
-            category: product.categories ? {
-              id: product.categories.id,
-              name: product.categories.name,
-              slug: product.categories.slug,
+            category: Array.isArray(product.categories) && product.categories.length > 0 ? {
+              id: product.categories[0].id,
+              name: product.categories[0].name,
+              slug: product.categories[0].slug,
             } : {
               id: 'uncategorized',
               name: 'Uncategorized',

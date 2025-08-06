@@ -81,10 +81,14 @@ const ProductDetail = () => {
             product_code: productData.product_code,
             image_url: productData.image_url,
             safety_icons: productData.safety_icons,
-            category: {
-              id: productData.categories.id,
-              name: productData.categories.name,
-              slug: productData.categories.slug,
+            category: Array.isArray(productData.categories) && productData.categories.length > 0 ? {
+              id: productData.categories[0].id,
+              name: productData.categories[0].name,
+              slug: productData.categories[0].slug,
+            } : {
+              id: 'uncategorized',
+              name: 'Uncategorized',
+              slug: 'uncategorized',
             },
             variants: productData.product_variants || []
           };

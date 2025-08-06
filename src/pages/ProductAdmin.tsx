@@ -22,7 +22,7 @@ interface Product {
   id?: string;
   name: string;
   description: string;
-  category_id: string;
+  category: string;
   product_code: string;
   status: 'active' | 'inactive';
   featured: boolean;
@@ -51,7 +51,7 @@ export default function ProductAdmin() {
   const [newProduct, setNewProduct] = useState<Product>({
     name: '',
     description: '',
-    category_id: '',
+    category: '',
     product_code: '',
     status: 'active',
     featured: false,
@@ -131,7 +131,7 @@ export default function ProductAdmin() {
           id: product.id,
           name: product.name,
           description: product.description || '',
-          category_id: product.category_id || '',
+          category: product.category || '',
           product_code: product.product_code || '',
           status: (product.status as 'active' | 'inactive') || 'active',
           featured: product.featured || false,
@@ -189,7 +189,7 @@ export default function ProductAdmin() {
           .update({
             name: product.name,
             description: product.description,
-            category_id: product.category_id || null,
+            category: product.category || null,
             product_code: product.product_code,
             status: product.status,
             featured: product.featured,
@@ -246,7 +246,7 @@ export default function ProductAdmin() {
           .insert({
             name: product.name,
             description: product.description,
-            category_id: product.category_id || null,
+            category: product.category || null,
             product_code: product.product_code,
             status: product.status,
             featured: product.featured,
@@ -337,7 +337,7 @@ export default function ProductAdmin() {
     setNewProduct({
       name: '',
       description: '',
-      category_id: '',
+      category: '',
       product_code: '',
       status: 'active',
       featured: false,
@@ -349,7 +349,7 @@ export default function ProductAdmin() {
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || product.category_id === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -485,7 +485,7 @@ export default function ProductAdmin() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          {categories.find(c => c.id === product.category_id)?.name || 'Uncategorized'}
+                          {categories.find(c => c.id === product.category)?.name || 'Uncategorized'}
                         </TableCell>
                         <TableCell>{product.variants.length} variant(s)</TableCell>
                         <TableCell>
@@ -602,7 +602,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, categories, onSave, 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <Label htmlFor="category">Category</Label>
-          <Select value={product.category_id} onValueChange={(value) => onChange({ ...product, category_id: value })}>
+          <Select value={product.category} onValueChange={(value) => onChange({ ...product, category: value })}>
             <SelectTrigger>
               <SelectValue placeholder="Select category" />
             </SelectTrigger>

@@ -45,6 +45,11 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
     fetchProducts();
   }, [showRecentOnly]);
 
+  // Force refresh categories when component mounts
+  useEffect(() => {
+    onUpdateComplete(); // This will refresh categories in parent component
+  }, []);
+
   const fetchProducts = async () => {
     console.log('🔍 BulkCategoryManager: Starting fetchProducts...');
     try {
