@@ -93,34 +93,39 @@ export default function ProductAdmin() {
   };
 
   const fetchProducts = async () => {
+    console.log('🔍 Starting fetchProducts...');
     try {
       setLoading(true);
-      const { data: productsData, error: productsError } = await supabase
+      
+      // First, let's try a simple query without any joins
+      console.log('📝 Fetching basic products...');
+      const { data: basicProducts, error: basicError } = await supabase
         .from('products')
-        .select(`
-          *,
-          product_variants(*)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (productsError) {
-        console.error('Products fetch error:', productsError);
-        throw productsError;
+      if (basicError) {
+        console.error('❌ Basic products fetch error:', basicError);
+        throw basicError;
       }
+      console.log('✅ Basic products fetched:', basicProducts?.length || 0);
 
-      // Fetch product images separately to avoid relationship issues
-      const { data: imagesData, error: imagesError } = await supabase
-        .from('product_images')
-        .select('*')
-        .order('display_order', { ascending: true });
+      // Then fetch variants separately
+      console.log('📝 Fetching variants...');
+      const { data: variantsData, error: variantsError } = await supabase
+        .from('product_variants')
+        .select('*');
 
-      if (imagesError) {
-        console.error('Images fetch error:', imagesError);
-        // Don't throw - images are not critical
+      if (variantsError) {
+        console.error('❌ Variants fetch error:', variantsError);
+        // Don't throw - variants are optional for now
       }
+      console.log('✅ Variants fetched:', variantsData?.length || 0);
 
-      const formattedProducts: Product[] = productsData.map(product => {
-        const productImages = imagesData?.filter(img => img.product_id === product.id) || [];
+      // Format the products
+      console.log('🔄 Formatting products...');
+      const formattedProducts: Product[] = basicProducts.map(product => {
+        const productVariants = variantsData?.filter(variant => variant.product_id === product.id) || [];
         
         return {
           id: product.id,
@@ -130,28 +135,30 @@ export default function ProductAdmin() {
           product_code: product.product_code || '',
           status: (product.status as 'active' | 'inactive') || 'active',
           featured: product.featured || false,
-          images: productImages.map(img => img.image_url) || [],
-          variants: product.product_variants?.map((variant: any) => ({
+          images: [], // Skip images for now to simplify
+          variants: productVariants.map((variant: any) => ({
             id: variant.id,
             size: variant.size,
             price: variant.price,
             stock_quantity: variant.stock_quantity,
             sku: variant.sku,
-          })) || [],
+          })),
         };
       });
 
+      console.log('✅ Products formatted successfully:', formattedProducts.length);
       setProducts(formattedProducts);
-      console.log('Fetched products successfully:', formattedProducts.length);
+      
     } catch (error) {
-      console.error('Fetch products error:', error);
+      console.error('💥 Fetch products error:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch products",
+        description: `Failed to fetch products: ${error.message}`,
         variant: "destructive",
       });
     } finally {
       setLoading(false);
+      console.log('🏁 fetchProducts completed');
     }
   };
 

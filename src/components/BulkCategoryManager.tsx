@@ -42,29 +42,35 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
   }, []);
 
   const fetchProducts = async () => {
+    console.log('🔍 BulkCategoryManager: Starting fetchProducts...');
     try {
+      // Simple query without joins
       const { data, error } = await supabase
         .from('products')
         .select(`
           id,
           name,
-          category_id,
-          product_variants(size, price)
+          category_id
         `)
         .order('name');
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ BulkCategoryManager: Products fetch error:', error);
+        throw error;
+      }
 
+      console.log('✅ BulkCategoryManager: Products fetched:', data?.length || 0);
+      
       const formattedProducts = data.map(product => ({
         id: product.id,
         name: product.name,
         category_id: product.category_id || '',
-        variants: product.product_variants || []
+        variants: [] // We don't need variants for category management
       }));
 
       setProducts(formattedProducts);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('💥 BulkCategoryManager: Fetch products error:', error);
       toast({
         title: "Error",
         description: "Failed to fetch products",
