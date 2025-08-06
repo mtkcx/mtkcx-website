@@ -43,6 +43,8 @@ export default function ProductAdmin() {
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [checkingAdmin, setCheckingAdmin] = useState(true);
 
   const [newProduct, setNewProduct] = useState<Product>({
     name: '',
@@ -57,10 +59,36 @@ export default function ProductAdmin() {
 
   useEffect(() => {
     if (user) {
+      checkAdminStatus();
+    } else {
+      setCheckingAdmin(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (isAdmin) {
       fetchProducts();
       fetchCategories();
     }
-  }, [user]);
+  }, [isAdmin]);
+
+  const checkAdminStatus = async () => {
+    try {
+      const { data, error } = await supabase.rpc('is_admin');
+      
+      if (error) {
+        console.error('Error checking admin status:', error);
+        setIsAdmin(false);
+      } else {
+        setIsAdmin(data || false);
+      }
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      setIsAdmin(false);
+    } finally {
+      setCheckingAdmin(false);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -301,6 +329,28 @@ export default function ProductAdmin() {
       <div className="container mx-auto py-8">
         <Card className="p-6 text-center">
           <p>Please log in to access the product admin panel.</p>
+        </Card>
+      </div>
+    );
+  }
+
+  if (checkingAdmin) {
+    return (
+      <div className="container mx-auto py-8">
+        <Card className="p-6 text-center">
+          <p>Checking permissions...</p>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="container mx-auto py-8">
+        <Card className="p-6 text-center">
+          <h2 className="text-xl font-semibold mb-2">Access Denied</h2>
+          <p>You don't have permission to access the product admin panel.</p>
+          <p className="text-sm text-muted-foreground mt-2">Only administrators can manage products.</p>
         </Card>
       </div>
     );
