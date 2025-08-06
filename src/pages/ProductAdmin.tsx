@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ImageUpload } from '@/components/ImageUpload';
+import { ProductImageManager, ProductImage } from '@/components/ProductImageManager';
 import { ProductVariantManager, ProductVariant } from '@/components/ProductVariantManager';
 import { BulkProductImport } from '@/components/BulkProductImport';
 import { BulkCategoryManager } from '@/components/BulkCategoryManager';
@@ -27,7 +27,7 @@ interface Product {
   product_code: string;
   status: 'active' | 'inactive';
   featured: boolean;
-  images: string[];
+  images: ProductImage[];
   variants: ProductVariant[];
 }
 
@@ -148,7 +148,7 @@ export default function ProductAdmin() {
           product_code: product.product_code || '',
           status: (product.status as 'active' | 'inactive') || 'active',
           featured: product.featured || false,
-          images: [], // Skip images for now to simplify
+          images: [], // Will be populated when needed
           variants: productVariants.map((variant: any) => ({
             id: variant.id,
             size: variant.size,
@@ -237,11 +237,13 @@ export default function ProductAdmin() {
           const { error: imagesError } = await supabase
             .from('product_images')
             .insert(
-              product.images.map((image, index) => ({
+              product.images.map((image) => ({
                 product_id: product.id,
-                image_url: image,
-                display_order: index,
-                is_primary: index === 0,
+                image_url: image.image_url,
+                display_order: image.display_order,
+                is_primary: image.is_primary,
+                alt_text: image.alt_text,
+                variant_id: image.variant_id,
               }))
             );
 
@@ -293,11 +295,13 @@ export default function ProductAdmin() {
           const { error: imagesError } = await supabase
             .from('product_images')
             .insert(
-              product.images.map((image, index) => ({
+              product.images.map((image) => ({
                 product_id: productId,
-                image_url: image,
-                display_order: index,
-                is_primary: index === 0,
+                image_url: image.image_url,
+                display_order: image.display_order,
+                is_primary: image.is_primary,
+                alt_text: image.alt_text,
+                variant_id: image.variant_id,
               }))
             );
 
@@ -487,7 +491,7 @@ export default function ProductAdmin() {
                           <div className="flex items-center gap-3">
                             {product.images[0] && (
                               <img
-                                src={product.images[0]}
+                                src={product.images[0].image_url}
                                 alt={product.name}
                                 className="w-12 h-12 object-cover rounded"
                               />
@@ -660,13 +664,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, categories, onSave, 
         </div>
       </div>
 
-      <div>
-        <Label>Product Images</Label>
-        <ImageUpload
-          images={product.images}
-          onImagesChange={(images) => onChange({ ...product, images })}
-        />
-      </div>
+      <ProductImageManager
+        images={product.images}
+        variants={product.variants}
+        onImagesChange={(images) => onChange({ ...product, images })}
+      />
 
       <ProductVariantManager
         variants={product.variants}

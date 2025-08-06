@@ -19,12 +19,21 @@ interface ProductVariant {
   sku: string;
 }
 
+interface ProductImage {
+  id: string;
+  image_url: string;
+  is_primary: boolean;
+  alt_text: string | null;
+  variant_id: string | null;
+}
+
 interface Product {
   id: string;
   name: string;
   description: string;
   product_code: string;
   image_url: string;
+  all_images: ProductImage[];
   safety_icons: string[] | null;
   category: {
     id: string;
@@ -41,6 +50,7 @@ const ProductDetail = () => {
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+  const [currentImage, setCurrentImage] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,7 +84,8 @@ const ProductDetail = () => {
               image_url,
               is_primary,
               alt_text,
-              display_order
+              display_order,
+              variant_id
             )
           `)
           .eq('id', productId)
@@ -84,9 +95,9 @@ const ProductDetail = () => {
         if (productError) throw productError;
 
         if (productData) {
-          // Get primary image or first available image
-          const primaryImage = productData.product_images?.find(img => img.is_primary) || 
-                               productData.product_images?.[0];
+          // Process all images
+          const allImages = productData.product_images || [];
+          const primaryImage = allImages.find(img => img.is_primary) || allImages[0];
           
           const transformedProduct: Product = {
             id: productData.id,
@@ -94,6 +105,7 @@ const ProductDetail = () => {
             description: productData.description,
             product_code: productData.product_code,
             image_url: primaryImage?.image_url || productData.image_url || '/placeholder.svg',
+            all_images: allImages,
             safety_icons: productData.safety_icons,
             category: productData.product_categories && productData.product_categories.length > 0 ? {
               id: productData.product_categories[0].categories.id,
@@ -108,6 +120,7 @@ const ProductDetail = () => {
           };
 
           setProduct(transformedProduct);
+          setCurrentImage(transformedProduct.image_url);
           
           // Auto-select first available variant
           if (transformedProduct.variants.length > 0) {
@@ -128,6 +141,23 @@ const ProductDetail = () => {
 
     fetchProduct();
   }, [productId, toast]);
+
+  // Update current image when variant changes
+  useEffect(() => {
+    if (product && selectedVariant) {
+      // Find variant-specific image or use general images
+      const variantImage = product.all_images.find(img => img.variant_id === selectedVariant.id);
+      const generalImage = product.all_images.find(img => !img.variant_id);
+      
+      if (variantImage) {
+        setCurrentImage(variantImage.image_url);
+      } else if (generalImage) {
+        setCurrentImage(generalImage.image_url);
+      } else if (product.all_images.length > 0) {
+        setCurrentImage(product.all_images[0].image_url);
+      }
+    }
+  }, [selectedVariant, product]);
 
   const handleAddToCart = (variant: ProductVariant) => {
     toast({
@@ -220,7 +250,7 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
               <img
-                src={product.image_url}
+                src={currentImage}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -230,6 +260,29 @@ const ProductDetail = () => {
                 </Badge>
               </div>
             </div>
+
+            {/* Image Thumbnails */}
+            {product.all_images.length > 1 && (
+              <div className="grid grid-cols-4 gap-2">
+                {product.all_images.slice(0, 4).map((image, index) => (
+                  <button
+                    key={image.id}
+                    onClick={() => setCurrentImage(image.image_url)}
+                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
+                      currentImage === image.image_url 
+                        ? 'border-primary' 
+                        : 'border-transparent hover:border-muted-foreground'
+                    }`}
+                  >
+                    <img
+                      src={image.image_url}
+                      alt={image.alt_text || `${product.name} ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
             
             {/* Product Features */}
             <div className="grid grid-cols-3 gap-4 pt-4">
