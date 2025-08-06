@@ -235,15 +235,18 @@ const ProductDetail = () => {
             <div className="grid grid-cols-3 gap-4 pt-4">
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Award className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">Professional Grade</div>
+                <div className="text-sm font-medium mb-1">Professional Grade</div>
+                <div className="text-xs text-muted-foreground">Industry-standard formulation for professional use</div>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Package className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">Multiple Sizes</div>
+                <div className="text-sm font-medium mb-1">Multiple Sizes</div>
+                <div className="text-xs text-muted-foreground">Available in various quantities to meet your needs</div>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Shield className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">Quality Assured</div>
+                <div className="text-sm font-medium mb-1">Quality Assured</div>
+                <div className="text-xs text-muted-foreground">Rigorously tested and certified for reliability</div>
               </div>
             </div>
           </div>
