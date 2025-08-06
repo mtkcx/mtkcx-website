@@ -44,6 +44,126 @@ export type Database = {
         }
         Relationships: []
       }
+      email_campaigns: {
+        Row: {
+          campaign_type: string
+          content: string
+          created_at: string
+          discount_code: string | null
+          discount_percentage: number | null
+          id: string
+          name: string
+          status: string
+          subject: string
+          updated_at: string
+          valid_until: string | null
+        }
+        Insert: {
+          campaign_type: string
+          content: string
+          created_at?: string
+          discount_code?: string | null
+          discount_percentage?: number | null
+          id?: string
+          name: string
+          status?: string
+          subject: string
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Update: {
+          campaign_type?: string
+          content?: string
+          created_at?: string
+          discount_code?: string | null
+          discount_percentage?: number | null
+          id?: string
+          name?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+          valid_until?: string | null
+        }
+        Relationships: []
+      }
+      email_logs: {
+        Row: {
+          campaign_id: string | null
+          email: string
+          email_type: string
+          id: string
+          order_id: string | null
+          sent_at: string
+          status: string
+          subject: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          email: string
+          email_type: string
+          id?: string
+          order_id?: string | null
+          sent_at?: string
+          status?: string
+          subject: string
+        }
+        Update: {
+          campaign_id?: string | null
+          email?: string
+          email_type?: string
+          id?: string
+          order_id?: string | null
+          sent_at?: string
+          status?: string
+          subject?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_logs_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "email_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "email_logs_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      newsletter_subscriptions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_active: boolean
+          name: string | null
+          source: string | null
+          subscribed_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_active?: boolean
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_active?: boolean
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string
