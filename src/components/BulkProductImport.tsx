@@ -175,7 +175,7 @@ export const BulkProductImport: React.FC<BulkProductImportProps> = ({
           .insert({
             name: product.name,
             description: `${product.name} - Auto-imported product`,
-            category_id: selectedCategoryId,
+            category: null, // We'll handle categories separately
             product_code: product.name.toUpperCase().replace(/\s+/g, '-'),
             status: 'active',
             featured: false,
@@ -186,6 +186,20 @@ export const BulkProductImport: React.FC<BulkProductImportProps> = ({
         if (productError) {
           console.error('Error creating product:', productError);
           continue;
+        }
+
+        // Create product-category relationship
+        if (selectedCategoryId) {
+          const { error: categoryError } = await supabase
+            .from('product_categories')
+            .insert({
+              product_id: productData.id,
+              category_id: selectedCategoryId,
+            });
+
+          if (categoryError) {
+            console.error('Error linking product to category:', categoryError);
+          }
         }
 
         // Create variants
@@ -256,6 +270,17 @@ export const BulkProductImport: React.FC<BulkProductImportProps> = ({
       if (productsError) {
         console.error('Error deleting products:', productsError);
         throw productsError;
+      }
+
+      // Also delete product-category relationships
+      const { error: categoriesError } = await supabase
+        .from('product_categories')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+
+      if (categoriesError) {
+        console.error('Error deleting product categories:', categoriesError);
+        // Don't throw - continue with other deletions
       }
 
       // Also delete any product images
