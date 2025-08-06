@@ -18,6 +18,11 @@ interface Product {
     name: string;
     slug: string;
   };
+  allCategories: Array<{
+    id: string;
+    name: string;
+    slug: string;
+  }>;
   variants: Array<{
     id: string;
     size: string;
@@ -107,6 +112,8 @@ const ProductCatalog = () => {
               name: 'Uncategorized',
               slug: 'uncategorized',
             },
+            // Store all categories this product belongs to for filtering
+            allCategories: product.product_categories?.map(pc => pc.categories) || [],
             variants: product.product_variants || []
           };
         }) || [];
@@ -128,9 +135,11 @@ const ProductCatalog = () => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.product_code?.toLowerCase().includes(searchTerm.toLowerCase());
+    
     const matchesCategory = !selectedCategory || 
-                           product.category.slug === selectedCategory ||
-                           (selectedCategory === 'uncategorized' && product.category.slug === 'uncategorized');
+                           product.allCategories.some(cat => cat.slug === selectedCategory) ||
+                           (selectedCategory === 'uncategorized' && product.allCategories.length === 0);
+    
     return matchesSearch && matchesCategory;
   });
 
@@ -141,11 +150,13 @@ const ProductCatalog = () => {
     
     // Count products for each category (including categories with 0 products)
     categories.forEach(category => {
-      counts[category.slug] = products.filter(p => p.category.slug === category.slug).length;
+      counts[category.slug] = products.filter(p => 
+        p.allCategories.some(cat => cat.slug === category.slug)
+      ).length;
     });
     
-    // Count uncategorized products
-    counts['uncategorized'] = products.filter(p => p.category.slug === 'uncategorized').length;
+    // Count uncategorized products (products with no categories)
+    counts['uncategorized'] = products.filter(p => p.allCategories.length === 0).length;
     
     return counts;
   };
