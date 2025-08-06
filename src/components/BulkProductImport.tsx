@@ -59,23 +59,59 @@ export const BulkProductImport: React.FC<BulkProductImportProps> = ({
 
       if (isNaN(price)) return;
 
-      // Extract base name and size
-      const sizeRegex = /\s+(\d+(?:\.\d+)?(?:ml|L|cm|mm|inch|Inch)\b|\d+X\d+(?:X\d+)?(?:cm|mm)?|[\d.]+\s*(?:ml|L|cm|mm|inch|Inch)|Short\s+\d+Inch\s*\([^)]+\)|\d+Inch\s*\([^)]+\)|[\d.]+gsm)/i;
-      const sizeMatch = fullName.match(sizeRegex);
-      
       let baseName = fullName;
       let size = 'Standard';
+
+      // Handle foam pads with inch sizes and measurements in parentheses
+      const foamPadRegex = /(.*?Foam Pad)\s+(\d+(?:\.\d+)?Inch)\s*\([^)]+\)/i;
+      const foamPadMatch = fullName.match(foamPadRegex);
       
-      if (sizeMatch) {
-        size = sizeMatch[1] || sizeMatch[0];
-        baseName = fullName.replace(sizeMatch[0], '').trim();
+      if (foamPadMatch) {
+        baseName = foamPadMatch[1].trim();
+        size = foamPadMatch[2];
       } else {
-        // Check for patterns like "250ml", "1L" at the end
-        const endSizeRegex = /\s+(\d+(?:\.\d+)?(?:ml|L|cm|mm|inch|Inch))$/i;
-        const endSizeMatch = fullName.match(endSizeRegex);
-        if (endSizeMatch) {
-          size = endSizeMatch[1];
-          baseName = fullName.replace(endSizeMatch[0], '').trim();
+        // Handle Lambswool Pad Short with inch sizes
+        const lambswoolShortRegex = /(Lambswool Pad Short)\s+(\d+(?:\.\d+)?Inch)\s*\([^)]+\)/i;
+        const lambswoolShortMatch = fullName.match(lambswoolShortRegex);
+        
+        if (lambswoolShortMatch) {
+          baseName = lambswoolShortMatch[1].trim();
+          size = lambswoolShortMatch[2];
+        } else {
+          // Handle regular Lambswool Pad with mm sizes
+          const lambswoolRegex = /(Lambswool Pad)\s+(\d+mm)/i;
+          const lambswoolMatch = fullName.match(lambswoolRegex);
+          
+          if (lambswoolMatch) {
+            baseName = lambswoolMatch[1].trim();
+            size = lambswoolMatch[2];
+          } else {
+            // Handle Polishing & Sealing Foam Pad with inch sizes
+            const polishingFoamRegex = /(Polishing & Sealing Foam Pad)\s+(\d+(?:\.\d+)?Inch)\s*\([^)]+\)/i;
+            const polishingFoamMatch = fullName.match(polishingFoamRegex);
+            
+            if (polishingFoamMatch) {
+              baseName = polishingFoamMatch[1].trim();
+              size = polishingFoamMatch[2];
+            } else {
+              // General size extraction for other products
+              const sizeRegex = /\s+(\d+(?:\.\d+)?(?:ml|L|cm|mm|inch|Inch)\b|\d+X\d+(?:X\d+)?(?:cm|mm)?|[\d.]+\s*(?:ml|L|cm|mm|inch|Inch)|Short\s+\d+Inch\s*\([^)]+\)|\d+Inch\s*\([^)]+\)|[\d.]+gsm)/i;
+              const sizeMatch = fullName.match(sizeRegex);
+              
+              if (sizeMatch) {
+                size = sizeMatch[1] || sizeMatch[0];
+                baseName = fullName.replace(sizeMatch[0], '').trim();
+              } else {
+                // Check for patterns like "250ml", "1L" at the end
+                const endSizeRegex = /\s+(\d+(?:\.\d+)?(?:ml|L|cm|mm|inch|Inch))$/i;
+                const endSizeMatch = fullName.match(endSizeRegex);
+                if (endSizeMatch) {
+                  size = endSizeMatch[1];
+                  baseName = fullName.replace(endSizeMatch[0], '').trim();
+                }
+              }
+            }
+          }
         }
       }
 
