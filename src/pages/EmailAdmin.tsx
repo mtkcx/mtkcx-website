@@ -20,7 +20,12 @@ import {
   Percent,
   Copy,
   Edit,
-  Trash2
+  Trash2,
+  History,
+  FileText,
+  Users,
+  CheckCircle,
+  Clock
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -39,10 +44,31 @@ interface EmailCampaign {
   updated_at: string;
 }
 
+interface EmailLog {
+  id: string;
+  email: string;
+  email_type: string;
+  subject: string;
+  status: string;
+  sent_at: string;
+  order_id?: string;
+  campaign_id?: string;
+}
+
+interface EmailTemplate {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  status: 'active' | 'system';
+}
+
 const EmailAdmin = () => {
   const { toast } = useToast();
   const [campaigns, setCampaigns] = useState<EmailCampaign[]>([]);
+  const [emailLogs, setEmailLogs] = useState<EmailLog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('campaigns');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showPreviewDialog, setShowPreviewDialog] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<EmailCampaign | null>(null);
@@ -56,8 +82,41 @@ const EmailAdmin = () => {
     valid_until: ''
   });
 
+  const emailTemplates: EmailTemplate[] = [
+    {
+      id: 'welcome',
+      name: 'Welcome Email',
+      type: 'welcome',
+      description: 'Sent automatically when users subscribe to newsletter',
+      status: 'system'
+    },
+    {
+      id: 'order_confirmation',
+      name: 'Order Confirmation',
+      type: 'order_confirmation',
+      description: 'Sent automatically when orders are placed',
+      status: 'system'
+    },
+    {
+      id: 'tracking',
+      name: 'Shipping Notification',
+      type: 'tracking',
+      description: 'Sent when order tracking information is available',
+      status: 'system'
+    },
+    {
+      id: 'promotional',
+      name: 'Promotional Campaign',
+      type: 'promotional',
+      description: 'Custom marketing campaigns with discount codes',
+      status: 'active'
+    }
+  ];
+
   useEffect(() => {
     fetchCampaigns();
+    fetchEmailLogs();
+    createSampleCampaigns();
   }, []);
 
   const fetchCampaigns = async () => {
@@ -81,6 +140,119 @@ const EmailAdmin = () => {
       console.error('Error fetching campaigns:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchEmailLogs = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('email_logs')
+        .select('*')
+        .order('sent_at', { ascending: false })
+        .limit(50);
+
+      if (error) {
+        console.error('Error fetching email logs:', error);
+        return;
+      }
+
+      setEmailLogs(data || []);
+    } catch (error) {
+      console.error('Error fetching email logs:', error);
+    }
+  };
+
+  const createSampleCampaigns = async () => {
+    try {
+      // Check if sample campaigns already exist
+      const { data: existingCampaigns } = await supabase
+        .from('email_campaigns')
+        .select('name')
+        .in('name', ['Welcome Offer Campaign', 'New Product Launch', 'Seasonal Sale']);
+
+      if (existingCampaigns && existingCampaigns.length > 0) {
+        return; // Sample campaigns already exist
+      }
+
+      const sampleCampaigns = [
+        {
+          name: 'Welcome Offer Campaign',
+          subject: '🎉 Welcome! Get 20% Off Your First Order',
+          content: `
+            <h2>Welcome to our store, {customer_name}!</h2>
+            <p>We're excited to have you join our community of satisfied customers.</p>
+            
+            <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3>Special Welcome Offer!</h3>
+              <p>Use code <strong>{discount_code}</strong> for {discount_percentage}% off your first order</p>
+              <p>Valid until: {valid_until}</p>
+            </div>
+            
+            <p>Browse our products and find exactly what you need for your business.</p>
+            
+            <p>Best regards,<br>The Team</p>
+          `,
+          campaign_type: 'promotional',
+          discount_code: 'WELCOME20',
+          discount_percentage: 20,
+          valid_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          status: 'draft'
+        },
+        {
+          name: 'New Product Launch',
+          subject: '🚀 New Products Just Arrived!',
+          content: `
+            <h2>Hello {customer_name},</h2>
+            <p>We're excited to announce the arrival of our latest products!</p>
+            
+            <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3>Limited Time Launch Offer</h3>
+              <p>Get {discount_percentage}% off all new products with code <strong>{discount_code}</strong></p>
+              <p>Offer expires: {valid_until}</p>
+            </div>
+            
+            <p>Check out our latest additions and be among the first to experience these innovative solutions.</p>
+            
+            <p>Happy shopping!<br>The Team</p>
+          `,
+          campaign_type: 'product_announcement',
+          discount_code: 'NEWLAUNCH15',
+          discount_percentage: 15,
+          valid_until: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          status: 'draft'
+        },
+        {
+          name: 'Seasonal Sale',
+          subject: '🔥 Limited Time: Up to 30% Off Everything!',
+          content: `
+            <h2>Hi {customer_name},</h2>
+            <p>Our biggest sale of the season is here!</p>
+            
+            <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3>Seasonal Mega Sale!</h3>
+              <p>Save {discount_percentage}% on your entire order with code <strong>{discount_code}</strong></p>
+              <p>Sale ends: {valid_until}</p>
+            </div>
+            
+            <p>Don't miss out on these incredible savings. Shop now before the sale ends!</p>
+            
+            <p>Happy savings!<br>The Team</p>
+          `,
+          campaign_type: 'seasonal',
+          discount_code: 'SEASON30',
+          discount_percentage: 30,
+          valid_until: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          status: 'draft'
+        }
+      ];
+
+      await supabase
+        .from('email_campaigns')
+        .insert(sampleCampaigns);
+
+      console.log('Sample campaigns created successfully');
+    } catch (error) {
+      console.error('Error creating sample campaigns:', error);
     }
   };
 
@@ -255,10 +427,10 @@ const EmailAdmin = () => {
           <div className="flex items-center justify-between mb-12">
             <div>
               <h1 className="text-4xl font-bold text-primary mb-4">
-                Email Campaign Manager
+                Email Management Center
               </h1>
               <p className="text-muted-foreground max-w-2xl">
-                Create, preview, and send email campaigns with discount codes to your customers.
+                Manage all email templates, campaigns, and view email logs in one unified interface.
               </p>
             </div>
             <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
@@ -376,20 +548,75 @@ const EmailAdmin = () => {
             </Dialog>
           </div>
 
-          {/* Campaigns List */}
-          <div className="space-y-6">
-            {campaigns.length === 0 ? (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No Email Campaigns</h3>
-                  <p className="text-muted-foreground">
-                    Create your first email campaign to start engaging with customers.
-                  </p>
-                </CardContent>
-              </Card>
-            ) : (
-              campaigns.map((campaign) => (
+          {/* Main Content Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-3 mb-8">
+              <TabsTrigger value="templates" className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                Email Templates
+              </TabsTrigger>
+              <TabsTrigger value="campaigns" className="flex items-center gap-2">
+                <Mail className="w-4 h-4" />
+                Campaigns
+              </TabsTrigger>
+              <TabsTrigger value="logs" className="flex items-center gap-2">
+                <History className="w-4 h-4" />
+                Email Logs
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Email Templates Tab */}
+            <TabsContent value="templates" className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {emailTemplates.map((template) => (
+                  <Card key={template.id} className="shadow-lg">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div>
+                           <CardTitle className="flex items-center">
+                             <FileText className="w-5 h-5 mr-2" />
+                             {template.name}
+                           </CardTitle>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {template.description}
+                          </p>
+                        </div>
+                        <Badge variant={template.status === 'system' ? 'secondary' : 'default'}>
+                          {template.status === 'system' ? 'Automatic' : 'Custom'}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Type: <strong>{template.type.replace('_', ' ')}</strong>
+                      </p>
+                      {template.status === 'system' && (
+                        <div className="bg-muted/30 p-3 rounded-lg">
+                          <p className="text-xs text-muted-foreground">
+                            This template is sent automatically by the system when specific events occur.
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* Campaigns Tab */}
+            <TabsContent value="campaigns" className="space-y-6">
+              {campaigns.length === 0 ? (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">No Email Campaigns</h3>
+                    <p className="text-muted-foreground">
+                      Create your first email campaign to start engaging with customers.
+                    </p>
+                  </CardContent>
+                </Card>
+              ) : (
+                campaigns.map((campaign) => (
                 <Card key={campaign.id} className="shadow-lg">
                   <CardHeader>
                     <div className="flex items-start justify-between">
@@ -496,10 +723,75 @@ const EmailAdmin = () => {
                       </Button>
                     </div>
                   </CardContent>
-                </Card>
-              ))
-            )}
-          </div>
+                  </Card>
+                ))
+              )}
+            </TabsContent>
+
+            {/* Email Logs Tab */}
+            <TabsContent value="logs" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <History className="w-5 h-5 mr-2" />
+                    Email Activity Log
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {emailLogs.length === 0 ? (
+                    <div className="text-center py-8">
+                      <History className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">No Email Activity</h3>
+                      <p className="text-muted-foreground">
+                        Email logs will appear here when emails are sent to customers.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {emailLogs.map((log) => (
+                        <div
+                          key={log.id}
+                          className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/30 transition-colors"
+                        >
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <Badge variant="outline">
+                                {log.email_type.replace('_', ' ')}
+                              </Badge>
+                              <span className="text-sm font-medium">{log.subject}</span>
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Users className="w-3 h-3" />
+                                {log.email}
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Calendar className="w-3 h-3" />
+                                {formatDate(log.sent_at)}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge 
+                              variant={log.status === 'sent' ? 'default' : 'destructive'}
+                              className="flex items-center gap-1"
+                            >
+                              {log.status === 'sent' ? (
+                                <CheckCircle className="w-3 h-3" />
+                              ) : (
+                                <Clock className="w-3 h-3" />
+                              )}
+                              {log.status}
+                            </Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 
