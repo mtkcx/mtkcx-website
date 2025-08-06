@@ -54,15 +54,14 @@ const ProductCatalog = () => {
 
         if (categoriesError) throw categoriesError;
 
-        // Fetch products with categories, variants, and images
+        // Fetch products with categories via junction table, variants, and images
         const { data: productsData, error: productsError } = await supabase
           .from('products')
           .select(`
             *,
-            categories (
-              id,
-              name,
-              slug
+            product_categories(
+              category_id,
+              categories(id, name, slug)
             ),
             product_variants!fk_product_variants_product_id (
               id,
@@ -97,10 +96,10 @@ const ProductCatalog = () => {
             description: product.description,
             product_code: product.product_code,
             image_url: primaryImage?.image_url || product.image_url,
-            category: Array.isArray(product.categories) && product.categories.length > 0 ? {
-              id: product.categories[0].id,
-              name: product.categories[0].name,
-              slug: product.categories[0].slug,
+            category: product.product_categories && product.product_categories.length > 0 ? {
+              id: product.product_categories[0].categories.id,
+              name: product.product_categories[0].categories.name,
+              slug: product.product_categories[0].categories.slug,
             } : {
               id: 'uncategorized',
               name: 'Uncategorized',
