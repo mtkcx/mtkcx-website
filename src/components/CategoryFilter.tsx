@@ -30,7 +30,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   return (
     <div className="space-y-4">
       <h3 className="font-semibold text-lg">{t('categories.categories')}</h3>
-      <ScrollArea className="h-auto max-h-80">
+      <ScrollArea className="h-96">
         <div className="space-y-2">
           <Button
             variant={selectedCategory === null ? "default" : "ghost"}
