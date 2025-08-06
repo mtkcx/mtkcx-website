@@ -19,6 +19,7 @@ import QuoteAdmin from "./pages/QuoteAdmin";
 import EmailAdmin from "./pages/EmailAdmin";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
+import ProductAdmin from "./pages/ProductAdmin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin/quotes" element={<QuoteAdmin />} />
               <Route path="/admin/emails" element={<EmailAdmin />} />
+              <Route path="/admin/products" element={<ProductAdmin />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/payment-cancelled" element={<PaymentCancelled />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
