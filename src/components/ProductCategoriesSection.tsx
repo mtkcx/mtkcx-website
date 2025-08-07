@@ -2,7 +2,9 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
-import { Camera } from 'lucide-react';
+import interiorCleaningImage from '/lovable-uploads/3df6143b-1e24-4063-ac21-1f8d68e1c558.png';
+import exteriorCleaningImage from '/lovable-uploads/5888e030-a950-4019-a5ea-9d9287fbdcc7.png';
+import polishingCoatingsImage from '/lovable-uploads/baa55ddc-7737-4bef-b3ae-c2f59f4cf3d9.png';
 const ProductCategoriesSection = () => {
   const navigate = useNavigate();
   const {
@@ -12,15 +14,15 @@ const ProductCategoriesSection = () => {
   const categories = [{
     name: t('categories.interior_cleaning'),
     slug: 'interior-cleaning',
-    placeholder: '/api/placeholder/300/300'
+    image: interiorCleaningImage
   }, {
     name: t('categories.exterior_cleaning'),
     slug: 'exterior-cleaning',
-    placeholder: '/api/placeholder/300/300'
+    image: exteriorCleaningImage
   }, {
-    name: t('categories.self_cleaning'),
-    slug: 'self-cleaning',
-    placeholder: '/api/placeholder/300/300'
+    name: t('categories.polishing_coatings'),
+    slug: 'polishing-coatings',
+    image: polishingCoatingsImage
   }];
   const handleCategoryClick = (slug: string) => {
     navigate(`/products?category=${slug}`);
@@ -41,11 +43,11 @@ const ProductCategoriesSection = () => {
               <CardContent className="p-8 text-center px-0">
                 <div className="mb-6 relative">
                   <div className="w-48 h-48 mx-auto rounded-full bg-muted/50 border-4 border-primary/10 group-hover:border-primary/30 transition-colors overflow-hidden relative">
-                    {/* Placeholder for image upload */}
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10 group-hover:from-primary/10 group-hover:to-primary/20 transition-all duration-300">
-                      <Camera className="w-16 h-16 text-primary/40 group-hover:text-primary/60 transition-colors" />
-                    </div>
-                    {/* Upload indicator */}
+                    <img 
+                      src={category.image} 
+                      alt={category.name}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-full"></div>
                   </div>
                 </div>
