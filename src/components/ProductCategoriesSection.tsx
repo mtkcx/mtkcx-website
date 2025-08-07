@@ -3,35 +3,29 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { Camera } from 'lucide-react';
-
 const ProductCategoriesSection = () => {
   const navigate = useNavigate();
-  const { t, isRTL } = useLanguage();
-
-  const categories = [
-    {
-      name: t('categories.interior_cleaning'),
-      slug: 'interior-cleaning',
-      placeholder: '/api/placeholder/300/300'
-    },
-    {
-      name: t('categories.exterior_cleaning'),
-      slug: 'exterior-cleaning',
-      placeholder: '/api/placeholder/300/300'
-    },
-    {
-      name: t('categories.self_cleaning'),
-      slug: 'self-cleaning',
-      placeholder: '/api/placeholder/300/300'
-    }
-  ];
-
+  const {
+    t,
+    isRTL
+  } = useLanguage();
+  const categories = [{
+    name: t('categories.interior_cleaning'),
+    slug: 'interior-cleaning',
+    placeholder: '/api/placeholder/300/300'
+  }, {
+    name: t('categories.exterior_cleaning'),
+    slug: 'exterior-cleaning',
+    placeholder: '/api/placeholder/300/300'
+  }, {
+    name: t('categories.self_cleaning'),
+    slug: 'self-cleaning',
+    placeholder: '/api/placeholder/300/300'
+  }];
   const handleCategoryClick = (slug: string) => {
     navigate(`/products?category=${slug}`);
   };
-
-  return (
-    <section className="py-20 bg-muted/30">
+  return <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-primary mb-6 md:text-5xl">
@@ -43,13 +37,8 @@ const ProductCategoriesSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          {categories.map((category, index) => (
-            <Card 
-              key={index} 
-              className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 bg-background"
-              onClick={() => handleCategoryClick(category.slug)}
-            >
-              <CardContent className="p-8 text-center">
+          {categories.map((category, index) => <Card key={index} className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 bg-background" onClick={() => handleCategoryClick(category.slug)}>
+              <CardContent className="p-8 text-center px-[12px]">
                 <div className="mb-6 relative">
                   <div className="w-48 h-48 mx-auto rounded-full bg-muted/50 border-4 border-primary/10 group-hover:border-primary/30 transition-colors overflow-hidden relative">
                     {/* Placeholder for image upload */}
@@ -69,12 +58,9 @@ const ProductCategoriesSection = () => {
                   {t('categories.click_to_browse')}
                 </p>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ProductCategoriesSection;
