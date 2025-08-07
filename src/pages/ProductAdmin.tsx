@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Edit, Trash2, Package } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Package, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -448,6 +448,25 @@ export default function ProductAdmin() {
     }
   };
 
+  const navigateToProduct = (direction: 'next' | 'prev') => {
+    if (!editingProduct) return;
+
+    const currentIndex = filteredProducts.findIndex(p => p.id === editingProduct.id);
+    if (currentIndex === -1) return;
+
+    let nextIndex;
+    if (direction === 'next') {
+      nextIndex = currentIndex + 1 >= filteredProducts.length ? 0 : currentIndex + 1;
+    } else {
+      nextIndex = currentIndex - 1 < 0 ? filteredProducts.length - 1 : currentIndex - 1;
+    }
+
+    const nextProduct = filteredProducts[nextIndex];
+    if (nextProduct) {
+      handleEdit(nextProduct);
+    }
+  };
+
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -607,19 +626,42 @@ export default function ProductAdmin() {
                                   <Edit className="h-4 w-4" />
                                 </Button>
                               </DialogTrigger>
-                              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                                <DialogHeader>
-                                  <DialogTitle>Edit Product</DialogTitle>
-                                </DialogHeader>
-                                {editingProduct && (
-                                  <ProductForm
-                                    product={editingProduct}
-                                    categories={categories}
-                                    onSave={saveProduct}
-                                    onChange={setEditingProduct}
-                                  />
-                                )}
-                              </DialogContent>
+                               <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                                 <DialogHeader>
+                                   <div className="flex items-center justify-between">
+                                     <DialogTitle>Edit Product</DialogTitle>
+                                     <div className="flex items-center gap-2">
+                                       <Button
+                                         variant="outline"
+                                         size="sm"
+                                         onClick={() => navigateToProduct('prev')}
+                                         disabled={filteredProducts.length <= 1}
+                                       >
+                                         <ChevronLeft className="h-4 w-4" />
+                                       </Button>
+                                       <span className="text-sm text-muted-foreground">
+                                         {editingProduct ? filteredProducts.findIndex(p => p.id === editingProduct.id) + 1 : 0} of {filteredProducts.length}
+                                       </span>
+                                       <Button
+                                         variant="outline"
+                                         size="sm"
+                                         onClick={() => navigateToProduct('next')}
+                                         disabled={filteredProducts.length <= 1}
+                                       >
+                                         <ChevronRight className="h-4 w-4" />
+                                       </Button>
+                                     </div>
+                                   </div>
+                                 </DialogHeader>
+                                 {editingProduct && (
+                                   <ProductForm
+                                     product={editingProduct}
+                                     categories={categories}
+                                     onSave={saveProduct}
+                                     onChange={setEditingProduct}
+                                   />
+                                 )}
+                               </DialogContent>
                             </Dialog>
                             <Button
                               variant="destructive"
