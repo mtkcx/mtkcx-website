@@ -69,8 +69,8 @@ const ProductCatalog = () => {
         .from('products')
         .select(`
           *,
-          product_categories (
-            categories (
+          product_categories!product_categories_product_id_fkey (
+            categories!product_categories_category_id_fkey (
               id,
               name,
               name_ar,
@@ -78,12 +78,12 @@ const ProductCatalog = () => {
               slug
             )
           ),
-          product_variants (
+          product_variants!product_variants_product_id_fkey (
             id,
             size,
             price
           ),
-          product_images (
+          product_images!product_images_product_id_fkey (
             id,
             image_url,
             is_primary,
@@ -94,12 +94,20 @@ const ProductCatalog = () => {
         .order('name', { ascending: true });
 
       console.log('Products result:', productsData, prodError);
+      
+      if (prodError) {
+        console.error('Products fetch error:', prodError);
+      }
 
       if (productsData && !prodError) {
+        console.log('Raw products data sample:', productsData[0]);
+        
         // Transform products to match the interface
         const transformedProducts = productsData
           .filter(product => product.product_variants && product.product_variants.length > 0)
           .map(product => {
+            console.log('Processing product:', product.name, 'Categories:', product.product_categories);
+            
             // Get the primary image or first image
             const primaryImage = product.product_images?.find(img => img.is_primary) || 
                                product.product_images?.[0];
@@ -108,6 +116,8 @@ const ProductCatalog = () => {
             const categoryData = product.product_categories && product.product_categories.length > 0 
               ? product.product_categories[0].categories 
               : null;
+              
+            console.log('Category data for', product.name, ':', categoryData);
 
             return {
               id: product.id,
@@ -136,7 +146,7 @@ const ProductCatalog = () => {
             };
           });
 
-        console.log('Transformed products:', transformedProducts.length);
+        console.log('Transformed products:', transformedProducts.length, 'Sample:', transformedProducts[0]);
         setProducts(transformedProducts);
       }
     } catch (error) {
