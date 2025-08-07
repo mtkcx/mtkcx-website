@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -41,11 +42,14 @@ interface Category {
 
 const ProductCatalog = () => {
   const { t, currentLanguage } = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    searchParams.get('category') || null
+  );
 
   const fetchData = async () => {
     try {
@@ -165,6 +169,12 @@ const ProductCatalog = () => {
     fetchData();
   }, []);
 
+  // Update selectedCategory when URL changes
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category');
+    setSelectedCategory(categoryFromUrl);
+  }, [searchParams]);
+
   // Optimized filtering with multilingual support
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
@@ -236,7 +246,17 @@ const ProductCatalog = () => {
             <CategoryFilter
               categories={categories}
               selectedCategory={selectedCategory}
-              onCategorySelect={setSelectedCategory}
+              onCategorySelect={(category) => {
+                setSelectedCategory(category);
+                // Update URL when category changes
+                const newParams = new URLSearchParams(searchParams);
+                if (category) {
+                  newParams.set('category', category);
+                } else {
+                  newParams.delete('category');
+                }
+                setSearchParams(newParams);
+              }}
               productCounts={productCounts}
             />
           </div>
@@ -250,7 +270,13 @@ const ProductCatalog = () => {
             </div>
             {selectedCategory && (
               <button
-                onClick={() => setSelectedCategory(null)}
+                onClick={() => {
+                  setSelectedCategory(null);
+                  // Clear category from URL
+                  const newParams = new URLSearchParams(searchParams);
+                  newParams.delete('category');
+                  setSearchParams(newParams);
+                }}
                 className="text-sm text-primary hover:underline"
               >
                 Clear filters
@@ -269,6 +295,10 @@ const ProductCatalog = () => {
                 onClick={() => {
                   setSearchTerm('');
                   setSelectedCategory(null);
+                  // Clear all filters from URL
+                  const newParams = new URLSearchParams(searchParams);
+                  newParams.delete('category');
+                  setSearchParams(newParams);
                 }}
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
               >
