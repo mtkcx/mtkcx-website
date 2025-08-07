@@ -18,8 +18,8 @@ const ProductCategoriesSection = () => {
     slug: 'exterior-cleaning',
     placeholder: '/api/placeholder/300/300'
   }, {
-    name: t('categories.polishing_coatings'),
-    slug: 'polishing-coatings',
+    name: t('categories.self_cleaning'),
+    slug: 'self-cleaning',
     placeholder: '/api/placeholder/300/300'
   }];
   const handleCategoryClick = (slug: string) => {
@@ -38,7 +38,7 @@ const ProductCategoriesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {categories.map((category, index) => <Card key={index} className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 bg-background" onClick={() => handleCategoryClick(category.slug)}>
-              <CardContent className="p-8 text-center px-[12px]">
+              <CardContent className="p-8 text-center px-0">
                 <div className="mb-6 relative">
                   <div className="w-48 h-48 mx-auto rounded-full bg-muted/50 border-4 border-primary/10 group-hover:border-primary/30 transition-colors overflow-hidden relative">
                     {/* Placeholder for image upload */}
