@@ -23,6 +23,10 @@ interface Product {
   id?: string;
   name: string;
   description: string;
+  name_ar?: string;
+  name_he?: string;
+  description_ar?: string;
+  description_he?: string;
   category: string;
   product_code: string;
   status: 'active' | 'inactive';
@@ -52,6 +56,10 @@ export default function ProductAdmin() {
   const [newProduct, setNewProduct] = useState<Product>({
     name: '',
     description: '',
+    name_ar: '',
+    name_he: '',
+    description_ar: '',
+    description_he: '',
     category: '',
     product_code: '',
     status: 'active',
@@ -144,6 +152,10 @@ export default function ProductAdmin() {
           id: product.id,
           name: product.name,
           description: product.description || '',
+          name_ar: product.name_ar || '',
+          name_he: product.name_he || '',
+          description_ar: product.description_ar || '',
+          description_he: product.description_he || '',
           category: categoryNames,
           product_code: product.product_code || '',
           status: (product.status as 'active' | 'inactive') || 'active',
@@ -202,6 +214,10 @@ export default function ProductAdmin() {
           .update({
             name: product.name,
             description: product.description,
+            name_ar: product.name_ar || null,
+            name_he: product.name_he || null,
+            description_ar: product.description_ar || null,
+            description_he: product.description_he || null,
             category: product.category || null,
             product_code: product.product_code,
             status: product.status,
@@ -276,6 +292,10 @@ export default function ProductAdmin() {
           .insert({
             name: product.name,
             description: product.description,
+            name_ar: product.name_ar || null,
+            name_he: product.name_he || null,
+            description_ar: product.description_ar || null,
+            description_he: product.description_he || null,
             category: product.category || null,
             product_code: product.product_code,
             status: product.status,
@@ -384,6 +404,10 @@ export default function ProductAdmin() {
     setNewProduct({
       name: '',
       description: '',
+      name_ar: '',
+      name_he: '',
+      description_ar: '',
+      description_he: '',
       category: '',
       product_code: '',
       status: 'active',
@@ -657,15 +681,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, categories, onSave, 
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="name">Product Name</Label>
-          <Input
-            id="name"
-            required
-            value={product.name}
-            onChange={(e) => onChange({ ...product, name: e.target.value })}
-          />
-        </div>
-        <div>
           <Label htmlFor="product_code">Product Code</Label>
           <Input
             id="product_code"
@@ -673,57 +688,118 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, categories, onSave, 
             onChange={(e) => onChange({ ...product, product_code: e.target.value })}
           />
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="category">Category</Label>
+            <Select value={product.category} onValueChange={(value) => onChange({ ...product, category: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map(category => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="status">Status</Label>
+            <Select value={product.status} onValueChange={(value: 'active' | 'inactive') => onChange({ ...product, status: value })}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="inactive">Inactive</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
 
-      <div>
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          rows={3}
-          value={product.description}
-          onChange={(e) => onChange({ ...product, description: e.target.value })}
+      <div className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          checked={product.featured}
+          onChange={(e) => onChange({ ...product, featured: e.target.checked })}
         />
+        <span>Featured Product</span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <Label htmlFor="category">Category</Label>
-          <Select value={product.category} onValueChange={(value) => onChange({ ...product, category: value })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map(category => (
-                <SelectItem key={category.id} value={category.id}>
-                  {category.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label htmlFor="status">Status</Label>
-          <Select value={product.status} onValueChange={(value: 'active' | 'inactive') => onChange({ ...product, status: value })}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-end">
-          <label className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={product.featured}
-              onChange={(e) => onChange({ ...product, featured: e.target.checked })}
+      <Tabs defaultValue="english" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="english">English</TabsTrigger>
+          <TabsTrigger value="arabic">العربية</TabsTrigger>
+          <TabsTrigger value="hebrew">עברית</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="english" className="space-y-4">
+          <div>
+            <Label htmlFor="name">Product Name (English)</Label>
+            <Input
+              id="name"
+              required
+              value={product.name}
+              onChange={(e) => onChange({ ...product, name: e.target.value })}
             />
-            <span>Featured Product</span>
-          </label>
-        </div>
-      </div>
+          </div>
+          <div>
+            <Label htmlFor="description">Description (English)</Label>
+            <Textarea
+              id="description"
+              rows={3}
+              value={product.description}
+              onChange={(e) => onChange({ ...product, description: e.target.value })}
+            />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="arabic" className="space-y-4">
+          <div>
+            <Label htmlFor="name_ar">Product Name (Arabic)</Label>
+            <Input
+              id="name_ar"
+              value={product.name_ar || ''}
+              onChange={(e) => onChange({ ...product, name_ar: e.target.value })}
+              dir="rtl"
+            />
+          </div>
+          <div>
+            <Label htmlFor="description_ar">Description (Arabic)</Label>
+            <Textarea
+              id="description_ar"
+              rows={3}
+              value={product.description_ar || ''}
+              onChange={(e) => onChange({ ...product, description_ar: e.target.value })}
+              dir="rtl"
+            />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="hebrew" className="space-y-4">
+          <div>
+            <Label htmlFor="name_he">Product Name (Hebrew)</Label>
+            <Input
+              id="name_he"
+              value={product.name_he || ''}
+              onChange={(e) => onChange({ ...product, name_he: e.target.value })}
+              dir="rtl"
+            />
+          </div>
+          <div>
+            <Label htmlFor="description_he">Description (Hebrew)</Label>
+            <Textarea
+              id="description_he"
+              rows={3}
+              value={product.description_he || ''}
+              onChange={(e) => onChange({ ...product, description_he: e.target.value })}
+              dir="rtl"
+            />
+          </div>
+        </TabsContent>
+      </Tabs>
 
       <ProductImageManager
         images={product.images}
