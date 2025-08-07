@@ -70,7 +70,6 @@ const ProductCatalog = () => {
         .select(`
           *,
           product_categories (
-            category_id,
             categories (
               id,
               name,
@@ -79,7 +78,7 @@ const ProductCatalog = () => {
               slug
             )
           ),
-          product_variants!fk_product_variants_product_id (
+          product_variants (
             id,
             size,
             price
