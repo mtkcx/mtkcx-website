@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import ProductGrid from '@/components/ProductGrid';
 import CategoryFilter from '@/components/CategoryFilter';
+import { Search } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -46,166 +47,187 @@ const ProductCatalog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  // Fast initial load - get basic product info first
+  const fetchBasicData = async () => {
     try {
       setLoading(true);
-      console.log('Starting to fetch data...');
       
-      // Fetch categories
-      const { data: categoriesData, error: catError } = await supabase
-        .from('categories')
-        .select('*')
-        .order('display_order');
+      // Start both queries in parallel for faster loading
+      const [categoriesPromise, productsPromise] = await Promise.all([
+        // Fetch categories (fast query)
+        supabase
+          .from('categories')
+          .select('id, name, name_ar, name_he, slug, display_order')
+          .order('display_order'),
+        
+        // Fetch basic product info first (much faster than complex joins)
+        supabase
+          .from('products')
+          .select(`
+            id,
+            name,
+            name_ar,
+            name_he,
+            description,
+            description_ar,
+            description_he,
+            product_code,
+            image_url
+          `)
+          .eq('status', 'active')
+          .order('name')
+      ]);
 
-      console.log('Categories result:', categoriesData, catError);
-      
-      if (categoriesData && !catError) {
-        setCategories(categoriesData);
+      // Set categories immediately
+      if (categoriesPromise.data) {
+        setCategories(categoriesPromise.data);
       }
 
-      // Fetch products with the exact query that works from network requests
-      const { data: productsData, error: prodError } = await supabase
-        .from('products')
-        .select(`
-          *,
-          product_categories (
-            category_id,
-            categories (
-              id,
-              name,
-              name_ar,
-              name_he,
-              slug
-            )
-          ),
-          product_variants!fk_product_variants_product_id (
-            id,
-            size,
-            price
-          ),
-          product_images (
-            id,
-            image_url,
-            is_primary,
-            alt_text
-          )
-        `)
-        .eq('status', 'active')
-        .order('name', { ascending: true });
-
-      console.log('Products result:', productsData, prodError);
-
-      if (productsData && !prodError) {
-        // Transform products to match the interface
-        const transformedProducts = productsData
-          .filter(product => product.product_variants && product.product_variants.length > 0)
-          .map(product => {
-            // Get the primary image or first image
-            const primaryImage = product.product_images?.find(img => img.is_primary) || 
-                               product.product_images?.[0];
-            
-            // Get the first category or set a default
-            const categoryData = product.product_categories && product.product_categories.length > 0 
-              ? product.product_categories[0].categories 
-              : null;
-
-            return {
-              id: product.id,
-              name: product.name,
-              name_ar: product.name_ar,
-              name_he: product.name_he,
-              description: product.description || '',
-              description_ar: product.description_ar,
-              description_he: product.description_he,
-              product_code: product.product_code || '',
-              image_url: primaryImage?.image_url || product.image_url || '/placeholder.svg',
-              category: categoryData ? {
-                id: categoryData.id,
-                name: categoryData.name,
-                name_ar: categoryData.name_ar,
-                name_he: categoryData.name_he,
-                slug: categoryData.slug,
-              } : {
-                id: 'uncategorized',
-                name: 'Uncategorized',
-                name_ar: undefined,
-                name_he: undefined,
-                slug: 'uncategorized',
-              },
-              variants: product.product_variants || []
-            };
-          });
-
-        console.log('Transformed products:', transformedProducts.length);
-        setProducts(transformedProducts);
+      // Set basic products immediately, then enhance with variants and categories
+      if (productsPromise.data) {
+        const basicProducts = productsPromise.data.map(product => ({
+          ...product,
+          description: product.description || '',
+          product_code: product.product_code || '',
+          image_url: product.image_url || '/placeholder.svg',
+          category: {
+            id: 'loading',
+            name: 'Loading...',
+            slug: 'loading'
+          },
+          variants: []
+        }));
+        
+        setProducts(basicProducts);
+        setLoading(false); // Show products immediately, even if incomplete
+        
+        // Now fetch the detailed data in the background
+        fetchDetailedData(productsPromise.data.map(p => p.id));
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
+      console.error('Error fetching basic data:', error);
       setLoading(false);
     }
   };
 
+  // Fetch detailed product data in background
+  const fetchDetailedData = async (productIds: string[]) => {
+    try {
+      // Batch fetch variants and categories for all products
+      const [variantsResult, categoriesResult, imagesResult] = await Promise.all([
+        supabase
+          .from('product_variants')
+          .select('id, size, price, product_id')
+          .in('product_id', productIds),
+        
+        supabase
+          .from('product_categories')
+          .select(`
+            product_id,
+            categories (id, name, name_ar, name_he, slug)
+          `)
+          .in('product_id', productIds),
+        
+        supabase
+          .from('product_images')
+          .select('product_id, image_url, is_primary')
+          .in('product_id', productIds)
+          .eq('is_primary', true)
+      ]);
+
+      // Create lookup maps for O(1) access
+      const variantsByProduct = new Map();
+      const categoriesByProduct = new Map();
+      const imagesByProduct = new Map();
+
+      variantsResult.data?.forEach(variant => {
+        if (!variantsByProduct.has(variant.product_id)) {
+          variantsByProduct.set(variant.product_id, []);
+        }
+        variantsByProduct.get(variant.product_id).push(variant);
+      });
+
+      categoriesResult.data?.forEach(pc => {
+        if (pc.categories) {
+          categoriesByProduct.set(pc.product_id, pc.categories);
+        }
+      });
+
+      imagesResult.data?.forEach(img => {
+        imagesByProduct.set(img.product_id, img.image_url);
+      });
+
+      // Update products with detailed data
+      setProducts(prevProducts => 
+        prevProducts.map(product => {
+          const variants = variantsByProduct.get(product.id) || [];
+          const category = categoriesByProduct.get(product.id) || {
+            id: 'uncategorized',
+            name: 'Uncategorized',
+            slug: 'uncategorized'
+          };
+          const primaryImage = imagesByProduct.get(product.id);
+
+          return {
+            ...product,
+            image_url: primaryImage || product.image_url,
+            category,
+            variants
+          };
+        })
+      );
+    } catch (error) {
+      console.error('Error fetching detailed data:', error);
+    }
+  };
+
   useEffect(() => {
-    fetchData();
-
-    // Set up real-time subscriptions
-    const channel = supabase
-      .channel('product-catalog-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, fetchData)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, fetchData)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'product_categories' }, fetchData)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'product_variants' }, fetchData)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'product_images' }, fetchData)
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    fetchBasicData();
   }, []);
 
-  // Filter products based on search term and selected category
-  const filteredProducts = products.filter(product => {
-    // Get localized product name and description
-    const localizedName = currentLanguage === 'ar' ? (product.name_ar || product.name) :
-                         currentLanguage === 'he' ? (product.name_he || product.name) :
-                         product.name;
+  // Optimized filtering with memoization
+  const filteredProducts = useMemo(() => {
+    if (!products.length) return [];
     
-    const localizedDescription = currentLanguage === 'ar' ? (product.description_ar || product.description) :
-                                currentLanguage === 'he' ? (product.description_he || product.description) :
-                                product.description;
-    
-    const matchesSearch = !searchTerm || (
-      localizedName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      localizedDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.product_code.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    
-    const matchesCategory = !selectedCategory || 
-                           product.category.slug === selectedCategory;
-    
-    return matchesSearch && matchesCategory;
-  });
+    return products.filter(product => {
+      // Skip products still loading detailed data
+      if (product.category.id === 'loading') return false;
+      
+      // Get localized content
+      const localizedName = currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                           currentLanguage === 'he' ? (product.name_he || product.name) :
+                           product.name;
+      
+      const localizedDescription = currentLanguage === 'ar' ? (product.description_ar || product.description) :
+                                  currentLanguage === 'he' ? (product.description_he || product.description) :
+                                  product.description;
+      
+      const matchesSearch = !searchTerm || (
+        localizedName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        localizedDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.product_code.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      
+      const matchesCategory = !selectedCategory || product.category.slug === selectedCategory;
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [products, searchTerm, selectedCategory, currentLanguage]);
 
-  // Calculate product counts per category
-  const getProductCounts = () => {
+  // Optimized product counts
+  const productCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     
     products.forEach(product => {
-      const categorySlug = product.category.slug;
-      counts[categorySlug] = (counts[categorySlug] || 0) + 1;
+      if (product.category.id !== 'loading') {
+        const categorySlug = product.category.slug;
+        counts[categorySlug] = (counts[categorySlug] || 0) + 1;
+      }
     });
     
-    counts.total = products.length;
+    counts.total = products.filter(p => p.category.id !== 'loading').length;
     return counts;
-  };
-
-  console.log('Render state:', { 
-    loading, 
-    productsCount: products.length, 
-    filteredCount: filteredProducts.length,
-    categoriesCount: categories.length 
-  });
+  }, [products]);
 
   return (
     <main className="container mx-auto px-6 py-8">
@@ -220,10 +242,12 @@ const ProductCatalog = () => {
 
       <div className="flex flex-col lg:flex-row gap-4 mb-6">
         <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             placeholder={t('products.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
           />
         </div>
       </div>
@@ -236,7 +260,7 @@ const ProductCatalog = () => {
               categories={categories}
               selectedCategory={selectedCategory}
               onCategorySelect={setSelectedCategory}
-              productCounts={getProductCounts()}
+              productCounts={productCounts}
             />
           </div>
         </div>
@@ -245,7 +269,7 @@ const ProductCatalog = () => {
         <div className="lg:col-span-3">
           <div className="flex justify-between items-center mb-6">
             <div className="text-sm text-muted-foreground">
-              {loading ? 'Loading products...' : `Showing ${filteredProducts.length} of ${products.length} products`}
+              {loading ? 'Loading products...' : `Showing ${filteredProducts.length} of ${productCounts.total} products`}
             </div>
             {selectedCategory && (
               <button
@@ -259,7 +283,7 @@ const ProductCatalog = () => {
           
           <ProductGrid products={filteredProducts} loading={loading} />
           
-          {!loading && filteredProducts.length === 0 && products.length > 0 && (
+          {!loading && filteredProducts.length === 0 && productCounts.total > 0 && (
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg mb-4">
                 No products found matching your criteria.
@@ -276,7 +300,7 @@ const ProductCatalog = () => {
             </div>
           )}
 
-          {!loading && products.length === 0 && (
+          {!loading && productCounts.total === 0 && (
             <div className="text-center py-12">
               <p className="text-muted-foreground text-lg">
                 No products available at the moment.

@@ -79,8 +79,14 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
             <div className="relative aspect-[4/3] overflow-hidden bg-muted">
               <img
                 src={product.image_url}
-                alt={product.name}
+                alt={currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                     currentLanguage === 'he' ? (product.name_he || product.name) :
+                     product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.src = '/placeholder.svg';
+                }}
               />
               <div className="absolute top-2 left-2">
                 <Badge variant="secondary" className="bg-white/90 text-primary text-xs">
