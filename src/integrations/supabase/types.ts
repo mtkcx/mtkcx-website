@@ -18,27 +18,48 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          description_ar: string | null
+          description_he: string | null
           display_order: number | null
           id: string
+          meta_description: string | null
+          meta_description_ar: string | null
+          meta_description_he: string | null
           name: string
+          name_ar: string | null
+          name_he: string | null
           slug: string
           updated_at: string
         }
         Insert: {
           created_at?: string
           description?: string | null
+          description_ar?: string | null
+          description_he?: string | null
           display_order?: number | null
           id?: string
+          meta_description?: string | null
+          meta_description_ar?: string | null
+          meta_description_he?: string | null
           name: string
+          name_ar?: string | null
+          name_he?: string | null
           slug: string
           updated_at?: string
         }
         Update: {
           created_at?: string
           description?: string | null
+          description_ar?: string | null
+          description_he?: string | null
           display_order?: number | null
           id?: string
+          meta_description?: string | null
+          meta_description_ar?: string | null
+          meta_description_he?: string | null
           name?: string
+          name_ar?: string | null
+          name_he?: string | null
           slug?: string
           updated_at?: string
         }
@@ -440,12 +461,23 @@ export type Database = {
           category: string | null
           created_at: string
           description: string | null
+          description_ar: string | null
+          description_he: string | null
           featured: boolean | null
           id: string
           image_url: string | null
+          keywords: string | null
+          meta_description: string | null
+          meta_description_ar: string | null
+          meta_description_he: string | null
           name: string
+          name_ar: string | null
+          name_he: string | null
           product_code: string | null
           safety_icons: string[] | null
+          seo_title: string | null
+          seo_title_ar: string | null
+          seo_title_he: string | null
           status: string | null
           updated_at: string
         }
@@ -453,12 +485,23 @@ export type Database = {
           category?: string | null
           created_at?: string
           description?: string | null
+          description_ar?: string | null
+          description_he?: string | null
           featured?: boolean | null
           id?: string
           image_url?: string | null
+          keywords?: string | null
+          meta_description?: string | null
+          meta_description_ar?: string | null
+          meta_description_he?: string | null
           name: string
+          name_ar?: string | null
+          name_he?: string | null
           product_code?: string | null
           safety_icons?: string[] | null
+          seo_title?: string | null
+          seo_title_ar?: string | null
+          seo_title_he?: string | null
           status?: string | null
           updated_at?: string
         }
@@ -466,12 +509,23 @@ export type Database = {
           category?: string | null
           created_at?: string
           description?: string | null
+          description_ar?: string | null
+          description_he?: string | null
           featured?: boolean | null
           id?: string
           image_url?: string | null
+          keywords?: string | null
+          meta_description?: string | null
+          meta_description_ar?: string | null
+          meta_description_he?: string | null
           name?: string
+          name_ar?: string | null
+          name_he?: string | null
           product_code?: string | null
           safety_icons?: string[] | null
+          seo_title?: string | null
+          seo_title_ar?: string | null
+          seo_title_he?: string | null
           status?: string | null
           updated_at?: string
         }

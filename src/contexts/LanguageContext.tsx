@@ -285,6 +285,21 @@ const translations = {
     'contact.professional_consultation': 'Professional Consultation',
     'contact.other_services': 'Other Services',
     
+    // Categories
+    'categories.categories': 'Categories',
+    'categories.all_products': 'All Products',
+    
+    // Common
+    'common.search': 'Search',
+    'common.loading': 'Loading...',
+    'common.view_details': 'View Details',
+    'common.add_to_cart': 'Add to Cart',
+    'common.price': 'Price',
+    'common.from': 'From',
+    'common.sizes': 'sizes',
+    'common.select_size': 'Select Size',
+    'common.back': 'Back',
+    
     // Products Page  
     'products.all_categories': 'All Categories',
     'products.view_details': 'View Details',
@@ -436,11 +451,9 @@ const translations = {
     'common.learn_more': 'Learn More',
     'common.contact_us': 'Contact Us',
     'common.get_started': 'Get Started',
-    'common.search': 'Search',
     'common.professional_training': 'Professional Training',
     'common.mt_wraps_services': 'MT Wraps Services',
     'common.official_partner': 'Official Koch-Chemie Partner',
-    'common.loading': 'Loading...',
     'common.submit': 'Submit',
     'common.cancel': 'Cancel',
     'common.save': 'Save',
@@ -474,9 +487,6 @@ const translations = {
     'common.project_gallery_image': 'Project Gallery Image',
     'common.images_coming_soon': 'Images coming soon',
     
-    // Category Filter & Navigation
-    'categories.categories': 'Categories',
-    'categories.all_products': 'All Products',
     
     // 404 Page
     'notfound.error_title': '404',

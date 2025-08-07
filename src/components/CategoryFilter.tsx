@@ -7,6 +7,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 interface Category {
   id: string;
   name: string;
+  name_ar?: string;
+  name_he?: string;
   slug: string;
   display_order: number;
 }
@@ -24,7 +26,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   onCategorySelect,
   productCounts = {}
 }) => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const sortedCategories = [...categories].sort((a, b) => a.display_order - b.display_order);
 
   return (
@@ -52,7 +54,11 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
               className="w-full justify-between text-left h-auto py-2 px-3"
               onClick={() => onCategorySelect(category.slug)}
             >
-              <span className="truncate pr-2">{category.name}</span>
+              <span className="truncate pr-2">
+                {currentLanguage === 'ar' ? (category.name_ar || category.name) :
+                 currentLanguage === 'he' ? (category.name_he || category.name) :
+                 category.name}
+              </span>
               <Badge variant="secondary" className="ml-2 flex-shrink-0">
                 {productCounts[category.slug] || 0}
               </Badge>

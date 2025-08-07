@@ -9,11 +9,17 @@ import { useLanguage } from '@/contexts/LanguageContext';
 interface Product {
   id: string;
   name: string;
+  name_ar?: string;
+  name_he?: string;
   description: string;
+  description_ar?: string;
+  description_he?: string;
   product_code: string;
   image_url: string;
   category: {
     name: string;
+    name_ar?: string;
+    name_he?: string;
     slug: string;
   };
   variants: Array<{
@@ -30,7 +36,7 @@ interface ProductGridProps {
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
 
   if (loading) {
     return (
@@ -90,10 +96,16 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
             
             <CardContent className="p-3 flex-1 flex flex-col">
               <h3 className="font-semibold text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                {product.name}
+                {currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                 currentLanguage === 'he' ? (product.name_he || product.name) :
+                 product.name}
               </h3>
               <p className="text-muted-foreground text-xs mb-3 line-clamp-2 flex-1">
-                {getShortDescription(product.description)}
+                {getShortDescription(
+                  currentLanguage === 'ar' ? (product.description_ar || product.description) :
+                  currentLanguage === 'he' ? (product.description_he || product.description) :
+                  product.description
+                )}
               </p>
               
               <div className="flex items-center justify-between">
