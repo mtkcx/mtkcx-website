@@ -36,12 +36,12 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
         <div className="space-y-2">
           <Button
             variant={selectedCategory === null ? "default" : "ghost"}
-            className="w-full justify-between text-left h-auto py-2 px-3"
+            className="w-full justify-between text-left h-auto py-3 px-4"
             onClick={() => onCategorySelect(null)}
           >
-            <span className="truncate">{t('categories.all_products')}</span>
+            <span className="truncate flex-1">{t('categories.all_products')}</span>
             {productCounts.total !== undefined && (
-              <Badge variant="secondary" className="ml-2 flex-shrink-0">
+              <Badge variant="secondary" className="ml-3 flex-shrink-0 min-w-[2rem] h-6 flex items-center justify-center">
                 {productCounts.total}
               </Badge>
             )}
@@ -51,15 +51,15 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             <Button
               key={category.id}
               variant={selectedCategory === category.slug ? "default" : "ghost"}
-              className="w-full justify-between text-left h-auto py-2 px-3"
+              className="w-full justify-between text-left h-auto py-3 px-4"
               onClick={() => onCategorySelect(category.slug)}
             >
-              <span className="truncate pr-2">
+              <span className="truncate flex-1 pr-2">
                 {currentLanguage === 'ar' ? (category.name_ar || category.name) :
                  currentLanguage === 'he' ? (category.name_he || category.name) :
                  category.name}
               </span>
-              <Badge variant="secondary" className="ml-2 flex-shrink-0">
+              <Badge variant="secondary" className="ml-3 flex-shrink-0 min-w-[2rem] h-6 flex items-center justify-center">
                 {productCounts[category.slug] || 0}
               </Badge>
             </Button>

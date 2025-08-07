@@ -30,7 +30,11 @@ interface ProductImage {
 interface Product {
   id: string;
   name: string;
+  name_ar?: string;
+  name_he?: string;
   description: string;
+  description_ar?: string;
+  description_he?: string;
   product_code: string;
   image_url: string;
   all_images: ProductImage[];
@@ -38,6 +42,8 @@ interface Product {
   category: {
     id: string;
     name: string;
+    name_ar?: string;
+    name_he?: string;
     slug: string;
   };
   variants: ProductVariant[];
@@ -46,7 +52,7 @@ interface Product {
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
@@ -69,6 +75,8 @@ const ProductDetail = () => {
               categories (
                 id,
                 name,
+                name_ar,
+                name_he,
                 slug
               )
             ),
@@ -102,7 +110,11 @@ const ProductDetail = () => {
           const transformedProduct: Product = {
             id: productData.id,
             name: productData.name,
+            name_ar: productData.name_ar,
+            name_he: productData.name_he,
             description: productData.description,
+            description_ar: productData.description_ar,
+            description_he: productData.description_he,
             product_code: productData.product_code,
             image_url: primaryImage?.image_url || productData.image_url || '/placeholder.svg',
             all_images: allImages,
@@ -110,10 +122,14 @@ const ProductDetail = () => {
             category: productData.product_categories && productData.product_categories.length > 0 ? {
               id: productData.product_categories[0].categories.id,
               name: productData.product_categories[0].categories.name,
+              name_ar: productData.product_categories[0].categories.name_ar,
+              name_he: productData.product_categories[0].categories.name_he,
               slug: productData.product_categories[0].categories.slug,
             } : {
               id: 'uncategorized',
               name: 'Uncategorized',
+              name_ar: undefined,
+              name_he: undefined,
               slug: 'uncategorized',
             },
             variants: productData.product_variants || []
@@ -163,7 +179,9 @@ const ProductDetail = () => {
     toast({
       title: t('products.added_to_cart'),
       description: t('products.added_to_cart_desc')
-        .replace('{productName}', product?.name || '')
+        .replace('{productName}', currentLanguage === 'ar' ? (product?.name_ar || product?.name || '') :
+                                  currentLanguage === 'he' ? (product?.name_he || product?.name || '') :
+                                  (product?.name || ''))
         .replace('{size}', variant.size),
     });
   };
@@ -240,9 +258,17 @@ const ProductDetail = () => {
             {t('products.back_to_products_new')}
           </Button>
           <span className="text-muted-foreground">/</span>
-          <Badge variant="outline">{product.category.name}</Badge>
+          <Badge variant="outline">
+            {currentLanguage === 'ar' ? (product.category.name_ar || product.category.name) :
+             currentLanguage === 'he' ? (product.category.name_he || product.category.name) :
+             product.category.name}
+          </Badge>
           <span className="text-muted-foreground">/</span>
-          <span className="text-muted-foreground">{product.name}</span>
+          <span className="text-muted-foreground">
+            {currentLanguage === 'ar' ? (product.name_ar || product.name) :
+             currentLanguage === 'he' ? (product.name_he || product.name) :
+             product.name}
+          </span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -309,9 +335,17 @@ const ProductDetail = () => {
             <div>
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+                  <h1 className="text-3xl font-bold mb-2">
+                    {currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                     currentLanguage === 'he' ? (product.name_he || product.name) :
+                     product.name}
+                  </h1>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary">{product.category.name}</Badge>
+                    <Badge variant="secondary">
+                      {currentLanguage === 'ar' ? (product.category.name_ar || product.category.name) :
+                       currentLanguage === 'he' ? (product.category.name_he || product.category.name) :
+                       product.category.name}
+                    </Badge>
                     <Badge variant="outline">{t('products.sku_label')} {product.product_code}</Badge>
                   </div>
                 </div>
@@ -323,7 +357,11 @@ const ProductDetail = () => {
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">{t('products.product_description')}</h3>
                 <div className="space-y-2">
-                  {formatDescription(product.description)}
+                  {formatDescription(
+                    currentLanguage === 'ar' ? (product.description_ar || product.description) :
+                    currentLanguage === 'he' ? (product.description_he || product.description) :
+                    product.description
+                  )}
                 </div>
               </div>
 
@@ -335,10 +373,14 @@ const ProductDetail = () => {
                 selectedVariant={selectedVariant}
                 onVariantSelect={setSelectedVariant}
                 productId={product.id}
-                productName={product.name}
+                productName={currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                            currentLanguage === 'he' ? (product.name_he || product.name) :
+                            product.name}
                 productCode={product.product_code}
                 imageUrl={product.image_url}
-                categoryName={product.category.name}
+                categoryName={currentLanguage === 'ar' ? (product.category.name_ar || product.category.name) :
+                             currentLanguage === 'he' ? (product.category.name_he || product.category.name) :
+                             product.category.name}
               />
             </div>
           </div>

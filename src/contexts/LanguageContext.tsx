@@ -321,7 +321,7 @@ const translations = {
     'products.loading': 'Loading...',
     'products.available_in_sizes': 'Available in {count} sizes',
     'products.from_price': 'From ₪',
-    'products.select_size': 'Select Size',
+    'products.sku_label': 'SKU:',
     'products.error_title': 'Error',
     'products.failed_load_details': 'Failed to load product details.',
     'products.added_to_cart': 'Added to Cart',
@@ -329,7 +329,6 @@ const translations = {
     'products.back_to_products_new': 'Back to Products',
     'products.product_description': 'Product Description',
     'products.price_label': 'Price:',
-    'products.sku_label': 'SKU:',
     
     // Add missing translation keys for all pages
     'about.location_jerusalem': 'Atarot Industrial Area, Jerusalem',
