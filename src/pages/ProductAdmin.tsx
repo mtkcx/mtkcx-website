@@ -364,34 +364,18 @@ export default function ProductAdmin() {
         });
       }
 
-      fetchProducts();
-      
-      // Only close dialog and reset form for new products, not edits
+      // For new products, close dialog and refresh
       if (!product.id) {
+        fetchProducts();
         setIsAddDialogOpen(false);
         resetForm();
       } else {
-        // For edits, refresh the current product data
-        const updatedProduct = await supabase
-          .from('products')
-          .select('*')
-          .eq('id', product.id)
-          .single();
-        
-        if (updatedProduct.data && editingProduct) {
-          setEditingProduct({
-            ...editingProduct,
-            name: updatedProduct.data.name,
-            description: updatedProduct.data.description || '',
-            name_ar: updatedProduct.data.name_ar || '',
-            name_he: updatedProduct.data.name_he || '',
-            description_ar: updatedProduct.data.description_ar || '',
-            description_he: updatedProduct.data.description_he || '',
-            product_code: updatedProduct.data.product_code || '',
-            status: (updatedProduct.data.status as 'active' | 'inactive') || 'active',
-            featured: updatedProduct.data.featured || false,
-          });
-        }
+        // For edits, just refresh the products list in background and keep dialog open
+        fetchProducts();
+        toast({
+          title: "Success",
+          description: "Product updated successfully. You can navigate to the next product.",
+        });
       }
     } catch (error) {
       toast({
