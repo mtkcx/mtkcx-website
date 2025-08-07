@@ -100,7 +100,10 @@ const ProductDetail = () => {
           .eq('status', 'active')
           .single();
 
-        if (productError) throw productError;
+        if (productError) {
+          console.error('Product fetch error:', productError);
+          throw productError;
+        }
 
         if (productData) {
           // Process all images
