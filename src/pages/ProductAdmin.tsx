@@ -369,14 +369,8 @@ export default function ProductAdmin() {
         fetchProducts();
         setIsAddDialogOpen(false);
         resetForm();
-      } else {
-        // For edits, just refresh the products list in background and keep dialog open
-        fetchProducts();
-        toast({
-          title: "Success",
-          description: "Product updated successfully. You can navigate to the next product.",
-        });
       }
+      // For edits, don't call fetchProducts() - just stay in the dialog
     } catch (error) {
       toast({
         title: "Error",
