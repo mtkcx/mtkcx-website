@@ -48,7 +48,6 @@ const Hero = () => {
               {t('hero.cta.courses')}
             </Button>
 
-            {user}
           </div>
 
           {/* Stats Section */}
