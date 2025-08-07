@@ -112,10 +112,15 @@ const ProductCatalog = () => {
             const primaryImage = product.product_images?.find(img => img.is_primary) || 
                                product.product_images?.[0];
             
-            // Get the first category or set a default
-            const categoryData = product.product_categories && product.product_categories.length > 0 
-              ? product.product_categories[0].categories 
-              : null;
+            // Get the primary category (excluding "All Products")
+            let categoryData = null;
+            if (product.product_categories && product.product_categories.length > 0) {
+              // Find the first category that's not "All Products"
+              const specificCategory = product.product_categories.find(pc => 
+                pc.categories && pc.categories.slug !== 'all-products'
+              );
+              categoryData = specificCategory ? specificCategory.categories : product.product_categories[0].categories;
+            }
               
             console.log('Category data for', product.name, ':', categoryData);
 
