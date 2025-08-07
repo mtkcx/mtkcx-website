@@ -365,9 +365,34 @@ export default function ProductAdmin() {
       }
 
       fetchProducts();
-      setIsAddDialogOpen(false);
-      setEditingProduct(null);
-      resetForm();
+      
+      // Only close dialog and reset form for new products, not edits
+      if (!product.id) {
+        setIsAddDialogOpen(false);
+        resetForm();
+      } else {
+        // For edits, refresh the current product data
+        const updatedProduct = await supabase
+          .from('products')
+          .select('*')
+          .eq('id', product.id)
+          .single();
+        
+        if (updatedProduct.data && editingProduct) {
+          setEditingProduct({
+            ...editingProduct,
+            name: updatedProduct.data.name,
+            description: updatedProduct.data.description || '',
+            name_ar: updatedProduct.data.name_ar || '',
+            name_he: updatedProduct.data.name_he || '',
+            description_ar: updatedProduct.data.description_ar || '',
+            description_he: updatedProduct.data.description_he || '',
+            product_code: updatedProduct.data.product_code || '',
+            status: (updatedProduct.data.status as 'active' | 'inactive') || 'active',
+            featured: updatedProduct.data.featured || false,
+          });
+        }
+      }
     } catch (error) {
       toast({
         title: "Error",
