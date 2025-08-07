@@ -24,6 +24,13 @@ interface Product {
     name_he?: string;
     slug: string;
   };
+  allCategories: Array<{
+    id: string;
+    name: string;
+    name_ar?: string;
+    name_he?: string;
+    slug: string;
+  }>;
   variants: Array<{
     id: string;
     size: string;
@@ -106,7 +113,7 @@ const ProductCatalog = () => {
       if (productsData && !prodError) {
         console.log('Raw products data sample:', productsData[0]);
         
-        // Transform products to match the interface
+          // Transform products to match the interface
         const transformedProducts = productsData
           .filter(product => product.product_variants && product.product_variants.length > 0)
           .map(product => {
@@ -151,6 +158,8 @@ const ProductCatalog = () => {
                 name_he: 'לא מסווג',
                 slug: 'uncategorized',
               },
+              // Store all categories for proper filtering
+              allCategories: product.product_categories?.map(pc => pc.categories).filter(Boolean) || [],
               variants: product.product_variants || []
             };
           });
@@ -194,7 +203,8 @@ const ProductCatalog = () => {
       );
       
       const matchesCategory = !selectedCategory || 
-                             product.category.slug === selectedCategory;
+                             product.category.slug === selectedCategory ||
+                             product.allCategories.some(cat => cat.slug === selectedCategory);
       
       return matchesSearch && matchesCategory;
     });
