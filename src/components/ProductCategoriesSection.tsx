@@ -18,8 +18,8 @@ const ProductCategoriesSection = () => {
     slug: 'exterior-cleaning',
     placeholder: '/api/placeholder/300/300'
   }, {
-    name: t('categories.self_cleaning'),
-    slug: 'self-cleaning',
+    name: t('categories.polishing_coatings'),
+    slug: 'polishing-coatings',
     placeholder: '/api/placeholder/300/300'
   }];
   const handleCategoryClick = (slug: string) => {
