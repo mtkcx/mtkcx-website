@@ -319,6 +319,14 @@ const translations = {
     'products.clear_all_filters': 'Clear all filters',
     'products.no_products': 'No products found matching your criteria.',
     'products.loading': 'Loading...',
+    
+    // Product Categories Section
+    'categories.shop_by_category': 'Shop by Category',
+    'categories.shop_by_category_subtitle': 'Discover our premium car care products organized by cleaning type',
+    'categories.interior_cleaning': 'Interior Cleaning',
+    'categories.exterior_cleaning': 'Exterior Cleaning', 
+    'categories.self_cleaning': 'Self Cleaning',
+    'categories.click_to_browse': 'Click to browse products',
     'products.available_in_sizes': 'Available in {count} sizes',
     'products.from_price': 'From ₪',
     'products.sku_label': 'SKU:',
@@ -864,6 +872,14 @@ const translations = {
     'products.clear_all_filters': 'مسح جميع المرشحات',
     'products.no_products': 'لم يتم العثور على منتجات تطابق معاييرك.',
     'products.loading': 'جاري التحميل...',
+    
+    // Product Categories Section
+    'categories.shop_by_category': 'تسوق حسب الفئة',
+    'categories.shop_by_category_subtitle': 'اكتشف منتجات العناية بالسيارات المتميزة منظمة حسب نوع التنظيف',
+    'categories.interior_cleaning': 'تنظيف الداخل',
+    'categories.exterior_cleaning': 'تنظيف الخارج', 
+    'categories.self_cleaning': 'تنظيف ذاتي',
+    'categories.click_to_browse': 'انقر لتصفح المنتجات',
     'products.available_in_sizes': 'متوفر بـ {count} أحجام',
     'products.from_price': 'من ₪',
     'products.select_size': 'اختر الحجم',
@@ -1350,6 +1366,14 @@ const translations = {
     'products.clear_all_filters': 'נקה את כל המסננים',
     'products.no_products': 'לא נמצאו מוצרים התואמים לקריטריונים שלך.',
     'products.loading': 'טוען...',
+    
+    // Product Categories Section
+    'categories.shop_by_category': 'קנה לפי קטגוריה',
+    'categories.shop_by_category_subtitle': 'גלה את מוצרי הטיפוח המובחרים שלנו מאורגנים לפי סוג ניקוי',
+    'categories.interior_cleaning': 'ניקוי פנים',
+    'categories.exterior_cleaning': 'ניקוי חיצוני', 
+    'categories.self_cleaning': 'ניקוי עצמי',
+    'categories.click_to_browse': 'לחץ לעיון במוצרים',
     'products.available_in_sizes': 'זמין ב-{count} גדלים',
     'products.from_price': 'החל מ-₪',
     'products.select_size': 'בחר גודל',

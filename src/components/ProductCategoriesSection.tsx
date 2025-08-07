@@ -10,23 +10,17 @@ const ProductCategoriesSection = () => {
 
   const categories = [
     {
-      name: 'Interior Cleaning',
-      nameAr: 'منتجات التنظيف',
-      nameHe: 'מוצרי ניקוי',
+      name: t('categories.interior_cleaning'),
       slug: 'interior-cleaning',
       placeholder: '/api/placeholder/300/300'
     },
     {
-      name: 'Exterior Cleaning', 
-      nameAr: 'منتجات التنظيف',
-      nameHe: 'מוצרי ניקוי',
+      name: t('categories.exterior_cleaning'),
       slug: 'exterior-cleaning',
       placeholder: '/api/placeholder/300/300'
     },
     {
-      name: 'Self Cleaning',
-      nameAr: 'منتجات التنظيف', 
-      nameHe: 'מוצרי ניקוי',
+      name: t('categories.self_cleaning'),
       slug: 'self-cleaning',
       placeholder: '/api/placeholder/300/300'
     }
@@ -41,10 +35,10 @@ const ProductCategoriesSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-primary mb-6 md:text-5xl">
-            Shop by Category
+            {t('categories.shop_by_category')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Discover our premium car care products organized by cleaning type
+            {t('categories.shop_by_category_subtitle')}
           </p>
         </div>
 
@@ -72,7 +66,7 @@ const ProductCategoriesSection = () => {
                 </h3>
                 
                 <p className="text-muted-foreground text-sm">
-                  Click to browse products
+                  {t('categories.click_to_browse')}
                 </p>
               </CardContent>
             </Card>
