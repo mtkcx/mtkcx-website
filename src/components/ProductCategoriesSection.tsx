@@ -31,7 +31,7 @@ const ProductCategoriesSection = () => {
           <h2 className="text-4xl font-bold text-primary mb-6 md:text-5xl">
             {t('categories.shop_by_category')}
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             {t('categories.shop_by_category_subtitle')}
           </p>
         </div>
