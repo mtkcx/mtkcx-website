@@ -34,6 +34,26 @@ const Courses = () => {
         </div>
       </section>
 
+      {/* Training Banner Image */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="relative overflow-hidden rounded-lg shadow-lg">
+              <img 
+                src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png" 
+                alt="Professional car detailing training session with multiple students learning hands-on techniques on a luxury vehicle in our state-of-the-art facility"
+                className="w-full h-[400px] md:h-[500px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <h2 className="text-2xl md:text-3xl font-bold mb-2">{t('common.professional_training')}</h2>
+                <p className="text-lg opacity-90 max-w-2xl">{t('common.only_official_course')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Course Introduction Video */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-6">
