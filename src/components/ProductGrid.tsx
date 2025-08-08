@@ -57,6 +57,8 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
 
   const handleViewProduct = (productId: string) => {
     navigate(`/products/${productId}`);
+    // Ensure page loads at the top
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const getShortDescription = (description: string) => {
