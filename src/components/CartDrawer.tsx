@@ -49,13 +49,13 @@ const CartDrawer: React.FC = () => {
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <ShoppingCart className="h-5 w-5" />
-            Shopping Cart
+            {t('cart.title')}
             {getTotalItems() > 0 && (
-              <Badge variant="secondary">{getTotalItems()} items</Badge>
+              <Badge variant="secondary">{getTotalItems()} {t('cart.items')}</Badge>
             )}
           </SheetTitle>
           <SheetDescription>
-            Review your items and proceed to checkout
+            {t('cart.description')}
           </SheetDescription>
         </SheetHeader>
 
@@ -64,12 +64,12 @@ const CartDrawer: React.FC = () => {
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center space-y-4">
                 <ShoppingCart className="h-12 w-12 mx-auto text-muted-foreground" />
-                <h3 className="text-lg font-medium">Your cart is empty</h3>
+                <h3 className="text-lg font-medium">{t('cart.empty')}</h3>
                 <p className="text-muted-foreground text-sm">
-                  Add some products to get started
+                  {t('cart.empty_description')}
                 </p>
                 <Button onClick={() => setIsOpen(false)}>
-                  Continue Shopping
+                  {t('cart.continue_shopping')}
                 </Button>
               </div>
             </div>
@@ -90,9 +90,9 @@ const CartDrawer: React.FC = () => {
                       <div className="flex-1 space-y-1">
                         <div>
                           <h4 className="font-medium text-sm line-clamp-1">{item.productName}</h4>
-                          <p className="text-xs text-muted-foreground">
-                            Size: {item.variantSize}
-                          </p>
+                           <p className="text-xs text-muted-foreground">
+                             {t('cart.size')}: {item.variantSize}
+                           </p>
                           <div className="flex items-center gap-1">
                             <Badge variant="outline" className="text-xs py-0 px-1">
                               {item.productCode}
@@ -149,7 +149,7 @@ const CartDrawer: React.FC = () => {
               <div className="space-y-3 pt-3 border-t mt-4">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">
-                    Total ({getTotalItems()} items)
+                    {t('cart.total')} ({getTotalItems()} {t('cart.items')})
                   </span>
                   <span className="font-bold text-base">
                     {formatPrice(getTotalPrice())}
@@ -163,14 +163,14 @@ const CartDrawer: React.FC = () => {
                     className="flex-1"
                     size="sm"
                   >
-                    Clear Cart
+                    {t('cart.clear_cart')}
                   </Button>
                   <Button
                     onClick={handleCheckout}
                     className="flex-1"
                     size="sm"
                   >
-                    Checkout
+                    {t('cart.checkout')}
                   </Button>
                 </div>
               </div>

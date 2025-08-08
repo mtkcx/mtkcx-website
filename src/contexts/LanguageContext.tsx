@@ -741,6 +741,18 @@ const translations = {
     'checkout.order_failed': 'Order Failed',
     'checkout.order_failed_desc': 'There was an error processing your order. Please try again.',
     
+    // Cart translations
+    'cart.title': 'Shopping Cart',
+    'cart.items': 'items',
+    'cart.description': 'Review your items and proceed to checkout',
+    'cart.empty': 'Your cart is empty',
+    'cart.empty_description': 'Add some products to get started',
+    'cart.continue_shopping': 'Continue Shopping',
+    'cart.size': 'Size',
+    'cart.total': 'Total',
+    'cart.clear_cart': 'Clear Cart',
+    'cart.checkout': 'Checkout',
+    
     
     // 404 Page
     'notfound.error_title': '404',
@@ -1568,6 +1580,18 @@ const translations = {
     'checkout.order_success_desc': 'تم وضع طلبك بقيمة {total}.',
     'checkout.order_failed': 'فشل الطلب',
     'checkout.order_failed_desc': 'حدث خطأ في معالجة طلبك. يرجى المحاولة مرة أخرى.',
+    
+    // Cart translations
+    'cart.title': 'سلة التسوق',
+    'cart.items': 'عناصر',
+    'cart.description': 'راجع عناصرك ومتابعة للدفع',
+    'cart.empty': 'سلة التسوق فارغة',
+    'cart.empty_description': 'أضف بعض المنتجات للبدء',
+    'cart.continue_shopping': 'متابعة التسوق',
+    'cart.size': 'الحجم',
+    'cart.total': 'الإجمالي',
+    'cart.clear_cart': 'مسح السلة',
+    'cart.checkout': 'الدفع',
   },
   he: {
     // Navigation
@@ -2129,6 +2153,18 @@ const translations = {
     'checkout.order_success_desc': 'ההזמנה שלך בסכום {total} בוצעה.',
     'checkout.order_failed': 'ההזמנה נכשלה',
     'checkout.order_failed_desc': 'הייתה שגיאה בעיבוד ההזמנה שלך. אנא נסה שוב.',
+    
+    // Cart translations
+    'cart.title': 'עגלת קניות',
+    'cart.items': 'פריטים',
+    'cart.description': 'סקור את הפריטים שלך והמשך לתשלום',
+    'cart.empty': 'העגלה שלך ריקה',
+    'cart.empty_description': 'הוסף כמה מוצרים כדי להתחיל',
+    'cart.continue_shopping': 'המשך קנייה',
+    'cart.size': 'גודל',
+    'cart.total': 'סה"כ',
+    'cart.clear_cart': 'נקה עגלה',
+    'cart.checkout': 'תשלום',
     'common.join_mt_wraps_family': 'הצטרף למשפחת MT Wraps וגלה למה מקצוענים סומכים עלינו לצרכי הטיפוח של הרכב שלהם.',
     'common.established_2020': 'נוסד ב-2020',
     'contact.location_address': 'אזור התעשייה עטרות, התמרוקים, ירושלים',
