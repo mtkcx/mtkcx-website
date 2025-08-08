@@ -38,12 +38,18 @@ const Hero = () => {
           </div>
 
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <Button size="lg" className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm" onClick={() => navigate('/products')}>
+            <Button size="lg" className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm" onClick={() => {
+              navigate('/products');
+              window.scrollTo(0, 0);
+            }}>
               <ShoppingCart className="w-5 h-5 mr-2" />
               {t('hero.cta.products')}
             </Button>
             
-            <Button variant="outline" size="lg" className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm" onClick={() => navigate('/courses')}>
+            <Button variant="outline" size="lg" className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm" onClick={() => {
+              navigate('/courses');
+              window.scrollTo(0, 0);
+            }}>
               <GraduationCap className="w-5 h-5 mr-2" />
               {t('hero.cta.courses')}
             </Button>

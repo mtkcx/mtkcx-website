@@ -26,6 +26,7 @@ const ProductCategoriesSection = () => {
   }];
   const handleCategoryClick = (slug: string) => {
     navigate(`/products?category=${slug}`);
+    window.scrollTo(0, 0);
   };
   return <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
