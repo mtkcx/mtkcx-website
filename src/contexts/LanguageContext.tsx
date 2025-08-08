@@ -1668,6 +1668,7 @@ const translations = {
     'checkout.credit_card_notice': 'بإتمام هذا الطلب، فإنك توافق على أن نتصل بك لمعالجة دفع بطاقتك الائتمانية',
 
     // Admin
+    admin: {
       error: 'خطأ',
       success: 'نجح',
       loading: 'جاري التحميل...',
