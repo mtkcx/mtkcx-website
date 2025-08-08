@@ -9,7 +9,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import CartButton from '@/components/CartButton';
 const Header = () => {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const {
+    user,
+    signOut
+  } = useAuth();
   const {
     currentLanguage,
     setLanguage,
@@ -66,11 +69,7 @@ const Header = () => {
           {/* Desktop Navigation - Center */}
           <nav className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
             <div className="flex items-center space-x-4">
-              {navigationItems.map(item => <Link 
-                key={item.key} 
-                to={item.href} 
-                className="text-foreground hover:text-primary transition-colors font-medium px-3 py-2 rounded-md hover:bg-primary/5"
-              >
+              {navigationItems.map(item => <Link key={item.key} to={item.href} className="text-foreground hover:text-primary transition-colors font-medium py-2 rounded-md hover:bg-primary/5 px-[7px]">
                 {t(item.key)}
               </Link>)}
             </div>
@@ -82,8 +81,7 @@ const Header = () => {
             <CartButton />
             
             {/* Authentication Controls */}
-            {user ? (
-              <div className="relative group">
+            {user ? <div className="relative group">
                 <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-4 py-2">
                   <User className="h-5 w-5" />
                   <span className="hidden sm:inline">
@@ -91,33 +89,19 @@ const Header = () => {
                   </span>
                 </Button>
                 <div className="absolute right-0 top-full mt-2 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[180px] z-50">
-                  <Link
-                    to="/dashboard"
-                    className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg"
-                  >
+                  <Link to="/dashboard" className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg">
                     <User className="w-4 h-4 mr-3" />
                     {t('auth.dashboard')}
                   </Link>
-                  <button
-                    onClick={signOut}
-                    className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors last:rounded-b-lg"
-                  >
+                  <button onClick={signOut} className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors last:rounded-b-lg">
                     <LogOut className="w-4 h-4 mr-3" />
                     {t('auth.sign_out')}
                   </button>
                 </div>
-              </div>
-            ) : (
-              <Button
-                variant="ghost"
-                size="lg"
-                onClick={() => navigate('/auth')}
-                className="flex items-center space-x-2 px-4 py-2"
-              >
+              </div> : <Button variant="ghost" size="lg" onClick={() => navigate('/auth')} className="flex items-center space-x-2 px-4 py-2">
                 <User className="h-5 w-5" />
                 <span className="hidden sm:inline">{t('auth.sign_in')}</span>
-              </Button>
-            )}
+              </Button>}
 
             {/* Search Button */}
             <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-4 py-2">
@@ -139,16 +123,10 @@ const Header = () => {
                 </span>
               </Button>
               <div className="absolute right-0 top-full mt-2 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[160px] z-50">
-                {languages.map(lang => (
-                  <button 
-                    key={lang.code} 
-                    onClick={() => setLanguage(lang.code)} 
-                    className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg last:rounded-b-lg flex items-center space-x-3 ${currentLanguage === lang.code ? 'bg-accent text-accent-foreground' : ''}`}
-                  >
+                {languages.map(lang => <button key={lang.code} onClick={() => setLanguage(lang.code)} className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg last:rounded-b-lg flex items-center space-x-3 ${currentLanguage === lang.code ? 'bg-accent text-accent-foreground' : ''}`}>
                     <span className="text-lg">{lang.flag}</span>
                     <span className="font-medium">{lang.name}</span>
-                  </button>
-                ))}
+                  </button>)}
               </div>
             </div>
 
@@ -161,52 +139,30 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent side={isRTL ? "left" : "right"} className="w-[300px]">
                 <div className="flex flex-col space-y-4 mt-8">
-                  {navigationItems.map(item => (
-                    <Link 
-                      key={item.key} 
-                      to={item.href} 
-                      className="text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" 
-                      onClick={() => setIsMenuOpen(false)}
-                    >
+                  {navigationItems.map(item => <Link key={item.key} to={item.href} className="text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" onClick={() => setIsMenuOpen(false)}>
                       {t(item.key)}
-                    </Link>
-                  ))}
+                    </Link>)}
                   
                   {/* Mobile Auth */}
-                  {user ? (
-                    <>
-                      <Link
-                        to="/dashboard"
-                        className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
+                  {user ? <>
+                      <Link to="/dashboard" className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" onClick={() => setIsMenuOpen(false)}>
                         <User className="h-5 w-5 mr-3" />
                         {t('auth.dashboard')}
                       </Link>
-                      <button
-                        onClick={() => {
-                          setIsMenuOpen(false);
-                          signOut();
-                        }}
-                        className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border w-full text-left"
-                      >
+                      <button onClick={() => {
+                    setIsMenuOpen(false);
+                    signOut();
+                  }} className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border w-full text-left">
                         <LogOut className="h-5 w-5 mr-3" />
                         {t('auth.sign_out')}
                       </button>
-                    </>
-                  ) : (
-                    <Button
-                      variant="ghost"
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        navigate('/auth');
-                      }}
-                      className="justify-start py-3 px-2 border-b border-border"
-                    >
+                    </> : <Button variant="ghost" onClick={() => {
+                  setIsMenuOpen(false);
+                  navigate('/auth');
+                }} className="justify-start py-3 px-2 border-b border-border">
                       <User className="h-5 w-5 mr-3" />
                       {t('auth.sign_in')}
-                    </Button>
-                  )}
+                    </Button>}
                   
                   {/* Mobile Search */}
                   <Button variant="ghost" className="justify-start py-3 px-2 border-b border-border">
