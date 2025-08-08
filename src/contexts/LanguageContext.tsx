@@ -702,7 +702,6 @@ const translations = {
     'checkout.credit_card_desc': 'Pay securely online',
     'checkout.cash_on_delivery': 'Cash on Delivery',
     'checkout.cash_on_delivery_desc': 'Pay when you receive your order',
-    'checkout.payment_method': 'Payment Method',
     'checkout.credit_card_manual': 'Credit Card (Call to Pay)',
     'checkout.credit_card_manual_desc': 'We will call you to process your credit card payment',
     'checkout.complete_order_credit_card': 'Place Order (We will call you)',
