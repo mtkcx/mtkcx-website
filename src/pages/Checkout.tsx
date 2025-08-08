@@ -290,15 +290,18 @@ const Checkout: React.FC = () => {
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Shield className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">{t('checkout.secure_checkout')}</div>
+                <div className="text-sm font-medium mb-1">{t('checkout.secure_checkout')}</div>
+                <div className="text-xs text-muted-foreground">{t('checkout.secure_checkout_desc')}</div>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Truck className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">{t('checkout.fast_delivery')}</div>
+                <div className="text-sm font-medium mb-1">{t('checkout.fast_delivery')}</div>
+                <div className="text-xs text-muted-foreground">{t('checkout.fast_delivery_desc')}</div>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Banknote className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">{t('checkout.cash_on_delivery')}</div>
+                <div className="text-sm font-medium mb-1">{t('checkout.cash_on_delivery_trust')}</div>
+                <div className="text-xs text-muted-foreground">{t('checkout.cash_on_delivery_trust_desc')}</div>
               </div>
             </div>
           </div>
