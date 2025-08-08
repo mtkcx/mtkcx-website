@@ -362,9 +362,9 @@ const translations = {
     'gallery.complete_color_transformation': 'Complete color transformation',
     'gallery.paint_protection_benefits': 'Paint protection benefits',
     'gallery.custom_design_options': 'Custom design options',
-    'gallery.professional_installation_service': 'Professional installation',
+    'gallery.professional_installation_feature': 'Professional installation',
     'gallery.removable_without_damage': 'Removable without damage',
-    'gallery.increased_resale_value': 'Increased resale value protection',
+    'gallery.increased_resale_value': 'Increased resale value',
     'gallery.partial_vehicle_wrap': 'Partial Vehicle Wrap',
     'gallery.strategic_accent_branding': 'Strategic accent and branding solutions',
     'gallery.partial_wrap_desc': 'Perfect for businesses or personal customization. Cover specific panels, create racing stripes, or add accent colors to make your vehicle stand out.',
@@ -373,7 +373,7 @@ const translations = {
     'gallery.business_branding_solutions': 'Business branding solutions',
     'gallery.cost_effective_customization': 'Cost-effective customization',
     'gallery.quick_installation': 'Quick installation',
-     'gallery.easy_maintenance_service': 'Easy maintenance',
+     'gallery.easy_maintenance_feature': 'Easy maintenance',
     'gallery.color_change_wrap_service': 'Color Change Wrap',
     'gallery.premium_color_transformation': 'Premium color transformation',
     'gallery.color_change_desc': 'Change your vehicle\'s color completely with premium automotive films. Choose from matte, gloss, satin, or specialty finishes for a unique look.',
@@ -421,7 +421,6 @@ const translations = {
     'gallery.3m_description': 'Industry-leading automotive films with superior durability and finish quality.',
     'gallery.10_year_warranty': '10+ year warranty options',
     'gallery.self_healing_tech': 'Self-healing technology',
-    'gallery.easy_maintenance_option': 'Easy maintenance',
     'gallery.easy_maintenance': 'Easy maintenance',
     'gallery.avery_description': 'Premium vinyl films known for excellent conformability and color accuracy.',
     'gallery.vibrant_color_range': 'Vibrant color range',
@@ -685,6 +684,8 @@ const translations = {
     'common.view_full_gallery': 'View Full Gallery',
     'common.project_gallery_image': 'Project Gallery Image',
     'common.images_coming_soon': 'Images coming soon',
+    'common.quote_request_received': 'Quote Request Received',
+    'common.contact_service_hours': 'Thank you for your interest in {service}! We\'ll contact you within 24 hours.',
     
     
     // 404 Page
@@ -1351,6 +1352,8 @@ const translations = {
     'common.view_full_gallery': 'عرض المعرض الكامل',
     'common.project_gallery_image': 'صورة معرض المشروع',
     'common.images_coming_soon': 'الصور قادمة قريباً',
+    'common.quote_request_received': 'تم استلام طلب العرض',
+    'common.contact_service_hours': 'شكراً لاهتمامك بـ {service}! سنتواصل معك خلال 24 ساعة.',
     
     // Category Filter & Navigation
     'categories.categories': 'الفئات',
@@ -1865,6 +1868,8 @@ const translations = {
     'common.view_full_gallery': 'צפה בגלריה המלאה',
     'common.project_gallery_image': 'תמונת גלריית פרויקט',
     'common.images_coming_soon': 'תמונות בקרוב',
+    'common.quote_request_received': 'בקשת הצעת מחיר התקבלה',
+    'common.contact_service_hours': 'תודה על העניין ב-{service}! ניצור קשר תוך 24 שעות.',
     
     // Category Filter & Navigation
     'categories.categories': 'קטגוריות',
