@@ -50,6 +50,8 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
         imageUrl,
         categoryName,
       });
+      // Scroll to top to show product details
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
