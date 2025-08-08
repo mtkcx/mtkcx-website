@@ -548,7 +548,10 @@ export default function ProductAdmin() {
           </TabsContent>
 
           <TabsContent value="bulk-categories">
-            <BulkCategoryManager />
+            <BulkCategoryManager 
+              categories={categories}
+              onUpdateComplete={loadProducts}
+            />
           </TabsContent>
         </Tabs>
 
