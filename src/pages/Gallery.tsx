@@ -186,17 +186,30 @@ const Gallery = () => {
   return <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-2">{t('common.mt_wraps_services')}</Badge>
-            <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
-              {t('gallery.title')}
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('gallery.subtitle')}
-            </p>
+      {/* Hero Banner with Title Overlay */}
+      <section className="relative mb-8">
+        <div className="relative overflow-hidden">
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 py-20 px-6">
+            <div className="max-w-7xl mx-auto flex items-center justify-center min-h-[400px]">
+              <img 
+                src="/lovable-uploads/81c355c1-6d78-43e7-b915-6f1e9e64edb5.png" 
+                alt="MT Wraps professional vehicle wrapping services logo"
+                className="w-full max-w-lg h-auto object-contain opacity-10"
+              />
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-black/50" />
+          
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center text-white px-6 max-w-5xl">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight">
+                Vehicle Wrapping Gallery & Services
+              </h1>
+              <p className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-95 font-light max-w-4xl mx-auto">
+                Transform your vehicle with our professional wrapping and protection services. From color changes to paint protection, we deliver exceptional results with premium materials and expert craftsmanship.
+              </p>
+            </div>
           </div>
         </div>
       </section>
