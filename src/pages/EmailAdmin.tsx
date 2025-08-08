@@ -90,8 +90,6 @@ const EmailAdmin = () => {
     subject: '',
     content: '',
     campaign_type: 'promotional',
-    discount_code: '',
-    discount_percentage: '',
     valid_until: ''
   });
 
@@ -178,7 +176,7 @@ const EmailAdmin = () => {
       const { data: existingCampaigns } = await supabase
         .from('email_campaigns')
         .select('name')
-        .in('name', ['Welcome Offer Campaign', 'New Product Launch', 'Seasonal Sale']);
+        .in('name', ['Welcome Campaign', 'New Product Launch', 'Newsletter Campaign']);
 
       if (existingCampaigns && existingCampaigns.length > 0) {
         return; // Sample campaigns already exist
@@ -186,25 +184,20 @@ const EmailAdmin = () => {
 
       const sampleCampaigns = [
         {
-          name: 'Welcome Offer Campaign',
-          subject: '🎉 Welcome! Get 20% Off Your First Order',
+          name: 'Welcome Campaign',
+          subject: '🎉 Welcome to Our Community!',
           content: `
             <h2>Welcome to our store, {customer_name}!</h2>
             <p>We're excited to have you join our community of satisfied customers.</p>
             
             <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3>Special Welcome Offer!</h3>
-              <p>Use code <strong>{discount_code}</strong> for {discount_percentage}% off your first order</p>
-              <p>Valid until: {valid_until}</p>
+              <h3>What's Next?</h3>
+              <p>Browse our products and find exactly what you need for your business.</p>
             </div>
-            
-            <p>Browse our products and find exactly what you need for your business.</p>
             
             <p>Best regards,<br>The Team</p>
           `,
-          campaign_type: 'promotional',
-          discount_code: 'WELCOME20',
-          discount_percentage: 20,
+          campaign_type: 'welcome',
           valid_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
           status: 'draft'
         },
@@ -216,41 +209,31 @@ const EmailAdmin = () => {
             <p>We're excited to announce the arrival of our latest products!</p>
             
             <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3>Limited Time Launch Offer</h3>
-              <p>Get {discount_percentage}% off all new products with code <strong>{discount_code}</strong></p>
-              <p>Offer expires: {valid_until}</p>
+              <h3>Check Out Our Latest Additions</h3>
+              <p>Be among the first to experience these innovative solutions.</p>
             </div>
-            
-            <p>Check out our latest additions and be among the first to experience these innovative solutions.</p>
             
             <p>Happy shopping!<br>The Team</p>
           `,
           campaign_type: 'product_announcement',
-          discount_code: 'NEWLAUNCH15',
-          discount_percentage: 15,
           valid_until: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
           status: 'draft'
         },
         {
-          name: 'Seasonal Sale',
-          subject: '🔥 Limited Time: Up to 30% Off Everything!',
+          name: 'Newsletter Campaign',
+          subject: '📢 Monthly Newsletter - What\'s New',
           content: `
             <h2>Hi {customer_name},</h2>
-            <p>Our biggest sale of the season is here!</p>
+            <p>Here's what's happening this month in our store!</p>
             
             <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3>Seasonal Mega Sale!</h3>
-              <p>Save {discount_percentage}% on your entire order with code <strong>{discount_code}</strong></p>
-              <p>Sale ends: {valid_until}</p>
+              <h3>Monthly Updates</h3>
+              <p>Stay informed about our latest news, products, and company updates.</p>
             </div>
             
-            <p>Don't miss out on these incredible savings. Shop now before the sale ends!</p>
-            
-            <p>Happy savings!<br>The Team</p>
+            <p>Thank you for being part of our community!<br>The Team</p>
           `,
-          campaign_type: 'seasonal',
-          discount_code: 'SEASON30',
-          discount_percentage: 30,
+          campaign_type: 'newsletter',
           valid_until: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
           status: 'draft'
         }
@@ -276,12 +259,6 @@ const EmailAdmin = () => {
         status: 'draft'
       };
 
-      if (formData.discount_code) {
-        campaignData.discount_code = formData.discount_code;
-      }
-      if (formData.discount_percentage) {
-        campaignData.discount_percentage = parseInt(formData.discount_percentage);
-      }
       if (formData.valid_until) {
         campaignData.valid_until = formData.valid_until;
       }
@@ -310,8 +287,6 @@ const EmailAdmin = () => {
         subject: '',
         content: '',
         campaign_type: 'promotional',
-        discount_code: '',
-        discount_percentage: '',
         valid_until: ''
       });
       fetchCampaigns();
@@ -405,8 +380,6 @@ const EmailAdmin = () => {
     
     // Replace placeholders with sample data
     content = content.replace(/\{customer_name\}/g, 'John Doe');
-    content = content.replace(/\{discount_code\}/g, campaign.discount_code || 'SAVE20');
-    content = content.replace(/\{discount_percentage\}/g, campaign.discount_percentage?.toString() || '20');
     content = content.replace(/\{valid_until\}/g, campaign.valid_until ? new Date(campaign.valid_until).toLocaleDateString() : 'December 31, 2024');
     
     return content;
@@ -789,87 +762,63 @@ const EmailAdmin = () => {
                   <DialogTitle>Create New Email Campaign</DialogTitle>
                 </DialogHeader>
                 <Tabs defaultValue="content" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
+                  <TabsList className="grid w-full grid-cols-1">
                     <TabsTrigger value="content">Email Content</TabsTrigger>
-                    <TabsTrigger value="discount">Discount Code</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="content" className="space-y-4 mt-4">
-                    <div>
-                      <Label htmlFor="name">Campaign Name</Label>
-                      <Input
-                        id="name"
-                        placeholder="Summer Sale 2024"
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      />
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="name">Campaign Name</Label>
+                        <Input
+                          id="name"
+                          placeholder="Monthly Newsletter"
+                          value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="campaign_type">Campaign Type</Label>
+                        <Select value={formData.campaign_type} onValueChange={(value) => setFormData({...formData, campaign_type: value})}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="promotional">Promotional</SelectItem>
+                            <SelectItem value="newsletter">Newsletter</SelectItem>
+                            <SelectItem value="product_announcement">Product Announcement</SelectItem>
+                            <SelectItem value="seasonal">Seasonal</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                     
                     <div>
                       <Label htmlFor="subject">Email Subject</Label>
                       <Input
                         id="subject"
-                        placeholder="🔥 Summer Sale - Up to 50% Off!"
+                        placeholder="📢 Monthly Newsletter - What's New"
                         value={formData.subject}
                         onChange={(e) => setFormData({...formData, subject: e.target.value})}
                       />
                     </div>
                     
                     <div>
-                      <Label htmlFor="campaign_type">Campaign Type</Label>
-                      <Select value={formData.campaign_type} onValueChange={(value) => setFormData({...formData, campaign_type: value})}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="promotional">Promotional</SelectItem>
-                          <SelectItem value="newsletter">Newsletter</SelectItem>
-                          <SelectItem value="product_announcement">Product Announcement</SelectItem>
-                          <SelectItem value="seasonal">Seasonal</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
                       <Label htmlFor="content">Email Content (HTML supported)</Label>
                       <Textarea
                         id="content"
-                        placeholder="Use placeholders: {customer_name}, {discount_code}, {discount_percentage}, {valid_until}"
+                        placeholder="Use placeholders: {customer_name}, {valid_until}"
                         value={formData.content}
                         onChange={(e) => setFormData({...formData, content: e.target.value})}
                         rows={8}
-                        className="font-mono text-sm"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Available placeholders: {"{customer_name}"}, {"{discount_code}"}, {"{discount_percentage}"}, {"{valid_until}"}
+                        Available placeholders: {"{customer_name}"}, {"{valid_until}"}
                       </p>
                     </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="discount" className="space-y-4 mt-4">
-                    <div>
-                      <Label htmlFor="discount_code">Discount Code</Label>
-                      <Input
-                        id="discount_code"
-                        placeholder="SAVE20"
-                        value={formData.discount_code}
-                        onChange={(e) => setFormData({...formData, discount_code: e.target.value})}
-                      />
-                    </div>
                     
                     <div>
-                      <Label htmlFor="discount_percentage">Discount Percentage</Label>
-                      <Input
-                        id="discount_percentage"
-                        type="number"
-                        placeholder="20"
-                        value={formData.discount_percentage}
-                        onChange={(e) => setFormData({...formData, discount_percentage: e.target.value})}
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="valid_until">Valid Until</Label>
+                      <Label htmlFor="valid_until">Valid Until (Optional)</Label>
                       <Input
                         id="valid_until"
                         type="datetime-local"
@@ -1144,35 +1093,20 @@ const EmailAdmin = () => {
                   </CardHeader>
                   
                   <CardContent className="space-y-4">
-                    {/* Discount Info */}
-                    {campaign.discount_code && (
-                      <div className="bg-muted/30 p-4 rounded-lg">
-                        <h4 className="font-semibold mb-3 flex items-center">
-                          <Tag className="w-4 h-4 mr-2" />
-                          Discount Information
-                        </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-                          <div className="flex items-center justify-between">
-                            <span>Code: <strong>{campaign.discount_code}</strong></span>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => copyDiscountCode(campaign.discount_code!)}
-                            >
-                              <Copy className="w-3 h-3" />
-                            </Button>
-                          </div>
-                          <div className="flex items-center">
-                            <Percent className="w-3 h-3 mr-2 text-muted-foreground" />
-                            {campaign.discount_percentage}% OFF
-                          </div>
-                          <div className="flex items-center">
-                            <Calendar className="w-3 h-3 mr-2 text-muted-foreground" />
-                            Valid until: {campaign.valid_until ? formatDate(campaign.valid_until) : 'No expiry'}
-                          </div>
-                        </div>
+                    {/* Campaign Info */}
+                    <div className="space-y-2">
+                      <h4 className="font-semibold text-primary flex items-center">
+                        <Mail className="w-4 h-4 mr-2" />
+                        Campaign Information
+                      </h4>
+                      <div className="space-y-1 text-sm text-muted-foreground">
+                        <p><strong>Type:</strong> {campaign.campaign_type.replace('_', ' ')}</p>
+                        <p><strong>Created:</strong> {formatDate(campaign.created_at)}</p>
+                        {campaign.valid_until && (
+                          <p><strong>Valid Until:</strong> {formatDate(campaign.valid_until)}</p>
+                        )}
                       </div>
-                    )}
+                    </div>
                     
                     {/* Actions */}
                     <div className="flex space-x-2">
