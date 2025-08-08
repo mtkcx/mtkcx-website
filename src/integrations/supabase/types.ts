@@ -70,8 +70,6 @@ export type Database = {
           campaign_type: string
           content: string
           created_at: string
-          discount_code: string | null
-          discount_percentage: number | null
           id: string
           name: string
           status: string
@@ -83,8 +81,6 @@ export type Database = {
           campaign_type: string
           content: string
           created_at?: string
-          discount_code?: string | null
-          discount_percentage?: number | null
           id?: string
           name: string
           status?: string
@@ -96,8 +92,6 @@ export type Database = {
           campaign_type?: string
           content?: string
           created_at?: string
-          discount_code?: string | null
-          discount_percentage?: number | null
           id?: string
           name?: string
           status?: string
