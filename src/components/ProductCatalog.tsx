@@ -227,27 +227,36 @@ const ProductCatalog = () => {
   }, [products]);
 
   return (
-    <main className="container mx-auto px-6 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-          {t('products.title')}
-        </h1>
-        <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-          {t('products.subtitle')}
-        </p>
-        
-        {/* Koch-Chemie Color Chart Banner */}
-        <div className="relative overflow-hidden rounded-lg shadow-lg bg-gradient-to-r from-gray-50 to-gray-100 p-8 mb-8">
-          <div className="max-w-5xl mx-auto">
-            <img 
-              src="/lovable-uploads/3d7dc22e-86ff-41c1-be13-22c68e59c932.png" 
-              alt="Koch-Chemie professional color chart and pH indicator system for automotive detailing products"
-              className="w-full h-auto max-h-[300px] object-contain rounded-lg"
-            />
+    <main>
+      {/* Hero Banner with Title Overlay */}
+      <section className="relative mb-8">
+        <div className="relative overflow-hidden">
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 py-16 px-6">
+            <div className="max-w-7xl mx-auto">
+              <img 
+                src="/lovable-uploads/3d7dc22e-86ff-41c1-be13-22c68e59c932.png" 
+                alt="Koch-Chemie professional color chart and pH indicator system for automotive detailing products"
+                className="w-full h-[300px] md:h-[400px] object-contain rounded-lg shadow-lg"
+              />
+            </div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-white/20 rounded-lg" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40" />
+          
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center text-white px-6 max-w-4xl">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight">
+                {t('products.title')}
+              </h1>
+              <p className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-95 font-light max-w-3xl mx-auto">
+                {t('products.subtitle')}
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <div className="container mx-auto px-6 pb-8">
 
       <div className="flex flex-col lg:flex-row gap-4 mb-6">
         <div className="relative flex-1">
@@ -337,6 +346,7 @@ const ProductCatalog = () => {
             </div>
           )}
         </div>
+      </div>
       </div>
     </main>
   );
