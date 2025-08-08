@@ -1660,9 +1660,14 @@ const translations = {
     'cart.total': 'الإجمالي',
     'cart.clear_cart': 'مسح السلة',
     'cart.checkout': 'الدفع',
+    
+    // Additional Payment Method Translations
+    'checkout.credit_card_manual': 'بطاقة ائتمان (سنتصل بك)',
+    'checkout.credit_card_manual_desc': 'سنتصل بك لمعالجة دفع بطاقتك الائتمانية',
+    'checkout.complete_order_credit_card': 'إتمام الطلب (سنتصل بك)',
+    'checkout.credit_card_notice': 'بإتمام هذا الطلب، فإنك توافق على أن نتصل بك لمعالجة دفع بطاقتك الائتمانية',
 
     // Admin
-    admin: {
       error: 'خطأ',
       success: 'نجح',
       loading: 'جاري التحميل...',
@@ -2273,6 +2278,14 @@ const translations = {
     'cart.total': 'סה"כ',
     'cart.clear_cart': 'נקה עגלה',
     'cart.checkout': 'תשלום',
+    
+    
+    // Additional Payment Method Translations
+    'checkout.credit_card_manual': 'כרטיס אשראי (נתקשר אליך)',
+    'checkout.credit_card_manual_desc': 'ניצור קשר לעיבוד תשלום כרטיס האשראי שלך',
+    'checkout.complete_order_credit_card': 'השלמת הזמנה (ניצור קשר)',
+    'checkout.credit_card_notice': 'על ידי ביצוע הזמנה זו, אתה מסכים שניצור קשר לעיבוד תשלום כרטיס האשראי שלך',
+    
     'common.join_mt_wraps_family': 'הצטרף למשפחת MT Wraps וגלה למה מקצוענים סומכים עלינו לצרכי הטיפוח של הרכב שלהם.',
     'common.established_2020': 'נוסד ב-2020',
     'contact.location_address': 'אזור התעשייה עטרות, התמרוקים, ירושלים',
