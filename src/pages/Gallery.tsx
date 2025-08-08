@@ -194,19 +194,19 @@ const Gallery = () => {
               <img 
                 src="/lovable-uploads/81c355c1-6d78-43e7-b915-6f1e9e64edb5.png" 
                 alt="MT Wraps professional vehicle wrapping services logo"
-                className="w-full max-w-lg h-auto object-contain opacity-10"
+                className="w-full max-w-lg h-auto object-contain opacity-60"
               />
             </div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-black/30" />
           
           {/* Content Overlay */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white px-6 max-w-5xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight drop-shadow-lg">
                 Vehicle Wrapping Gallery & Services
               </h1>
-              <p className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-95 font-light max-w-4xl mx-auto">
+              <p className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-95 font-light max-w-4xl mx-auto drop-shadow-md">
                 Transform your vehicle with our professional wrapping and protection services. From color changes to paint protection, we deliver exceptional results with premium materials and expert craftsmanship.
               </p>
             </div>
