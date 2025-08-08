@@ -10,7 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, CreditCard, Truck, Shield, Banknote } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, Truck, Shield, Banknote } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -28,10 +29,11 @@ const Checkout: React.FC = () => {
     phone: '',
     address: '',
     city: '',
+    location: '',
     notes: '',
   });
   
-  const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'cash_on_delivery'>('credit_card');
+  const [shippingCost, setShippingCost] = useState(0);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('he-IL', {
@@ -45,10 +47,64 @@ const Checkout: React.FC = () => {
       ...prev,
       [field]: value,
     }));
+    
+    // Calculate shipping when location changes
+    if (field === 'location') {
+      calculateShipping(value);
+    }
+  };
+  
+  const calculateShipping = (location: string) => {
+    const totalWeight = getTotalWeight();
+    let baseShipping = 0;
+    
+    switch (location) {
+      case 'west_bank':
+        baseShipping = 30;
+        break;
+      case 'north':
+      case 'south': 
+      case 'center':
+        baseShipping = 60;
+        break;
+      case 'jerusalem':
+        baseShipping = 25;
+        break;
+      default:
+        baseShipping = 0;
+    }
+    
+    // Calculate weight multiplier (every 20kg doubles the cost)
+    const weightMultiplier = Math.max(1, Math.ceil(totalWeight / 20));
+    const finalShipping = baseShipping * weightMultiplier;
+    
+    setShippingCost(finalShipping);
+  };
+  
+  const getTotalWeight = () => {
+    // Calculate total weight from cart items
+    // Assuming each product has weight data, for now we'll estimate based on size
+    return items.reduce((total, item) => {
+      let itemWeight = 1; // Default 1kg
+      
+      // Estimate weight based on variant size
+      if (item.variantSize) {
+        const size = item.variantSize.toLowerCase();
+        if (size.includes('20l') || size.includes('20kg')) itemWeight = 20;
+        else if (size.includes('10l') || size.includes('10kg')) itemWeight = 10;
+        else if (size.includes('5l') || size.includes('5kg')) itemWeight = 5;
+        else if (size.includes('1l') || size.includes('1kg')) itemWeight = 1;
+        else if (size.includes('750ml')) itemWeight = 0.75;
+        else if (size.includes('500ml')) itemWeight = 0.5;
+        else if (size.includes('250ml')) itemWeight = 0.25;
+      }
+      
+      return total + (itemWeight * item.quantity);
+    }, 0);
   };
 
   const handlePlaceOrder = async () => {
-    if (!customerInfo.email || !customerInfo.name || !customerInfo.phone) {
+    if (!customerInfo.email || !customerInfo.name || !customerInfo.phone || !customerInfo.location) {
       toast({
         title: t('checkout.missing_info'),
         description: t('checkout.missing_info_desc'),
@@ -67,7 +123,7 @@ const Checkout: React.FC = () => {
       
       toast({
         title: t('checkout.order_success'),
-        description: t('checkout.order_success_desc').replace('{total}', formatPrice(getTotalPrice())),
+        description: t('checkout.order_success_desc').replace('{total}', formatPrice(getTotalPrice() + shippingCost)),
       });
       
       clearCart();
@@ -124,63 +180,22 @@ const Checkout: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
+                  <Banknote className="h-5 w-5" />
                   {t('checkout.customer_info')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Payment Method Selection */}
-                <div className="space-y-3">
-                  <Label>{t('checkout.payment_method')} {t('checkout.required_field')}</Label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div 
-                      className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                        paymentMethod === 'credit_card' 
-                          ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
-                          : 'border-muted hover:border-primary/50'
-                      }`}
-                      onClick={() => setPaymentMethod('credit_card')}
-                    >
-                      <div className="flex items-center gap-3">
-                        <CreditCard className="w-5 h-5 text-primary" />
-                        <div>
-                          <div className="font-medium">{t('checkout.credit_card')}</div>
-                          <div className="text-sm text-muted-foreground">{t('checkout.credit_card_desc')}</div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div 
-                      className={`border rounded-lg p-4 cursor-pointer transition-all ${
-                        paymentMethod === 'cash_on_delivery' 
-                          ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
-                          : 'border-muted hover:border-primary/50'
-                      }`}
-                      onClick={() => setPaymentMethod('cash_on_delivery')}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Banknote className="w-5 h-5 text-primary" />
-                        <div>
-                          <div className="font-medium">{t('checkout.cash_on_delivery')}</div>
-                          <div className="text-sm text-muted-foreground">{t('checkout.cash_on_delivery_desc')}</div>
-                        </div>
+                {/* Payment Method Info */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <Banknote className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <div className="text-sm">
+                      <div className="font-medium text-blue-900 mb-1">{t('checkout.shipping_notice_title')}</div>
+                      <div className="text-blue-700">
+                        {t('checkout.shipping_notice_desc')}
                       </div>
                     </div>
                   </div>
-                  
-                  {paymentMethod === 'cash_on_delivery' && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <div className="flex items-start gap-3">
-                        <Truck className="w-5 h-5 text-blue-600 mt-0.5" />
-                        <div className="text-sm">
-                          <div className="font-medium text-blue-900 mb-1">{t('checkout.shipping_notice_title')}</div>
-                          <div className="text-blue-700">
-                            {t('checkout.shipping_notice_desc')}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -219,6 +234,24 @@ const Checkout: React.FC = () => {
                       required
                     />
                   </div>
+                  <div>
+                    <Label htmlFor="location">{t('checkout.shipping_location')} {t('checkout.required_field')}</Label>
+                    <Select onValueChange={(value) => handleInputChange('location', value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('checkout.select_location')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="west_bank">{t('checkout.location_west_bank')}</SelectItem>
+                        <SelectItem value="north">{t('checkout.location_north')}</SelectItem>
+                        <SelectItem value="south">{t('checkout.location_south')}</SelectItem>
+                        <SelectItem value="center">{t('checkout.location_center')}</SelectItem>
+                        <SelectItem value="jerusalem">{t('checkout.location_jerusalem')}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="city">{t('checkout.city')}</Label>
                     <Input
@@ -264,8 +297,8 @@ const Checkout: React.FC = () => {
                 <div className="text-sm font-medium">{t('checkout.fast_delivery')}</div>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
-                <CreditCard className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">{t('checkout.safe_payments')}</div>
+                <Banknote className="w-6 h-6 mx-auto mb-2 text-primary" />
+                <div className="text-sm font-medium">{t('checkout.cash_on_delivery')}</div>
               </div>
             </div>
           </div>
@@ -319,27 +352,25 @@ const Checkout: React.FC = () => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>{t('checkout.shipping')}</span>
-                    <span className="text-muted-foreground">
-                      {paymentMethod === 'cash_on_delivery' ? t('checkout.shipping_tba') : t('checkout.shipping_free')}
+                    <span className="text-primary font-medium">
+                      {shippingCost > 0 ? t('checkout.shipping_calculated').replace('{amount}', shippingCost.toString()) : '-'}
                     </span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold text-lg">
                     <span>{t('checkout.total')}</span>
-                    <span>{formatPrice(getTotalPrice())}</span>
+                    <span>{formatPrice(getTotalPrice() + shippingCost)}</span>
                   </div>
                 </div>
                 
                 <Button
                   onClick={handlePlaceOrder}
-                  disabled={isProcessing}
+                  disabled={isProcessing || !customerInfo.location || shippingCost === 0}
                   className="w-full"
                   size="lg"
                 >
                   {isProcessing ? t('checkout.processing') : 
-                   paymentMethod === 'cash_on_delivery' 
-                     ? t('checkout.complete_order').replace('{total}', formatPrice(getTotalPrice()))
-                     : t('checkout.pay_now').replace('{total}', formatPrice(getTotalPrice()))
+                   t('checkout.complete_order').replace('{total}', formatPrice(getTotalPrice() + shippingCost))
                   }
                 </Button>
                 
