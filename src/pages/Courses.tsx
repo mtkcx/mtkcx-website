@@ -19,30 +19,28 @@ const Courses = () => {
   return <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero Section */}
+      {/* Hero Section with Banner */}
       <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 px-4 py-2">{t('common.professional_training')}</Badge>
-            <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
-              {t('courses.title')}
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('courses.subtitle')}
-            </p>
             
-            {/* Training Banner Image */}
-            <div className="mt-12">
-              <div className="relative overflow-hidden rounded-lg shadow-lg">
-                <img 
-                  src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png" 
-                  alt="Professional car detailing training session with multiple students learning hands-on techniques on a luxury vehicle in our state-of-the-art facility"
-                  className="w-full h-[400px] md:h-[500px] object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <h2 className="text-2xl md:text-3xl font-bold mb-2">{t('common.professional_training')}</h2>
-                  <p className="text-lg opacity-90 max-w-2xl">{t('common.only_official_course')}</p>
+            {/* Training Banner Image with Title Overlay */}
+            <div className="relative overflow-hidden rounded-lg shadow-lg">
+              <img 
+                src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png" 
+                alt="Professional car detailing training session with multiple students learning hands-on techniques on a luxury vehicle in our state-of-the-art facility"
+                className="w-full h-[500px] md:h-[600px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center text-white px-6 max-w-4xl">
+                  <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    {t('courses.title')}
+                  </h1>
+                  <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed opacity-90">
+                    {t('courses.subtitle')}
+                  </p>
                 </div>
               </div>
             </div>
