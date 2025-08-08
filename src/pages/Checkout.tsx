@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,6 +19,7 @@ const Checkout: React.FC = () => {
   const navigate = useNavigate();
   const { items, getTotalPrice, clearCart } = useCart();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
   
   const [customerInfo, setCustomerInfo] = useState({
@@ -48,8 +50,8 @@ const Checkout: React.FC = () => {
   const handlePlaceOrder = async () => {
     if (!customerInfo.email || !customerInfo.name || !customerInfo.phone) {
       toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields (email, name, phone)",
+        title: t('checkout.missing_info'),
+        description: t('checkout.missing_info_desc'),
         variant: "destructive",
       });
       return;
@@ -64,8 +66,8 @@ const Checkout: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       toast({
-        title: "Order Placed Successfully!",
-        description: `Your order for ${formatPrice(getTotalPrice())} has been placed.`,
+        title: t('checkout.order_success'),
+        description: t('checkout.order_success_desc').replace('{total}', formatPrice(getTotalPrice())),
       });
       
       clearCart();
@@ -73,8 +75,8 @@ const Checkout: React.FC = () => {
       
     } catch (error) {
       toast({
-        title: "Order Failed",
-        description: "There was an error processing your order. Please try again.",
+        title: t('checkout.order_failed'),
+        description: t('checkout.order_failed_desc'),
         variant: "destructive",
       });
     } finally {
@@ -88,10 +90,10 @@ const Checkout: React.FC = () => {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="text-center space-y-4">
-            <h1 className="text-2xl font-bold">Your cart is empty</h1>
-            <p className="text-muted-foreground">Add some products before proceeding to checkout</p>
+            <h1 className="text-2xl font-bold">{t('checkout.cart_empty')}</h1>
+            <p className="text-muted-foreground">{t('checkout.cart_empty_desc')}</p>
             <Button onClick={() => navigate('/products')}>
-              Continue Shopping
+              {t('checkout.continue_shopping')}
             </Button>
           </div>
         </div>
@@ -112,7 +114,7 @@ const Checkout: React.FC = () => {
             className="p-0 h-auto"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Products
+            {t('checkout.back_to_products')}
           </Button>
         </div>
 
@@ -123,13 +125,13 @@ const Checkout: React.FC = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CreditCard className="h-5 w-5" />
-                  Customer Information
+                  {t('checkout.customer_info')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Payment Method Selection */}
                 <div className="space-y-3">
-                  <Label>Payment Method *</Label>
+                  <Label>{t('checkout.payment_method')} {t('checkout.required_field')}</Label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div 
                       className={`border rounded-lg p-4 cursor-pointer transition-all ${
@@ -142,8 +144,8 @@ const Checkout: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <CreditCard className="w-5 h-5 text-primary" />
                         <div>
-                          <div className="font-medium">Credit Card</div>
-                          <div className="text-sm text-muted-foreground">Pay securely online</div>
+                          <div className="font-medium">{t('checkout.credit_card')}</div>
+                          <div className="text-sm text-muted-foreground">{t('checkout.credit_card_desc')}</div>
                         </div>
                       </div>
                     </div>
@@ -159,8 +161,8 @@ const Checkout: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <Banknote className="w-5 h-5 text-primary" />
                         <div>
-                          <div className="font-medium">Cash on Delivery</div>
-                          <div className="text-sm text-muted-foreground">Pay when you receive</div>
+                          <div className="font-medium">{t('checkout.cash_on_delivery')}</div>
+                          <div className="text-sm text-muted-foreground">{t('checkout.cash_on_delivery_desc')}</div>
                         </div>
                       </div>
                     </div>
@@ -171,10 +173,9 @@ const Checkout: React.FC = () => {
                       <div className="flex items-start gap-3">
                         <Truck className="w-5 h-5 text-blue-600 mt-0.5" />
                         <div className="text-sm">
-                          <div className="font-medium text-blue-900 mb-1">Shipping Cost Notice</div>
+                          <div className="font-medium text-blue-900 mb-1">{t('checkout.shipping_notice_title')}</div>
                           <div className="text-blue-700">
-                            Shipping costs will be calculated based on your order weight and location. 
-                            We'll send you the exact shipping cost via email after your order is placed.
+                            {t('checkout.shipping_notice_desc')}
                           </div>
                         </div>
                       </div>
@@ -184,7 +185,7 @@ const Checkout: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email">{t('checkout.email')} {t('checkout.required_field')}</Label>
                     <Input
                       id="email"
                       type="email"
@@ -195,7 +196,7 @@ const Checkout: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="name">Full Name *</Label>
+                    <Label htmlFor="name">{t('checkout.full_name')} {t('checkout.required_field')}</Label>
                     <Input
                       id="name"
                       value={customerInfo.name}
@@ -208,7 +209,7 @@ const Checkout: React.FC = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">{t('checkout.phone_number')} {t('checkout.required_field')}</Label>
                     <Input
                       id="phone"
                       type="tel"
@@ -219,7 +220,7 @@ const Checkout: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="city">City</Label>
+                    <Label htmlFor="city">{t('checkout.city')}</Label>
                     <Input
                       id="city"
                       value={customerInfo.city}
@@ -230,7 +231,7 @@ const Checkout: React.FC = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="address">Address</Label>
+                  <Label htmlFor="address">{t('checkout.address')}</Label>
                   <Input
                     id="address"
                     value={customerInfo.address}
@@ -240,12 +241,12 @@ const Checkout: React.FC = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="notes">Order Notes</Label>
+                  <Label htmlFor="notes">{t('checkout.order_notes')}</Label>
                   <Textarea
                     id="notes"
                     value={customerInfo.notes}
                     onChange={(e) => handleInputChange('notes', e.target.value)}
-                    placeholder="Any special instructions..."
+                    placeholder={t('checkout.order_notes_placeholder')}
                     rows={3}
                   />
                 </div>
@@ -256,15 +257,15 @@ const Checkout: React.FC = () => {
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Shield className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">Secure Checkout</div>
+                <div className="text-sm font-medium">{t('checkout.secure_checkout')}</div>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Truck className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">Fast Delivery</div>
+                <div className="text-sm font-medium">{t('checkout.fast_delivery')}</div>
               </div>
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <CreditCard className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-sm font-medium">Safe Payments</div>
+                <div className="text-sm font-medium">{t('checkout.safe_payments')}</div>
               </div>
             </div>
           </div>
@@ -273,7 +274,7 @@ const Checkout: React.FC = () => {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
+                <CardTitle>{t('checkout.order_summary')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {items.map((item) => (
@@ -293,7 +294,7 @@ const Checkout: React.FC = () => {
                           {item.variantSize}
                         </Badge>
                         <span className="text-xs text-muted-foreground">
-                          Qty: {item.quantity}
+                          {t('checkout.quantity').replace('{quantity}', item.quantity.toString())}
                         </span>
                       </div>
                     </div>
@@ -303,7 +304,7 @@ const Checkout: React.FC = () => {
                         {formatPrice(item.price * item.quantity)}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {formatPrice(item.price)} each
+                        {formatPrice(item.price)} {t('checkout.each')}
                       </div>
                     </div>
                   </div>
@@ -313,18 +314,18 @@ const Checkout: React.FC = () => {
                 
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Subtotal</span>
+                    <span>{t('checkout.subtotal')}</span>
                     <span>{formatPrice(getTotalPrice())}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>Shipping</span>
+                    <span>{t('checkout.shipping')}</span>
                     <span className="text-muted-foreground">
-                      {paymentMethod === 'cash_on_delivery' ? 'TBA by email' : 'Free'}
+                      {paymentMethod === 'cash_on_delivery' ? t('checkout.shipping_tba') : t('checkout.shipping_free')}
                     </span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold text-lg">
-                    <span>Total</span>
+                    <span>{t('checkout.total')}</span>
                     <span>{formatPrice(getTotalPrice())}</span>
                   </div>
                 </div>
@@ -335,15 +336,15 @@ const Checkout: React.FC = () => {
                   className="w-full"
                   size="lg"
                 >
-                  {isProcessing ? 'Processing...' : 
+                  {isProcessing ? t('checkout.processing') : 
                    paymentMethod === 'cash_on_delivery' 
-                     ? `Complete Order - ${formatPrice(getTotalPrice())}`
-                     : `Pay Now - ${formatPrice(getTotalPrice())}`
+                     ? t('checkout.complete_order').replace('{total}', formatPrice(getTotalPrice()))
+                     : t('checkout.pay_now').replace('{total}', formatPrice(getTotalPrice()))
                   }
                 </Button>
                 
                 <p className="text-xs text-muted-foreground text-center">
-                  By placing your order, you agree to our Terms of Service and Privacy Policy
+                  {t('checkout.terms_notice')}
                 </p>
               </CardContent>
             </Card>
