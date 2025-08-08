@@ -39,11 +39,12 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error('Order not found');
     }
 
-    // Update order with tracking number
+    // Update order with tracking number and date
     await supabase
       .from('orders')
       .update({ 
         tracking_number: trackingNumber,
+        tracking_date: new Date().toISOString(),
         status: 'shipped'
       })
       .eq('id', orderId);
@@ -83,7 +84,7 @@ const handler = async (req: Request): Promise<Response> => {
 
             <div style="margin-bottom: 30px;">
               <h3 style="color: #333; margin-bottom: 15px;">Delivery Information</h3>
-              <p><strong>Expected Delivery:</strong> 3-5 business days</p>
+              <p><strong>Expected Delivery:</strong> 7-10 business days from order date</p>
               ${order.customer_address ? `
               <p style="margin-top: 15px;"><strong>Delivery Address:</strong><br>
                 ${order.customer_name}<br>
@@ -94,11 +95,13 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
 
             <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 30px 0;">
-              <h3 style="color: #059669; margin-top: 0;">Delivery Tips</h3>
+              <h3 style="color: #059669; margin-top: 0;">Delivery Information</h3>
               <ul style="margin: 10px 0; padding-left: 20px; color: #374151;">
+                <li>Your order will be delivered by our trusted delivery partner</li>
+                <li>Expected delivery time: 7-10 business days from order date</li>
                 <li>Someone should be available to receive the package</li>
-                <li>Check your tracking number regularly for updates</li>
                 <li>Contact us immediately if there are any delivery issues</li>
+                <li>You can track your package using the tracking number above</li>
               </ul>
             </div>
             

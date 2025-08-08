@@ -37,8 +37,6 @@ interface EmailCampaign {
   content: string;
   campaign_type: string;
   status: string;
-  discount_code: string | null;
-  discount_percentage: number | null;
   valid_until: string | null;
   created_at: string;
   updated_at: string;

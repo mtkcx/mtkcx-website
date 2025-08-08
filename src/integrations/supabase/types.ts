@@ -305,6 +305,8 @@ export type Database = {
           service_description: string | null
           service_type: string | null
           status: string | null
+          tracking_date: string | null
+          tracking_number: string | null
           updated_at: string
           user_id: string | null
         }
@@ -330,6 +332,8 @@ export type Database = {
           service_description?: string | null
           service_type?: string | null
           status?: string | null
+          tracking_date?: string | null
+          tracking_number?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -355,6 +359,8 @@ export type Database = {
           service_description?: string | null
           service_type?: string | null
           status?: string | null
+          tracking_date?: string | null
+          tracking_number?: string | null
           updated_at?: string
           user_id?: string | null
         }

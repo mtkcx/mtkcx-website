@@ -108,7 +108,8 @@ const handler = async (req: Request): Promise<Response> => {
               <ul style="margin: 10px 0; padding-left: 20px;">
                 <li>We'll prepare your order and send you tracking information</li>
                 <li>You'll receive updates via email as your order progresses</li>
-                <li>Expected delivery: 3-5 business days</li>
+                <li>Expected delivery: 7-10 business days from order date</li>
+                <li>Our delivery partner will contact you for final delivery arrangements</li>
               </ul>
             </div>
             

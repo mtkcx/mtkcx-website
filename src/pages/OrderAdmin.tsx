@@ -57,6 +57,8 @@ interface Order {
   preferred_date: string | null;
   payment_session_id: string | null;
   payment_intent_id: string | null;
+  tracking_number: string | null;
+  tracking_date: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -171,6 +173,57 @@ const OrderAdmin = () => {
       fetchOrders();
     } catch (error) {
       console.error('Error updating order status:', error);
+    }
+  };
+
+  const handleSendTrackingEmail = async () => {
+    if (!selectedOrder || !trackingData.trackingNumber) {
+      toast({
+        title: 'Error',
+        description: 'Please enter a tracking number',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase.functions.invoke('send-tracking-email', {
+        body: {
+          orderId: selectedOrder.id,
+          trackingNumber: trackingData.trackingNumber,
+          carrierName: trackingData.carrierName || undefined,
+          trackingUrl: trackingData.trackingUrl || undefined
+        }
+      });
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to send tracking email',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Success',
+        description: 'Tracking email sent successfully',
+      });
+
+      setShowTrackingDialog(false);
+      setTrackingData({
+        trackingNumber: '',
+        carrierName: '',
+        trackingUrl: ''
+      });
+      fetchOrders();
+    } catch (error) {
+      console.error('Error sending tracking email:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send tracking email',
+        variant: 'destructive',
+      });
     }
   };
 
