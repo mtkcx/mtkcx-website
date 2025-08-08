@@ -20,27 +20,43 @@ const Courses = () => {
       <Header />
       
       {/* Hero Section with Banner */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-2">{t('common.professional_training')}</Badge>
-            
-            {/* Training Banner Image with Title Overlay */}
-            <div className="relative overflow-hidden rounded-lg shadow-lg">
-              <img 
-                src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png" 
-                alt="Professional car detailing training session with multiple students learning hands-on techniques on a luxury vehicle in our state-of-the-art facility"
-                className="w-full h-[500px] md:h-[600px] object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-white px-6 max-w-4xl">
-                  <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                    {t('courses.title')}
-                  </h1>
-                  <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed opacity-90">
-                    {t('courses.subtitle')}
+      <section className="relative">
+        <div className="relative overflow-hidden">
+          <img 
+            src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png" 
+            alt="Professional car detailing training session with multiple students learning hands-on techniques on a luxury vehicle in our state-of-the-art facility"
+            className="w-full h-[70vh] md:h-[80vh] object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+          
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="container mx-auto px-6">
+              <div className="max-w-5xl mx-auto text-center text-white">
+                <Badge className="mb-8 px-6 py-3 bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-colors">
+                  {t("common.professional_training")}
+                </Badge>
+                
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight tracking-tight">
+                  {t("courses.title")}
+                </h1>
+                
+                <div className="max-w-4xl mx-auto">
+                  <p className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-95 font-light">
+                    {t("courses.subtitle")}
                   </p>
+                </div>
+                
+                {/* Call to Action */}
+                <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button size="lg" className="px-8 py-4 text-lg bg-primary hover:bg-primary/90 text-white shadow-lg">
+                    <Calendar className="w-5 h-5 mr-2" />
+                    {t("courses.enroll_now")}
+                  </Button>
+                  <Button variant="outline" size="lg" className="px-8 py-4 text-lg bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm">
+                    <Phone className="w-5 h-5 mr-2" />
+                    {t("courses.contact_details")}
+                  </Button>
                 </div>
               </div>
             </div>
