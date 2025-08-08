@@ -58,18 +58,27 @@ interface EmailLog {
 interface EmailTemplate {
   id: string;
   name: string;
-  type: string;
+  subject: string;
+  content: string;
+  template_type: string;
   description: string;
-  status: 'active' | 'system';
+  is_system: boolean;
+  is_active: boolean;
+  variables: any;
+  created_at: string;
+  updated_at: string;
 }
 
 const EmailAdmin = () => {
   const { toast } = useToast();
   const [campaigns, setCampaigns] = useState<EmailCampaign[]>([]);
   const [emailLogs, setEmailLogs] = useState<EmailLog[]>([]);
+  const [emailTemplates, setEmailTemplates] = useState<EmailTemplate[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('campaigns');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showCreateTemplateDialog, setShowCreateTemplateDialog] = useState(false);
+  const [showEditTemplateDialog, setShowEditTemplateDialog] = useState(false);
   const [showPreviewDialog, setShowPreviewDialog] = useState(false);
   const [showTemplatePreviewDialog, setShowTemplatePreviewDialog] = useState(false);
   const [showTestEmailDialog, setShowTestEmailDialog] = useState(false);
@@ -86,42 +95,39 @@ const EmailAdmin = () => {
     valid_until: ''
   });
 
-  const emailTemplates: EmailTemplate[] = [
-    {
-      id: 'welcome',
-      name: 'Welcome Email',
-      type: 'welcome',
-      description: 'Sent automatically when users subscribe to newsletter',
-      status: 'system'
-    },
-    {
-      id: 'order_confirmation',
-      name: 'Order Confirmation',
-      type: 'order_confirmation',
-      description: 'Sent automatically when orders are placed',
-      status: 'system'
-    },
-    {
-      id: 'tracking',
-      name: 'Shipping Notification',
-      type: 'tracking',
-      description: 'Sent when order tracking information is available',
-      status: 'system'
-    },
-    {
-      id: 'promotional',
-      name: 'Promotional Campaign',
-      type: 'promotional',
-      description: 'Custom marketing campaigns with discount codes',
-      status: 'active'
-    }
-  ];
+  const [templateFormData, setTemplateFormData] = useState({
+    name: '',
+    subject: '',
+    content: '',
+    template_type: 'promotional',
+    description: '',
+    variables: '{}'
+  });
 
   useEffect(() => {
     fetchCampaigns();
     fetchEmailLogs();
+    fetchEmailTemplates();
     createSampleCampaigns();
   }, []);
+
+  const fetchEmailTemplates = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('email_templates')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching email templates:', error);
+        return;
+      }
+
+      setEmailTemplates(data || []);
+    } catch (error) {
+      console.error('Error fetching email templates:', error);
+    }
+  };
 
   const fetchCampaigns = async () => {
     try {
@@ -407,75 +413,48 @@ const EmailAdmin = () => {
   };
 
   const getSystemTemplatePreview = (template: EmailTemplate) => {
-    // Mock template content based on the edge functions
-    switch (template.type) {
-      case 'welcome':
-        return `
-          <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; border-radius: 10px 10px 0 0;">
-              <h1 style="color: white; margin: 0; font-size: 28px;">Welcome John Doe!</h1>
-              <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Thank you for joining our community</p>
-            </div>
-            <div style="background: white; padding: 40px 20px; border-radius: 0 0 10px 10px; border: 1px solid #e1e1e1;">
-              <h2 style="color: #333; margin-top: 0;">What to Expect</h2>
-              <div style="margin: 30px 0;">
-                <h3 style="color: #667eea; margin-bottom: 10px;">🚀 Exclusive Offers</h3>
-                <p>Be the first to know about special discounts, promotions, and exclusive deals available only to our subscribers.</p>
-              </div>
-              <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
-                <h3 style="color: #333; margin-top: 0;">Special Welcome Offer!</h3>
-                <p style="margin: 15px 0;">Use code <strong style="background: #667eea; color: white; padding: 5px 10px; border-radius: 4px;">WELCOME10</strong> for 10% off your first order</p>
-              </div>
-            </div>
-          </div>
-        `;
-      case 'order_confirmation':
-        return `
-          <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 20px; text-align: center; border-radius: 10px 10px 0 0;">
-              <h1 style="color: white; margin: 0; font-size: 28px;">Order Confirmed! ✅</h1>
-              <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Thank you for your order John Doe</p>
-            </div>
-            <div style="background: white; padding: 40px 20px; border-radius: 0 0 10px 10px; border: 1px solid #e1e1e1;">
-              <div style="margin-bottom: 30px;">
-                <h2 style="color: #333; margin-bottom: 15px;">Order Details</h2>
-                <p><strong>Order Number:</strong> ORD-12345</p>
-                <p><strong>Total Amount:</strong> ₪150.00</p>
-                <p><strong>Payment Method:</strong> Credit Card</p>
-              </div>
-              <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 30px 0;">
-                <h3 style="color: #0ea5e9; margin-top: 0;">What's Next?</h3>
-                <ul style="margin: 10px 0; padding-left: 20px;">
-                  <li>We'll prepare your order and send you tracking information</li>
-                  <li>Expected delivery: 3-5 business days</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        `;
-      case 'tracking':
-        return `
-          <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-            <div style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 40px 20px; text-align: center; border-radius: 10px 10px 0 0;">
-              <h1 style="color: white; margin: 0; font-size: 28px;">Package Shipped! 📦</h1>
-              <p style="color: white; margin: 10px 0 0 0; font-size: 16px;">Your order is on its way to you</p>
-            </div>
-            <div style="background: white; padding: 40px 20px; border-radius: 0 0 10px 10px; border: 1px solid #e1e1e1;">
-              <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="color: #333; margin-bottom: 15px;">Hi John Doe!</h2>
-                <p>Great news! Your order has been shipped and is on its way to you.</p>
-              </div>
-              <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 30px 0;">
-                <h3 style="color: #92400e; margin-top: 0; margin-bottom: 15px;">Tracking Information</h3>
-                <p style="margin: 5px 0;"><strong>Tracking Number:</strong> 1Z999AA1234567890</p>
-                <p style="margin: 5px 0;"><strong>Expected Delivery:</strong> 3-5 business days</p>
-              </div>
-            </div>
-          </div>
-        `;
-      default:
-        return '<p>Template preview not available</p>';
+    // Replace placeholders in actual template content
+    let content = template.content;
+    
+    // Replace variables with sample data
+    if (template.variables) {
+      const variables = typeof template.variables === 'string' ? JSON.parse(template.variables) : template.variables;
+      Object.keys(variables).forEach(key => {
+        const placeholder = `{{${key}}}`;
+        let sampleValue = '';
+        
+        switch (key) {
+          case 'name':
+          case 'customer_name':
+            sampleValue = 'John Doe';
+            break;
+          case 'shop_url':
+            sampleValue = window.location.origin;
+            break;
+          case 'order_number':
+            sampleValue = 'ORD-12345';
+            break;
+          case 'total_amount':
+            sampleValue = '₪150.00';
+            break;
+          case 'payment_method':
+            sampleValue = 'Credit Card';
+            break;
+          case 'campaign_name':
+            sampleValue = 'Special Promotion';
+            break;
+          case 'campaign_content':
+            sampleValue = '<p>We have exciting news to share with you!</p>';
+            break;
+          default:
+            sampleValue = variables[key] || `[${key}]`;
+        }
+        
+        content = content.replace(new RegExp(placeholder, 'g'), sampleValue);
+      });
     }
+    
+    return content;
   };
 
   const handleTestSystemTemplate = async (template: EmailTemplate) => {
@@ -492,7 +471,7 @@ const EmailAdmin = () => {
       let functionName = '';
       let requestBody: any = {};
 
-      switch (template.type) {
+      switch (template.template_type) {
         case 'welcome':
           functionName = 'send-welcome-email';
           requestBody = { email: testEmail, name: 'Test User' };
@@ -552,6 +531,119 @@ const EmailAdmin = () => {
     }
   };
 
+  const handleCreateTemplate = async () => {
+    try {
+      const templateData = {
+        name: templateFormData.name,
+        subject: templateFormData.subject,
+        content: templateFormData.content,
+        template_type: templateFormData.template_type,
+        description: templateFormData.description,
+        variables: templateFormData.variables,
+        is_system: false,
+        is_active: true
+      };
+
+      const { error } = await supabase
+        .from('email_templates')
+        .insert([templateData]);
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to create template',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Success',
+        description: 'Template created successfully',
+      });
+
+      setShowCreateTemplateDialog(false);
+      setTemplateFormData({
+        name: '',
+        subject: '',
+        content: '',
+        template_type: 'promotional',
+        description: '',
+        variables: '{}'
+      });
+      fetchEmailTemplates();
+    } catch (error) {
+      console.error('Error creating template:', error);
+    }
+  };
+
+  const handleEditTemplate = async () => {
+    if (!selectedTemplate) return;
+
+    try {
+      const templateData = {
+        name: templateFormData.name,
+        subject: templateFormData.subject,
+        content: templateFormData.content,
+        template_type: templateFormData.template_type,
+        description: templateFormData.description,
+        variables: templateFormData.variables
+      };
+
+      const { error } = await supabase
+        .from('email_templates')
+        .update(templateData)
+        .eq('id', selectedTemplate.id);
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to update template',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Success',
+        description: 'Template updated successfully',
+      });
+
+      setShowEditTemplateDialog(false);
+      setSelectedTemplate(null);
+      fetchEmailTemplates();
+    } catch (error) {
+      console.error('Error updating template:', error);
+    }
+  };
+
+  const handleDeleteTemplate = async (templateId: string) => {
+    try {
+      const { error } = await supabase
+        .from('email_templates')
+        .delete()
+        .eq('id', templateId);
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: 'Failed to delete template',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Success',
+        description: 'Template deleted successfully',
+      });
+
+      fetchEmailTemplates();
+    } catch (error) {
+      console.error('Error deleting template:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -583,7 +675,109 @@ const EmailAdmin = () => {
                 Manage all email templates, campaigns, and view email logs in one unified interface.
               </p>
             </div>
-            <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+            <div className="flex space-x-2">
+              <Dialog open={showCreateTemplateDialog} onOpenChange={setShowCreateTemplateDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="outline">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Template
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Create New Email Template</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="template-name">Template Name</Label>
+                        <Input
+                          id="template-name"
+                          placeholder="Custom Welcome Email"
+                          value={templateFormData.name}
+                          onChange={(e) => setTemplateFormData({...templateFormData, name: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="template-type">Template Type</Label>
+                        <Select value={templateFormData.template_type} onValueChange={(value) => setTemplateFormData({...templateFormData, template_type: value})}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="promotional">Promotional</SelectItem>
+                            <SelectItem value="newsletter">Newsletter</SelectItem>
+                            <SelectItem value="welcome">Welcome</SelectItem>
+                            <SelectItem value="order_confirmation">Order Confirmation</SelectItem>
+                            <SelectItem value="tracking">Shipping Notification</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="template-subject">Email Subject</Label>
+                      <Input
+                        id="template-subject"
+                        placeholder="Welcome to our community!"
+                        value={templateFormData.subject}
+                        onChange={(e) => setTemplateFormData({...templateFormData, subject: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="template-description">Description</Label>
+                      <Input
+                        id="template-description"
+                        placeholder="Describe when this template should be used"
+                        value={templateFormData.description}
+                        onChange={(e) => setTemplateFormData({...templateFormData, description: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="template-variables">Variables (JSON format)</Label>
+                      <Textarea
+                        id="template-variables"
+                        placeholder='{"customer_name": "Customer Name", "shop_url": "Shop URL"}'
+                        value={templateFormData.variables}
+                        onChange={(e) => setTemplateFormData({...templateFormData, variables: e.target.value})}
+                        rows={3}
+                        className="font-mono text-sm"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Define variables as JSON. Use {"{variable_name}"} in content to reference them.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="template-content">Template Content (HTML)</Label>
+                      <Textarea
+                        id="template-content"
+                        placeholder="<h1>Welcome {{customer_name}}!</h1><p>Thank you for joining us.</p>"
+                        value={templateFormData.content}
+                        onChange={(e) => setTemplateFormData({...templateFormData, content: e.target.value})}
+                        rows={12}
+                        className="font-mono text-sm"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Use {"{{variable_name}}"} for dynamic content. HTML is supported.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end space-x-2 mt-6">
+                    <Button variant="outline" onClick={() => setShowCreateTemplateDialog(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleCreateTemplate}>
+                      Create Template
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
               <DialogTrigger asChild>
                 <Button>
                   <Plus className="w-4 h-4 mr-2" />
@@ -696,9 +890,8 @@ const EmailAdmin = () => {
                 </div>
               </DialogContent>
             </Dialog>
+            </div>
           </div>
-
-          {/* Main Content Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8">
               <TabsTrigger value="templates" className="flex items-center gap-2">
@@ -731,16 +924,16 @@ const EmailAdmin = () => {
                             {template.description}
                           </p>
                         </div>
-                        <Badge variant={template.status === 'system' ? 'secondary' : 'default'}>
-                          {template.status === 'system' ? 'Automatic' : 'Custom'}
+                        <Badge variant={template.is_system ? 'secondary' : 'default'}>
+                          {template.is_system ? 'System' : 'Custom'}
                         </Badge>
                       </div>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground mb-4">
-                        Type: <strong>{template.type.replace('_', ' ')}</strong>
+                        Type: <strong>{template.template_type.replace('_', ' ')}</strong>
                       </p>
-                      {template.status === 'system' && (
+                      {template.is_system && (
                         <div className="bg-muted/30 p-3 rounded-lg mb-4">
                           <p className="text-xs text-muted-foreground">
                             This template is sent automatically by the system when specific events occur.
@@ -771,8 +964,8 @@ const EmailAdmin = () => {
                             <div className="space-y-4">
                               <div className="border-b pb-4">
                                 <p><strong>Template:</strong> {template.name}</p>
-                                <p><strong>Type:</strong> {template.type.replace('_', ' ')}</p>
-                                <p><strong>Status:</strong> {template.status === 'system' ? 'Automatic System Template' : 'Custom Template'}</p>
+                                <p><strong>Type:</strong> {template.template_type.replace('_', ' ')}</p>
+                                <p><strong>Status:</strong> {template.is_system ? 'System Template' : 'Custom Template'}</p>
                               </div>
                               <div 
                                 className="prose prose-sm max-w-none p-4 bg-white border rounded"
@@ -782,60 +975,125 @@ const EmailAdmin = () => {
                           </DialogContent>
                         </Dialog>
 
-                        {template.status === 'system' && template.type === 'welcome' && (
-                          <Dialog open={showTestEmailDialog && selectedTemplate?.id === template.id} onOpenChange={(open) => {
-                            setShowTestEmailDialog(open);
-                            if (!open) {
-                              setSelectedTemplate(null);
-                              setTestEmail('');
-                            }
-                          }}>
-                            <DialogTrigger asChild>
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => setSelectedTemplate(template)}
-                              >
-                                <Send className="w-4 h-4 mr-2" />
-                                Test Email
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Send Test Email: {template.name}</DialogTitle>
-                              </DialogHeader>
-                              <div className="space-y-4">
-                                <div>
-                                  <Label htmlFor="test-email">Email Address</Label>
-                                  <Input
-                                    id="test-email"
-                                    type="email"
-                                    placeholder="your@email.com"
-                                    value={testEmail}
-                                    onChange={(e) => setTestEmail(e.target.value)}
-                                  />
-                                  <p className="text-xs text-muted-foreground mt-1">
-                                    A test email will be sent to this address
-                                  </p>
+                        {!template.is_system && (
+                          <>
+                            <Dialog open={showEditTemplateDialog && selectedTemplate?.id === template.id} onOpenChange={(open) => {
+                              setShowEditTemplateDialog(open);
+                              if (!open) {
+                                setSelectedTemplate(null);
+                              } else {
+                                setSelectedTemplate(template);
+                                setTemplateFormData({
+                                  name: template.name,
+                                  subject: template.subject,
+                                  content: template.content,
+                                  template_type: template.template_type,
+                                  description: template.description || '',
+                                  variables: typeof template.variables === 'string' ? template.variables : JSON.stringify(template.variables, null, 2)
+                                });
+                              }
+                            }}>
+                              <DialogTrigger asChild>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => setSelectedTemplate(template)}
+                                >
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+                                <DialogHeader>
+                                  <DialogTitle>Edit Template: {template.name}</DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-4">
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                      <Label htmlFor="edit-template-name">Template Name</Label>
+                                      <Input
+                                        id="edit-template-name"
+                                        value={templateFormData.name}
+                                        onChange={(e) => setTemplateFormData({...templateFormData, name: e.target.value})}
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="edit-template-type">Template Type</Label>
+                                      <Select value={templateFormData.template_type} onValueChange={(value) => setTemplateFormData({...templateFormData, template_type: value})}>
+                                        <SelectTrigger>
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="promotional">Promotional</SelectItem>
+                                          <SelectItem value="newsletter">Newsletter</SelectItem>
+                                          <SelectItem value="welcome">Welcome</SelectItem>
+                                          <SelectItem value="order_confirmation">Order Confirmation</SelectItem>
+                                          <SelectItem value="tracking">Shipping Notification</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                  </div>
+                                  
+                                  <div>
+                                    <Label htmlFor="edit-template-subject">Email Subject</Label>
+                                    <Input
+                                      id="edit-template-subject"
+                                      value={templateFormData.subject}
+                                      onChange={(e) => setTemplateFormData({...templateFormData, subject: e.target.value})}
+                                    />
+                                  </div>
+                                  
+                                  <div>
+                                    <Label htmlFor="edit-template-description">Description</Label>
+                                    <Input
+                                      id="edit-template-description"
+                                      value={templateFormData.description}
+                                      onChange={(e) => setTemplateFormData({...templateFormData, description: e.target.value})}
+                                    />
+                                  </div>
+                                  
+                                  <div>
+                                    <Label htmlFor="edit-template-variables">Variables (JSON format)</Label>
+                                    <Textarea
+                                      id="edit-template-variables"
+                                      value={templateFormData.variables}
+                                      onChange={(e) => setTemplateFormData({...templateFormData, variables: e.target.value})}
+                                      rows={3}
+                                      className="font-mono text-sm"
+                                    />
+                                  </div>
+                                  
+                                  <div>
+                                    <Label htmlFor="edit-template-content">Template Content (HTML)</Label>
+                                    <Textarea
+                                      id="edit-template-content"
+                                      value={templateFormData.content}
+                                      onChange={(e) => setTemplateFormData({...templateFormData, content: e.target.value})}
+                                      rows={12}
+                                      className="font-mono text-sm"
+                                    />
+                                  </div>
                                 </div>
-                                <div className="flex justify-end space-x-2">
-                                  <Button 
-                                    variant="outline" 
-                                    onClick={() => {
-                                      setShowTestEmailDialog(false);
-                                      setTestEmail('');
-                                      setSelectedTemplate(null);
-                                    }}
-                                  >
+                                
+                                <div className="flex justify-end space-x-2 mt-6">
+                                  <Button variant="outline" onClick={() => setShowEditTemplateDialog(false)}>
                                     Cancel
                                   </Button>
-                                  <Button onClick={() => handleTestSystemTemplate(template)}>
-                                    Send Test Email
+                                  <Button onClick={handleEditTemplate}>
+                                    Update Template
                                   </Button>
                                 </div>
-                              </div>
-                            </DialogContent>
-                          </Dialog>
+                              </DialogContent>
+                            </Dialog>
+
+                            <Button 
+                              variant="destructive" 
+                              size="sm"
+                              onClick={() => handleDeleteTemplate(template.id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </>
                         )}
                       </div>
                     </CardContent>
