@@ -51,8 +51,8 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
             
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
-              <h3 style="color: #333; margin-top: 0;">Special Welcome Offer!</h3>
-              <p style="margin: 15px 0;">Use code <strong style="background: #667eea; color: white; padding: 5px 10px; border-radius: 4px;">WELCOME10</strong> for 10% off your first order</p>
+              <h3 style="color: #333; margin-top: 0;">Welcome to Our Community!</h3>
+              <p style="margin: 15px 0;">Discover our professional car care products and services</p>
               <a href="${Deno.env.get('SUPABASE_URL')?.replace('supabase.co', 'lovable.app') || '#'}/products" 
                  style="background: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin-top: 10px;">
                 Shop Now

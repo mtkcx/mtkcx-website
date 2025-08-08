@@ -66,9 +66,16 @@ const ServiceSection = () => {
                   <Button 
                     className="w-full group-hover:bg-primary/90 transition-colors" 
                     onClick={() => {
-                      if (index === 0) navigate('/products');
-                      else if (index === 1) navigate('/courses');
-                      else if (index === 2) navigate('/gallery');
+                      if (index === 0) {
+                        navigate('/products');
+                        window.scrollTo(0, 0);
+                      } else if (index === 1) {
+                        navigate('/courses');
+                        window.scrollTo(0, 0);
+                      } else if (index === 2) {
+                        navigate('/gallery');
+                        window.scrollTo(0, 0);
+                      }
                     }}
                   >
                     {service.cta}

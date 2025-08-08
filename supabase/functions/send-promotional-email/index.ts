@@ -67,27 +67,8 @@ const handler = async (req: Request): Promise<Response> => {
             .replace(/\[NAME\]/g, subscriber.name || 'Valued Customer')
             .replace(/\[EMAIL\]/g, subscriber.email);
 
+          // Discount codes removed - no special offers for now
           let discountSection = '';
-          if (campaign.discount_code && campaign.discount_percentage) {
-            discountSection = `
-              <div style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 30px 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
-                <h3 style="color: white; margin-top: 0; font-size: 24px;">Special Offer! 🎉</h3>
-                <p style="color: white; margin: 15px 0; font-size: 18px;">
-                  Save ${campaign.discount_percentage}% on your next order
-                </p>
-                <div style="background: white; color: #ef4444; padding: 15px; border-radius: 6px; margin: 20px auto; display: inline-block; font-weight: bold; font-size: 20px; letter-spacing: 2px;">
-                  ${campaign.discount_code}
-                </div>
-                <p style="color: white; margin: 15px 0; font-size: 14px;">
-                  ${campaign.valid_until ? `Valid until ${new Date(campaign.valid_until).toLocaleDateString()}` : 'Limited time offer'}
-                </p>
-                <a href="${Deno.env.get('SUPABASE_URL')?.replace('supabase.co', 'lovable.app') || '#'}/products" 
-                   style="background: white; color: #ef4444; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin-top: 15px; font-weight: bold;">
-                  Shop Now
-                </a>
-              </div>
-            `;
-          }
 
           const emailResponse = await resend.emails.send({
             from: "Promotions <promotions@resend.dev>",
