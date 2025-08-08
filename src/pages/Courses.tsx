@@ -7,9 +7,11 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 const Courses = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const handleEnrollment = () => {
     toast({
       title: t('common.enrollment_interest'),
@@ -49,11 +51,20 @@ const Courses = () => {
                 
                 {/* Call to Action */}
                 <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" className="px-8 py-4 text-lg bg-primary hover:bg-primary/90 text-white shadow-lg">
+                  <Button 
+                    size="lg" 
+                    className="px-8 py-4 text-lg bg-primary hover:bg-primary/90 text-white shadow-lg"
+                    onClick={handleEnrollment}
+                  >
                     <Calendar className="w-5 h-5 mr-2" />
                     {t("courses.enroll_now")}
                   </Button>
-                  <Button variant="outline" size="lg" className="px-8 py-4 text-lg bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="px-8 py-4 text-lg bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+                    onClick={() => navigate('/contact')}
+                  >
                     <Phone className="w-5 h-5 mr-2" />
                     {t("courses.contact_details")}
                   </Button>
