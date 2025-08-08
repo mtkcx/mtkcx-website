@@ -179,6 +179,9 @@ const ProductDetail = () => {
   }, [selectedVariant, product]);
 
   const handleAddToCart = (variant: ProductVariant) => {
+    // Scroll to top to show product details
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     toast({
       title: t('products.added_to_cart'),
       description: t('products.added_to_cart_desc')
@@ -187,6 +190,12 @@ const ProductDetail = () => {
                                   (product?.name || ''))
         .replace('{size}', variant.size),
     });
+  };
+
+  const handleVariantSelect = (variant: ProductVariant) => {
+    setSelectedVariant(variant);
+    // Scroll to top to show product details when variant is selected
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const formatDescription = (description: string) => {
@@ -374,7 +383,7 @@ const ProductDetail = () => {
               <ProductVariantSelector
                 variants={product.variants}
                 selectedVariant={selectedVariant}
-                onVariantSelect={setSelectedVariant}
+                onVariantSelect={handleVariantSelect}
                 productId={product.id}
                 productName={currentLanguage === 'ar' ? (product.name_ar || product.name) :
                             currentLanguage === 'he' ? (product.name_he || product.name) :

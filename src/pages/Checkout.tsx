@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, CreditCard, Truck, Shield } from 'lucide-react';
+import { ArrowLeft, CreditCard, Truck, Shield, Banknote } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -28,6 +28,8 @@ const Checkout: React.FC = () => {
     city: '',
     notes: '',
   });
+  
+  const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'cash_on_delivery'>('credit_card');
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('he-IL', {
@@ -125,6 +127,61 @@ const Checkout: React.FC = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Payment Method Selection */}
+                <div className="space-y-3">
+                  <Label>Payment Method *</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div 
+                      className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                        paymentMethod === 'credit_card' 
+                          ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
+                          : 'border-muted hover:border-primary/50'
+                      }`}
+                      onClick={() => setPaymentMethod('credit_card')}
+                    >
+                      <div className="flex items-center gap-3">
+                        <CreditCard className="w-5 h-5 text-primary" />
+                        <div>
+                          <div className="font-medium">Credit Card</div>
+                          <div className="text-sm text-muted-foreground">Pay securely online</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div 
+                      className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                        paymentMethod === 'cash_on_delivery' 
+                          ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
+                          : 'border-muted hover:border-primary/50'
+                      }`}
+                      onClick={() => setPaymentMethod('cash_on_delivery')}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Banknote className="w-5 h-5 text-primary" />
+                        <div>
+                          <div className="font-medium">Cash on Delivery</div>
+                          <div className="text-sm text-muted-foreground">Pay when you receive</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {paymentMethod === 'cash_on_delivery' && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <div className="flex items-start gap-3">
+                        <Truck className="w-5 h-5 text-blue-600 mt-0.5" />
+                        <div className="text-sm">
+                          <div className="font-medium text-blue-900 mb-1">Shipping Cost Notice</div>
+                          <div className="text-blue-700">
+                            Shipping costs will be calculated based on your order weight and location. 
+                            We'll send you the exact shipping cost via email after your order is placed.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="email">Email *</Label>
@@ -261,7 +318,9 @@ const Checkout: React.FC = () => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Shipping</span>
-                    <span className="text-green-600">Free</span>
+                    <span className="text-muted-foreground">
+                      {paymentMethod === 'cash_on_delivery' ? 'TBA by email' : 'Free'}
+                    </span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold text-lg">
@@ -276,7 +335,11 @@ const Checkout: React.FC = () => {
                   className="w-full"
                   size="lg"
                 >
-                  {isProcessing ? 'Processing...' : `Place Order - ${formatPrice(getTotalPrice())}`}
+                  {isProcessing ? 'Processing...' : 
+                   paymentMethod === 'cash_on_delivery' 
+                     ? `Complete Order - ${formatPrice(getTotalPrice())}`
+                     : `Pay Now - ${formatPrice(getTotalPrice())}`
+                  }
                 </Button>
                 
                 <p className="text-xs text-muted-foreground text-center">
