@@ -20,7 +20,8 @@ import {
   CheckCircle,
   AlertCircle,
   Edit3,
-  Settings
+  Settings,
+  Package
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -311,6 +312,15 @@ const Dashboard = () => {
                   >
                     <Building className="w-8 h-8" />
                     <span>{t('dashboard.browse_products')}</span>
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    className="h-auto p-6 flex-col space-y-2"
+                    onClick={() => navigate('/admin/orders')}
+                  >
+                    <Package className="w-8 h-8" />
+                    <span>Orders Admin</span>
                   </Button>
                   
                   <Button

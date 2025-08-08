@@ -20,6 +20,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import QuoteAdmin from "./pages/QuoteAdmin";
 import EmailAdmin from "./pages/EmailAdmin";
+import OrderAdmin from "./pages/OrderAdmin";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import ProductAdmin from "./pages/ProductAdmin";
@@ -54,6 +55,7 @@ const App = () => (
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/admin/quotes" element={<QuoteAdmin />} />
                 <Route path="/admin/emails" element={<EmailAdmin />} />
+                <Route path="/admin/orders" element={<OrderAdmin />} />
                 <Route path="/admin/products" element={<ProductAdmin />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-cancelled" element={<PaymentCancelled />} />
