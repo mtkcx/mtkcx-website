@@ -31,6 +31,7 @@ const Checkout: React.FC = () => {
     city: '',
     location: '',
     notes: '',
+    paymentMethod: 'cash_on_delivery', // Default payment method
   });
   
   const [shippingCost, setShippingCost] = useState(0);
@@ -272,6 +273,72 @@ const Checkout: React.FC = () => {
                     placeholder="Your full address"
                   />
                 </div>
+
+                {/* Payment Method Selection */}
+                <div className="space-y-4">
+                  <Label className="text-base font-semibold">{t('checkout.payment_method')}</Label>
+                  <div className="space-y-3">
+                    <div 
+                      className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                        customerInfo.paymentMethod === 'cash_on_delivery' 
+                          ? 'border-primary bg-primary/5' 
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                      onClick={() => handleInputChange('paymentMethod', 'cash_on_delivery')}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="radio"
+                          id="cash_on_delivery"
+                          name="paymentMethod"
+                          value="cash_on_delivery"
+                          checked={customerInfo.paymentMethod === 'cash_on_delivery'}
+                          onChange={(e) => handleInputChange('paymentMethod', e.target.value)}
+                          className="text-primary"
+                        />
+                        <label htmlFor="cash_on_delivery" className="flex-1 cursor-pointer">
+                          <div className="font-medium flex items-center">
+                            <Banknote className="w-4 h-4 mr-2" />
+                            {t('checkout.cash_on_delivery')}
+                          </div>
+                          <div className="text-sm text-muted-foreground mt-1">
+                            {t('checkout.cash_on_delivery_desc')}
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div 
+                      className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                        customerInfo.paymentMethod === 'credit_card' 
+                          ? 'border-primary bg-primary/5' 
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                      onClick={() => handleInputChange('paymentMethod', 'credit_card')}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="radio"
+                          id="credit_card"
+                          name="paymentMethod"
+                          value="credit_card"
+                          checked={customerInfo.paymentMethod === 'credit_card'}
+                          onChange={(e) => handleInputChange('paymentMethod', e.target.value)}
+                          className="text-primary"
+                        />
+                        <label htmlFor="credit_card" className="flex-1 cursor-pointer">
+                          <div className="font-medium flex items-center">
+                            <Shield className="w-4 h-4 mr-2" />
+                            {t('checkout.credit_card_manual')}
+                          </div>
+                          <div className="text-sm text-muted-foreground mt-1">
+                            {t('checkout.credit_card_manual_desc')}
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 
                 <div>
                   <Label htmlFor="notes">{t('checkout.order_notes')}</Label>
@@ -373,12 +440,18 @@ const Checkout: React.FC = () => {
                   size="lg"
                 >
                   {isProcessing ? t('checkout.processing') : 
-                   t('checkout.complete_order').replace('{total}', formatPrice(getTotalPrice() + shippingCost))
+                   (customerInfo.paymentMethod === 'credit_card' 
+                     ? t('checkout.complete_order_credit_card')
+                     : t('checkout.complete_order')
+                   ).replace('{total}', formatPrice(getTotalPrice() + shippingCost))
                   }
                 </Button>
                 
                 <p className="text-xs text-muted-foreground text-center">
-                  {t('checkout.terms_notice')}
+                  {customerInfo.paymentMethod === 'credit_card' 
+                    ? t('checkout.credit_card_notice')
+                    : t('checkout.terms_notice')
+                  }
                 </p>
               </CardContent>
             </Card>
