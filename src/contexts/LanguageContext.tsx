@@ -292,6 +292,24 @@ const translations = {
     // Common
     'common.search': 'Search',
     'common.loading': 'Loading...',
+    'common.cancel': 'Cancel',
+    'common.error': 'Error',
+
+    // Enrollment Dialog
+    'enrollment.dialog_title': 'Course Enrollment Request',
+    'enrollment.dialog_subtitle': 'Fill out your information and we\'ll contact you within 24 hours',
+    'enrollment.name': 'Full Name',
+    'enrollment.name_placeholder': 'Enter your full name',
+    'enrollment.email': 'Email Address',
+    'enrollment.email_placeholder': 'Enter your email address',
+    'enrollment.phone': 'Phone Number',
+    'enrollment.phone_placeholder': 'Enter your phone number',
+    'enrollment.submit': 'Submit Request',
+    'enrollment.submitting': 'Submitting...',
+    'enrollment.success_title': 'Request Submitted!',
+    'enrollment.success_message': 'Thank you for your interest! We\'ll contact you within 24 hours about the Koch Chemie Professional Detailing & Polishing Certification.',
+    'enrollment.error_message': 'Failed to submit enrollment request. Please try again.',
+    'enrollment.fill_all_fields': 'Please fill in all required fields.',
     'common.view_details': 'View Details',
     'common.add_to_cart': 'Add to Cart',
     'common.price': 'Price',
@@ -299,6 +317,31 @@ const translations = {
     'common.sizes': 'sizes',
     'common.select_size': 'Select Size',
     'common.back': 'Back',
+    'enrollment.dialog_title': 'Course Enrollment Request',
+    'enrollment.name': 'Full Name',
+    'enrollment.email': 'Email Address',
+    'enrollment.phone': 'Phone Number',
+    'enrollment.submit': 'Submit Request',
+    'enrollment.success_title': 'Request Submitted!',
+    'enrollment.success_message': 'Thank you for your interest! We\'ll contact you within 24 hours.',
+    'common.cancel': 'Cancel',
+    'common.error': 'Error',
+    
+    // Enrollment Dialog  
+    'enrollment.dialog_title': 'Course Enrollment Request',
+    'enrollment.dialog_subtitle': 'Fill out your information and we\'ll contact you within 24 hours',
+    'enrollment.name': 'Full Name',
+    'enrollment.name_placeholder': 'Enter your full name',
+    'enrollment.email': 'Email Address', 
+    'enrollment.email_placeholder': 'Enter your email address',
+    'enrollment.phone': 'Phone Number',
+    'enrollment.phone_placeholder': 'Enter your phone number',
+    'enrollment.submit': 'Submit Request',
+    'enrollment.submitting': 'Submitting...',
+    'enrollment.success_title': 'Request Submitted!',
+    'enrollment.success_message': 'Thank you for your interest! We\'ll contact you within 24 hours about the Koch Chemie Professional Detailing & Polishing Certification.',
+    'enrollment.error_message': 'Failed to submit enrollment request. Please try again.',
+    'enrollment.fill_all_fields': 'Please fill in all required fields.',
     
     // Products Page  
     'products.all_categories': 'All Categories',
@@ -2323,14 +2366,34 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   const setLanguage = (lang: Language) => {
     setCurrentLanguage(lang);
-    document.dir = lang === 'ar' || lang === 'he' ? 'rtl' : 'ltr';
+    // Store language preference
+    localStorage.setItem('preferred-language', lang);
+    
+    // Set document direction and language attribute
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', lang);
   };
 
   const t = (key: string): string => {
     return translations[currentLanguage][key as keyof typeof translations[typeof currentLanguage]] || key;
   };
 
-  const isRTL = currentLanguage === 'ar' || currentLanguage === 'he';
+  const isRTL = currentLanguage === 'ar';
+
+  // Initialize language on mount
+  React.useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferred-language') as Language;
+    if (savedLanguage && ['en', 'ar', 'he'].includes(savedLanguage)) {
+      setCurrentLanguage(savedLanguage);
+      // Set document direction and language on initial load
+      document.documentElement.setAttribute('dir', savedLanguage === 'ar' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute('lang', savedLanguage);
+    } else {
+      // Set default direction for English
+      document.documentElement.setAttribute('dir', 'ltr');
+      document.documentElement.setAttribute('lang', 'en');
+    }
+  }, []);
 
   return (
     <LanguageContext.Provider value={{ currentLanguage, setLanguage, t, isRTL }}>

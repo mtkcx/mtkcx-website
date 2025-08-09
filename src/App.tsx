@@ -30,6 +30,7 @@ import ShippingPolicy from "./pages/ShippingPolicy";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
+import EnrollmentAdmin from "./pages/EnrollmentAdmin";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,7 @@ const App = () => (
                 <Route path="/admin/emails" element={<EmailAdmin />} />
                 <Route path="/admin/orders" element={<OrderAdmin />} />
                 <Route path="/admin/products" element={<ProductAdmin />} />
+                <Route path="/admin/enrollments" element={<EnrollmentAdmin />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-cancelled" element={<PaymentCancelled />} />
                 <Route path="/checkout" element={<Checkout />} />

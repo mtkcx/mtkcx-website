@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,15 +8,15 @@ import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
+import EnrollmentDialog from '@/components/EnrollmentDialog';
 const Courses = () => {
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const navigate = useNavigate();
+  const [isEnrollmentDialogOpen, setIsEnrollmentDialogOpen] = useState(false);
+  
   const handleEnrollment = () => {
-    toast({
-      title: t('common.enrollment_interest'),
-      description: t('common.contact_course_info')
-    });
+    setIsEnrollmentDialogOpen(true);
   };
   return <div className="min-h-screen bg-background">
       <Header />
@@ -407,6 +407,12 @@ const Courses = () => {
       </section>
 
       <Footer />
+      
+      {/* Enrollment Dialog */}
+      <EnrollmentDialog 
+        isOpen={isEnrollmentDialogOpen} 
+        onClose={() => setIsEnrollmentDialogOpen(false)} 
+      />
     </div>;
 };
 export default Courses;
