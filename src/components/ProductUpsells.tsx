@@ -115,6 +115,25 @@ export const ProductUpsells: React.FC<ProductUpsellsProps> = ({
     window.scrollTo(0, 0);
   };
 
+  const getImageUrl = (imageUrl: string) => {
+    if (!imageUrl || imageUrl === '/placeholder.svg') {
+      return '/placeholder.svg';
+    }
+    
+    // If it's already a full URL, return as is
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+    
+    // If it's a storage path, generate the public URL
+    if (imageUrl.startsWith('product-images/')) {
+      const { data } = supabase.storage.from('product-images').getPublicUrl(imageUrl.replace('product-images/', ''));
+      return data.publicUrl;
+    }
+    
+    return imageUrl;
+  };
+
   const handleQuickAdd = (product: UpsellProduct, event: React.MouseEvent) => {
     event.stopPropagation();
     
@@ -166,7 +185,7 @@ export const ProductUpsells: React.FC<ProductUpsellsProps> = ({
                 <div className="relative mb-4">
                   <div className="aspect-square rounded-lg overflow-hidden bg-muted/50">
                     <img
-                      src={product.image_url}
+                      src={getImageUrl(product.image_url)}
                       alt={currentLanguage === 'ar' ? (product.name_ar || product.name) :
                            currentLanguage === 'he' ? (product.name_he || product.name) :
                            product.name}
