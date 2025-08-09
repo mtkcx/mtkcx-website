@@ -1133,6 +1133,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_sensitive_operation_rate_limit: {
+        Args: {
+          p_operation: string
+          p_max_attempts?: number
+          p_window_minutes?: number
+        }
+        Returns: boolean
+      }
       cleanup_api_rate_limits: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1191,6 +1199,10 @@ export type Database = {
       }
       log_sensitive_access: {
         Args: { p_action: string; p_table_name: string; p_record_id?: string }
+        Returns: undefined
+      }
+      log_sensitive_data_access: {
+        Args: { p_table_name: string; p_action: string; p_record_id?: string }
         Returns: undefined
       }
       make_user_admin: {
