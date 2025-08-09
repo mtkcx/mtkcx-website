@@ -406,6 +406,36 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_verification_tokens: {
+        Row: {
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          name: string | null
+          token: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          name?: string | null
+          token: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          name?: string | null
+          token?: string
+          used_at?: string | null
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string
@@ -939,6 +969,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      check_rate_limit: {
+        Args: {
+          p_identifier: string
+          p_action_type: string
+          p_max_attempts?: number
+          p_window_minutes?: number
+        }
+        Returns: boolean
+      }
       cleanup_api_rate_limits: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -946,6 +985,10 @@ export type Database = {
       cleanup_expired_rate_limits: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      generate_secure_token: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       is_admin: {
         Args: Record<PropertyKey, never>
