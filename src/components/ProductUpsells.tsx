@@ -68,7 +68,7 @@ export const ProductUpsells: React.FC<ProductUpsellsProps> = ({
                   name_he
                 )
               ),
-              product_variants (
+              product_variants!fk_product_variants_product_id (
                 id,
                 size,
                 price,
