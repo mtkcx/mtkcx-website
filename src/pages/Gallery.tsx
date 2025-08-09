@@ -149,11 +149,11 @@ const Gallery = () => {
   }];
   
   const galleryImages = [
+    '/lovable-uploads/5bc324f9-8392-4f77-a7ca-4888e1502d41.png',
     '/lovable-uploads/2bcb5a0f-eefd-4bf9-be12-dbc2d1bea8da.png',
-    '/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png', 
-    '/lovable-uploads/3d7dc22e-86ff-41c1-be13-22c68e59c932.png',
-    '/lovable-uploads/3df6143b-1e24-4063-ac21-1f8d68e1c558.png',
-    '/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png',
+    '/lovable-uploads/467c4fc8-85d3-4b19-a924-11162bf078e7.png',
+    '/lovable-uploads/027350b0-6659-443a-bf00-5ce996bb68be.png',
+    '/lovable-uploads/93339d8c-e8b6-44d4-a598-f792a3019f2d.png',
     '/lovable-uploads/4896db9d-9036-4002-9b50-391aefd27f2b.png'
   ];
 
@@ -433,11 +433,11 @@ const Gallery = () => {
           <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${showFullGallery ? '' : ''}`}>
             {(showFullGallery ? galleryImages : galleryImages.slice(0, 6)).map((image, index) => {
               const altTexts = [
-                'Professional BMW wrap in matte black finish',
-                'Luxury car with premium color change wrap',
-                'Commercial fleet vehicle with custom branding',
-                'Sports car with specialty finish and custom graphics',
-                'Paint protection film installation showcase',
+                'BMW M4 with custom wrap design in underground parking',
+                'Ferrari sports car with metallic finish wrap',
+                'BMW M5 with colorful racing stripes wrap design',
+                'Mercedes AMG GT with custom yellow and black wrap design',
+                'Luxury yacht interior with premium finishes',
                 'Ford Mustang with dark custom wrap at night'
               ];
               
