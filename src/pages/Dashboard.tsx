@@ -22,7 +22,8 @@ import {
   Edit3,
   Settings,
   Package,
-  MessageCircle
+  MessageCircle,
+  Globe
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -340,6 +341,15 @@ const Dashboard = () => {
                   >
                     <MessageCircle className="w-8 h-8" />
                     <span>Chat Admin</span>
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    className="h-auto p-6 flex-col space-y-2"
+                    onClick={() => navigate('/admin/website')}
+                  >
+                    <Globe className="w-8 h-8" />
+                    <span>Website Admin</span>
                   </Button>
                   
                   <Button

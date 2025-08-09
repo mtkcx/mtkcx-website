@@ -2,17 +2,22 @@ import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSiteSettings } from '@/hooks/useWebsiteContent';
 const Footer = () => {
-  const {
-    t,
-    isRTL
-  } = useLanguage();
+  const { t, isRTL } = useLanguage();
+  const { content: settings } = useSiteSettings();
+
+  const companyName = settings.company_name || t('footer.company_name');
+  const companyEmail = settings.company_email || 'info@mtkc.com';
+  const companyPhone = settings.company_phone || '+1 (555) 123-4567';
+  const companyAddress = settings.company_address || t('footer.address');
+  const copyrightText = settings.footer_copyright || `© 2024 ${companyName}. All rights reserved.`;
   return <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="font-bold text-lg">{t('footer.company_name')}</h3>
+            <h3 className="font-bold text-lg">{companyName}</h3>
             <p className="text-primary-foreground/80 leading-relaxed text-sm">
               {t('footer.company_desc')}
             </p>
@@ -71,22 +76,22 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/80">info@mtkcx.com</span>
+                <span className="text-primary-foreground/80">{companyEmail}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/80">052-7738-586</span>
+                <span className="text-primary-foreground/80">{companyPhone}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/80">{t('contact.location_address')}</span>
+                <span className="text-primary-foreground/80">{companyAddress}</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center">
-          <p className="text-primary-foreground/80">{t('footer.copyright')}</p>
+          <p className="text-primary-foreground/80">{copyrightText}</p>
         </div>
       </div>
     </footer>;
