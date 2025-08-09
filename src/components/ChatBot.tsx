@@ -65,7 +65,7 @@ const ChatBot = () => {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('chatbot-response', {
+      const { data, error } = await supabase.functions.invoke('faq-chatbot', {
         body: { 
           message: inputValue,
           language: currentLanguage,
