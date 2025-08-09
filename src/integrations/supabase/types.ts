@@ -142,6 +142,7 @@ export type Database = {
           last_message_at: string
           status: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           admin_user_id?: string | null
@@ -153,6 +154,7 @@ export type Database = {
           last_message_at?: string
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           admin_user_id?: string | null
@@ -164,6 +166,7 @@ export type Database = {
           last_message_at?: string
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -974,6 +977,39 @@ export type Database = {
         }
         Relationships: []
       }
+      security_audit_log: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          record_id: string | null
+          table_name: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          record_id?: string | null
+          table_name: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          record_id?: string | null
+          table_name?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           category: string
@@ -1076,9 +1112,17 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_sensitive_access: {
+        Args: { p_action: string; p_table_name: string; p_record_id?: string }
+        Returns: undefined
+      }
       make_user_admin: {
         Args: { user_email: string }
         Returns: boolean
+      }
+      migrate_email_conversations_to_users: {
+        Args: Record<PropertyKey, never>
+        Returns: number
       }
     }
     Enums: {
