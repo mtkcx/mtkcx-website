@@ -319,6 +319,11 @@ const translations = {
     'products.clear_all_filters': 'Clear all filters',
     'products.no_products': 'No products found matching your criteria.',
     'products.loading': 'Loading...',
+    'products.quick_add': 'Quick Add',
+    'products.frequently_bought_together': 'Frequently Bought Together',
+    'products.complete_your_kit_description': 'Complete your professional detailing kit with these complementary products',
+    'products.professional_recommendation_notice': 'These product combinations are professionally recommended for optimal results',
+    'products.no_variants_available': 'No variants available for this product',
     
     // Product Categories Section
     'categories.shop_by_category': 'Shop by Category',
@@ -1199,6 +1204,11 @@ const translations = {
     'products.clear_all_filters': 'مسح جميع المرشحات',
     'products.no_products': 'لم يتم العثور على منتجات تطابق معاييرك.',
     'products.loading': 'جاري التحميل...',
+    'products.quick_add': 'إضافة سريعة',
+    'products.frequently_bought_together': 'يتم شراؤها معاً بكثرة',
+    'products.complete_your_kit_description': 'أكمل طقم التفصيل المهني الخاص بك مع هذه المنتجات التكميلية',
+    'products.professional_recommendation_notice': 'هذه التوليفات من المنتجات مُوصى بها مهنياً للحصول على أفضل النتائج',
+    'products.no_variants_available': 'لا توجد متغيرات متاحة لهذا المنتج',
     
     // Product Categories Section
     'categories.shop_by_category': 'تسوق حسب الفئة',
@@ -1999,6 +2009,11 @@ const translations = {
     'products.clear_all_filters': 'נקה את כל המסננים',
     'products.no_products': 'לא נמצאו מוצרים התואמים לקריטריונים שלך.',
     'products.loading': 'טוען...',
+    'products.quick_add': 'הוספה מהירה',
+    'products.frequently_bought_together': 'נקנים יחד לעתים קרובות',
+    'products.complete_your_kit_description': 'השלם את ערכת הפירוט המקצועית שלך עם מוצרים משלימים אלה',
+    'products.professional_recommendation_notice': 'שילובי מוצרים אלה מומלצים באופן מקצועי לתוצאות אופטימליות',
+    'products.no_variants_available': 'אין וריאנטים זמינים למוצר זה',
     
     // Product Categories Section
     'categories.shop_by_category': 'קנה לפי קטגוריה',

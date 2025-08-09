@@ -15,6 +15,7 @@ import { ProductVariantManager, ProductVariant } from '@/components/ProductVaria
 import { BulkProductImport } from '@/components/BulkProductImport';
 import { BulkCategoryManager } from '@/components/BulkCategoryManager';
 import { CategoryManager } from '@/components/CategoryManager';
+import { ProductUpsellManager } from '@/components/ProductUpsellManager';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -366,9 +367,10 @@ export default function ProductAdmin() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="categories">Categories</TabsTrigger>
+            <TabsTrigger value="upsells">Product Upsells</TabsTrigger>
             <TabsTrigger value="bulk-import">Bulk Import</TabsTrigger>
             <TabsTrigger value="bulk-categories">Bulk Categories</TabsTrigger>
           </TabsList>
@@ -537,6 +539,16 @@ export default function ProductAdmin() {
             <CategoryManager 
               categories={categories}
               onCategoriesUpdate={loadCategories}
+            />
+          </TabsContent>
+
+          <TabsContent value="upsells">
+            <ProductUpsellManager
+              products={products}
+              onUpdate={() => {
+                loadProducts();
+                loadCategories();
+              }}
             />
           </TabsContent>
 
