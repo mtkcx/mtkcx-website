@@ -1112,6 +1112,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      log_enrollment_attempt: {
+        Args: { p_email: string; p_success: boolean; p_failure_reason?: string }
+        Returns: undefined
+      }
       log_sensitive_access: {
         Args: { p_action: string; p_table_name: string; p_record_id?: string }
         Returns: undefined
