@@ -295,6 +295,15 @@ const translations = {
     'common.cancel': 'Cancel',
     'common.error': 'Error',
     'common.locale': 'en-US',
+    'common.rate_limit_exceeded': 'Too many requests. Please wait {time} minutes before trying again.',
+
+    // Quote Dialog translations
+    'quote.request_title': 'Request Quote',
+    'quote.service_placeholder': 'Enter service you\'re interested in',
+    'quote.message_label': 'Additional Message',
+    'quote.message_placeholder': 'Tell us more about your project requirements...',
+    'quote.submitting': 'Submitting...',
+    'quote.submit_request': 'Submit Request',
 
     // Enrollment Dialog
     'enrollment.dialog_title': 'Course Enrollment Request',
@@ -1497,6 +1506,15 @@ const translations = {
     'common.loading': 'جاري التحميل...',
     'common.submit': 'إرسال',
     'common.cancel': 'إلغاء',
+    'common.rate_limit_exceeded': 'طلبات كثيرة جداً. يرجى الانتظار {time} دقائق قبل المحاولة مرة أخرى.',
+
+    // Quote Dialog translations
+    'quote.request_title': 'طلب عرض سعر',
+    'quote.service_placeholder': 'أدخل الخدمة التي تهتم بها',
+    'quote.message_label': 'رسالة إضافية',
+    'quote.message_placeholder': 'أخبرنا المزيد عن متطلبات مشروعك...',
+    'quote.submitting': 'جاري الإرسال...',
+    'quote.submit_request': 'إرسال الطلب',
     'common.save': 'حفظ',
     'common.edit': 'تحرير',
     'common.delete': 'حذف',
@@ -2167,6 +2185,15 @@ const translations = {
     'common.loading': 'טוען...',
     'common.submit': 'שלח',
     'common.cancel': 'בטל',
+    'common.rate_limit_exceeded': 'יותר מדי בקשות. אנא המתן {time} דקות לפני שתנסה שוב.',
+
+    // Quote Dialog translations
+    'quote.request_title': 'בקש הצעת מחיר',
+    'quote.service_placeholder': 'הכנס את השירות שמעניין אותך',
+    'quote.message_label': 'הודעה נוספת',
+    'quote.message_placeholder': 'ספר לנו עוד על דרישות הפרויקט שלך...',
+    'quote.submitting': 'שולח...',
+    'quote.submit_request': 'שלח בקשה',
     'common.save': 'שמור',
     'common.edit': 'ערוך',
     'common.delete': 'מחק',

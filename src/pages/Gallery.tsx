@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { Car, Palette, Shield, Clock, Award, CheckCircle, Star, Phone, Mail, MapPin, Sparkles, Layers, Wrench, Eye, Target, Users, Calendar } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import QuoteDialog from '@/components/QuoteDialog';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -27,6 +28,8 @@ interface WrapMaterial {
   features: string[];
 }
 const Gallery = () => {
+  const [isQuoteDialogOpen, setIsQuoteDialogOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<string>('');
   const {
     toast
   } = useToast();
@@ -203,11 +206,11 @@ const Gallery = () => {
           {/* Content Overlay */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white px-6 max-w-5xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight drop-shadow-lg">
-                Vehicle Wrapping Gallery & Services
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight drop-shadow-lg">
+                {t('gallery.title')}
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-95 font-light max-w-4xl mx-auto drop-shadow-md">
-                Transform your vehicle with our professional wrapping and protection services. From color changes to paint protection, we deliver exceptional results with premium materials and expert craftsmanship.
+                {t('gallery.subtitle')}
               </p>
             </div>
           </div>
@@ -329,14 +332,10 @@ const Gallery = () => {
                   <p className="text-muted-foreground">
                     {t('gallery.ready_transform')}
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button size="lg" onClick={() => handleQuoteRequest(t('gallery.vehicle_wrapping_services'))} className="flex-1 sm:flex-none">
+                  <div className="flex justify-center">
+                    <Button size="lg" onClick={() => { setSelectedService(t('gallery.vehicle_wrapping_services')); setIsQuoteDialogOpen(true); }} className="flex-1 sm:flex-none">
                       <Phone className="w-5 h-5 mr-2" />
                       {t('gallery.contact_quote')}
-                    </Button>
-                    <Button variant="outline" size="lg" onClick={() => handleQuoteRequest(t('gallery.service_consultation'))} className="flex-1 sm:flex-none">
-                      <Mail className="w-5 h-5 mr-2" />
-                      {t('gallery.request_consultation')}
                     </Button>
                   </div>
                 </div>
@@ -489,7 +488,7 @@ const Gallery = () => {
           </div>
           
           <div className="text-center mt-8">
-            <Button variant="outline" size="lg">
+            <Button variant="outline" size="lg" onClick={() => navigate('/gallery')}>
               <Eye className="w-5 h-5 mr-2" />
               {t('common.view_full_gallery')}
             </Button>
@@ -521,20 +520,22 @@ const Gallery = () => {
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="secondary" size="lg">
+            <div className="flex justify-center">
+              <Button variant="secondary" size="lg" onClick={() => { setSelectedService(t('gallery.vehicle_wrapping_services')); setIsQuoteDialogOpen(true); }}>
                 <Phone className="w-5 h-5 mr-2" />
                 {t('common.call_for_quote')}
-              </Button>
-              <Button variant="outline" size="lg" className="bg-transparent border-white text-white hover:bg-white hover:text-primary">
-                <Calendar className="w-5 h-5 mr-2" />
-                {t('common.schedule_consultation')}
               </Button>
             </div>
           </div>
         </div>
       </section>
 
+      <QuoteDialog
+        isOpen={isQuoteDialogOpen}
+        onClose={() => setIsQuoteDialogOpen(false)}
+        serviceType={selectedService}
+      />
+      
       <Footer />
     </div>;
 };
