@@ -980,6 +980,50 @@ export type Database = {
         }
         Relationships: []
       }
+      secure_order_access_log: {
+        Row: {
+          access_method: string
+          created_at: string | null
+          denial_reason: string | null
+          id: string
+          ip_address: unknown | null
+          order_id: string | null
+          session_token_hash: string | null
+          success: boolean
+          user_agent: string | null
+        }
+        Insert: {
+          access_method: string
+          created_at?: string | null
+          denial_reason?: string | null
+          id?: string
+          ip_address?: unknown | null
+          order_id?: string | null
+          session_token_hash?: string | null
+          success?: boolean
+          user_agent?: string | null
+        }
+        Update: {
+          access_method?: string
+          created_at?: string | null
+          denial_reason?: string | null
+          id?: string
+          ip_address?: unknown | null
+          order_id?: string | null
+          session_token_hash?: string | null
+          success?: boolean
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "secure_order_access_log_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       security_audit_log: {
         Row: {
           action: string
@@ -1166,6 +1210,15 @@ export type Database = {
       }
       validate_order_access: {
         Args: { p_order_id: string; p_session_id?: string }
+        Returns: boolean
+      }
+      validate_secure_guest_order_access: {
+        Args: {
+          p_order_id: string
+          p_email: string
+          p_order_number: string
+          p_session_token?: string
+        }
         Returns: boolean
       }
     }
