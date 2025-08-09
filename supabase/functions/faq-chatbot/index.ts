@@ -14,12 +14,12 @@ const corsHeaders = {
 // FAQ Knowledge Base
 const faqData = {
   en: {
-    welcome: "Hello! I'm here to help you with questions about MT Wraps. Ask me about our location, courses, products, or services!",
+    welcome: "Hello! I'm MT Support, here to help you with questions about MT Wraps. Ask me about our location, courses, products, or services!",
     fallback: "I'm sorry, I didn't understand your question. Please contact our support team at info@mtkcx.com for personalized assistance.",
     patterns: {
       location: {
         keywords: ['location', 'where', 'address', 'find you', 'located', 'office'],
-        answer: "We are located in Israel. For our exact address and directions, please contact us at info@mtkcx.com or call us during business hours: Sunday-Thursday 9:00-18:00, Friday 9:00-14:00."
+        answer: "We are located at 123 Industrial Street, Tel Aviv, Israel 6789012. You can reach us at info@mtkcx.com or call us during business hours: Sunday-Thursday 9:00-18:00, Friday 9:00-14:00."
       },
       courses: {
         keywords: ['course', 'training', 'certification', 'learn', 'register', 'enroll', 'class', 'workshop'],
@@ -31,7 +31,7 @@ const faqData = {
       },
       shipping: {
         keywords: ['shipping', 'delivery', 'ship', 'send', 'postal', 'mail'],
-        answer: "We offer shipping within Israel (3-5 business days) and internationally (5-10 business days). Free shipping on orders over ₪200. Express delivery available for 1-2 business days at additional cost."
+        answer: "We offer shipping within Israel only. Standard delivery takes 3-5 business days. Express delivery is available for 1-2 business days at additional cost. All shipping costs are calculated at checkout."
       },
       payment: {
         keywords: ['payment', 'pay', 'card', 'paypal', 'stripe', 'method'],
@@ -52,12 +52,12 @@ const faqData = {
     }
   },
   he: {
-    welcome: "שלום! אני כאן לעזור לך עם שאלות על MT Wraps. שאל אותי על המיקום שלנו, קורסים, מוצרים או שירותים!",
+    welcome: "שלום! אני MT Support, כאן לעזור לך עם שאלות על MT Wraps. שאל אותי על המיקום שלנו, קורסים, מוצרים או שירותים!",
     fallback: "מצטער, לא הבנתי את השאלה שלך. אנא צור קשר עם צוות התמיכה שלנו בכתובת info@mtkcx.com לסיוע אישי.",
     patterns: {
       location: {
         keywords: ['מיקום', 'איפה', 'כתובת', 'למצוא', 'נמצא', 'משרד', 'היכן'],
-        answer: "אנחנו נמצאים בישראל. לכתובת המדויקת והנחיות הגעה, אנא צור קשר בכתובת info@mtkcx.com או התקשר בשעות העבודה: ראשון-חמישי 9:00-18:00, שישי 9:00-14:00."
+        answer: "אנחנו נמצאים ברחוב התעשייה 123, תל אביב, ישראל 6789012. ניתן ליצור קשר בכתובת info@mtkcx.com או להתקשר בשעות העבודה: ראשון-חמישי 9:00-18:00, שישי 9:00-14:00."
       },
       courses: {
         keywords: ['קורס', 'הכשרה', 'הסמכה', 'ללמוד', 'להירשם', 'כיתה', 'סדנה', 'לימודים'],
@@ -69,7 +69,7 @@ const faqData = {
       },
       shipping: {
         keywords: ['משלוח', 'רכש', 'לשלוח', 'דואר', 'הובלה'],
-        answer: "אנו מציעים משלוחים בישראל (3-5 ימי עסקים) ובינלאומיים (5-10 ימי עסקים). משלוח חינם בהזמנות מעל ₪200. משלוח מהיר זמין תוך 1-2 ימי עסקים בעלות נוספת."
+        answer: "אנו מציעים משלוחים בישראל בלבד. משלוח רגיל לוקח 3-5 ימי עסקים. משלוח מהיר זמין תוך 1-2 ימי עסקים בעלות נוספת. כל עלויות המשלוח מחושבות בקופה."
       },
       payment: {
         keywords: ['תשלום', 'לשלם', 'כרטיס', 'paypal', 'stripe', 'אמצעי'],
@@ -90,12 +90,12 @@ const faqData = {
     }
   },
   ar: {
-    welcome: "مرحباً! أنا هنا لمساعدتك في الأسئلة حول MT Wraps. اسألني عن موقعنا، الدورات، المنتجات أو الخدمات!",
+    welcome: "مرحباً! أنا MT Support، هنا لمساعدتك في الأسئلة حول MT Wraps. اسألني عن موقعنا، الدورات، المنتجات أو الخدمات!",
     fallback: "آسف، لم أفهم سؤالك. يرجى الاتصال بفريق الدعم على info@mtkcx.com للحصول على مساعدة شخصية.",
     patterns: {
       location: {
         keywords: ['موقع', 'أين', 'عنوان', 'العثور', 'موجود', 'مكتب', 'مكان'],
-        answer: "نحن موجودون في إسرائيل. للعنوان الدقيق والاتجاهات، يرجى الاتصال بنا على info@mtkcx.com أو الاتصال خلال ساعات العمل: الأحد-الخميس 9:00-18:00، الجمعة 9:00-14:00."
+        answer: "نحن موجودون في شارع الصناعة 123، تل أبيب، إسرائيل 6789012. يمكنك الاتصال بنا على info@mtkcx.com أو الاتصال خلال ساعات العمل: الأحد-الخميس 9:00-18:00، الجمعة 9:00-14:00."
       },
       courses: {
         keywords: ['دورة', 'تدريب', 'شهادة', 'تعلم', 'تسجيل', 'صف', 'ورشة عمل', 'دراسة'],
@@ -107,7 +107,7 @@ const faqData = {
       },
       shipping: {
         keywords: ['شحن', 'توصيل', 'إرسال', 'بريد', 'نقل'],
-        answer: "نحن نقدم الشحن داخل إسرائيل (3-5 أيام عمل) ودولياً (5-10 أيام عمل). شحن مجاني على الطلبات فوق ₪200. التوصيل السريع متاح خلال 1-2 أيام عمل بتكلفة إضافية."
+        answer: "نحن نقدم الشحن داخل إسرائيل فقط. التوصيل العادي يستغرق 3-5 أيام عمل. التوصيل السريع متاح خلال 1-2 أيام عمل بتكلفة إضافية. يتم حساب جميع تكاليف الشحن عند الدفع."
       },
       payment: {
         keywords: ['دفع', 'يدفع', 'بطاقة', 'paypal', 'stripe', 'طريقة'],
