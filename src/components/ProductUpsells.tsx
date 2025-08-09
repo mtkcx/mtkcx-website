@@ -59,7 +59,6 @@ export const ProductUpsells: React.FC<ProductUpsellsProps> = ({
               name_ar,
               name_he,
               product_code,
-              image_url,
               status,
               product_categories (
                 categories (
@@ -73,6 +72,10 @@ export const ProductUpsells: React.FC<ProductUpsellsProps> = ({
                 size,
                 price,
                 stock_quantity
+              ),
+              product_images!product_images_product_id_fkey (
+                image_url,
+                is_primary
               )
             )
           `)
@@ -84,20 +87,23 @@ export const ProductUpsells: React.FC<ProductUpsellsProps> = ({
 
         const transformedUpsells: UpsellProduct[] = (upsellData || [])
           .filter(item => item.products)
-          .map(item => ({
-            id: item.products.id,
-            name: item.products.name,
-            name_ar: item.products.name_ar,
-            name_he: item.products.name_he,
-            product_code: item.products.product_code,
-            image_url: item.products.image_url || '/placeholder.svg',
-            category: {
-              name: item.products.product_categories?.[0]?.categories?.name || 'Uncategorized',
-              name_ar: item.products.product_categories?.[0]?.categories?.name_ar,
-              name_he: item.products.product_categories?.[0]?.categories?.name_he,
-            },
-            variants: item.products.product_variants || []
-          }));
+          .map(item => {
+            const primaryImage = item.products.product_images?.find(img => img.is_primary);
+            return {
+              id: item.products.id,
+              name: item.products.name,
+              name_ar: item.products.name_ar,
+              name_he: item.products.name_he,
+              product_code: item.products.product_code,
+              image_url: primaryImage?.image_url || '/placeholder.svg',
+              category: {
+                name: item.products.product_categories?.[0]?.categories?.name || 'Uncategorized',
+                name_ar: item.products.product_categories?.[0]?.categories?.name_ar,
+                name_he: item.products.product_categories?.[0]?.categories?.name_he,
+              },
+              variants: item.products.product_variants || []
+            };
+          });
 
         setUpsellProducts(transformedUpsells);
       } catch (error) {
