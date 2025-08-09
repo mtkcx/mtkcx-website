@@ -133,14 +133,33 @@ function findBestMatch(message: string, language: string): string {
   const lang = faqData[language as keyof typeof faqData] || faqData.en;
   const lowerMessage = message.toLowerCase();
   
-  // Check each pattern category
+  // Score each pattern based on keyword matches
+  const scores: { [key: string]: { score: number, answer: string } } = {};
+  
   for (const [category, pattern] of Object.entries(lang.patterns)) {
+    let score = 0;
+    const matchedKeywords: string[] = [];
+    
     for (const keyword of pattern.keywords) {
       if (lowerMessage.includes(keyword.toLowerCase())) {
-        console.log(`Matched pattern: ${category} with keyword: ${keyword}`);
-        return pattern.answer;
+        score += 1;
+        matchedKeywords.push(keyword);
       }
     }
+    
+    if (score > 0) {
+      scores[category] = { score, answer: pattern.answer };
+      console.log(`Pattern ${category} scored ${score} with keywords: ${matchedKeywords.join(', ')}`);
+    }
+  }
+  
+  // Return the pattern with the highest score
+  if (Object.keys(scores).length > 0) {
+    const bestMatch = Object.entries(scores).reduce((a, b) => 
+      a[1].score > b[1].score ? a : b
+    );
+    console.log(`Best match: ${bestMatch[0]} with score ${bestMatch[1].score}`);
+    return bestMatch[1].answer;
   }
   
   return lang.fallback;
@@ -196,7 +215,7 @@ serve(async (req) => {
     await supabase.from('chat_messages').insert({
       conversation_id: conversationId,
       sender_type: 'bot',
-      sender_name: 'MT Wraps FAQ Assistant',
+      sender_name: 'MT Support',
       message: botResponse,
       language: language || 'en'
     });
