@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -26,8 +27,8 @@ const NewsletterPopup = () => {
   });
 
   useEffect(() => {
-    // Check if user has seen the popup before
-    const hasSeenPopup = localStorage.getItem('newsletter-popup-seen');
+    // Check if user has dismissed the popup in this session
+    const hasSeenPopup = sessionStorage.getItem('newsletter-popup-dismissed');
     
     if (!hasSeenPopup) {
       // Show popup after 2 seconds delay
@@ -124,8 +125,8 @@ const NewsletterPopup = () => {
         });
       }
 
-      // Mark popup as seen and close
-      localStorage.setItem('newsletter-popup-seen', 'true');
+      // Mark popup as dismissed for this session and close
+      sessionStorage.setItem('newsletter-popup-dismissed', 'true');
       setIsOpen(false);
     } catch (error) {
       console.error('Newsletter subscription error:', error);
@@ -140,12 +141,20 @@ const NewsletterPopup = () => {
   };
 
   const handleClose = () => {
-    localStorage.setItem('newsletter-popup-seen', 'true');
+    // Mark popup as dismissed for this session
+    sessionStorage.setItem('newsletter-popup-dismissed', 'true');
     setIsOpen(false);
   };
 
+  const handleDialogChange = (open: boolean) => {
+    if (!open) {
+      handleClose();
+    }
+    setIsOpen(open);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleDialogChange}>
       <DialogContent className="sm:max-w-md bg-card border border-border">
         <button
           onClick={handleClose}
