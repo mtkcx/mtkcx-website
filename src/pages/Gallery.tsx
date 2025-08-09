@@ -30,6 +30,7 @@ interface WrapMaterial {
 const Gallery = () => {
   const [isQuoteDialogOpen, setIsQuoteDialogOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string>('');
+  const [showFullGallery, setShowFullGallery] = useState(false);
   const {
     toast
   } = useToast();
@@ -146,6 +147,21 @@ const Gallery = () => {
     title: 'professional_quality',
     description: 'quality_desc'
   }];
+  
+  const galleryImages = [
+    '/lovable-uploads/2bcb5a0f-eefd-4bf9-be12-dbc2d1bea8da.png',
+    '/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png',
+    '/lovable-uploads/3d7dc22e-86ff-41c1-be13-22c68e59c932.png',
+    '/lovable-uploads/3df6143b-1e24-4063-ac21-1f8d68e1c558.png',
+    '/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png',
+    '/lovable-uploads/467c4fc8-85d3-4b19-a924-11162bf078e7.png',
+    '/lovable-uploads/4896db9d-9036-4002-9b50-391aefd27f2b.png',
+    '/lovable-uploads/5888e030-a950-4019-a5ea-9d9287fbdcc7.png',
+    '/lovable-uploads/5bc324f9-8392-4f77-a7ca-4888e1502d41.png',
+    '/lovable-uploads/93339d8c-e8b6-44d4-a598-f792a3019f2d.png',
+    '/lovable-uploads/baa55ddc-7737-4bef-b3ae-c2f59f4cf3d9.png'
+  ];
+
   const handleQuoteRequest = async (serviceTitle: string) => {
     if (!user) {
       toast({
@@ -419,80 +435,37 @@ const Gallery = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
-              <div className="w-full h-full relative">
-                <img 
-                  src="/lovable-uploads/5bc324f9-8392-4f77-a7ca-4888e1502d41.png" 
-                  alt="BMW M4 with custom wrap design in underground parking"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-              </div>
-            </Card>
-            
-            <Card className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
-              <div className="w-full h-full relative">
-                <img 
-                  src="/lovable-uploads/2bcb5a0f-eefd-4bf9-be12-dbc2d1bea8da.png" 
-                  alt="Ferrari sports car with metallic finish wrap"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-              </div>
-            </Card>
-            
-            <Card className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
-              <div className="w-full h-full relative">
-                <img 
-                  src="/lovable-uploads/467c4fc8-85d3-4b19-a924-11162bf078e7.png" 
-                  alt="BMW M5 with colorful racing stripes wrap design"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-              </div>
-            </Card>
-            
-            <Card className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
-              <div className="w-full h-full relative">
-                <img 
-                  src="/lovable-uploads/027350b0-6659-443a-bf00-5ce996bb68be.png" 
-                  alt="Mercedes AMG GT with custom yellow and black wrap design"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-              </div>
-            </Card>
-            
-            <Card className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
-              <div className="w-full h-full relative">
-                <img 
-                  src="/lovable-uploads/93339d8c-e8b6-44d4-a598-f792a3019f2d.png" 
-                  alt="Luxury yacht interior with premium finishes"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-              </div>
-            </Card>
-            
-            <Card className="aspect-video overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer">
-              <div className="w-full h-full relative">
-                <img 
-                  src="/lovable-uploads/4896db9d-9036-4002-9b50-391aefd27f2b.png" 
-                  alt="Ford Mustang with dark custom wrap at night"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-              </div>
-            </Card>
+          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${showFullGallery ? '' : 'max-h-96 overflow-hidden'}`}>
+            {(showFullGallery ? galleryImages : galleryImages.slice(0, 6)).map((image, index) => (
+              <Card key={index} className="group overflow-hidden hover:shadow-lg transition-all duration-300">
+                <div className="relative aspect-video overflow-hidden">
+                  <img 
+                    src={image}
+                    alt={`Vehicle wrapping project ${index + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
+                </div>
+              </Card>
+            ))}
           </div>
           
-          <div className="text-center mt-8">
-            <Button variant="outline" size="lg" onClick={() => navigate('/gallery')}>
-              <Eye className="w-5 h-5 mr-2" />
-              {t('common.view_full_gallery')}
-            </Button>
-          </div>
+          {!showFullGallery && (
+            <div className="text-center mt-8">
+              <Button variant="outline" size="lg" onClick={() => setShowFullGallery(true)}>
+                <Eye className="w-5 h-5 mr-2" />
+                {t('common.view_full_gallery')}
+              </Button>
+            </div>
+          )}
+          
+          {showFullGallery && (
+            <div className="text-center mt-8">
+              <Button variant="outline" size="lg" onClick={() => setShowFullGallery(false)}>
+                {t('common.show_less')}
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 

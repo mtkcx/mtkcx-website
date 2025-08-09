@@ -2148,19 +2148,66 @@ const translations = {
     'common.learn_more': 'למד עוד',
     'common.contact_us': 'צור קשר',
     
-    // Policies (Hebrew abbreviated version)
+    // Policies (Hebrew translations)
     'policies.last_updated': 'עדכון אחרון',
     'policies.contact_us': 'צור קשר',
+    
+    // Privacy Policy - Hebrew
     'policies.privacy_title': 'מדיניות פרטיות',
     'policies.privacy_meta_desc': 'למד כיצד אנו אוספים, משתמשים ומגנים על המידע האישי שלך.',
+    'policies.privacy.info_collection': 'מידע שאנו אוספים',
+    'policies.privacy.info_collection_desc': 'אנו אוספים מידע שאתה מספק לנו ישירות, כגון כאשר אתה יוצר חשבון, מבצע רכישה או יוצר קשר.',
+    'policies.privacy.personal_info': 'מידע זיהוי אישי (שם, כתובת אימייל, מספר טלפון)',
+    'policies.privacy.contact_info': 'פרטי יצירת קשר והעדפות תקשורת',
+    'policies.privacy.order_info': 'היסטוריית הזמנות ומידע רכישה',
+    'policies.privacy.payment_info': 'מידע תשלום (מעובד בבטחה דרך ספקים חיצוניים)',
+    'policies.privacy.info_use': 'כיצד אנו משתמשים במידע שלך',
+    'policies.privacy.process_orders': 'עיבוד וביצוע ההזמנות שלך',
+    'policies.privacy.provide_services': 'מתן השירותים שלנו',
+    'policies.privacy.communicate': 'תקשורת לגבי ההזמנות והשירותים שלך',
+    'policies.privacy.improve_services': 'שיפור השירותים שלנו',
+    'policies.privacy.legal_compliance': 'עמידה בדרישות משפטיות',
+    'policies.privacy.data_protection': 'הגנת מידע',
+    'policies.privacy.data_protection_desc': 'אנו מיישמים אמצעי אבטחה מתאימים כדי להגן על המידע האישי שלך מפני גישה לא מורשית, שינוי, חשיפה או הרס.',
+    'policies.privacy.third_party': 'שיתוף עם צדדים שלישיים',
+    'policies.privacy.third_party_desc': 'איננו מוכרים, סוחרים או מעבירים באופן אחר מידע אישי לצדדים שלישיים ללא הסכמתך, למעט כמתואר במדיניות זו.',
+    'policies.privacy.cookies': 'עוגיות',
+    'policies.privacy.cookies_desc': 'אתר האינטרנט שלנו עשוי להשתמש בעוגיות כדי לשפר את חוויית המשתמש שלך ולספק פונקציונליות.',
+    'policies.privacy.user_rights': 'הזכויות שלך',
+    'policies.privacy.user_rights_desc': 'יש לך זכויות מסוימות בנוגע למידע האישי שלך, כולל הזכות לגשת, לעדכן או למחוק את המידע שלך.',
+    'policies.privacy.contact_desc': 'אם יש לך שאלות לגבי מדיניות הפרטיות שלנו, אנא צור קשר:',
+    
+    // Terms of Service - Hebrew  
     'policies.terms_title': 'תנאי השירות',
     'policies.terms_meta_desc': 'קרא את התנאים וההגבלות שלנו לשימוש בשירותים.',
-    'policies.shipping_title': 'מדיניות משלוחים',
-    'policies.shipping_meta_desc': 'למד על שיטות המשלוח, זמני האספקה ואפשרויות התשלום שלנו.',
+    'policies.terms.acceptance': 'קבלת התנאים',
+    'policies.terms.acceptance_desc': 'על ידי גישה לאתר זה ושימוש בו, אתה מקבל ומסכים להיות מחויב בתנאים אלה.',
+    'policies.terms.services': 'השירותים שלנו',
+    'policies.terms.services_desc': 'אנו מספקים מוצרי טיפוח רכב איכותיים, קורסי הכשרה מקצועיים ושירותי עיטוף רכבים.',
+    'policies.terms.user_conduct': 'התנהגות משתמש',
+    'policies.terms.user_conduct_desc': 'אתה מסכים להשתמש בשירותים שלנו באופן אחראי ובהתאם לכל החוקים הרלוונטיים.',
+    'policies.terms.liability': 'הגבלת אחריות',
+    'policies.terms.liability_desc': 'השירותים שלנו מסופקים "כפי שהם" ואיננו מספקים אחריות מפורשת או משתמעת.',
+    'policies.terms.modifications': 'שינויים לתנאים',
+    'policies.terms.modifications_desc': 'אנו שומרים לעצמנו את הזכות לשנות את התנאים הללו בכל עת.',
+    'policies.terms.contact_desc': 'לשאלות לגבי תנאי השירות שלנו, אנא צור קשר:',
+    
+    'policies.privacy.marketing': 'שיווק ותקשורת קידום מכירות',
+    'policies.privacy.rights': 'הזכויות שלך',
+    'policies.privacy.access_data': 'גישה למידע האישי שלך',
+    'policies.privacy.correct_data': 'תיקון מידע לא מדויק',
+    'policies.privacy.delete_data': 'מחיקת המידע שלך',
+    'policies.privacy.restrict_processing': 'הגבלת עיבוד המידע שלך',
+    
+    // Return Policy - Hebrew
     'policies.return_title': 'מדיניות החזרות',
     'policies.return_meta_desc': 'למד על מדיניות החזרות, פריטים זכאים ותהליך ההחזרה.',
+    
+    // Refund Policy - Hebrew  
     'policies.refund_title': 'מדיניות החזר כספי',
     'policies.refund_meta_desc': 'הבן את מדיניות ההחזר הכספי, זמני העיבוד ותרחישי החזר זכאים.',
+    'policies.shipping_title': 'מדיניות משלוחים',
+    'policies.shipping_meta_desc': 'למד על שיטות המשלוח, זמני האספקה ואפשרויות התשלום שלנו.',
 
     // Enrollment Dialog (Hebrew)
     'enrollment.dialog_title': 'בקשת הרשמה לקורס',
@@ -2528,7 +2575,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     localStorage.setItem('preferred-language', lang);
     
     // Set document direction and language attribute
-    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('dir', (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr');
     document.documentElement.setAttribute('lang', lang);
   };
 
@@ -2536,7 +2583,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     return translations[currentLanguage][key as keyof typeof translations[typeof currentLanguage]] || key;
   };
 
-  const isRTL = currentLanguage === 'ar';
+  const isRTL = currentLanguage === 'ar' || currentLanguage === 'he';
 
   // Initialize language on mount and maintain direction
   React.useEffect(() => {
@@ -2544,7 +2591,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     if (savedLanguage && ['en', 'ar', 'he'].includes(savedLanguage)) {
       setCurrentLanguage(savedLanguage);
       // Set document direction and language on initial load
-      document.documentElement.setAttribute('dir', savedLanguage === 'ar' ? 'rtl' : 'ltr');
+      document.documentElement.setAttribute('dir', (savedLanguage === 'ar' || savedLanguage === 'he') ? 'rtl' : 'ltr');
       document.documentElement.setAttribute('lang', savedLanguage);
     } else {
       // Set default direction for English
