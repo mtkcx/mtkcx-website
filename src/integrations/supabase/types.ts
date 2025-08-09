@@ -1105,6 +1105,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_security_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          table_name: string
+          total_records: number
+          records_24h: number
+          records_1h: number
+        }[]
+      }
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
