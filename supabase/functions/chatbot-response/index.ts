@@ -83,6 +83,12 @@ serve(async (req) => {
     });
 
     const data = await response.json();
+    
+    // Check if response is valid
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      throw new Error('Invalid API response structure');
+    }
+    
     const botResponse = data.choices[0].message.content;
 
     return new Response(JSON.stringify({ response: botResponse }), {
@@ -93,9 +99,9 @@ serve(async (req) => {
     
     // Fallback responses based on language
     const fallbackResponses = {
-      'en': "I apologize, but I'm experiencing technical difficulties. Please contact our support team at support@yourcompany.com or try again later.",
-      'ar': "أعتذر، ولكنني أواجه صعوبات تقنية. يرجى الاتصال بفريق الدعم على support@yourcompany.com أو المحاولة مرة أخرى لاحقاً.",
-      'he': "אני מתנצל, אבל אני חווה קשיים טכניים. אנא צור קשר עם צוות התמיכה שלנו בכתובת support@yourcompany.com או נסה שוב מאוחר יותר."
+      'en': "I apologize, but I'm experiencing technical difficulties. Please contact our support team at info@mtkcx.com or try again later.",
+      'ar': "أعتذر، ولكنني أواجه صعوبات تقنية. يرجى الاتصال بفريق الدعم على info@mtkcx.com أو المحاولة مرة أخرى لاحقاً.",
+      'he': "אני מתנצל, אבל אני חווה קשיים טכניים. אנא צור קשר עם צוות התמיכה שלנו בכתובת info@mtkcx.com או נסה שוב מאוחר יותר."
     };
 
     const { language } = await req.json().catch(() => ({ language: 'en' }));
