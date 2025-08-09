@@ -581,45 +581,6 @@ export type Database = {
         }
         Relationships: []
       }
-      page_content: {
-        Row: {
-          content_key: string
-          content_type: string
-          content_value: string | null
-          created_at: string
-          display_order: number | null
-          id: string
-          is_active: boolean | null
-          page_name: string
-          section_name: string
-          updated_at: string
-        }
-        Insert: {
-          content_key: string
-          content_type?: string
-          content_value?: string | null
-          created_at?: string
-          display_order?: number | null
-          id?: string
-          is_active?: boolean | null
-          page_name: string
-          section_name: string
-          updated_at?: string
-        }
-        Update: {
-          content_key?: string
-          content_type?: string
-          content_value?: string | null
-          created_at?: string
-          display_order?: number | null
-          id?: string
-          is_active?: boolean | null
-          page_name?: string
-          section_name?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       product_categories: {
         Row: {
           category_id: string
@@ -971,39 +932,6 @@ export type Database = {
           identifier?: string
           last_attempt_at?: string
           reset_at?: string
-        }
-        Relationships: []
-      }
-      site_settings: {
-        Row: {
-          category: string
-          created_at: string
-          description: string | null
-          id: string
-          setting_key: string
-          setting_type: string
-          setting_value: string | null
-          updated_at: string
-        }
-        Insert: {
-          category?: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          setting_key: string
-          setting_type?: string
-          setting_value?: string | null
-          updated_at?: string
-        }
-        Update: {
-          category?: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          setting_key?: string
-          setting_type?: string
-          setting_value?: string | null
-          updated_at?: string
         }
         Relationships: []
       }

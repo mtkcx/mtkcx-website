@@ -30,7 +30,6 @@ import ShippingPolicy from "./pages/ShippingPolicy";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
-import WebsiteAdmin from "./pages/WebsiteAdmin";
 import EnrollmentAdmin from "./pages/EnrollmentAdmin";
 import ChatAdmin from "./pages/ChatAdmin";
 import SecureNewsletterVerification from "./components/SecureNewsletterVerification";
@@ -65,7 +64,6 @@ const App = () => (
                 <Route path="/admin/products" element={<AdminProtectedRoute><ProductAdmin /></AdminProtectedRoute>} />
                 <Route path="/admin/enrollments" element={<AdminProtectedRoute><EnrollmentAdmin /></AdminProtectedRoute>} />
                 <Route path="/admin/chat" element={<AdminProtectedRoute><ChatAdmin /></AdminProtectedRoute>} />
-                <Route path="/admin/website" element={<AdminProtectedRoute><WebsiteAdmin /></AdminProtectedRoute>} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-cancelled" element={<PaymentCancelled />} />
                 <Route path="/checkout" element={<Checkout />} />

@@ -23,8 +23,7 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { email, name, verificationToken }: VerificationEmailRequest = await req.json();
 
-    const siteUrl = Deno.env.get("SITE_URL") || "https://id-preview--2b082f57-ea56-4226-9792-5934ae718ea9.lovable.app";
-    const verificationUrl = `${siteUrl}/verify-newsletter?token=${verificationToken}`;
+    const verificationUrl = `${Deno.env.get("SITE_URL") || "https://localhost:3000"}/verify-newsletter?token=${verificationToken}`;
 
     const emailResponse = await resend.emails.send({
       from: "MT KCx <onboarding@resend.dev>",

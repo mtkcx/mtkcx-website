@@ -4,17 +4,15 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, GraduationCap, Sparkles, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useWebsiteContent, useSiteSettings } from '@/hooks/useWebsiteContent';
 const Hero = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { t, isRTL } = useLanguage();
-  const { content } = useWebsiteContent('homepage');
-  const { content: settings } = useSiteSettings();
-
-  const heroTitle = content['homepage.hero.title'] || t('hero.title');
-  const heroSubtitle = content['homepage.hero.subtitle'] || t('hero.subtitle');
-  const ctaText = content['homepage.hero.cta_text'] || t('hero.cta.products');
+  const {
+    user
+  } = useAuth();
+  const {
+    t,
+    isRTL
+  } = useLanguage();
   return <section className="relative min-h-[80vh] flex items-center justify-center">
       {/* Hero Banner Image */}
       <div className="absolute inset-0">
@@ -31,11 +29,11 @@ const Hero = () => {
             </div>
             
             <h1 className="text-5xl font-bold text-white mb-6 leading-tight md:text-4xl">
-              {heroTitle}
+              {t('hero.title')}
             </h1>
             
             <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed md:text-base">
-              {heroSubtitle}
+              {t('hero.subtitle')}
             </p>
           </div>
 
@@ -45,7 +43,7 @@ const Hero = () => {
               window.scrollTo(0, 0);
             }}>
               <ShoppingCart className="w-5 h-5 mr-2" />
-              {ctaText}
+              {t('hero.cta.products')}
             </Button>
             
             <Button variant="outline" size="lg" className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm" onClick={() => {
