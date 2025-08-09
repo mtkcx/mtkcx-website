@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ArrowLeft, Package, Shield, Award } from 'lucide-react';
 import ProductVariantSelector from '@/components/ProductVariantSelector';
+import { ProductUpsells } from '@/components/ProductUpsells';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
@@ -398,6 +399,14 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Product Upsells */}
+      <ProductUpsells 
+        productId={product.id} 
+        currentProductName={currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                            currentLanguage === 'he' ? (product.name_he || product.name) :
+                            product.name}
+      />
       
       <Footer />
     </div>

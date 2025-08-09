@@ -450,6 +450,45 @@ export type Database = {
           },
         ]
       }
+      product_upsells: {
+        Row: {
+          created_at: string
+          display_order: number | null
+          id: string
+          product_id: string
+          upsell_product_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          product_id: string
+          upsell_product_id: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          product_id?: string
+          upsell_product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_upsells_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_upsells_upsell_product_id_fkey"
+            columns: ["upsell_product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_variants: {
         Row: {
           created_at: string

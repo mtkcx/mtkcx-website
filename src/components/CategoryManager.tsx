@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 
@@ -115,6 +115,46 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
     }
   };
 
+  const handleReorderCategory = async (categoryId: string, direction: 'up' | 'down') => {
+    const category = categories.find(c => c.id === categoryId);
+    if (!category) return;
+
+    const currentOrder = category.display_order || 0;
+    const newOrder = direction === 'up' ? currentOrder - 1 : currentOrder + 1;
+
+    // Find category to swap with
+    const targetCategory = categories.find(c => (c.display_order || 0) === newOrder);
+    
+    try {
+      if (targetCategory) {
+        // Swap display orders
+        await supabase
+          .from('categories')
+          .update({ display_order: currentOrder })
+          .eq('id', targetCategory.id);
+      }
+
+      await supabase
+        .from('categories')
+        .update({ display_order: newOrder })
+        .eq('id', categoryId);
+
+      toast({
+        title: "Success",
+        description: "Category order updated successfully",
+      });
+
+      onCategoriesUpdate();
+    } catch (error) {
+      console.error('Error reordering category:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update category order",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -186,6 +226,22 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
                 <TableCell>{category.display_order || 0}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleReorderCategory(category.id, 'up')}
+                      disabled={category.display_order === 1}
+                    >
+                      <ChevronUp className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleReorderCategory(category.id, 'down')}
+                      disabled={category.display_order === Math.max(...categories.map(c => c.display_order || 0))}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
                     <Button
                       variant="destructive"
                       size="sm"
