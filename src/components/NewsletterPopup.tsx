@@ -7,6 +7,8 @@ import { X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useRateLimit } from '@/hooks/useRateLimit';
+import { sanitizeInput, validateEmail, validateName, generateVerificationToken } from '@/utils/security';
 
 const NewsletterPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +17,13 @@ const NewsletterPopup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
+  
+  // Rate limiting hook
+  const { checkRateLimit, isLimited, getRemainingTime } = useRateLimit({
+    maxAttempts: 3,
+    windowMs: 60 * 60 * 1000, // 1 hour
+    storageKey: 'newsletter-signup-attempts'
+  });
 
   useEffect(() => {
     // Check if user has seen the popup before
@@ -31,7 +40,23 @@ const NewsletterPopup = () => {
   }, []);
 
   const handleSubscribe = async () => {
-    if (!email) {
+    // Check rate limiting
+    if (!checkRateLimit()) {
+      const remainingTime = getRemainingTime();
+      const minutes = Math.ceil(remainingTime / (60 * 1000));
+      toast({
+        title: 'Too Many Attempts',
+        description: `Please wait ${minutes} minutes before trying again.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Sanitize and validate inputs
+    const sanitizedEmail = sanitizeInput(email.toLowerCase());
+    const sanitizedName = name ? sanitizeInput(name) : '';
+
+    if (!sanitizedEmail) {
       toast({
         title: t('common.error'),
         description: 'Please enter your email address',
@@ -40,7 +65,7 @@ const NewsletterPopup = () => {
       return;
     }
 
-    if (!/\S+@\S+\.\S+/.test(email)) {
+    if (!validateEmail(sanitizedEmail)) {
       toast({
         title: t('common.error'),
         description: 'Please enter a valid email address',
@@ -49,15 +74,28 @@ const NewsletterPopup = () => {
       return;
     }
 
+    if (sanitizedName && !validateName(sanitizedName)) {
+      toast({
+        title: t('common.error'),
+        description: 'Please enter a valid name (2-100 characters, letters only)',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
+      // Generate verification token
+      const verificationToken = generateVerificationToken();
+      
       const { error } = await supabase
         .from('newsletter_subscriptions')
         .insert({ 
-          email, 
-          name: name || null,
-          source: 'popup' 
+          email: sanitizedEmail, 
+          name: sanitizedName || null,
+          source: 'popup',
+          verification_token: verificationToken
         });
 
       if (error) {
@@ -71,14 +109,18 @@ const NewsletterPopup = () => {
           throw error;
         }
       } else {
-        // Send welcome email
-        await supabase.functions.invoke('send-welcome-email', {
-          body: { email, name: name || 'Valued Customer' }
+        // Send verification email
+        await supabase.functions.invoke('send-newsletter-verification', {
+          body: { 
+            email: sanitizedEmail, 
+            name: sanitizedName || 'Valued Customer',
+            verificationToken 
+          }
         });
 
         toast({
-          title: 'Successfully Subscribed!',
-          description: 'Thank you for subscribing to our newsletter. Check your email for confirmation!',
+          title: 'Verification Email Sent!',
+          description: 'Please check your email and click the verification link to complete your subscription.',
           variant: 'default',
         });
       }

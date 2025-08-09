@@ -31,6 +31,7 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
 import EnrollmentAdmin from "./pages/EnrollmentAdmin";
+import VerifyNewsletter from "./pages/VerifyNewsletter";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +68,7 @@ const App = () => (
                 <Route path="/shipping-policy" element={<ShippingPolicy />} />
                 <Route path="/return-policy" element={<ReturnPolicy />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
+                <Route path="/verify-newsletter" element={<VerifyNewsletter />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

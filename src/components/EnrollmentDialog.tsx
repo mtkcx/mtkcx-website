@@ -6,6 +6,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useRateLimit } from '@/hooks/useRateLimit';
+import { sanitizeInput, validateEmail, validateName, validatePhone } from '@/utils/security';
 
 interface EnrollmentDialogProps {
   isOpen: boolean;
@@ -22,13 +24,65 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     phone: ''
   });
 
+  // Rate limiting hook
+  const { checkRateLimit, isLimited, getRemainingTime } = useRateLimit({
+    maxAttempts: 5,
+    windowMs: 60 * 60 * 1000, // 1 hour
+    storageKey: 'enrollment-attempts'
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.phone) {
+    // Check rate limiting
+    if (!checkRateLimit()) {
+      const remainingTime = getRemainingTime();
+      const minutes = Math.ceil(remainingTime / (60 * 1000));
+      toast({
+        title: 'Too Many Attempts',
+        description: `Please wait ${minutes} minutes before trying again.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Sanitize and validate inputs
+    const sanitizedName = sanitizeInput(formData.name);
+    const sanitizedEmail = sanitizeInput(formData.email.toLowerCase());
+    const sanitizedPhone = sanitizeInput(formData.phone);
+    
+    if (!sanitizedName || !sanitizedEmail || !sanitizedPhone) {
       toast({
         title: t('common.error'),
         description: t('enrollment.fill_all_fields'),
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate inputs
+    if (!validateName(sanitizedName)) {
+      toast({
+        title: t('common.error'),
+        description: 'Please enter a valid name (2-100 characters, letters only)',
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!validateEmail(sanitizedEmail)) {
+      toast({
+        title: t('common.error'),
+        description: 'Please enter a valid email address',
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!validatePhone(sanitizedPhone)) {
+      toast({
+        title: t('common.error'),
+        description: 'Please enter a valid phone number',
         variant: "destructive"
       });
       return;
@@ -41,9 +95,9 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       const { error: insertError } = await supabase
         .from('enrollment_requests')
         .insert({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
+          name: sanitizedName,
+          email: sanitizedEmail,
+          phone: sanitizedPhone,
           course_type: 'professional_detailing'
         });
 
@@ -52,9 +106,9 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       // Send enrollment confirmation email
       const { error: emailError } = await supabase.functions.invoke('send-enrollment-confirmation', {
         body: {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone
+          name: sanitizedName,
+          email: sanitizedEmail,
+          phone: sanitizedPhone
         }
       });
 

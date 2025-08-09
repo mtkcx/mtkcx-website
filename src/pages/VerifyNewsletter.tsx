@@ -31,7 +31,7 @@ const VerifyNewsletter = () => {
           .from('newsletter_subscriptions')
           .select('*')
           .eq('verification_token', token)
-          .eq('verified', false)
+          .is('verified_at', null)
           .single();
 
         if (fetchError || !subscription) {
@@ -52,7 +52,6 @@ const VerifyNewsletter = () => {
         const { error: updateError } = await supabase
           .from('newsletter_subscriptions')
           .update({ 
-            verified: true,
             verified_at: new Date().toISOString(),
             verification_token: null 
           })
