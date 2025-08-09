@@ -19,7 +19,7 @@ const faqData = {
     patterns: {
       location: {
         keywords: ['location', 'where', 'address', 'find you', 'located', 'office'],
-        answer: "We are located at 123 Industrial Street, Tel Aviv, Israel 6789012. You can reach us at info@mtkcx.com or call us during business hours: Sunday-Thursday 9:00-18:00, Friday 9:00-14:00."
+        answer: "We are located in Israel. For our exact address and directions, please contact us at info@mtkcx.com or call us during business hours: Sunday-Thursday 9:00-18:00, Friday 9:00-14:00."
       },
       courses: {
         keywords: ['course', 'training', 'certification', 'learn', 'register', 'enroll', 'class', 'workshop'],
@@ -31,7 +31,7 @@ const faqData = {
       },
       shipping: {
         keywords: ['shipping', 'delivery', 'ship', 'send', 'postal', 'mail'],
-        answer: "We offer shipping within Israel only. Standard delivery takes 3-5 business days. Express delivery is available for 1-2 business days at additional cost. All shipping costs are calculated at checkout."
+        answer: "We offer shipping within Israel only. Orders are processed within 3-5 business days, and delivery takes 7-10 business days. All shipping costs are calculated at checkout."
       },
       payment: {
         keywords: ['payment', 'pay', 'card', 'paypal', 'stripe', 'method'],
@@ -57,7 +57,7 @@ const faqData = {
     patterns: {
       location: {
         keywords: ['מיקום', 'איפה', 'כתובת', 'למצוא', 'נמצא', 'משרד', 'היכן'],
-        answer: "אנחנו נמצאים ברחוב התעשייה 123, תל אביב, ישראל 6789012. ניתן ליצור קשר בכתובת info@mtkcx.com או להתקשר בשעות העבודה: ראשון-חמישי 9:00-18:00, שישי 9:00-14:00."
+        answer: "אנחנו נמצאים בישראל. לכתובת המדויקת והנחיות הגעה, אנא צור קשר בכתובת info@mtkcx.com או התקשר בשעות העבודה: ראשון-חמישי 9:00-18:00, שישי 9:00-14:00."
       },
       courses: {
         keywords: ['קורס', 'הכשרה', 'הסמכה', 'ללמוד', 'להירשם', 'כיתה', 'סדנה', 'לימודים'],
@@ -69,7 +69,7 @@ const faqData = {
       },
       shipping: {
         keywords: ['משלוח', 'רכש', 'לשלוח', 'דואר', 'הובלה'],
-        answer: "אנו מציעים משלוחים בישראל בלבד. משלוח רגיל לוקח 3-5 ימי עסקים. משלוח מהיר זמין תוך 1-2 ימי עסקים בעלות נוספת. כל עלויות המשלוח מחושבות בקופה."
+        answer: "אנו מציעים משלוחים בישראל בלבד. הזמנות מעובדות תוך 3-5 ימי עסקים, והמשלוח לוקח 7-10 ימי עסקים. כל עלויות המשלוח מחושבות בקופה."
       },
       payment: {
         keywords: ['תשלום', 'לשלם', 'כרטיס', 'paypal', 'stripe', 'אמצעי'],
@@ -95,7 +95,7 @@ const faqData = {
     patterns: {
       location: {
         keywords: ['موقع', 'أين', 'عنوان', 'العثور', 'موجود', 'مكتب', 'مكان'],
-        answer: "نحن موجودون في شارع الصناعة 123، تل أبيب، إسرائيل 6789012. يمكنك الاتصال بنا على info@mtkcx.com أو الاتصال خلال ساعات العمل: الأحد-الخميس 9:00-18:00، الجمعة 9:00-14:00."
+        answer: "نحن موجودون في إسرائيل. للعنوان الدقيق والاتجاهات، يرجى الاتصال بنا على info@mtkcx.com أو الاتصال خلال ساعات العمل: الأحد-الخميس 9:00-18:00، الجمعة 9:00-14:00."
       },
       courses: {
         keywords: ['دورة', 'تدريب', 'شهادة', 'تعلم', 'تسجيل', 'صف', 'ورشة عمل', 'دراسة'],
@@ -107,7 +107,7 @@ const faqData = {
       },
       shipping: {
         keywords: ['شحن', 'توصيل', 'إرسال', 'بريد', 'نقل'],
-        answer: "نحن نقدم الشحن داخل إسرائيل فقط. التوصيل العادي يستغرق 3-5 أيام عمل. التوصيل السريع متاح خلال 1-2 أيام عمل بتكلفة إضافية. يتم حساب جميع تكاليف الشحن عند الدفع."
+        answer: "نحن نقدم الشحن داخل إسرائيل فقط. يتم معالجة الطلبات خلال 3-5 أيام عمل، ويستغرق التسليم 7-10 أيام عمل. يتم حساب جميع تكاليف الشحن عند الدفع."
       },
       payment: {
         keywords: ['دفع', 'يدفع', 'بطاقة', 'paypal', 'stripe', 'طريقة'],

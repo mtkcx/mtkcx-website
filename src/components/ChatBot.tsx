@@ -36,9 +36,9 @@ const ChatBot = () => {
     if (isOpen && messages.length === 0) {
       // Add welcome message based on language
       const welcomeMessages = {
-        en: "Hi! I'm your virtual assistant. I can help you with questions about our products, services, shipping, and more. How can I assist you today?",
-        ar: "مرحباً! أنا مساعدك الافتراضي. يمكنني مساعدتك في الأسئلة حول منتجاتنا وخدماتنا والشحن والمزيد. كيف يمكنني مساعدتك اليوم؟",
-        he: "שלום! אני העוזר הווירטואלי שלך. אני יכול לעזור לך עם שאלות על המוצרים, השירותים, המשלוחים שלנו ועוד. איך אני יכול לעזור לך היום?"
+        en: "Hello! I'm MT Support, here to help you with questions about MT Wraps. Ask me about our location, courses, products, or services!",
+        ar: "مرحباً! أنا MT Support، هنا لمساعدتك في الأسئلة حول MT Wraps. اسألني عن موقعنا، الدورات، المنتجات أو الخدمات!",
+        he: "שלום! אני MT Support, כאן לעזור לך עם שאלות על MT Wraps. שאל אותי על המיקום שלנו, קורסים, מוצרים או שירותים!"
       };
 
       setMessages([{
@@ -139,7 +139,7 @@ const ChatBot = () => {
           <div className="flex items-center justify-between p-4 border-b border-border bg-primary text-white rounded-t-lg">
             <div className="flex items-center gap-2">
               <Bot className="w-5 h-5" />
-              <h3 className="font-semibold">Customer Support</h3>
+              <h3 className="font-semibold">MT Support</h3>
             </div>
             <Button
               variant="ghost"
