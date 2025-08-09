@@ -1609,6 +1609,9 @@ const translations = {
     'courses.industry_updates': 'أحدث اتجاهات الصناعة وتحديثات المنتجات',
     'courses.business_growth': 'نمو الأعمال واستراتيجيات التسويق',
     
+    // Common
+    'common.locale': 'ar-SA',
+    
     // Add missing translation keys for all pages - Arabic
     'about.location_jerusalem': 'منطقة عطروت الصناعية، القدس',
     'about.core_values': 'قيمنا الأساسية',
@@ -2364,6 +2367,9 @@ const translations = {
     'contact.location_short': 'אזור התעשייה עטרות',
     'contact.our_services': 'השירותים שלנו',
     'common.visit_our_location': 'בקר במיקום שלנו',
+    
+    // Common
+    'common.locale': 'he-IL',
     'common.visit_showroom_workshop': 'בוא לראות את אולם התצוגה ובית המלאכה שלנו באזור התעשייה עטרות',
     'common.visit_us_location': 'בקר אותנו במיקום שלנו',
     
