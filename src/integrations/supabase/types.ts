@@ -1217,6 +1217,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      validate_guest_order_access: {
+        Args: { p_order_number: string; p_email: string }
+        Returns: string
+      }
       validate_order_access: {
         Args: { p_order_id: string; p_session_id?: string }
         Returns: boolean
