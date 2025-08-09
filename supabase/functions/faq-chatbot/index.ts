@@ -19,7 +19,7 @@ const faqData = {
     patterns: {
       location: {
         keywords: ['location', 'where', 'address', 'find you', 'located', 'office'],
-        answer: "We are located in Israel. For our exact address and directions, please contact us at info@mtkcx.com or call us during business hours: Sunday-Thursday 9:00-18:00, Friday 9:00-14:00."
+        answer: "We are located at Atarot Industrial Area, Hatamrukim, Jerusalem. For directions or additional information, please contact us at info@mtkcx.com or call us during business hours: Sunday-Thursday 9:00-18:00, Friday 9:00-14:00."
       },
       courses: {
         keywords: ['course', 'training', 'certification', 'learn', 'register', 'enroll', 'class', 'workshop'],
@@ -57,7 +57,7 @@ const faqData = {
     patterns: {
       location: {
         keywords: ['מיקום', 'איפה', 'כתובת', 'למצוא', 'נמצא', 'משרד', 'היכן'],
-        answer: "אנחנו נמצאים בישראל. לכתובת המדויקת והנחיות הגעה, אנא צור קשר בכתובת info@mtkcx.com או התקשר בשעות העבודה: ראשון-חמישי 9:00-18:00, שישי 9:00-14:00."
+        answer: "אנחנו נמצאים באזור התעשייה עטרות, התמרוקים, ירושלים. להנחיות הגעה או מידע נוסף, אנא צור קשר בכתובת info@mtkcx.com או התקשר בשעות העבודה: ראשון-חמישי 9:00-18:00, שישי 9:00-14:00."
       },
       courses: {
         keywords: ['קורס', 'הכשרה', 'הסמכה', 'ללמוד', 'להירשם', 'כיתה', 'סדנה', 'לימודים'],
@@ -95,7 +95,7 @@ const faqData = {
     patterns: {
       location: {
         keywords: ['موقع', 'أين', 'عنوان', 'العثور', 'موجود', 'مكتب', 'مكان'],
-        answer: "نحن موجودون في إسرائيل. للعنوان الدقيق والاتجاهات، يرجى الاتصال بنا على info@mtkcx.com أو الاتصال خلال ساعات العمل: الأحد-الخميس 9:00-18:00، الجمعة 9:00-14:00."
+        answer: "نحن موجودون في المنطقة الصناعية عطروت، هاتمروكيم، القدس. للاتجاهات أو معلومات إضافية، يرجى الاتصال بنا على info@mtkcx.com أو الاتصال خلال ساعات العمل: الأحد-الخميس 9:00-18:00، الجمعة 9:00-14:00."
       },
       courses: {
         keywords: ['دورة', 'تدريب', 'شهادة', 'تعلم', 'تسجيل', 'صف', 'ورشة عمل', 'دراسة'],
