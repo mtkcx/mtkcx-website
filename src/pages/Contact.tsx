@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,10 +24,11 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import contactBanner from '@/assets/contact-banner.jpg';
 
 const Contact = () => {
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -118,42 +119,49 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
       
-      {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-primary/10">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-2">{t('contact.badge')}</Badge>
-            <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
+      {/* Hero Banner Section */}
+      <section className="relative h-[60vh] overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src={contactBanner}
+            alt="Professional automotive contact and consultation services"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+        
+        <div className="relative z-10 flex items-center justify-center h-full">
+          <div className="text-center text-white max-w-4xl mx-auto px-6">
+            <Badge variant="outline" className="mb-4 text-white border-white/30 bg-white/10 backdrop-blur-sm">
+              {t('contact.badge')}
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
               {t('contact.title')}
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto animate-fade-in">
               {t('contact.subtitle')}
             </p>
           </div>
         </div>
       </section>
+      
 
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid lg:grid-cols-2 gap-12">
             
-            {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <Card className="p-6">
-                <CardHeader className="px-0 pt-0">
-                  <CardTitle className="text-2xl font-bold text-primary flex items-center">
-                    <Send className="w-6 h-6 mr-3" />
-                    {t('contact.form_title')}
-                  </CardTitle>
-                  <p className="text-muted-foreground">
-                    {t('contact.form_subtitle')}
-                  </p>
-                </CardHeader>
-                
-                <CardContent className="px-0">
+          {/* Contact Form */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl">{t('contact.form_title')}</CardTitle>
+              <CardDescription>
+                {t('contact.form_subtitle')}
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Personal Information */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -287,10 +295,9 @@ const Contact = () => {
                   </form>
                 </CardContent>
               </Card>
-            </div>
 
-            {/* Contact Information */}
-            <div className="space-y-6">
+              {/* Contact Information */}
+              <div className="space-y-8">
               
               {/* Contact Details */}
               <Card className="p-6">
@@ -367,7 +374,6 @@ const Contact = () => {
             </div>
           </div>
         </div>
-      </section>
 
       {/* Map Section Placeholder */}
       <section className="py-16 bg-muted/30">

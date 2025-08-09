@@ -17,9 +17,10 @@ import {
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
+import aboutBanner from '@/assets/about-banner.jpg';
 
 const About = () => {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   
   const achievements = [
     { icon: Award, title: t('about.achievement_1'), description: t('about.achievement_1_desc') },
@@ -45,18 +46,29 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-primary/5 via-background to-primary/10">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-2">{t('about.badge')}</Badge>
-            <h1 className="text-5xl font-bold text-primary mb-6 leading-tight">
+      {/* Hero Banner Section */}
+      <section className="relative h-[70vh] overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src={aboutBanner}
+            alt="MT Wraps professional automotive facility and team expertise"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40" />
+        </div>
+        
+        <div className="relative z-10 flex items-center justify-center h-full">
+          <div className="text-center text-white max-w-5xl mx-auto px-6">
+            <Badge variant="outline" className="mb-6 text-white border-white/30 bg-white/10 backdrop-blur-sm">
+              {t('about.badge')}
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 animate-fade-in">
               {t('about.title')}
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed animate-fade-in">
               {t('about.subtitle')}
             </p>
           </div>
