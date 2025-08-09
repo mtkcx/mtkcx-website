@@ -1141,6 +1141,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      emergency_validate_guest_order: {
+        Args: {
+          p_order_id: string
+          p_order_number: string
+          p_email: string
+          p_session_id: string
+        }
+        Returns: boolean
+      }
       generate_order_session_id: {
         Args: Record<PropertyKey, never>
         Returns: string
