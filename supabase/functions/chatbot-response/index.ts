@@ -114,6 +114,8 @@ serve(async (req) => {
 
     const systemPrompt = conversationContext + "\n\n" + (languageInstructions[language as keyof typeof languageInstructions] || languageInstructions.en);
 
+    console.log('Making OpenAI API call...');
+    
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -131,10 +133,20 @@ serve(async (req) => {
       }),
     });
 
+    console.log('OpenAI response status:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('OpenAI API error:', response.status, errorText);
+      throw new Error(`OpenAI API error: ${response.status} ${errorText}`);
+    }
+
     const data = await response.json();
+    console.log('OpenAI response data:', JSON.stringify(data, null, 2));
     
     // Check if response is valid
     if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('Invalid API response structure:', data);
       throw new Error('Invalid API response structure');
     }
     
