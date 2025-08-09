@@ -1613,7 +1613,7 @@ const translations = {
     'common.locale': 'ar-SA',
     
     // Add missing translation keys for all pages - Arabic
-    'about.location_jerusalem': 'منطقة عطروت الصناعية، القدس',
+    'about.location_jerusalem': 'المنطقة الصناعية عطروت، القدس',
     'about.core_values': 'قيمنا الأساسية',
     'about.core_values_desc': 'المبادئ التي توجه كل ما نقوم به',
     'about.what_we_offer': 'ما نقدمه',
@@ -1621,12 +1621,12 @@ const translations = {
     'common.ready_experience_excellence': 'مستعد لتجربة التميز؟',
     'common.join_mt_wraps_family': 'انضم إلى عائلة MT Wraps واكتشف لماذا يثق المحترفون بنا لاحتياجات العناية بسياراتهم.',
     'common.established_2020': 'تأسست عام 2020',
-    'contact.location_address': 'منطقة عطروت الصناعية، هتمروكيم، القدس',
+    'contact.location_address': 'المنطقة الصناعية عطروت، هتمروكيم، القدس',
     'contact.hours_details': 'الأحد - الخميس: 10:00 صباحًا - 6:00 مساءً',
-    'contact.location_short': 'منطقة عطروت الصناعية',
+    'contact.location_short': 'المنطقة الصناعية عطروت',
     'contact.our_services': 'خدماتنا',
     'common.visit_our_location': 'زر موقعنا',
-    'common.visit_showroom_workshop': 'تعال لمشاهدة صالة العرض وورشة العمل لدينا في منطقة عطروت الصناعية',
+    'common.visit_showroom_workshop': 'تعال لمشاهدة صالة العرض وورشة العمل لدينا في المنطقة الصناعية عطروت',
     'common.visit_us_location': 'زرنا في موقعنا',
     
     // Checkout Page
@@ -2239,7 +2239,7 @@ const translations = {
     'courses.four_days': '4 ימים',
     'courses.interactive_format': 'אינטראקטיבי ומעשי',
     'courses.small_groups': 'קבוצות קטנות (מקסימום 5)',
-    'courses.atarot_location': 'האזור התעשייתי עטרות, ירושלים',
+    'courses.atarot_location': 'אזור התעשייה עטרות, ירושלים',
     'courses.tba': 'יוכרז',
     'courses.course_intro_video': 'סרטון מבוא לקורס',
     'courses.video_placeholder': 'החלף את המקום השמור הזה עם הסרטון שלך',

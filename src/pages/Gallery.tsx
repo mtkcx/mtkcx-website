@@ -517,7 +517,7 @@ const Gallery = () => {
               </div>
               <div className="flex items-center justify-center space-x-3">
                 <MapPin className="w-5 h-5" />
-                <span>Atarot Industrial Area</span>
+                <span>{t('contact.location_short')}</span>
               </div>
             </div>
             
