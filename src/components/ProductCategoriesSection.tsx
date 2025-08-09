@@ -55,8 +55,12 @@ const ProductCategoriesSection = () => {
         if (error) throw error;
 
         if (dbCategories && dbCategories.length > 0) {
-          // Map database categories with fallback images
-          const categoriesWithImages = dbCategories.map(cat => {
+          // Filter database categories to only show the 3 specific ones
+          const allowedSlugs = ['interior-cleaning', 'exterior-cleaning', 'polishing-coatings'];
+          const filteredCategories = dbCategories.filter(cat => allowedSlugs.includes(cat.slug));
+          
+          // Map filtered categories with fallback images
+          const categoriesWithImages = filteredCategories.map(cat => {
             const fallback = fallbackCategories.find(f => f.slug === cat.slug);
             return {
               ...cat,
