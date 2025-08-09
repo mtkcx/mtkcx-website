@@ -56,7 +56,7 @@ const Header = () => {
     key: 'nav.contact',
     href: '/contact'
   }];
-  return <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-background/95 w-full">
+  return <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-background/95 w-full" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="w-full px-6 py-4">
         <div className="flex items-center justify-between w-full">
           {/* Logo - Left */}

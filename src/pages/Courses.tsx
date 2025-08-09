@@ -18,7 +18,7 @@ const Courses = () => {
   const handleEnrollment = () => {
     setIsEnrollmentDialogOpen(true);
   };
-  return <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
       
       {/* Hero Section with Banner */}

@@ -103,4 +103,18 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground font-alexandria;
   }
+  
+  /* Ensure RTL direction is maintained */
+  html[dir="rtl"] {
+    direction: rtl !important;
+  }
+  
+  html[dir="ltr"] {
+    direction: ltr !important;
+  }
+  
+  /* Prevent layout jumping when changing direction */
+  html {
+    transition: none !important;
+  }
 }

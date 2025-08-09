@@ -2379,7 +2379,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   const isRTL = currentLanguage === 'ar';
 
-  // Initialize language on mount
+  // Initialize language on mount and maintain direction
   React.useEffect(() => {
     const savedLanguage = localStorage.getItem('preferred-language') as Language;
     if (savedLanguage && ['en', 'ar', 'he'].includes(savedLanguage)) {
@@ -2393,6 +2393,12 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       document.documentElement.setAttribute('lang', 'en');
     }
   }, []);
+
+  // Ensure direction is maintained on every render
+  React.useEffect(() => {
+    document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', currentLanguage);
+  }, [currentLanguage, isRTL]);
 
   return (
     <LanguageContext.Provider value={{ currentLanguage, setLanguage, t, isRTL }}>

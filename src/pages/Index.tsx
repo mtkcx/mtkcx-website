@@ -6,9 +6,13 @@ import Footer from '@/components/Footer';
 import NewsletterPopup from '@/components/NewsletterPopup';
 import ChatBot from '@/components/ChatBot';
 
+import { useLanguage } from '@/contexts/LanguageContext';
+
 const Index = () => {
+  const { isRTL } = useLanguage();
+  
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
       <Hero />
       <ServiceSection />
