@@ -1148,6 +1148,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      set_chat_context: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       set_config: {
         Args: {
           setting_name: string
@@ -1155,6 +1159,10 @@ export type Database = {
           is_local?: boolean
         }
         Returns: string
+      }
+      set_newsletter_context: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       validate_order_access: {
         Args: { p_order_id: string; p_session_id?: string }
