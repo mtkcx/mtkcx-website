@@ -35,6 +35,8 @@ import ChatAdmin from "./pages/ChatAdmin";
 import SecureNewsletterVerification from "./components/SecureNewsletterVerification";
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ChatBot from "@/components/ChatBot";
+import SecurityMonitor from "@/components/SecurityMonitor";
+import SecureOrderLookup from "./pages/SecureOrderLookup";
 
 const queryClient = new QueryClient();
 
@@ -73,12 +75,14 @@ const App = () => (
                 <Route path="/return-policy" element={<ReturnPolicy />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
                 <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
+                <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
                </Routes>
-                 <CartDrawer />
-                 <ChatBot />
-              </BrowserRouter>
+                  <CartDrawer />
+                  <ChatBot />
+                  <SecurityMonitor />
+               </BrowserRouter>
             </TooltipProvider>
           </CartProvider>
         </AuthProvider>

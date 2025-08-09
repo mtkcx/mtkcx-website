@@ -13,6 +13,8 @@ import { Eye, EyeOff, Mail, Lock, User, Building, Phone, MapPin } from 'lucide-r
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator';
+import { PasswordSecurityManager, SecurityAuditLogger } from '@/utils/enhanced-security';
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -66,13 +68,27 @@ const Auth = () => {
       return false;
     }
 
-    if (formData.password && formData.password.length < 6) {
-      toast({
-        title: t('auth.error_title'),
-        description: t('auth.password_too_short'),
-        variant: 'destructive',
-      });
-      return false;
+    // Enhanced password validation for signup
+    if (isSignUp) {
+      const passwordValidation = PasswordSecurityManager.validatePasswordStrength(formData.password);
+      if (!passwordValidation.valid) {
+        toast({
+          title: t('auth.error_title'),
+          description: 'Password does not meet security requirements. Please check the requirements below.',
+          variant: 'destructive',
+        });
+        return false;
+      }
+    } else {
+      // Minimum validation for signin
+      if (formData.password && formData.password.length < 6) {
+        toast({
+          title: t('auth.error_title'),
+          description: t('auth.password_too_short'),
+          variant: 'destructive',
+        });
+        return false;
+      }
     }
 
     if (isSignUp && formData.password !== formData.confirmPassword) {
@@ -124,9 +140,19 @@ const Auth = () => {
 
     try {
       if (isSignUp) {
+        // Log signup attempt
+        SecurityAuditLogger.logSecurityEvent('user_signup_attempt', 'low', {
+          email: formData.email.substring(0, 3) + '***'
+        });
+
         const { error } = await signUp(formData.email, formData.password, formData.fullName);
         
         if (error) {
+          SecurityAuditLogger.logSecurityEvent('user_signup_failed', 'medium', {
+            email: formData.email.substring(0, 3) + '***',
+            error: error.message
+          });
+
           if (error.message.includes('already registered')) {
             toast({
               title: t('auth.error_title'),
@@ -141,6 +167,10 @@ const Auth = () => {
             });
           }
         } else {
+          SecurityAuditLogger.logSecurityEvent('user_signup_successful', 'low', {
+            email: formData.email.substring(0, 3) + '***'
+          });
+
           toast({
             title: t('auth.success_title'),
             description: t('auth.signup_success'),
@@ -157,9 +187,19 @@ const Auth = () => {
           });
         }
       } else {
+        // Log signin attempt
+        SecurityAuditLogger.logSecurityEvent('user_signin_attempt', 'low', {
+          email: formData.email.substring(0, 3) + '***'
+        });
+
         const { error } = await signIn(formData.email, formData.password);
         
         if (error) {
+          SecurityAuditLogger.logSecurityEvent('user_signin_failed', 'medium', {
+            email: formData.email.substring(0, 3) + '***',
+            error: error.message
+          });
+
           if (error.message.includes('Invalid login credentials')) {
             toast({
               title: t('auth.error_title'),
@@ -174,6 +214,10 @@ const Auth = () => {
             });
           }
         } else {
+          SecurityAuditLogger.logSecurityEvent('user_signin_successful', 'low', {
+            email: formData.email.substring(0, 3) + '***'
+          });
+
           toast({
             title: t('auth.success_title'),
             description: t('auth.signin_success'),
@@ -307,6 +351,13 @@ const Auth = () => {
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </Button>
                   </div>
+
+                  {/* Password Strength Indicator for signup */}
+                  {isSignUp && formData.password && (
+                    <div className="mt-2">
+                      <PasswordStrengthIndicator password={formData.password} />
+                    </div>
+                  )}
                 </div>
 
                 {isSignUp && (
