@@ -515,6 +515,7 @@ export type Database = {
           items: Json
           notes: string | null
           order_number: string
+          order_session_id: string | null
           order_type: string
           payment_gateway: string
           payment_intent_id: string | null
@@ -542,6 +543,7 @@ export type Database = {
           items: Json
           notes?: string | null
           order_number?: string
+          order_session_id?: string | null
           order_type: string
           payment_gateway: string
           payment_intent_id?: string | null
@@ -569,6 +571,7 @@ export type Database = {
           items?: Json
           notes?: string | null
           order_number?: string
+          order_session_id?: string | null
           order_type?: string
           payment_gateway?: string
           payment_intent_id?: string | null
@@ -1094,6 +1097,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      generate_order_session_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       generate_secure_token: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1116,6 +1123,10 @@ export type Database = {
         Args: { p_email: string; p_success: boolean; p_failure_reason?: string }
         Returns: undefined
       }
+      log_order_access: {
+        Args: { p_order_id: string; p_action: string; p_success: boolean }
+        Returns: undefined
+      }
       log_sensitive_access: {
         Args: { p_action: string; p_table_name: string; p_record_id?: string }
         Returns: undefined
@@ -1135,6 +1146,10 @@ export type Database = {
           is_local?: boolean
         }
         Returns: string
+      }
+      validate_order_access: {
+        Args: { p_order_id: string; p_session_id?: string }
+        Returns: boolean
       }
     }
     Enums: {

@@ -73,7 +73,27 @@ const handler = async (req: Request): Promise<Response> => {
       console.log('No authenticated user, proceeding as guest order');
     }
 
-    // Create order in database
+    // Generate secure session ID for guest orders
+    let orderSessionId = null;
+    if (!userId) {
+      const { data: sessionData, error: sessionError } = await supabaseService
+        .rpc('generate_order_session_id');
+      
+      if (sessionError) {
+        console.error('Failed to generate session ID:', sessionError);
+        throw new Error('Failed to create secure session');
+      }
+      orderSessionId = sessionData;
+    }
+
+    // Set secure context for RLS policy
+    await supabaseService.rpc('set_config', {
+      setting_name: 'app.order_context',
+      setting_value: 'secure_order_creation',
+      is_local: true
+    });
+
+    // Create order in database with enhanced security
     const { data: order, error: orderError } = await supabaseService
       .from('orders')
       .insert({
@@ -91,6 +111,7 @@ const handler = async (req: Request): Promise<Response> => {
         order_type: 'product',
         payment_gateway: customerInfo.paymentMethod,
         notes: customerInfo.notes,
+        order_session_id: orderSessionId, // For guest order access
         items: items.map(item => ({
           product_name: item.productName,
           quantity: item.quantity,
@@ -109,6 +130,17 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log('✅ Order created successfully:', order.id);
 
+    // Log order creation for security audit
+    try {
+      await supabaseService.rpc('log_order_access', {
+        p_order_id: order.id,
+        p_action: 'order_creation',
+        p_success: true
+      });
+    } catch (logError) {
+      console.error('Failed to log order creation:', logError);
+    }
+
     // Create order items
     const orderItems = items.map(item => ({
       order_id: order.id,
@@ -125,7 +157,16 @@ const handler = async (req: Request): Promise<Response> => {
 
     if (itemsError) {
       console.error('❌ Order items creation error:', itemsError);
-      // Don't fail the whole order, just log the error
+      // Log the failure but don't fail the whole order
+      try {
+        await supabaseService.rpc('log_order_access', {
+          p_order_id: order.id,
+          p_action: 'order_items_creation',
+          p_success: false
+        });
+      } catch (logError) {
+        console.error('Failed to log order items error:', logError);
+      }
     }
 
     // Send order confirmation email
@@ -258,8 +299,8 @@ const handler = async (req: Request): Promise<Response> => {
       // Don't fail the order creation if email fails
     }
 
-    // Return success response with order details
-    return new Response(JSON.stringify({
+    // Return success response with order details and session ID for guest access
+    const responseData = {
       success: true,
       order: {
         id: order.id,
@@ -273,7 +314,14 @@ const handler = async (req: Request): Promise<Response> => {
         created_at: order.created_at,
         items: items
       }
-    }), {
+    };
+
+    // Include session ID for guest orders (for order tracking)
+    if (orderSessionId) {
+      responseData.order.session_id = orderSessionId;
+    }
+
+    return new Response(JSON.stringify(responseData), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
