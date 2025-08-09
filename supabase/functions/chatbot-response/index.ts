@@ -1,7 +1,12 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -57,7 +62,38 @@ serve(async (req) => {
   }
 
   try {
-    const { message, language, conversation_history } = await req.json();
+    const { message, language, conversation_history, customer_email, customer_name, conversation_id } = await req.json();
+
+    let conversationId = conversation_id;
+    
+    // Create or get conversation
+    if (!conversationId) {
+      const { data: conversation, error: convError } = await supabase
+        .from('chat_conversations')
+        .insert({
+          customer_email: customer_email || null,
+          customer_name: customer_name || null,
+          language: language || 'en'
+        })
+        .select()
+        .single();
+      
+      if (convError) {
+        console.error('Error creating conversation:', convError);
+        throw new Error('Failed to create conversation');
+      }
+      
+      conversationId = conversation.id;
+    }
+
+    // Store customer message
+    await supabase.from('chat_messages').insert({
+      conversation_id: conversationId,
+      sender_type: 'customer',
+      sender_name: customer_name || 'Customer',
+      message: message,
+      language: language || 'en'
+    });
 
     // Build conversation context
     let conversationContext = businessContext;
@@ -104,7 +140,19 @@ serve(async (req) => {
     
     const botResponse = data.choices[0].message.content;
 
-    return new Response(JSON.stringify({ response: botResponse }), {
+    // Store bot response
+    await supabase.from('chat_messages').insert({
+      conversation_id: conversationId,
+      sender_type: 'bot',
+      sender_name: 'MT Wraps Assistant',
+      message: botResponse,
+      language: language || 'en'
+    });
+
+    return new Response(JSON.stringify({ 
+      response: botResponse,
+      conversation_id: conversationId
+    }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {

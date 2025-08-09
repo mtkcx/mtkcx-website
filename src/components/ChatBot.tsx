@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
@@ -18,8 +19,10 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { t, currentLanguage } = useLanguage();
+  const { user, profile } = useAuth();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -66,11 +69,19 @@ const ChatBot = () => {
         body: { 
           message: inputValue,
           language: currentLanguage,
-          conversation_history: messages.slice(-5) // Send last 5 messages for context
+          conversation_history: messages.slice(-5), // Send last 5 messages for context
+          customer_email: user?.email || null,
+          customer_name: profile?.full_name || null,
+          conversation_id: conversationId
         }
       });
 
       if (error) throw error;
+
+      // Set conversation ID for subsequent messages
+      if (data.conversation_id && !conversationId) {
+        setConversationId(data.conversation_id);
+      }
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),

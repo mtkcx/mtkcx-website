@@ -131,6 +131,80 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_conversations: {
+        Row: {
+          admin_user_id: string | null
+          created_at: string
+          customer_email: string | null
+          customer_name: string | null
+          id: string
+          language: string
+          last_message_at: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_user_id?: string | null
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          id?: string
+          language?: string
+          last_message_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_user_id?: string | null
+          created_at?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          id?: string
+          language?: string
+          last_message_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          conversation_id: string
+          created_at: string
+          id: string
+          language: string
+          message: string
+          sender_name: string | null
+          sender_type: string
+        }
+        Insert: {
+          conversation_id: string
+          created_at?: string
+          id?: string
+          language?: string
+          message: string
+          sender_name?: string | null
+          sender_type: string
+        }
+        Update: {
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          language?: string
+          message?: string
+          sender_name?: string | null
+          sender_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "chat_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       email_campaigns: {
         Row: {
           campaign_type: string

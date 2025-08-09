@@ -31,6 +31,7 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
 import EnrollmentAdmin from "./pages/EnrollmentAdmin";
+import ChatAdmin from "./pages/ChatAdmin";
 import VerifyNewsletter from "./pages/VerifyNewsletter";
 
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => (
                 <Route path="/admin/orders" element={<OrderAdmin />} />
                 <Route path="/admin/products" element={<ProductAdmin />} />
                 <Route path="/admin/enrollments" element={<EnrollmentAdmin />} />
+                <Route path="/admin/chat" element={<ChatAdmin />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-cancelled" element={<PaymentCancelled />} />
                 <Route path="/checkout" element={<Checkout />} />
