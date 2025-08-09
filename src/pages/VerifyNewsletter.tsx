@@ -26,17 +26,23 @@ const VerifyNewsletter = () => {
       }
 
       try {
-        // Find and verify the subscription
+        // Find subscription with verification token
         const { data: subscription, error: fetchError } = await supabase
           .from('newsletter_subscriptions')
           .select('*')
           .eq('verification_token', token)
-          .is('verified_at', null)
-          .single();
+          .maybeSingle();
 
         if (fetchError || !subscription) {
           setVerificationStatus('error');
           setMessage('Invalid or expired verification link.');
+          return;
+        }
+
+        // Check if already verified
+        if (subscription.verified_at) {
+          setVerificationStatus('success');
+          setMessage('Your email has already been verified! Thank you for subscribing.');
           return;
         }
 

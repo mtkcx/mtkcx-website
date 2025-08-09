@@ -18,11 +18,11 @@ const NewsletterPopup = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
   
-  // Rate limiting hook
+  // Rate limiting for newsletter signups
   const { checkRateLimit, isLimited, getRemainingTime } = useRateLimit({
     maxAttempts: 3,
-    windowMs: 60 * 60 * 1000, // 1 hour
-    storageKey: 'newsletter-signup-attempts'
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    storageKey: 'newsletter-signup-limit'
   });
 
   useEffect(() => {
@@ -40,19 +40,18 @@ const NewsletterPopup = () => {
   }, []);
 
   const handleSubscribe = async () => {
-    // Check rate limiting
+    // Rate limiting check
     if (!checkRateLimit()) {
-      const remainingTime = getRemainingTime();
-      const minutes = Math.ceil(remainingTime / (60 * 1000));
+      const remainingTime = Math.ceil(getRemainingTime() / 1000 / 60);
       toast({
         title: 'Too Many Attempts',
-        description: `Please wait ${minutes} minutes before trying again.`,
+        description: `Please wait ${remainingTime} minutes before trying again.`,
         variant: 'destructive',
       });
       return;
     }
 
-    // Sanitize and validate inputs
+    // Input validation and sanitization
     const sanitizedEmail = sanitizeInput(email.toLowerCase());
     const sanitizedName = name ? sanitizeInput(name) : '';
 
@@ -77,7 +76,7 @@ const NewsletterPopup = () => {
     if (sanitizedName && !validateName(sanitizedName)) {
       toast({
         title: t('common.error'),
-        description: 'Please enter a valid name (2-100 characters, letters only)',
+        description: 'Please enter a valid name (letters and spaces only)',
         variant: 'destructive',
       });
       return;
@@ -88,7 +87,7 @@ const NewsletterPopup = () => {
     try {
       // Generate verification token
       const verificationToken = generateVerificationToken();
-      
+
       const { error } = await supabase
         .from('newsletter_subscriptions')
         .insert({ 
@@ -109,7 +108,7 @@ const NewsletterPopup = () => {
           throw error;
         }
       } else {
-        // Send verification email
+        // Send verification email instead of welcome email
         await supabase.functions.invoke('send-newsletter-verification', {
           body: { 
             email: sanitizedEmail, 

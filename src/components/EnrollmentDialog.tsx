@@ -23,30 +23,29 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     email: '',
     phone: ''
   });
-
-  // Rate limiting hook
+  
+  // Rate limiting for enrollment submissions
   const { checkRateLimit, isLimited, getRemainingTime } = useRateLimit({
-    maxAttempts: 5,
-    windowMs: 60 * 60 * 1000, // 1 hour
-    storageKey: 'enrollment-attempts'
+    maxAttempts: 2,
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    storageKey: 'enrollment-submit-limit'
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Check rate limiting
+    // Rate limiting check
     if (!checkRateLimit()) {
-      const remainingTime = getRemainingTime();
-      const minutes = Math.ceil(remainingTime / (60 * 1000));
+      const remainingTime = Math.ceil(getRemainingTime() / 1000 / 60);
       toast({
         title: 'Too Many Attempts',
-        description: `Please wait ${minutes} minutes before trying again.`,
+        description: `Please wait ${remainingTime} minutes before trying again.`,
         variant: 'destructive',
       });
       return;
     }
 
-    // Sanitize and validate inputs
+    // Input validation and sanitization
     const sanitizedName = sanitizeInput(formData.name);
     const sanitizedEmail = sanitizeInput(formData.email.toLowerCase());
     const sanitizedPhone = sanitizeInput(formData.phone);
@@ -60,11 +59,10 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       return;
     }
 
-    // Validate inputs
     if (!validateName(sanitizedName)) {
       toast({
         title: t('common.error'),
-        description: 'Please enter a valid name (2-100 characters, letters only)',
+        description: 'Please enter a valid name (letters and spaces only)',
         variant: "destructive"
       });
       return;
