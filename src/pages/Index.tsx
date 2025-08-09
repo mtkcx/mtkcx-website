@@ -13,7 +13,7 @@ const Index = () => {
   
   return (
     <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
-      <Header />
+      {/* <Header /> */}
       <Hero />
       <ServiceSection />
       <ProductCategoriesSection />
