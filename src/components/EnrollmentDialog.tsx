@@ -27,8 +27,8 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     
     if (!formData.name || !formData.email || !formData.phone) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields.",
+        title: t('common.error'),
+        description: t('enrollment.fill_all_fields'),
         variant: "destructive"
       });
       return;
@@ -64,8 +64,8 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       }
 
       toast({
-        title: "Request Submitted!",
-        description: "Thank you for your interest! We'll contact you within 24 hours about the Koch Chemie Professional Detailing & Polishing Certification.",
+        title: t('enrollment.success_title'),
+        description: t('enrollment.success_message'),
         variant: "default"
       });
 
@@ -93,10 +93,10 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       <DialogContent className="max-w-md mx-auto" dir={isRTL ? 'rtl' : 'ltr'}>
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-center">
-            Course Enrollment Request
+            {t('enrollment.dialog_title')}
           </DialogTitle>
           <p className="text-muted-foreground text-center text-sm mt-2">
-            Fill out your information and we'll contact you within 24 hours
+            {t('enrollment.dialog_subtitle')}
           </p>
         </DialogHeader>
         
