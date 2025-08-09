@@ -63,4 +63,10 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.create-order]
+verify_jwt = true
+
+[functions.verify-newsletter-subscription]
+verify_jwt = false
+
+[functions.secure-newsletter-signup]
 verify_jwt = false

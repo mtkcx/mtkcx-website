@@ -1,7 +1,15 @@
 // Security utility functions
 
 export const sanitizeInput = (input: string): string => {
-  return input.trim().replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  return input
+    .trim()
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<[^>]*>/g, '') // Remove all HTML tags
+    .replace(/javascript:/gi, '') // Remove javascript: protocols
+    .replace(/on\w+\s*=/gi, '') // Remove event handlers
+    .replace(/expression\s*\(/gi, '') // Remove CSS expressions
+    .replace(/vbscript:/gi, '') // Remove vbscript: protocols
+    .slice(0, 1000); // Limit length to prevent buffer overflow
 };
 
 export const validateEmail = (email: string): boolean => {
@@ -19,5 +27,8 @@ export const validateName = (name: string): boolean => {
 };
 
 export const generateVerificationToken = (): string => {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  // Generate a cryptographically secure token
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
 };

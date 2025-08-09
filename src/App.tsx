@@ -32,7 +32,8 @@ import RefundPolicy from "./pages/RefundPolicy";
 import NotFound from "./pages/NotFound";
 import EnrollmentAdmin from "./pages/EnrollmentAdmin";
 import ChatAdmin from "./pages/ChatAdmin";
-import VerifyNewsletter from "./pages/VerifyNewsletter";
+import SecureNewsletterVerification from "./components/SecureNewsletterVerification";
+import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -56,12 +57,12 @@ const App = () => (
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/admin/quotes" element={<QuoteAdmin />} />
-                <Route path="/admin/emails" element={<EmailAdmin />} />
-                <Route path="/admin/orders" element={<OrderAdmin />} />
-                <Route path="/admin/products" element={<ProductAdmin />} />
-                <Route path="/admin/enrollments" element={<EnrollmentAdmin />} />
-                <Route path="/admin/chat" element={<ChatAdmin />} />
+                <Route path="/admin/quotes" element={<AdminProtectedRoute><QuoteAdmin /></AdminProtectedRoute>} />
+                <Route path="/admin/emails" element={<AdminProtectedRoute><EmailAdmin /></AdminProtectedRoute>} />
+                <Route path="/admin/orders" element={<AdminProtectedRoute><OrderAdmin /></AdminProtectedRoute>} />
+                <Route path="/admin/products" element={<AdminProtectedRoute><ProductAdmin /></AdminProtectedRoute>} />
+                <Route path="/admin/enrollments" element={<AdminProtectedRoute><EnrollmentAdmin /></AdminProtectedRoute>} />
+                <Route path="/admin/chat" element={<AdminProtectedRoute><ChatAdmin /></AdminProtectedRoute>} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/payment-cancelled" element={<PaymentCancelled />} />
                 <Route path="/checkout" element={<Checkout />} />
@@ -70,7 +71,7 @@ const App = () => (
                 <Route path="/shipping-policy" element={<ShippingPolicy />} />
                 <Route path="/return-policy" element={<ReturnPolicy />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
-                <Route path="/verify-newsletter" element={<VerifyNewsletter />} />
+                <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

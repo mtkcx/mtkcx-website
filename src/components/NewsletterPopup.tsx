@@ -86,48 +86,41 @@ const NewsletterPopup = () => {
     setIsLoading(true);
 
     try {
-      // Generate verification token
-      const verificationToken = generateVerificationToken();
-
-      const { error } = await supabase
-        .from('newsletter_subscriptions')
-        .insert({ 
-          email: sanitizedEmail, 
-          name: sanitizedName || null,
-          source: 'popup',
-          verification_token: verificationToken
-        });
+      // Use the secure newsletter signup function
+      const { data, error } = await supabase.functions.invoke('secure-newsletter-signup', {
+        body: {
+          email: sanitizedEmail,
+          name: sanitizedName || null
+        }
+      });
 
       if (error) {
-        if (error.code === '23505') { // Unique constraint violation
-          toast({
-            title: 'Already Subscribed',
-            description: 'You are already subscribed to our newsletter!',
-            variant: 'default',
-          });
-        } else {
-          throw error;
-        }
-      } else {
-        // Send verification email instead of welcome email
-        await supabase.functions.invoke('send-newsletter-verification', {
-          body: { 
-            email: sanitizedEmail, 
-            name: sanitizedName || 'Valued Customer',
-            verificationToken 
-          }
-        });
-
+        console.error('Newsletter subscription error:', error);
         toast({
-          title: 'Verification Email Sent!',
-          description: 'Please check your email and click the verification link to complete your subscription.',
-          variant: 'default',
+          title: t('common.error'),
+          description: 'Failed to subscribe. Please try again later.',
+          variant: 'destructive',
         });
+        return;
       }
 
-      // Mark popup as dismissed for this session and close
-      sessionStorage.setItem('newsletter-popup-dismissed', 'true');
-      setIsOpen(false);
+      if (data.success) {
+        toast({
+          title: 'Verification Email Sent!',
+          description: data.message,
+          variant: 'default',
+        });
+        
+        // Mark popup as dismissed for this session and close
+        sessionStorage.setItem('newsletter-popup-dismissed', 'true');
+        setIsOpen(false);
+      } else {
+        toast({
+          title: t('common.error'),
+          description: data.message || 'Subscription failed. Please try again.',
+          variant: 'destructive',
+        });
+      }
     } catch (error) {
       console.error('Newsletter subscription error:', error);
       toast({
