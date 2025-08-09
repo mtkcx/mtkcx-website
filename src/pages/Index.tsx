@@ -19,7 +19,7 @@ const Index = () => {
       <ProductCategoriesSection />
       <Footer />
       {/* <NewsletterPopup /> */}
-      <ChatBot />
+      {/* <ChatBot /> */}
     </div>
   );
 };
