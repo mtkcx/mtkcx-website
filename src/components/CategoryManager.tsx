@@ -6,9 +6,29 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
+import { Plus, GripVertical, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { SortableCategoryRow } from './SortableCategoryRow';
 
 interface Category {
   id: string;
@@ -115,43 +135,50 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
     }
   };
 
-  const handleReorderCategory = async (categoryId: string, direction: 'up' | 'down') => {
-    const category = categories.find(c => c.id === categoryId);
-    if (!category) return;
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
-    const currentOrder = category.display_order || 0;
-    const newOrder = direction === 'up' ? currentOrder - 1 : currentOrder + 1;
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
 
-    // Find category to swap with
-    const targetCategory = categories.find(c => (c.display_order || 0) === newOrder);
-    
-    try {
-      if (targetCategory) {
-        // Swap display orders
-        await supabase
-          .from('categories')
-          .update({ display_order: currentOrder })
-          .eq('id', targetCategory.id);
+    if (active.id !== over?.id) {
+      const oldIndex = categories.findIndex((category) => category.id === active.id);
+      const newIndex = categories.findIndex((category) => category.id === over?.id);
+      
+      const reorderedCategories = arrayMove(categories, oldIndex, newIndex);
+      
+      try {
+        // Update display_order for all affected categories
+        const updates = reorderedCategories.map((category, index) => ({
+          id: category.id,
+          display_order: index + 1,
+        }));
+
+        for (const update of updates) {
+          await supabase
+            .from('categories')
+            .update({ display_order: update.display_order })
+            .eq('id', update.id);
+        }
+
+        toast({
+          title: "Success",
+          description: "Categories reordered successfully",
+        });
+
+        onCategoriesUpdate();
+      } catch (error) {
+        console.error('Error reordering categories:', error);
+        toast({
+          title: "Error",
+          description: "Failed to reorder categories",
+          variant: "destructive",
+        });
       }
-
-      await supabase
-        .from('categories')
-        .update({ display_order: newOrder })
-        .eq('id', categoryId);
-
-      toast({
-        title: "Success",
-        description: "Category order updated successfully",
-      });
-
-      onCategoriesUpdate();
-    } catch (error) {
-      console.error('Error reordering category:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update category order",
-        variant: "destructive",
-      });
     }
   };
 
@@ -207,54 +234,36 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Slug</TableHead>
-              <TableHead>Display Order</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {categories.map((category) => (
-              <TableRow key={category.id}>
-                <TableCell className="font-medium">{category.name}</TableCell>
-                <TableCell>
-                  <Badge variant="secondary">{category.slug}</Badge>
-                </TableCell>
-                <TableCell>{category.display_order || 0}</TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleReorderCategory(category.id, 'up')}
-                      disabled={category.display_order === 1}
-                    >
-                      <ChevronUp className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleReorderCategory(category.id, 'down')}
-                      disabled={category.display_order === Math.max(...categories.map(c => c.display_order || 0))}
-                    >
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDeleteCategory(category.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Slug</TableHead>
+                <TableHead>Display Order</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              <SortableContext
+                items={categories.map(c => c.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {categories.map((category) => (
+                  <SortableCategoryRow
+                    key={category.id}
+                    category={category}
+                    onDelete={handleDeleteCategory}
+                  />
+                ))}
+              </SortableContext>
+            </TableBody>
+          </Table>
+        </DndContext>
         {categories.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
             No categories found. Add your first category above.
