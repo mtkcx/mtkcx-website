@@ -20,14 +20,74 @@ const PaymentSuccess = () => {
   const [verifying, setVerifying] = useState(false);
 
   const sessionId = searchParams.get('session_id');
+  const orderId = searchParams.get('order_id');
+  const isManualOrder = searchParams.get('manual') === 'true';
 
   useEffect(() => {
     if (sessionId) {
       verifyPayment();
+    } else if (orderId && isManualOrder) {
+      fetchManualOrder();
     } else {
       setLoading(false);
     }
-  }, [sessionId]);
+  }, [sessionId, orderId, isManualOrder]);
+
+  const fetchManualOrder = async () => {
+    setVerifying(true);
+    try {
+      console.log('🔍 Fetching manual order:', orderId);
+
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          order_items (
+            product_name,
+            quantity,
+            unit_price,
+            total_price,
+            variant_size
+          )
+        `)
+        .eq('id', orderId)
+        .single();
+
+      if (error) {
+        console.error('❌ Order fetch error:', error);
+        throw new Error(error.message);
+      }
+
+      if (data) {
+        // Transform order_items to match the items format
+        const orderWithItems = {
+          ...data,
+          items: data.order_items || []
+        };
+        
+        setOrder(orderWithItems);
+        console.log('✅ Manual order fetched successfully:', orderWithItems);
+        
+        toast({
+          title: 'Order Confirmed!',
+          description: `Your order #${data.order_number} has been received and is being processed.`,
+        });
+      } else {
+        throw new Error('Order not found');
+      }
+
+    } catch (error) {
+      console.error('❌ Order fetch error:', error);
+      toast({
+        title: 'Order Not Found',
+        description: 'Unable to find your order. Please contact support.',
+        variant: 'destructive',
+      });
+    } finally {
+      setVerifying(false);
+      setLoading(false);
+    }
+  };
 
   const verifyPayment = async () => {
     setVerifying(true);
@@ -120,7 +180,7 @@ const PaymentSuccess = () => {
     );
   }
 
-  if (!sessionId) {
+  if (!sessionId && !orderId) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -129,9 +189,9 @@ const PaymentSuccess = () => {
             <div className="text-red-500 mb-4">
               <Package className="w-16 h-16 mx-auto" />
             </div>
-            <h1 className="text-3xl font-bold mb-4">Invalid Payment Session</h1>
+            <h1 className="text-3xl font-bold mb-4">No Order Found</h1>
             <p className="text-muted-foreground mb-8">
-              No payment session found. Please try again.
+              No payment session or order information found. Please try again.
             </p>
             <Button asChild>
               <Link to="/">
@@ -161,7 +221,10 @@ const PaymentSuccess = () => {
               {order?.status === 'paid' ? 'Payment Successful!' : 'Order Received'}
             </h1>
             <p className="text-xl text-muted-foreground">
-              Thank you for your order. We'll process it shortly.
+              {isManualOrder 
+                ? `Thank you for your order! ${order?.payment_gateway === 'cash_on_delivery' ? 'You will pay in cash upon delivery.' : 'We will contact you to process your payment.'}` 
+                : 'Thank you for your order. We\'ll process it shortly.'
+              }
             </p>
           </div>
 

@@ -117,23 +117,53 @@ const Checkout: React.FC = () => {
     setIsProcessing(true);
 
     try {
-      // Here you would integrate with your payment system
-      // For now, we'll simulate the process
+      const { supabase } = await import('@/integrations/supabase/client');
       
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const totalAmount = getTotalPrice() + shippingCost;
       
-      toast({
-        title: t('checkout.order_success'),
-        description: t('checkout.order_success_desc').replace('{total}', formatPrice(getTotalPrice() + shippingCost)),
+      // Create order using edge function
+      const { data, error } = await supabase.functions.invoke('create-order', {
+        body: {
+          items: items.map(item => ({
+            id: item.id,
+            productName: item.productName,
+            price: item.price,
+            quantity: item.quantity,
+            variantSize: item.variantSize,
+            imageUrl: item.imageUrl
+          })),
+          customerInfo,
+          shippingCost,
+          totalAmount
+        }
       });
-      
-      clearCart();
-      navigate('/payment-success');
+
+      if (error) {
+        console.error('❌ Order creation error:', error);
+        throw new Error(error.message);
+      }
+
+      if (data?.success && data?.order) {
+        console.log('✅ Order created successfully:', data.order);
+        
+        toast({
+          title: t('checkout.order_success'),
+          description: `Order #${data.order.order_number} created successfully! ${formatPrice(totalAmount)}`,
+        });
+        
+        clearCart();
+        
+        // Navigate to success page with order ID
+        navigate(`/payment-success?order_id=${data.order.id}&manual=true`);
+      } else {
+        throw new Error('Failed to create order');
+      }
       
     } catch (error) {
+      console.error('❌ Order placement error:', error);
       toast({
         title: t('checkout.order_failed'),
-        description: t('checkout.order_failed_desc'),
+        description: error.message || t('checkout.order_failed_desc'),
         variant: "destructive",
       });
     } finally {
