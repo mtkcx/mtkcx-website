@@ -236,6 +236,9 @@ export type Database = {
           name: string | null
           source: string | null
           subscribed_at: string
+          verification_token: string | null
+          verified: boolean | null
+          verified_at: string | null
         }
         Insert: {
           created_at?: string
@@ -245,6 +248,9 @@ export type Database = {
           name?: string | null
           source?: string | null
           subscribed_at?: string
+          verification_token?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
         }
         Update: {
           created_at?: string
@@ -254,6 +260,9 @@ export type Database = {
           name?: string | null
           source?: string | null
           subscribed_at?: string
+          verification_token?: string | null
+          verified?: boolean | null
+          verified_at?: string | null
         }
         Relationships: []
       }
@@ -723,6 +732,39 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          action_type: string
+          attempt_count: number
+          created_at: string
+          first_attempt_at: string
+          id: string
+          identifier: string
+          last_attempt_at: string
+          reset_at: string
+        }
+        Insert: {
+          action_type: string
+          attempt_count?: number
+          created_at?: string
+          first_attempt_at?: string
+          id?: string
+          identifier: string
+          last_attempt_at?: string
+          reset_at: string
+        }
+        Update: {
+          action_type?: string
+          attempt_count?: number
+          created_at?: string
+          first_attempt_at?: string
+          id?: string
+          identifier?: string
+          last_attempt_at?: string
+          reset_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -749,6 +791,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_expired_rate_limits: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
