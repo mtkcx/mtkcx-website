@@ -89,30 +89,23 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     setIsSubmitting(true);
     
     try {
-      // Insert enrollment request
-      const { error: insertError } = await supabase
-        .from('enrollment_requests')
-        .insert({
+      // Use secure enrollment endpoint instead of direct database insertion
+      const { data, error } = await supabase.functions.invoke('secure-enrollment', {
+        body: {
           name: sanitizedName,
           email: sanitizedEmail,
           phone: sanitizedPhone,
           course_type: 'professional_detailing'
-        });
-
-      if (insertError) throw insertError;
-
-      // Send enrollment confirmation email
-      const { error: emailError } = await supabase.functions.invoke('send-enrollment-confirmation', {
-        body: {
-          name: sanitizedName,
-          email: sanitizedEmail,
-          phone: sanitizedPhone
         }
       });
 
-      if (emailError) {
-        console.error('Failed to send email:', emailError);
-        // Don't throw error here as the enrollment was successful
+      if (error) {
+        console.error('Enrollment error:', error);
+        throw new Error(error.message || 'Failed to submit enrollment');
+      }
+
+      if (!data?.success) {
+        throw new Error(data?.error || 'Failed to submit enrollment');
       }
 
       toast({

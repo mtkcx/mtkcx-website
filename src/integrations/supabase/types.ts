@@ -1128,6 +1128,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      set_config: {
+        Args: {
+          setting_name: string
+          setting_value: string
+          is_local?: boolean
+        }
+        Returns: string
+      }
     }
     Enums: {
       user_role: "admin" | "user"
