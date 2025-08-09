@@ -34,7 +34,7 @@ const ShippingPolicy = () => {
                 <ul className="list-disc pl-6 space-y-2">
                   <li>{t('policies.shipping.order_processing')}: 3-5 {t('policies.shipping.business_days')}</li>
                   <li>{t('policies.shipping.shipping_time')}: 7-10 {t('policies.shipping.business_days')}</li>
-                  <li>{t('policies.shipping.total_delivery')}: 10-15 {t('policies.shipping.business_days')}</li>
+                  <li>{t('policies.shipping.total_delivery')}: 7-10 {t('policies.shipping.business_days')}</li>
                 </ul>
               </div>
             </section>
