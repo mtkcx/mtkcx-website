@@ -19,7 +19,6 @@ const Index = () => {
       <ProductCategoriesSection />
       <Footer />
       <NewsletterPopup />
-      <ChatBot />
     </div>
   );
 };

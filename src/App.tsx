@@ -34,6 +34,7 @@ import EnrollmentAdmin from "./pages/EnrollmentAdmin";
 import ChatAdmin from "./pages/ChatAdmin";
 import SecureNewsletterVerification from "./components/SecureNewsletterVerification";
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
+import ChatBot from "@/components/ChatBot";
 
 const queryClient = new QueryClient();
 
@@ -74,8 +75,9 @@ const App = () => (
                 <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
-              </Routes>
-                <CartDrawer />
+               </Routes>
+                 <CartDrawer />
+                 <ChatBot />
               </BrowserRouter>
             </TooltipProvider>
           </CartProvider>
