@@ -1158,6 +1158,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      enforce_strict_rls_policies: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       generate_order_session_id: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1203,6 +1207,14 @@ export type Database = {
       }
       log_sensitive_data_access: {
         Args: { p_table_name: string; p_action: string; p_record_id?: string }
+        Returns: undefined
+      }
+      log_unauthorized_access_attempt: {
+        Args: {
+          table_name: string
+          attempted_action: string
+          user_context?: string
+        }
         Returns: undefined
       }
       make_user_admin: {
