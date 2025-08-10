@@ -6,6 +6,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
+import SecurityMiddleware from "@/components/SecurityMiddleware";
 import CartDrawer from '@/components/CartDrawer';
 import Checkout from './pages/Checkout';
 import Index from "./pages/Index";
@@ -37,6 +38,7 @@ import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ChatBot from "@/components/ChatBot";
 import SecurityMonitor from "@/components/SecurityMonitor";
 import SecureOrderLookup from "./pages/SecureOrderLookup";
+import SecurityDashboard from "./pages/SecurityDashboard";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +48,8 @@ const App = () => (
       <LanguageProvider>
         <AuthProvider>
           <CartProvider>
-            <TooltipProvider>
+            <SecurityMiddleware>
+              <TooltipProvider>
               <Toaster />
               <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <Routes>
@@ -74,21 +77,23 @@ const App = () => (
                 <Route path="/shipping-policy" element={<ShippingPolicy />} />
                 <Route path="/return-policy" element={<ReturnPolicy />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
-                <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
-                <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
+                 <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
+                 <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
+                 <Route path="/admin/security" element={<AdminProtectedRoute><SecurityDashboard /></AdminProtectedRoute>} />
+                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                 <Route path="*" element={<NotFound />} />
                </Routes>
                   <CartDrawer />
                   <ChatBot />
                   <SecurityMonitor />
                </BrowserRouter>
-            </TooltipProvider>
-          </CartProvider>
-        </AuthProvider>
-      </LanguageProvider>
-    </HelmetProvider>
-  </QueryClientProvider>
+             </TooltipProvider>
+            </SecurityMiddleware>
+           </CartProvider>
+         </AuthProvider>
+       </LanguageProvider>
+     </HelmetProvider>
+   </QueryClientProvider>
 );
 
 export default App;

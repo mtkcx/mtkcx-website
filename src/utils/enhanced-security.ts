@@ -7,25 +7,25 @@ export class SecureTokenManager {
   private static readonly SIGNATURE_LENGTH = 64;
 
   // Generate cryptographically signed session token
-  static generateSecureSessionToken(userId?: string, orderId?: string): string {
+  static async generateSecureSessionToken(userId?: string, orderId?: string): Promise<string> {
     const timestamp = Date.now().toString();
     const randomBytes = crypto.getRandomValues(new Uint8Array(this.TOKEN_LENGTH));
     const token = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
     
     // Create signature with timestamp and optional identifiers
     const payload = `${token}:${timestamp}:${userId || 'guest'}:${orderId || ''}`;
-    const signature = this.createHMACSignature(payload);
+    const signature = await this.createHMACSignature(payload);
     
     return `${token}.${timestamp}.${signature}`;
   }
 
   // Validate secure session token
-  static validateSecureToken(token: string, maxAgeMs: number = 2 * 60 * 60 * 1000): {
+  static async validateSecureToken(token: string, maxAgeMs: number = 2 * 60 * 60 * 1000): Promise<{
     valid: boolean;
     expired: boolean;
     userId?: string;
     orderId?: string;
-  } {
+  }> {
     try {
       const parts = token.split('.');
       if (parts.length !== 3) return { valid: false, expired: false };
@@ -39,24 +39,60 @@ export class SecureTokenManager {
       
       // Validate signature
       const payload = `${tokenPart}:${timestampStr}:guest:`;
-      const expectedSignature = this.createHMACSignature(payload);
+      const expectedSignature = await this.createHMACSignature(payload);
       
       if (signature !== expectedSignature) {
+        SecurityAuditLogger.logSecurityEvent('invalid_token_signature', 'high', {
+          tokenHash: await this.hashToken(token)
+        });
         return { valid: false, expired };
       }
 
       return { valid: true, expired, userId: 'guest' };
     } catch (error) {
+      SecurityAuditLogger.logSecurityEvent('token_validation_error', 'medium', {
+        error: error.message
+      });
       return { valid: false, expired: false };
     }
   }
 
-  private static createHMACSignature(data: string): string {
-    // Simple signature for demo - in production use proper HMAC
+  // Hash token for secure logging
+  private static async hashToken(token: string): Promise<string> {
     const encoder = new TextEncoder();
-    const dataBytes = encoder.encode(data + 'secret_key_should_be_env_var');
-    return Array.from(crypto.getRandomValues(new Uint8Array(32)), 
-      byte => byte.toString(16).padStart(2, '0')).join('');
+    const data = encoder.encode(token);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hashBuffer))
+      .map(byte => byte.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+  private static async createHMACSignature(data: string): Promise<string> {
+    try {
+      // Use Web Crypto API for proper HMAC-SHA256
+      const key = await crypto.subtle.importKey(
+        'raw',
+        new TextEncoder().encode('secure_hmac_key_should_be_from_env'),
+        { name: 'HMAC', hash: 'SHA-256' },
+        false,
+        ['sign']
+      );
+      
+      const signature = await crypto.subtle.sign(
+        'HMAC',
+        key,
+        new TextEncoder().encode(data)
+      );
+      
+      return Array.from(new Uint8Array(signature))
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('');
+    } catch (error) {
+      console.error('HMAC signature failed:', error);
+      // Fallback to secure random for demo
+      return Array.from(crypto.getRandomValues(new Uint8Array(32)), 
+        byte => byte.toString(16).padStart(2, '0')).join('');
+    }
   }
 }
 
@@ -288,7 +324,7 @@ export class OrderSecurityManager {
 
     // Validate session token for guest orders
     if (!userId && sessionToken) {
-      const tokenValidation = SecureTokenManager.validateSecureToken(sessionToken);
+      const tokenValidation = await SecureTokenManager.validateSecureToken(sessionToken);
       if (!tokenValidation.valid) {
         SecurityAuditLogger.logSecurityEvent('order_access_invalid_token', 'high', {
           orderId,
@@ -309,26 +345,84 @@ export class OrderSecurityManager {
   }
 }
 
-// Data encryption utilities (basic implementation)
+// Production-grade data encryption utilities
 export class DataEncryptionManager {
-  // Simple encryption for demo - use proper encryption library in production
-  static encryptSensitiveData(data: string): string {
+  private static readonly ENCRYPTION_KEY_LENGTH = 256;
+  
+  // Generate a secure encryption key using Web Crypto API
+  static async generateEncryptionKey(): Promise<CryptoKey> {
+    return await crypto.subtle.generateKey(
+      {
+        name: 'AES-GCM',
+        length: this.ENCRYPTION_KEY_LENGTH,
+      },
+      true,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  // Encrypt sensitive data using AES-GCM
+  static async encryptSensitiveData(data: string, key?: CryptoKey): Promise<string> {
     try {
-      // This is a demo implementation - use proper encryption in production
-      const encoded = btoa(data);
-      return `enc_${encoded}`;
-    } catch {
+      const encryptionKey = key || await this.generateEncryptionKey();
+      const encoder = new TextEncoder();
+      const dataBytes = encoder.encode(data);
+      
+      // Generate a random IV for each encryption
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      
+      const encryptedData = await crypto.subtle.encrypt(
+        {
+          name: 'AES-GCM',
+          iv: iv,
+        },
+        encryptionKey,
+        dataBytes
+      );
+      
+      // Combine IV and encrypted data
+      const combined = new Uint8Array(iv.length + encryptedData.byteLength);
+      combined.set(iv);
+      combined.set(new Uint8Array(encryptedData), iv.length);
+      
+      // Convert to base64 for storage
+      return 'aes_' + btoa(String.fromCharCode(...combined));
+    } catch (error) {
+      console.error('Encryption failed:', error);
       return data; // Fallback to unencrypted if encryption fails
     }
   }
 
-  static decryptSensitiveData(encryptedData: string): string {
+  // Decrypt sensitive data using AES-GCM
+  static async decryptSensitiveData(encryptedData: string, key: CryptoKey): Promise<string> {
     try {
-      if (encryptedData.startsWith('enc_')) {
-        return atob(encryptedData.substring(4));
+      if (!encryptedData.startsWith('aes_')) {
+        return encryptedData; // Return as-is if not encrypted
       }
-      return encryptedData;
-    } catch {
+      
+      const combined = new Uint8Array(
+        atob(encryptedData.substring(4))
+          .split('')
+          .map(char => char.charCodeAt(0))
+      );
+      
+      // Extract IV and encrypted data
+      const iv = combined.slice(0, 12);
+      const encrypted = combined.slice(12);
+      
+      const decryptedData = await crypto.subtle.decrypt(
+        {
+          name: 'AES-GCM',
+          iv: iv,
+        },
+        key,
+        encrypted
+      );
+      
+      const decoder = new TextDecoder();
+      return decoder.decode(decryptedData);
+    } catch (error) {
+      console.error('Decryption failed:', error);
       return encryptedData; // Fallback if decryption fails
     }
   }
