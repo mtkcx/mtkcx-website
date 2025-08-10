@@ -9,22 +9,54 @@ const SecurityMiddleware: React.FC<SecurityMiddlewareProps> = ({ children }) => 
   useEffect(() => {
     // Set up global security headers and monitoring
     const setupSecurity = () => {
-      // Add Content Security Policy via meta tag if not already present
-      if (!document.querySelector('meta[http-equiv="Content-Security-Policy"]')) {
-        const cspMeta = document.createElement('meta');
-        cspMeta.setAttribute('http-equiv', 'Content-Security-Policy');
-        cspMeta.setAttribute('content', 
-          "default-src 'self'; " +
-          "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com https://api.supabase.com; " +
-          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-          "img-src 'self' data: https: blob:; " +
-          "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
-          "connect-src 'self' https://*.supabase.co https://*.supabase.com; " +
-          "frame-ancestors 'none'; " +
-          "form-action 'self';"
-        );
-        document.head.appendChild(cspMeta);
-      }
+        // Enhanced Content Security Policy
+        if (!document.querySelector('meta[http-equiv="Content-Security-Policy"]')) {
+          const cspMeta = document.createElement('meta');
+          cspMeta.setAttribute('http-equiv', 'Content-Security-Policy');
+          cspMeta.setAttribute('content', 
+            "default-src 'self'; " +
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com https://api.supabase.com https://js.stripe.com; " +
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+            "img-src 'self' data: https: blob:; " +
+            "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
+            "connect-src 'self' https://*.supabase.co https://*.supabase.com https://api.stripe.com; " +
+            "frame-src 'self' https://js.stripe.com https://hooks.stripe.com; " +
+            "frame-ancestors 'none'; " +
+            "form-action 'self'; " +
+            "base-uri 'self'; " +
+            "object-src 'none';"
+          );
+          document.head.appendChild(cspMeta);
+        }
+
+        // Add additional security headers
+        const addSecurityHeaders = () => {
+          // X-Content-Type-Options
+          if (!document.querySelector('meta[http-equiv="X-Content-Type-Options"]')) {
+            const noSniffMeta = document.createElement('meta');
+            noSniffMeta.setAttribute('http-equiv', 'X-Content-Type-Options');
+            noSniffMeta.setAttribute('content', 'nosniff');
+            document.head.appendChild(noSniffMeta);
+          }
+
+          // X-Frame-Options
+          if (!document.querySelector('meta[http-equiv="X-Frame-Options"]')) {
+            const frameOptionsMeta = document.createElement('meta');
+            frameOptionsMeta.setAttribute('http-equiv', 'X-Frame-Options');
+            frameOptionsMeta.setAttribute('content', 'DENY');
+            document.head.appendChild(frameOptionsMeta);
+          }
+
+          // Referrer Policy
+          if (!document.querySelector('meta[name="referrer"]')) {
+            const referrerMeta = document.createElement('meta');
+            referrerMeta.setAttribute('name', 'referrer');
+            referrerMeta.setAttribute('content', 'strict-origin-when-cross-origin');
+            document.head.appendChild(referrerMeta);
+          }
+        };
+
+        addSecurityHeaders();
 
       // Monitor for security events
       const originalConsoleError = console.error;

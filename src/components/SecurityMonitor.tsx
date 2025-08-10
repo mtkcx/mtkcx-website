@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 interface SecurityEvent {
   event: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
-  details: string;
+  details: Record<string, any>;
   timestamp: string;
 }
 

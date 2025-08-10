@@ -69,10 +69,11 @@ export class SecureTokenManager {
 
   private static async createHMACSignature(data: string): Promise<string> {
     try {
-      // Use Web Crypto API for proper HMAC-SHA256
+      // Generate a secure random key for production use
+      const keyBytes = crypto.getRandomValues(new Uint8Array(32));
       const key = await crypto.subtle.importKey(
         'raw',
-        new TextEncoder().encode('secure_hmac_key_should_be_from_env'),
+        keyBytes,
         { name: 'HMAC', hash: 'SHA-256' },
         false,
         ['sign']
