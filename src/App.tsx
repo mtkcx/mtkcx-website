@@ -37,6 +37,7 @@ import SecureNewsletterVerification from "./components/SecureNewsletterVerificat
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ChatBot from "@/components/ChatBot";
 import SecurityMonitor from "@/components/SecurityMonitor";
+import ScrollToTop from "@/components/ScrollToTop";
 import SecureOrderLookup from "./pages/SecureOrderLookup";
 import SecurityDashboard from "./pages/SecurityDashboard";
 
@@ -52,6 +53,7 @@ const App = () => (
               <TooltipProvider>
               <Toaster />
               <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+              <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/products" element={<Products />} />

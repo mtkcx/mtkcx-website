@@ -35,10 +35,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold">{t('footer.quick_links')}</h4>
             <ul className="space-y-2">
-              <li><Link to="/products" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.products')}</Link></li>
-              <li><Link to="/courses" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.courses')}</Link></li>
-              <li><Link to="/gallery" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.wrapping')}</Link></li>
-              <li><Link to="/about" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.about')}</Link></li>
+              <li><Link to="/products" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.products')}</Link></li>
+              <li><Link to="/courses" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.courses')}</Link></li>
+              <li><Link to="/gallery" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.wrapping')}</Link></li>
+              <li><Link to="/about" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('nav.about')}</Link></li>
             </ul>
           </div>
 
@@ -46,11 +46,11 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold">{t('footer.policies')}</h4>
             <ul className="space-y-2">
-              <li><Link to="/privacy-policy" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.privacy_policy')}</Link></li>
-              <li><Link to="/terms-of-service" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.terms_of_service')}</Link></li>
-              <li><Link to="/shipping-policy" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.shipping_policy')}</Link></li>
-              <li><Link to="/return-policy" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.return_policy')}</Link></li>
-              <li><Link to="/refund-policy" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.refund_policy')}</Link></li>
+              <li><Link to="/privacy-policy" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.privacy_policy')}</Link></li>
+              <li><Link to="/terms-of-service" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.terms_of_service')}</Link></li>
+              <li><Link to="/shipping-policy" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.shipping_policy')}</Link></li>
+              <li><Link to="/return-policy" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.return_policy')}</Link></li>
+              <li><Link to="/refund-policy" onClick={() => window.scrollTo(0, 0)} className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">{t('footer.refund_policy')}</Link></li>
             </ul>
           </div>
 
