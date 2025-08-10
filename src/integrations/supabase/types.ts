@@ -1245,6 +1245,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      set_security_validation_context: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       ultra_secure_admin_check: {
         Args: Record<PropertyKey, never>
         Returns: boolean

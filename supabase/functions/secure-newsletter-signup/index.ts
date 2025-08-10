@@ -131,30 +131,15 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Set enhanced context for RLS policy validation
+    // Set enhanced security context for RLS policy validation
     await supabase.rpc('set_config', {
       setting_name: 'app.newsletter_context',
       setting_value: 'secure_newsletter_signup',
       is_local: true
     });
 
-    await supabase.rpc('set_config', {
-      setting_name: 'app.newsletter_validated',
-      setting_value: 'true',
-      is_local: true
-    });
-
-    await supabase.rpc('set_config', {
-      setting_name: 'app.newsletter_ip_validated',
-      setting_value: 'true',
-      is_local: true
-    });
-
-    await supabase.rpc('set_config', {
-      setting_name: 'app.newsletter_rate_limit_passed',
-      setting_value: 'true',
-      is_local: true
-    });
+    // Set security validation context for RLS policies
+    await supabase.rpc('set_security_validation_context');
 
     // Send verification email
     const { error: emailError } = await supabase.functions.invoke('send-newsletter-verification', {

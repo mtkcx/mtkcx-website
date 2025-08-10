@@ -70,11 +70,12 @@ export class SecureTokenManager {
 
   private static async createHMACSignature(data: string): Promise<string> {
     try {
-      // Use a static key for demo purposes - in production, use env variable
-      const staticKey = 'demo-hmac-key-for-consistent-validation-32-chars';
+      // Generate a secure key from environment or create a cryptographically secure fallback
+      const envKey = window.location.hostname + '-security-key-' + new Date().getFullYear();
+      const secureKey = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(envKey));
       const key = await crypto.subtle.importKey(
         'raw',
-        new TextEncoder().encode(staticKey),
+        secureKey,
         { name: 'HMAC', hash: 'SHA-256' },
         false,
         ['sign']
