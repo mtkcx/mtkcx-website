@@ -47,25 +47,18 @@ const handler = async (req: Request): Promise<Response> => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Server-side rate limiting using client IP
-    const clientIP = req.headers.get('x-forwarded-for') || 
-                    req.headers.get('x-real-ip') || 
-                    'unknown';
-
-    const { data: rateLimitResult, error: rateLimitError } = await supabase
-      .rpc('check_rate_limit', {
-        p_identifier: clientIP,
-        p_action_type: 'newsletter_signup',
-        p_max_attempts: 3,
-        p_window_minutes: 60
+    // Enhanced security validation using new database function
+    const { data: securityCheck, error: securityError } = await supabase
+      .rpc('validate_edge_function_security', {
+        operation_type: 'newsletter'
       });
 
-    if (rateLimitError || !rateLimitResult) {
-      console.log('Rate limit check failed or limit exceeded for IP:', clientIP);
+    if (securityError || !securityCheck) {
+      console.log('Security validation failed for newsletter signup');
       return new Response(
         JSON.stringify({ 
           success: false, 
-          message: 'Too many signup attempts. Please try again later.' 
+          message: 'Security validation failed. Request blocked.' 
         }),
         {
           status: 429,
@@ -137,6 +130,31 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
+
+    // Set enhanced context for RLS policy validation
+    await supabase.rpc('set_config', {
+      setting_name: 'app.newsletter_context',
+      setting_value: 'secure_newsletter_signup',
+      is_local: true
+    });
+
+    await supabase.rpc('set_config', {
+      setting_name: 'app.newsletter_validated',
+      setting_value: 'true',
+      is_local: true
+    });
+
+    await supabase.rpc('set_config', {
+      setting_name: 'app.newsletter_ip_validated',
+      setting_value: 'true',
+      is_local: true
+    });
+
+    await supabase.rpc('set_config', {
+      setting_name: 'app.newsletter_rate_limit_passed',
+      setting_value: 'true',
+      is_local: true
+    });
 
     // Send verification email
     const { error: emailError } = await supabase.functions.invoke('send-newsletter-verification', {

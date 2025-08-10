@@ -1209,6 +1209,10 @@ export type Database = {
         Args: { user_email: string }
         Returns: boolean
       }
+      mask_sensitive_data: {
+        Args: { data_value: string; data_type?: string }
+        Returns: string
+      }
       migrate_email_conversations_to_users: {
         Args: Record<PropertyKey, never>
         Returns: number
@@ -1228,6 +1232,14 @@ export type Database = {
       set_newsletter_context: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      validate_edge_function_security: {
+        Args: {
+          operation_type: string
+          client_ip?: unknown
+          user_agent?: string
+        }
+        Returns: boolean
       }
       validate_guest_order_access: {
         Args: { p_order_number: string; p_email: string }

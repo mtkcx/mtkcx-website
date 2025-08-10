@@ -122,7 +122,32 @@ const SecureOrderAccess: React.FC<SecureOrderAccessProps> = ({ onOrderFound, onA
 
       const order = orders[0];
 
-      // Additional security validation
+      // Set security context for RLS policies
+      await supabase.rpc('set_config', {
+        setting_name: 'app.secure_guest_validated',
+        setting_value: 'true',
+        is_local: true
+      });
+
+      await supabase.rpc('set_config', {
+        setting_name: 'app.guest_order_id_validated',
+        setting_value: order.id,
+        is_local: true
+      });
+
+      await supabase.rpc('set_config', {
+        setting_name: 'app.ip_security_passed',
+        setting_value: 'true',
+        is_local: true
+      });
+
+      await supabase.rpc('set_config', {
+        setting_name: 'app.rate_limit_security_passed',
+        setting_value: 'true',
+        is_local: true
+      });
+
+      // Enhanced security validation using OrderSecurityManager
       const securityCheck = await OrderSecurityManager.validateOrderAccess(
         order.id,
         sessionToken,

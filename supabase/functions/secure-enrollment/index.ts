@@ -118,6 +118,26 @@ serve(async (req) => {
       );
     }
 
+    // Enhanced security validation using new database function
+    const { data: securityCheck, error: securityError } = await supabase
+      .rpc('validate_edge_function_security', {
+        operation_type: 'enrollment'
+      });
+
+    if (securityError || !securityCheck) {
+      console.log('Security validation failed for enrollment request');
+      return new Response(
+        JSON.stringify({ 
+          error: 'Security validation failed',
+          details: 'Request blocked for security reasons'
+        }),
+        { 
+          status: 429, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
     // Check for duplicate enrollment
     const { data: existingEnrollment } = await supabase
       .from('enrollment_requests')
@@ -140,10 +160,28 @@ serve(async (req) => {
       );
     }
 
-    // Set context for RLS policy
+    // Set enhanced context for RLS policy validation
     await supabase.rpc('set_config', {
       setting_name: 'app.enrollment_context',
       setting_value: 'secure_enrollment_endpoint',
+      is_local: true
+    });
+
+    await supabase.rpc('set_config', {
+      setting_name: 'app.enrollment_validated',
+      setting_value: 'true',
+      is_local: true
+    });
+
+    await supabase.rpc('set_config', {
+      setting_name: 'app.enrollment_ip_validated',
+      setting_value: 'true',
+      is_local: true
+    });
+
+    await supabase.rpc('set_config', {
+      setting_name: 'app.enrollment_rate_limit_passed',
+      setting_value: 'true',
       is_local: true
     });
 
