@@ -47,7 +47,7 @@ const SecurityDashboard: React.FC = () => {
     } catch (error) {
       toast({
         title: 'Test Error',
-        description: 'Failed to run security tests',
+        description: error instanceof Error ? error.message : 'Failed to run security tests',
         variant: 'destructive',
       });
     } finally {

@@ -164,7 +164,7 @@ const SecureOrderAccess: React.FC<SecureOrderAccessProps> = ({ onOrderFound, onA
       console.error('Secure order access error:', error);
       
       SecurityAuditLogger.logSecurityEvent('order_access_error', 'medium', {
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         orderNumber: DataEncryptionManager.maskSensitiveData(orderNumber, 'name')
       });
 

@@ -123,7 +123,7 @@ export class SecurityTester {
         return {
           test: 'User Data Isolation',
           passed: false,
-          error: error.message
+          error: (error as Error).message
         };
       }
       
@@ -145,7 +145,7 @@ export class SecurityTester {
       return {
         test: 'User Data Isolation',
         passed: false,
-        error: error.message
+        error: (error as Error).message
       };
     }
   }

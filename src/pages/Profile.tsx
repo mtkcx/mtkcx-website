@@ -85,7 +85,7 @@ const Profile = () => {
     } catch (error: any) {
       toast({
         title: t('profile.error_title'),
-        description: error.message || t('auth.something_went_wrong'),
+        description: error instanceof Error ? error.message : t('auth.something_went_wrong'),
         variant: 'destructive',
       });
     } finally {

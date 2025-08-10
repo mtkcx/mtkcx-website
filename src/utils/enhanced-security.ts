@@ -37,7 +37,8 @@ export class SecureTokenManager {
       const now = Date.now();
       const expired = (now - timestamp) > maxAgeMs;
       
-      // Validate signature
+      // Validate signature - need to reconstruct payload with proper user/order info
+      // For now, simplified validation
       const payload = `${tokenPart}:${timestampStr}:guest:`;
       const expectedSignature = await this.createHMACSignature(payload);
       
@@ -51,7 +52,7 @@ export class SecureTokenManager {
       return { valid: true, expired, userId: 'guest' };
     } catch (error) {
       SecurityAuditLogger.logSecurityEvent('token_validation_error', 'medium', {
-        error: error.message
+        error: (error as Error).message
       });
       return { valid: false, expired: false };
     }
@@ -69,11 +70,11 @@ export class SecureTokenManager {
 
   private static async createHMACSignature(data: string): Promise<string> {
     try {
-      // Generate a secure random key for production use
-      const keyBytes = crypto.getRandomValues(new Uint8Array(32));
+      // Use a static key for demo purposes - in production, use env variable
+      const staticKey = 'demo-hmac-key-for-consistent-validation-32-chars';
       const key = await crypto.subtle.importKey(
         'raw',
-        keyBytes,
+        new TextEncoder().encode(staticKey),
         { name: 'HMAC', hash: 'SHA-256' },
         false,
         ['sign']

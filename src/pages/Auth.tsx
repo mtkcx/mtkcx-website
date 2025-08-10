@@ -123,7 +123,7 @@ const Auth = () => {
     } catch (error: any) {
       toast({
         title: t('auth.error_title'),
-        description: error.message || t('auth.something_went_wrong'),
+        description: error instanceof Error ? error.message : t('auth.something_went_wrong'),
         variant: 'destructive',
       });
     } finally {
@@ -228,7 +228,7 @@ const Auth = () => {
     } catch (error: any) {
       toast({
         title: t('auth.error_title'),
-        description: error.message || t('auth.something_went_wrong'),
+        description: error instanceof Error ? error.message : t('auth.something_went_wrong'),
         variant: 'destructive',
       });
     } finally {
