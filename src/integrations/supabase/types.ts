@@ -1245,6 +1245,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      ultra_secure_admin_check: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       validate_edge_function_security: {
         Args: {
           operation_type: string
@@ -1268,6 +1272,10 @@ export type Database = {
           p_order_number: string
           p_session_token?: string
         }
+        Returns: boolean
+      }
+      verify_admin_access: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
     }
