@@ -1889,12 +1889,6 @@ const translations = {
     'mobile.services.get_quote': 'احصل على عرض سعر',
     'mobile.services.total_estimate': 'التقدير الإجمالي',
     
-    // Mobile Courses translations
-    'mobile.courses.title': 'دورات التدريب',
-    'mobile.courses.enroll_now': 'سجل الآن',
-    'mobile.courses.course_details': 'تفاصيل الدورة',
-    'mobile.courses.certification': 'الشهادة المهنية',
-
     // Quote Dialog additional translations
     'quote.missing_information': 'معلومات مفقودة',
     'quote.fill_required_fields': 'يرجى ملء جميع الحقول المطلوبة',
