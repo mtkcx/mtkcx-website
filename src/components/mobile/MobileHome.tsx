@@ -23,7 +23,7 @@ export const MobileHome: React.FC = () => {
       {/* Welcome Section */}
       <div className="text-center space-y-4">
         <h1 className="text-3xl font-bold text-primary">
-          Welcome to MT KCx
+          Welcome to MTKCx
         </h1>
         <p className="text-lg text-muted-foreground">
           Your Premier Vehicle Wrapping & Detailing Specialists
@@ -52,7 +52,7 @@ export const MobileHome: React.FC = () => {
       <Card className="p-6 space-y-4">
         <h2 className="text-2xl font-bold text-center">Who We Are</h2>
         <p className="text-muted-foreground leading-relaxed">
-          MT KCx stands as Israel's premier destination for automotive excellence, specializing in advanced paint protection films, 
+          MTKCx stands as Jerusalem's premier destination for automotive excellence, specializing in advanced paint protection films, 
           custom vehicle wraps, and professional detailing services. As an official Koch-Chemie partner, we combine years of expertise 
           with cutting-edge techniques and premium materials to transform and protect vehicles while maintaining the highest standards of quality and precision.
         </p>
@@ -144,7 +144,7 @@ export const MobileHome: React.FC = () => {
 
       {/* Why Choose MT KCx */}
       <Card className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">Why Choose MT KCx?</h2>
+        <h2 className="text-xl font-bold">Why Choose MTKCx?</h2>
         
         <div className="space-y-3">
           <div className="flex items-center gap-3">
@@ -181,7 +181,7 @@ export const MobileHome: React.FC = () => {
         <div className="space-y-3">
           <div>
             <h3 className="font-semibold">Location</h3>
-            <p className="text-sm text-muted-foreground">Atarot Industrial Zone, Jerusalem, Israel</p>
+            <p className="text-sm text-muted-foreground">Atarot Industrial Zone, Jerusalem</p>
           </div>
           
           <div>
@@ -197,7 +197,7 @@ export const MobileHome: React.FC = () => {
           
           <div>
             <h3 className="font-semibold">Established</h3>
-            <p className="text-sm text-muted-foreground">Founded in 2020, serving Israel with excellence</p>
+            <p className="text-sm text-muted-foreground">Founded in 2020, serving Jerusalem with excellence</p>
           </div>
         </div>
       </Card>

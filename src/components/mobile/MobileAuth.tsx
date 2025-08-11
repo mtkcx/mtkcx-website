@@ -232,7 +232,7 @@ export const MobileAuth: React.FC<MobileAuthProps> = ({ onBack }) => {
           </Button>
           <img 
             src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
-            alt="MT KCx Logo" 
+            alt="MTKCx Logo" 
             className="h-8 w-auto"
           />
         </div>

@@ -150,7 +150,7 @@ const MobileApp: React.FC = () => {
                   <SheetTitle className="flex items-center gap-2">
                     <img 
                       src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
-                      alt="MT KCx Logo" 
+                      alt="MTKCx Logo"
                       className="h-8 w-auto"
                     />
                     Menu
@@ -253,7 +253,7 @@ const MobileApp: React.FC = () => {
             {/* Logo - Clickable */}
             <img 
               src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
-              alt="MT KCx Logo" 
+              alt="MTKCx Logo" 
               className="h-16 w-auto cursor-pointer"
               onClick={() => {
                 setActiveTab('home');

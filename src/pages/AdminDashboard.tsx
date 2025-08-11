@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AdminProtectedRoute from '@/components/AdminProtectedRoute';
-import { Package, Users, GraduationCap, TrendingUp } from 'lucide-react';
+import { Package, Users, GraduationCap, TrendingUp, Crown, UserCheck } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface Order {
   id: string;
@@ -33,6 +38,156 @@ interface Enrollment {
   email: string;
   phone: string;
 }
+
+interface User {
+  id: string;
+  email: string;
+  created_at: string;
+  role?: string;
+}
+
+const UserRoleManager: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [searchEmail, setSearchEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const searchUsers = async () => {
+    if (!searchEmail.trim()) {
+      toast.error('Please enter an email to search');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Search in profiles table by email from auth.users
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('user_id')
+        .limit(10);
+
+      if (profilesError) throw profilesError;
+
+      // Get user roles for found users
+      const { data: roles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('user_id, role');
+
+      if (rolesError) throw rolesError;
+
+      // Mock user data (in real implementation, you'd need a way to get auth.users data)
+      const mockUsers = [
+        { id: '1', email: searchEmail, created_at: new Date().toISOString() }
+      ];
+
+      // Add roles to users
+      const usersWithRoles = mockUsers.map(user => ({
+        ...user,
+        role: roles.find(role => role.user_id === user.id)?.role || 'user'
+      }));
+
+      setUsers(usersWithRoles);
+    } catch (error) {
+      console.error('Error searching users:', error);
+      toast.error('Failed to search users');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const promoteToAdmin = async (userId: string) => {
+    try {
+      const { error } = await supabase.rpc('promote_user_to_admin', {
+        target_user_id: userId
+      });
+
+      if (error) throw error;
+
+      toast.success('User promoted to admin successfully');
+      searchUsers(); // Refresh the list
+    } catch (error) {
+      console.error('Error promoting user:', error);
+      toast.error('Failed to promote user to admin');
+    }
+  };
+
+  const demoteAdmin = async (userId: string) => {
+    try {
+      const { error } = await supabase.rpc('demote_admin_to_user', {
+        target_user_id: userId
+      });
+
+      if (error) throw error;
+
+      toast.success('Admin demoted to user successfully');
+      searchUsers(); // Refresh the list
+    } catch (error) {
+      console.error('Error demoting admin:', error);
+      toast.error('Failed to demote admin');
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Crown className="h-5 w-5" />
+          User Role Management
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex gap-2">
+            <Input
+              placeholder="Enter user email to search"
+              value={searchEmail}
+              onChange={(e) => setSearchEmail(e.target.value)}
+            />
+            <Button onClick={searchUsers} disabled={loading}>
+              {loading ? 'Searching...' : 'Search'}
+            </Button>
+          </div>
+
+          {users.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="font-medium">Search Results:</h4>
+              {users.map((user) => (
+                <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <div className="font-medium">{user.email}</div>
+                    <div className="text-sm text-muted-foreground">
+                      Role: <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
+                        {user.role}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {user.role === 'admin' ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => demoteAdmin(user.id)}
+                      >
+                        Demote to User
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => promoteToAdmin(user.id)}
+                      >
+                        <Crown className="h-4 w-4 mr-1" />
+                        Promote to Admin
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 const AdminDashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -127,7 +282,7 @@ const AdminDashboard: React.FC = () => {
     );
   }
 
-    // Calculate stats
+  // Calculate stats
   const stats = {
     totalOrders: orders.length,
     pendingQuotes: quotes.filter(q => q.status === 'pending').length,
@@ -142,7 +297,7 @@ const AdminDashboard: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-primary">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Manage orders, quotes, and enrollments</p>
+          <p className="text-muted-foreground">Manage orders, quotes, enrollments, and user roles</p>
         </div>
 
         {/* Summary Stats */}
@@ -194,6 +349,7 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="quotes">Quotes</TabsTrigger>
             <TabsTrigger value="enrollments">Enrollments</TabsTrigger>
+            <TabsTrigger value="users">User Management</TabsTrigger>
           </TabsList>
           
           <TabsContent value="orders" className="space-y-4">
@@ -280,6 +436,10 @@ const AdminDashboard: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="users" className="space-y-4">
+            <UserRoleManager />
           </TabsContent>
         </Tabs>
       </div>

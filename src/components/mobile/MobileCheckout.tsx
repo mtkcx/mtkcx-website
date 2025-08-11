@@ -261,9 +261,9 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack, onPaymen
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="west_bank">West Bank - ₪30</SelectItem>
-                  <SelectItem value="north">North Israel - ₪60</SelectItem>
-                  <SelectItem value="south">South Israel - ₪60</SelectItem>
-                  <SelectItem value="center">Central Israel - ₪60</SelectItem>
+                  <SelectItem value="north">North Jerusalem - ₪60</SelectItem>
+                  <SelectItem value="south">South Jerusalem - ₪60</SelectItem>
+                  <SelectItem value="center">Central Jerusalem - ₪60</SelectItem>
                   <SelectItem value="jerusalem">Jerusalem - ₪25</SelectItem>
                 </SelectContent>
               </Select>
