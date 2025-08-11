@@ -2013,16 +2013,6 @@ const translations = {
     'admin.orders.table.unit_price': 'سعر الوحدة',
     'admin.orders.table.total': 'المجموع',
 
-    // Mobile Products translations
-    'mobile.products.title': 'منتجات Koch-Chemie',
-    'mobile.products.search_placeholder': 'البحث في المنتجات...',
-    'mobile.products.add_to_cart': 'أضف إلى السلة',
-    'mobile.products.checkout': 'الدفع',
-    'mobile.products.added_to_cart': 'تمت الإضافة إلى السلة',
-    'mobile.products.added_description': 'تم إضافته إلى السلة',
-    'mobile.products.failed_to_load': 'فشل في تحميل المنتجات',
-    'mobile.products.cart_ready': 'السلة جاهزة',
-    'mobile.products.items_text': 'عناصر في سلتك',
 
     // Mobile Service Calculator translations
     'mobile.services.calculator_title': 'حزم MT Wraps',
@@ -2978,16 +2968,6 @@ const translations = {
     'admin.orders.table.unit_price': 'מחיר יחידה',
     'admin.orders.table.total': 'סה"כ',
 
-    // Mobile Products translations
-    'mobile.products.title': 'מוצרי Koch-Chemie',
-    'mobile.products.search_placeholder': 'חיפוש מוצרים...',
-    'mobile.products.add_to_cart': 'הוסף לעגלה',
-    'mobile.products.checkout': 'תשלום',
-    'mobile.products.added_to_cart': 'נוסף לעגלה',
-    'mobile.products.added_description': 'נוסף לעגלה',
-    'mobile.products.failed_to_load': 'נכשל בטעינת מוצרים',
-    'mobile.products.cart_ready': 'העגלה מוכנה',
-    'mobile.products.items_text': 'פריטים בעגלה שלך',
 
     // Mobile Service Calculator translations
     'mobile.services.calculator_title': 'חבילות MT Wraps',
