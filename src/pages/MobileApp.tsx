@@ -124,32 +124,32 @@ const MobileApp: React.FC = () => {
         window.scrollTo(0, 0);
       }
     },
-    { 
-      icon: Calculator, 
-      label: t('mobile.nav.packages'), 
-      action: () => {
-        setActiveTab('calculator');
-        setShowAuth(false);
-        setShowContact(false);
-        setShowAbout(false);
-        setShowCheckout(false);
-        setIsMenuOpen(false);
-        window.scrollTo(0, 0);
-      }
-    },
-    { 
-      icon: Camera, 
-      label: t('mobile.nav.quote'), 
-      action: () => {
-        setActiveTab('photo');
-        setShowAuth(false);
-        setShowContact(false);
-        setShowAbout(false);
-        setShowCheckout(false);
-        setIsMenuOpen(false);
-        window.scrollTo(0, 0);
-      }
-    },
+    // { 
+    //   icon: Calculator, 
+    //   label: t('mobile.nav.packages'), 
+    //   action: () => {
+    //     setActiveTab('calculator');
+    //     setShowAuth(false);
+    //     setShowContact(false);
+    //     setShowAbout(false);
+    //     setShowCheckout(false);
+    //     setIsMenuOpen(false);
+    //     window.scrollTo(0, 0);
+    //   }
+    // },
+    // { 
+    //   icon: Camera, 
+    //   label: t('mobile.nav.quote'), 
+    //   action: () => {
+    //     setActiveTab('photo');
+    //     setShowAuth(false);
+    //     setShowContact(false);
+    //     setShowAbout(false);
+    //     setShowCheckout(false);
+    //     setIsMenuOpen(false);
+    //     window.scrollTo(0, 0);
+    //   }
+    // },
     { 
       icon: ShoppingBag, 
       label: t('nav.products'), 
@@ -560,7 +560,7 @@ const MobileApp: React.FC = () => {
 
             {/* Bottom Navigation */}
             <div className="fixed bottom-0 left-0 right-0 bg-background border-t" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-              <TabsList className={`grid w-full ${user ? 'grid-cols-6' : 'grid-cols-5'} bg-transparent h-16 rounded-none`}>
+              <TabsList className={`grid w-full ${user ? 'grid-cols-5' : 'grid-cols-4'} bg-transparent h-16 rounded-none`}>
                 <TabsTrigger 
                   value="home" 
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
@@ -569,7 +569,8 @@ const MobileApp: React.FC = () => {
                   <span className="text-xs">{t('nav.home')}</span>
                 </TabsTrigger>
                 
-                <TabsTrigger 
+                {/* Hidden packages and quote navigation */}
+                {/* <TabsTrigger 
                   value="calculator" 
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
                 >
@@ -583,7 +584,7 @@ const MobileApp: React.FC = () => {
                 >
                   <Camera className="h-5 w-5" />
                   <span className="text-xs">{t('mobile.nav.quote')}</span>
-                </TabsTrigger>
+                </TabsTrigger> */}
                 
                 <TabsTrigger 
                   value="products" 
@@ -600,6 +601,15 @@ const MobileApp: React.FC = () => {
                   <BookOpen className="h-5 w-5" />
                   <span className="text-xs">{t('nav.courses')}</span>
                 </TabsTrigger>
+                
+                <Button
+                  variant="ghost"
+                  className="flex-col gap-1 h-full rounded-none"
+                  onClick={handleShowContact}
+                >
+                  <Phone className="h-5 w-5" />
+                  <span className="text-xs">{t('nav.contact')}</span>
+                </Button>
                 
                 {user && (
                   <TabsTrigger 
