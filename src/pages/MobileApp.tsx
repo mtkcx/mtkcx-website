@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { MobileServiceCalculator } from '@/components/mobile/MobileServiceCalculator';
 import { MobileProductCatalog } from '@/components/mobile/MobileProductCatalog';
-import { MobileDashboard } from '@/components/mobile/MobileDashboard';
+import { MobileHome } from '@/components/mobile/MobileHome';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
@@ -12,16 +15,37 @@ import {
   Home,
   Camera,
   BookOpen,
-  CheckCircle
+  CheckCircle,
+  Menu,
+  LogIn,
+  LogOut,
+  UserCircle,
+  Quote,
+  Settings,
+  Phone,
+  Mail,
+  MapPin
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import SEOHead from '@/components/SEOHead';
 import CartButton from '@/components/CartButton';
+import { useNavigate } from 'react-router-dom';
 
 const MobileApp: React.FC = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await signOut();
+    setIsMenuOpen(false);
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
 
   // Redirect desktop users
   if (!isMobile) {
@@ -38,6 +62,16 @@ const MobileApp: React.FC = () => {
     );
   }
 
+  const menuItems = [
+    { icon: Home, label: 'Home', action: () => handleNavigation('/') },
+    { icon: Calculator, label: 'Calculator', action: () => setIsMenuOpen(false) },
+    { icon: Quote, label: 'Get Quote', action: () => setIsMenuOpen(false) },
+    { icon: ShoppingBag, label: 'Products', action: () => handleNavigation('/products') },
+    { icon: BookOpen, label: 'Courses', action: () => handleNavigation('/courses') },
+    { icon: Phone, label: 'Contact', action: () => handleNavigation('/contact') },
+    { icon: MapPin, label: 'About', action: () => handleNavigation('/about') },
+  ];
+
   return (
     <>
       <SEOHead 
@@ -47,36 +81,118 @@ const MobileApp: React.FC = () => {
       />
       
       <div className="min-h-screen bg-background">
-        {/* Header */}
+        {/* Header with Menu */}
         <div className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
-          <div className="flex items-center justify-center p-6">
+          <div className="flex items-center justify-between p-4">
+            {/* Hamburger Menu */}
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <img 
+                      src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
+                      alt="MT KCx Logo" 
+                      className="h-8 w-auto"
+                    />
+                    Menu
+                  </SheetTitle>
+                </SheetHeader>
+                
+                <div className="space-y-4 mt-6">
+                  {/* User Section */}
+                  {user ? (
+                    <Card className="p-4 bg-primary/5">
+                      <div className="flex items-center gap-3">
+                        <UserCircle className="h-10 w-10 text-primary" />
+                        <div>
+                          <p className="font-semibold">Welcome back!</p>
+                          <p className="text-sm text-muted-foreground">{user.email}</p>
+                        </div>
+                      </div>
+                    </Card>
+                  ) : (
+                    <Card className="p-4">
+                      <div className="text-center space-y-3">
+                        <p className="text-sm text-muted-foreground">
+                          Sign in to access your account
+                        </p>
+                        <Button 
+                          onClick={() => handleNavigation('/auth')}
+                          className="w-full"
+                        >
+                          <LogIn className="h-4 w-4 mr-2" />
+                          Sign In
+                        </Button>
+                      </div>
+                    </Card>
+                  )}
+
+                  <Separator />
+
+                  {/* Navigation Items */}
+                  <div className="space-y-2">
+                    {menuItems.map((item, index) => (
+                      <Button
+                        key={index}
+                        variant="ghost"
+                        className="w-full justify-start"
+                        onClick={item.action}
+                      >
+                        <item.icon className="h-4 w-4 mr-3" />
+                        {item.label}
+                      </Button>
+                    ))}
+                  </div>
+
+                  {user && (
+                    <>
+                      <Separator />
+                      <div className="space-y-2">
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start"
+                          onClick={() => handleNavigation('/profile')}
+                        >
+                          <Settings className="h-4 w-4 mr-3" />
+                          Profile Settings
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start text-red-600 hover:text-red-700"
+                          onClick={handleLogout}
+                        >
+                          <LogOut className="h-4 w-4 mr-3" />
+                          Sign Out
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
+
+            {/* Logo */}
             <img 
               src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
               alt="MT KCx Logo" 
-              className="h-20 w-auto"
+              className="h-16 w-auto"
             />
+
+            {/* Cart Button */}
+            <CartButton />
           </div>
         </div>
 
-        {/* Cart Button - Fixed Position */}
-        <div className="fixed top-4 right-4 z-50">
-          <CartButton />
-        </div>
-
         {/* Main Content */}
-        <Tabs defaultValue={user ? "dashboard" : "calculator"} className="w-full">
+        <Tabs defaultValue="home" className="w-full">
           <div className="pb-20">
-            <TabsContent value="dashboard" className="m-0">
-              {user ? (
-                <MobileDashboard />
-              ) : (
-                <div className="p-4 text-center space-y-4">
-                  <h2 className="text-xl font-semibold">Sign in to access your dashboard</h2>
-                  <p className="text-muted-foreground">
-                    Track your orders, manage enrollments, and access exclusive features
-                  </p>
-                </div>
-              )}
+            <TabsContent value="home" className="m-0">
+              <MobileHome />
             </TabsContent>
 
             <TabsContent value="calculator" className="m-0">
@@ -247,11 +363,11 @@ const MobileApp: React.FC = () => {
           <div className="fixed bottom-0 left-0 right-0 bg-background border-t">
             <TabsList className="grid w-full grid-cols-5 bg-transparent h-16 rounded-none">
               <TabsTrigger 
-                value="dashboard" 
+                value="home" 
                 className="flex-col gap-1 data-[state=active]:bg-primary/10"
               >
-                <User className="h-5 w-5" />
-                <span className="text-xs">Dashboard</span>
+                <Home className="h-5 w-5" />
+                <span className="text-xs">Home</span>
               </TabsTrigger>
               
               <TabsTrigger 
@@ -259,7 +375,7 @@ const MobileApp: React.FC = () => {
                 className="flex-col gap-1 data-[state=active]:bg-primary/10"
               >
                 <Calculator className="h-5 w-5" />
-                <span className="text-xs">Calculate</span>
+                <span className="text-xs">Packages</span>
               </TabsTrigger>
               
               <TabsTrigger 
