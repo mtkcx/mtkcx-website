@@ -3,10 +3,13 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Search, ShoppingCart, Filter, Grid, List } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Search, ShoppingCart, Filter, Grid, List, Package, CreditCard, Eye } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 interface MobileProduct {
   id: string;
@@ -30,14 +33,17 @@ interface MobileProductCatalogProps {
 }
 
 export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = false }) => {
-  const { addToCart } = useCart();
+  const { addToCart, getTotalItems } = useCart();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [products, setProducts] = useState<MobileProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<MobileProduct | null>(null);
+  const [selectedVariant, setSelectedVariant] = useState<string>('');
 
   useEffect(() => {
     fetchProducts();
@@ -142,6 +148,25 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     });
   };
 
+  const handleQuickAdd = (product: MobileProduct, variantId: string) => {
+    handleAddToCart(product, variantId);
+    setSelectedProduct(null);
+    setSelectedVariant('');
+  };
+
+  const handleViewProduct = (product: MobileProduct) => {
+    setSelectedProduct(product);
+    setSelectedVariant(product.variants[0]?.id || '');
+  };
+
+  const handleGoToCheckout = () => {
+    navigate('/checkout');
+  };
+
+  const formatPrice = (price: number) => {
+    return `₪${price.toLocaleString()}`;
+  };
+
   const displayProducts = compact ? filteredProducts.slice(0, 6) : filteredProducts;
 
   if (loading) {
@@ -167,6 +192,16 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold">Koch-Chemie Products</h2>
           <div className="flex items-center gap-2">
+            {getTotalItems() > 0 && (
+              <Button
+                onClick={handleGoToCheckout}
+                className="flex items-center gap-2"
+                size="sm"
+              >
+                <CreditCard className="h-4 w-4" />
+                Checkout ({getTotalItems()})
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"
@@ -220,6 +255,24 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         )}
       </div>
 
+      {/* Checkout Banner */}
+      {getTotalItems() > 0 && (
+        <Card className="p-4 bg-primary/5 border-primary/20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-semibold">Cart Ready</p>
+              <p className="text-sm text-muted-foreground">
+                {getTotalItems()} items in your cart
+              </p>
+            </div>
+            <Button onClick={handleGoToCheckout} className="flex items-center gap-2">
+              <CreditCard className="h-4 w-4" />
+              Checkout
+            </Button>
+          </div>
+        </Card>
+      )}
+
       {/* Product Grid/List */}
       <div className={
         viewMode === 'grid' 
@@ -250,27 +303,89 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                     {product.description}
                   </p>
                   
-                  {/* Variants */}
-                  <div className="space-y-2">
-                    {product.variants.slice(0, 2).map(variant => (
-                      <div key={variant.id} className="flex items-center justify-between">
-                        <span className="text-xs">{variant.size}</span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium">${variant.price}</span>
-                          <Button
-                            size="sm"
-                            onClick={() => handleAddToCart(product, variant.id)}
-                            className="h-7 px-2"
-                          >
-                            <ShoppingCart className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                    {product.variants.length > 2 && (
-                      <p className="text-xs text-muted-foreground">
-                        +{product.variants.length - 2} more sizes
-                      </p>
+                  {/* Price Range */}
+                  <div className="text-sm font-medium text-primary">
+                    {product.variants.length === 1 ? (
+                      formatPrice(product.variants[0].price)
+                    ) : (
+                      `${formatPrice(Math.min(...product.variants.map(v => v.price)))} - ${formatPrice(Math.max(...product.variants.map(v => v.price)))}`
+                    )}
+                  </div>
+
+                  {/* Quick Add or View Options */}
+                  <div className="flex gap-2">
+                    {product.variants.length === 1 ? (
+                      <Button
+                        size="sm"
+                        onClick={() => handleAddToCart(product, product.variants[0].id)}
+                        className="flex-1 h-8"
+                      >
+                        <ShoppingCart className="h-3 w-3 mr-1" />
+                        Add to Cart
+                      </Button>
+                    ) : (
+                      <>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleViewProduct(product)}
+                              className="flex-1 h-8"
+                            >
+                              <Eye className="h-3 w-3 mr-1" />
+                              View
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-md">
+                            <DialogHeader>
+                              <DialogTitle>{product.name}</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <img
+                                src={product.image_url}
+                                alt={product.name}
+                                className="w-full h-48 object-cover rounded"
+                              />
+                              <p className="text-sm text-muted-foreground">
+                                {product.description}
+                              </p>
+                              
+                              <div className="space-y-3">
+                                <label className="text-sm font-medium">Select Size:</label>
+                                <Select value={selectedVariant} onValueChange={setSelectedVariant}>
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Choose size" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {product.variants.map(variant => (
+                                      <SelectItem key={variant.id} value={variant.id}>
+                                        {variant.size} - {formatPrice(variant.price)}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              
+                              <Button
+                                onClick={() => handleQuickAdd(product, selectedVariant)}
+                                disabled={!selectedVariant}
+                                className="w-full"
+                              >
+                                <ShoppingCart className="h-4 w-4 mr-2" />
+                                Add to Cart
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                        <Button
+                          size="sm"
+                          onClick={() => handleAddToCart(product, product.variants[0].id)}
+                          className="h-8 px-3"
+                        >
+                          <ShoppingCart className="h-3 w-3" />
+                        </Button>
+                      </>
                     )}
                   </div>
                 </div>
@@ -295,24 +410,76 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                   </p>
                   
                   <div className="flex items-center justify-between">
-                    <div className="text-sm">
+                    <div className="text-sm font-medium text-primary">
                       {product.variants.length === 1 ? (
-                        <span className="font-medium">${product.variants[0].price}</span>
+                        formatPrice(product.variants[0].price)
                       ) : (
-                        <span className="text-muted-foreground">
-                          ${Math.min(...product.variants.map(v => v.price))} - 
-                          ${Math.max(...product.variants.map(v => v.price))}
-                        </span>
+                        `${formatPrice(Math.min(...product.variants.map(v => v.price)))} - ${formatPrice(Math.max(...product.variants.map(v => v.price)))}`
                       )}
                     </div>
-                    <Button
-                      size="sm"
-                      onClick={() => handleAddToCart(product, product.variants[0].id)}
-                      className="h-8 px-3"
-                    >
-                      <ShoppingCart className="h-3 w-3 mr-1" />
-                      Add
-                    </Button>
+                    {product.variants.length === 1 ? (
+                      <Button
+                        size="sm"
+                        onClick={() => handleAddToCart(product, product.variants[0].id)}
+                        className="h-8 px-3"
+                      >
+                        <ShoppingCart className="h-3 w-3 mr-1" />
+                        Add
+                      </Button>
+                    ) : (
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            size="sm"
+                            onClick={() => handleViewProduct(product)}
+                            className="h-8 px-3"
+                          >
+                            <Package className="h-3 w-3 mr-1" />
+                            Select
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-md">
+                          <DialogHeader>
+                            <DialogTitle>{product.name}</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <img
+                              src={product.image_url}
+                              alt={product.name}
+                              className="w-full h-48 object-cover rounded"
+                            />
+                            <p className="text-sm text-muted-foreground">
+                              {product.description}
+                            </p>
+                            
+                            <div className="space-y-3">
+                              <label className="text-sm font-medium">Select Size:</label>
+                              <Select value={selectedVariant} onValueChange={setSelectedVariant}>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Choose size" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {product.variants.map(variant => (
+                                    <SelectItem key={variant.id} value={variant.id}>
+                                      {variant.size} - {formatPrice(variant.price)}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            
+                            <Button
+                              onClick={() => handleQuickAdd(product, selectedVariant)}
+                              disabled={!selectedVariant}
+                              className="w-full"
+                            >
+                              <ShoppingCart className="h-4 w-4 mr-2" />
+                              Add to Cart
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    )}
                   </div>
                 </div>
               </div>
