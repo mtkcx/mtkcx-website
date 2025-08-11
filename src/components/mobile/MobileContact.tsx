@@ -121,19 +121,6 @@ export const MobileContact: React.FC<MobileContactProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-background p-4" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-md mx-auto space-y-6">
-        {/* Fixed Header */}
-        <div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center justify-between py-2 -mx-4 px-4 border-b">
-          <Button variant="ghost" size="sm" onClick={onBack}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Button>
-          <img 
-            src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
-            alt="MTKCx Logo" 
-            className="h-8 w-auto"
-          />
-        </div>
-
         {/* Hero Section */}
         <div className="text-center space-y-4">
           <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
