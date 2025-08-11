@@ -309,6 +309,14 @@ const translations = {
     'quote.request_submitted': 'Quote Requested',
     'quote.contact_within_24h': 'We\'ll contact you within 24 hours with your personalized quote',
 
+    // Photo Quote Dialog
+    'quote.photo_instructions': 'Take photos of your vehicle for an accurate quote',
+    'quote.start_photo_session': 'Start Photo Session',
+    'quote.photo_guide': 'We\'ll guide you through taking the right photos',
+    'quote.open_camera': 'Open Camera',
+    'quote.quick_process': 'Quick process',
+    'quote.response_time': 'Response time',
+
     // Enrollment Dialog
     'enrollment.dialog_title': 'Course Enrollment Request',
     'enrollment.dialog_subtitle': 'Fill out your information and we\'ll contact you within 24 hours',
@@ -1809,6 +1817,9 @@ const translations = {
     'checkout.complete_order_credit_card': 'إتمام الطلب (سنتصل بك)',
     'checkout.credit_card_notice': 'بإتمام هذا الطلب، فإنك توافق على أن نتصل بك لمعالجة دفع بطاقتك الائتمانية',
 
+    // Common Back button
+    'common.back': 'العودة',
+
     // Admin
     'admin.error': 'خطأ',
     'admin.success': 'نجح',
@@ -1879,7 +1890,7 @@ const translations = {
     'mobile.products.items_text': 'عناصر في سلتك',
 
     // Mobile Service Calculator translations
-    'mobile.services.calculator_title': 'حزم MTKCx',
+    'mobile.services.calculator_title': 'حزم MT Wraps',
     'mobile.services.get_accurate_quotes': 'احصل على عروض أسعار دقيقة لاحتياجات تغليف سيارتك',
     'mobile.services.packages': 'حزم الخدمة',
     'mobile.services.custom_quote': 'عرض سعر مخصص',
@@ -1894,6 +1905,14 @@ const translations = {
     'quote.fill_required_fields': 'يرجى ملء جميع الحقول المطلوبة',
     'quote.request_submitted': 'تم طلب عرض السعر',
     'quote.contact_within_24h': 'سنتواصل معك خلال 24 ساعة مع عرض السعر الشخصي الخاص بك',
+
+    // Photo Quote Dialog (Arabic)
+    'quote.photo_instructions': 'التقط صور لسيارتك للحصول على عرض سعر دقيق',
+    'quote.start_photo_session': 'بدء جلسة التصوير',
+    'quote.photo_guide': 'سنرشدك خلال التقاط الصور الصحيحة',
+    'quote.open_camera': 'فتح الكاميرا',
+    'quote.quick_process': 'عملية سريعة',
+    'quote.response_time': 'وقت الاستجابة',
 
     // Mobile Home translations
     'mobile.home.welcome_title': 'مرحباً بكم في MTKCx',
@@ -1920,7 +1939,7 @@ const translations = {
     'mobile.home.feature_5': 'تركيب خبير وخدمة شخصية',
     'mobile.home.visit_title': 'زر منشأتنا',
     'mobile.home.location_title': 'الموقع',
-    'mobile.home.location_text': 'المنطقة الصناعية عتاروت، القدس',
+    'mobile.home.location_text': 'المنطقة الصناعية عطروت، القدس',
     'mobile.home.services_badge_title': 'ما نقوم به',
     'mobile.home.badge_1': 'منتجات كوخ كيمي',
     'mobile.home.badge_2': 'خدمات تغليف السيارات',
@@ -2823,6 +2842,115 @@ const translations = {
     'admin.orders.table.quantity': 'כמות',
     'admin.orders.table.unit_price': 'מחיר יחידה',
     'admin.orders.table.total': 'סה"כ',
+
+    // Mobile Products translations
+    'mobile.products.title': 'מוצרי Koch-Chemie',
+    'mobile.products.search_placeholder': 'חיפוש מוצרים...',
+    'mobile.products.add_to_cart': 'הוסף לעגלה',
+    'mobile.products.checkout': 'תשלום',
+    'mobile.products.added_to_cart': 'נוסף לעגלה',
+    'mobile.products.added_description': 'נוסף לעגלה',
+    'mobile.products.failed_to_load': 'נכשל בטעינת מוצרים',
+    'mobile.products.cart_ready': 'העגלה מוכנה',
+    'mobile.products.items_text': 'פריטים בעגלה שלך',
+
+    // Mobile Service Calculator translations
+    'mobile.services.calculator_title': 'חבילות MT Wraps',
+    'mobile.services.get_accurate_quotes': 'קבל הצעות מחיר מדויקות לצרכי עיטוף הרכב שלך',
+    'mobile.services.packages': 'חבילות שירות',
+    'mobile.services.custom_quote': 'הצעת מחיר מותאמת',
+    'mobile.services.parts_pricing': 'חלקים בודדים',
+    'mobile.services.select_parts': 'בחר חלקים',
+    'mobile.services.vehicle_size': 'בחר גודל רכב',
+    'mobile.services.get_quote': 'קבל הצעת מחיר',
+    'mobile.services.total_estimate': 'הערכה כוללת',
+    
+    // Quote Dialog additional translations
+    'quote.missing_information': 'חסר מידע',
+    'quote.fill_required_fields': 'אנא מלא את כל השדות הנדרשים',
+    'quote.request_submitted': 'בקשת הצעת מחיר נשלחה',
+    'quote.contact_within_24h': 'נחזור אליך תוך 24 שעות עם הצעת המחיר האישית שלך',
+
+    // Photo Quote Dialog (Hebrew)
+    'quote.photo_instructions': 'צלם תמונות של הרכב שלך לקבלת הצעת מחיר מדויקת',
+    'quote.start_photo_session': 'התחל מפגש צילום',
+    'quote.photo_guide': 'נדריך אותך דרך צילום התמונות הנכונות',
+    'quote.open_camera': 'פתח מצלמה',
+    'quote.quick_process': 'תהליך מהיר',
+    'quote.response_time': 'זמן תגובה',
+
+    // Mobile Home translations
+    'mobile.home.welcome_title': 'ברוכים הבאים ל-MTKCx',
+    'mobile.home.welcome_subtitle': 'מתמחים בעיטוף ופירוט רכבים מעולים',
+    'mobile.home.hero_title': 'מצוינות מקצועית',
+    'mobile.home.hero_subtitle': 'המרת רכבים בדיוק ובאלגנטיות',
+    'mobile.home.about_title': 'מי אנחנו',
+    'mobile.home.about_description': 'MTKCx עומדת כיעד המוביל של ירושלים למצוינות רכב, המתמחה בסרטי הגנת צבע מתקדמים, עיטופי רכב מותאמים אישית ושירותי פירוט מקצועיים. כשותף רשמי של Koch Chemie, אנו משלבים שנות ניסיון עם טכנולוגיות מתקדמות וחומרים מעולים כדי להמיר ולהגן על רכבים תוך שמירה על הסטנדרטים הגבוהים ביותר של איכות ודיוק.',
+    'mobile.home.premium_products': 'מוצרים מעולים',
+    'mobile.home.satisfied_customers': 'לקוחות מרוצים',
+    'mobile.home.services_title': 'מה אנחנו מציעים',
+    'mobile.home.service_1_title': 'מוצרי Koch Chemie מעולים',
+    'mobile.home.service_1_desc': 'מפיץ רשמי של מגמת המוצרים המקצועיים המלאה של Koch Chemie כולל פולישים, שעווה, ציפויי קרמיקה וכלי פירוט.',
+    'mobile.home.service_2_title': 'עיטוף רכבים מקצועי',
+    'mobile.home.service_2_desc': 'עיטופי רכב מותאמים אישית, התקנת סרט הגנת צבע ושלטי צי מסחרי עם חומרים מעולים ואומנות מומחית.',
+    'mobile.home.service_3_title': 'הכשרה וחינוך מקצועיים',
+    'mobile.home.service_3_desc': 'קורסי הסמכה מקיפים של Koch Chemie, סדנאות הכשרה מעשיות ותוכניות פיתוח מקצועי.',
+    'mobile.home.gallery_title': 'העבודות שלנו',
+    'mobile.home.why_choose_title': 'למה לבחור ב-MTKCx?',
+    'mobile.home.feature_1': 'שותפות והסמכה רשמית של Koch Chemie',
+    'mobile.home.feature_2': 'מוצרים וחומרים גרמניים מעולים',
+    'mobile.home.feature_3': 'אחריות מקיפה על כל השירותים',
+    'mobile.home.feature_4': 'תוכניות הכשרה והסמכה מקצועיות',
+    'mobile.home.feature_5': 'התקנה מומחית ושירות אישי',
+    'mobile.home.visit_title': 'בקר במתקן שלנו',
+    'mobile.home.location_title': 'מיקום',
+    'mobile.home.location_text': 'אזור התעשייה עטרות, ירושלים',
+    'mobile.home.services_badge_title': 'מה אנחנו עושים',
+    'mobile.home.badge_1': 'מוצרי Koch Chemie',
+    'mobile.home.badge_2': 'שירותי עיטוף רכבים',
+    'mobile.home.badge_3': 'הכשרה מקצועית',
+    'mobile.home.badge_4': 'סרט הגנת צבע',
+    'mobile.home.badge_5': 'קורסי הסמכה',
+    'mobile.home.established_title': 'נוסדה',
+    'mobile.home.established_text': 'נוסדה ב-2020, משרתת את ירושלים במצוינות',
+    'mobile.home.welcome_back': 'ברוך שובך!',
+    'mobile.home.welcome_back_desc': 'מוכן לחקור את השירותים והמוצרים החדשים שלנו?',
+    
+    // Mobile Navigation translations
+    'mobile.nav.packages': 'חבילות',
+    'mobile.nav.quote': 'הצעת מחיר',
+    'mobile.nav.admin': 'מנהל',
+    
+    // Mobile Courses translations
+    'mobile.courses.title': 'קורסי הכשרה',
+    'mobile.courses.enroll_now': 'הירשם עכשיו',
+    'mobile.courses.course_details': 'פרטי הקורס',
+    'mobile.courses.certification': 'הסמכה מקצועית',
+    'mobile.courses.product_kit': 'ערכת מוצרי Koch Chemie מקצועית',
+    'mobile.courses.equipment_access': 'גישה לציוד וכלים',
+    'mobile.courses.training_materials': 'חומרי הכשרה ומדריך',
+    'mobile.courses.official_certification': 'הסמכה רשמית עם הסיום',
+    'mobile.courses.lunch_included': 'ארוחת צהריים ומשקאות כלולים',
+    'mobile.courses.ongoing_support': 'תמיכה מתמשכת וגישה לרשת ההסמכה',
+
+    // Common translations
+    'common.back': 'חזור',
+    'common.menu': 'תפריט',
+    'common.language': 'שפה',
+    'common.order': 'הזמנה',
+    'common.status': 'סטטוס',
+    'common.date': 'תאריך',
+    'common.price': 'מחיר',
+    'common.size': 'גודל',
+    'common.quantity': 'כמות',
+    'common.clear': 'נקה',
+    'common.filter': 'מסנן',
+    'common.sort': 'מיון',
+    'common.all': 'הכל',
+    'common.new': 'חדש',
+    'common.popular': 'פופולרי',
+    'common.featured': 'מומלץ',
+
   }
 };
 

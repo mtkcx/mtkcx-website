@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -20,6 +21,7 @@ interface MobileCheckoutProps {
 export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack, onPaymentSuccess }) => {
   const { items, getTotalPrice, clearCart } = useCart();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [isProcessing, setIsProcessing] = useState(false);
   
   const [customerInfo, setCustomerInfo] = useState({
@@ -171,14 +173,14 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack, onPaymen
         <div className="flex items-center gap-4">
           <Button variant="ghost" onClick={onBack} size="sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            {t('common.back')}
           </Button>
         </div>
         <div className="text-center space-y-4">
           <h1 className="text-2xl font-bold">Cart Empty</h1>
           <p className="text-muted-foreground">Your cart is empty. Add some products first.</p>
           <Button onClick={onBack}>
-            Continue Shopping
+            {t('cart.continue_shopping')}
           </Button>
         </div>
       </div>
@@ -191,7 +193,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack, onPaymen
       <div className="flex items-center gap-4">
         <Button variant="ghost" onClick={onBack} size="sm">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Products
+          {t('products.back_to_products_new')}
         </Button>
       </div>
 

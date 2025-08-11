@@ -94,7 +94,7 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
                     alt="MTKCx Logo"
                     className="h-12 w-auto"
                   />
-                  Menu
+                  {t('common.menu')}
                 </SheetTitle>
               </SheetHeader>
               
@@ -103,7 +103,7 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 px-3">
                     <Globe className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Language</span>
+                    <span className="text-sm font-medium">{t('common.language')}</span>
                   </div>
                   <Select value={currentLanguage} onValueChange={handleLanguageChange}>
                     <SelectTrigger className="w-full">

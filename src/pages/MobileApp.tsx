@@ -177,7 +177,7 @@ const MobileApp: React.FC = () => {
                       alt="MTKCx Logo"
                       className="h-12 w-auto"
                     />
-                    Menu
+                    {t('common.menu')}
                   </SheetTitle>
                 </SheetHeader>
                 
@@ -186,7 +186,7 @@ const MobileApp: React.FC = () => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 px-3">
                       <Globe className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm font-medium">Language</span>
+                      <span className="text-sm font-medium">{t('common.language')}</span>
                     </div>
                     <Select value={currentLanguage} onValueChange={handleLanguageChange}>
                       <SelectTrigger className="w-full">
@@ -397,27 +397,27 @@ const MobileApp: React.FC = () => {
                           <div className="grid grid-cols-1 gap-1 text-sm">
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Professional Koch-Chemie product kit</span>
+                              <span>{t('mobile.courses.product_kit')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Equipment and tools access</span>
+                              <span>{t('mobile.courses.equipment_access')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Training materials and manual</span>
+                              <span>{t('mobile.courses.training_materials')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Official certification upon completion</span>
+                              <span>{t('mobile.courses.official_certification')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Lunch and refreshments included</span>
+                              <span>{t('mobile.courses.lunch_included')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Post-course support and guidance</span>
+                              <span>{t('mobile.courses.ongoing_support')}</span>
                             </div>
                           </div>
                         </div>
@@ -452,30 +452,30 @@ const MobileApp: React.FC = () => {
                     <Camera className="h-12 w-12 text-primary mx-auto" />
                     <h2 className="text-2xl font-bold">{t('quote.request_title')}</h2>
                     <p className="text-muted-foreground">
-                      Take photos of your vehicle for an accurate quote
+                      {t('quote.photo_instructions')}
                     </p>
                   </div>
 
                   {/* This would integrate with MobilePhotoUpload */}
                   <div className="bg-primary/5 p-6 rounded-lg border-2 border-dashed border-primary/20 text-center">
                     <Camera className="h-16 w-16 text-primary/60 mx-auto mb-4" />
-                    <h3 className="font-semibold mb-2">Start Photo Session</h3>
+                    <h3 className="font-semibold mb-2">{t('quote.start_photo_session')}</h3>
                     <p className="text-sm text-muted-foreground mb-4">
-                      We'll guide you through taking the right photos
+                      {t('quote.photo_guide')}
                     </p>
                     <button className="bg-primary text-primary-foreground px-6 py-3 rounded-md">
-                      Open Camera
+                      {t('quote.open_camera')}
                     </button>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div className="space-y-2">
                       <div className="text-2xl font-bold text-primary">&lt; 5 min</div>
-                      <div className="text-sm text-muted-foreground">Quick process</div>
+                      <div className="text-sm text-muted-foreground">{t('quote.quick_process')}</div>
                     </div>
                     <div className="space-y-2">
                       <div className="text-2xl font-bold text-primary">24h</div>
-                      <div className="text-sm text-muted-foreground">Response time</div>
+                      <div className="text-sm text-muted-foreground">{t('quote.response_time')}</div>
                     </div>
                   </div>
                 </div>
