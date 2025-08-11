@@ -85,13 +85,13 @@ const App = () => (
                  <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
                  <Route path="/admin/security" element={<AdminProtectedRoute><SecurityDashboard /></AdminProtectedRoute>} />
                  <Route path="/admin" element={<AdminDashboard />} />
+                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                  <Route path="/mobile" element={<MobileApp />} />
                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                  <Route path="*" element={<NotFound />} />
                </Routes>
-                  <CartDrawer />
-                  <ChatBot />
-                  <SecurityMonitor />
+                   <CartDrawer />
+                   <SecurityMonitor />
                </BrowserRouter>
              </TooltipProvider>
             </SecurityMiddleware>

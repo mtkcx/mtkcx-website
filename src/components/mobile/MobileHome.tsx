@@ -167,10 +167,6 @@ export const MobileHome: React.FC = () => {
             <CheckCircle className="h-5 w-5 text-green-500" />
             <span className="text-sm">Expert installation and personalized service</span>
           </div>
-          <div className="flex items-center gap-3">
-            <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Competitive pricing with transparent costs in NIS</span>
-          </div>
         </div>
       </Card>
 
