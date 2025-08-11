@@ -26,7 +26,7 @@ export const MobileHome: React.FC = () => {
           Welcome to MTKCx
         </h1>
         <p className="text-lg text-muted-foreground">
-          Your Premier Vehicle Wrapping & Detailing Specialists
+          Your Premium Vehicle Wrapping & Detailing Specialists
         </p>
       </div>
 
