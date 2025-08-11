@@ -11,8 +11,11 @@ import {
   User, 
   Home,
   Camera,
-  BookOpen
+  BookOpen,
+  CheckCircle
 } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import SEOHead from '@/components/SEOHead';
 import CartButton from '@/components/CartButton';
 
@@ -46,18 +49,18 @@ const MobileApp: React.FC = () => {
       <div className="min-h-screen bg-background">
         {/* Header */}
         <div className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">MT</span>
-              </div>
-              <div>
-                <h1 className="font-bold text-lg">MT Wraps</h1>
-                <p className="text-xs text-muted-foreground">Professional Vehicle Wrapping</p>
-              </div>
-            </div>
-            <CartButton />
+          <div className="flex items-center justify-center p-4">
+            <img 
+              src="/lovable-uploads/93339d8c-e8b6-44d4-a598-f792a3019f2d.png" 
+              alt="MTKCX Logo" 
+              className="h-12 w-auto"
+            />
           </div>
+        </div>
+
+        {/* Cart Button - Fixed Position */}
+        <div className="fixed top-4 right-4 z-50">
+          <CartButton />
         </div>
 
         {/* Main Content */}
@@ -90,49 +93,116 @@ const MobileApp: React.FC = () => {
                   <BookOpen className="h-12 w-12 text-primary mx-auto" />
                   <h2 className="text-2xl font-bold">Professional Training</h2>
                   <p className="text-muted-foreground">
-                    Master vehicle wrapping and detailing techniques
+                    Master professional car detailing with Koch-Chemie certification
                   </p>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-4 rounded-lg border">
-                    <h3 className="font-semibold mb-2">Professional Detailing Course</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Learn advanced detailing techniques using Koch-Chemie products
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-primary">$299</span>
-                      <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm">
-                        Enroll Now
-                      </button>
+                  <Card className="overflow-hidden">
+                    <div className="relative h-48">
+                      <img
+                        src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png"
+                        alt="Professional car detailing training session"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3 text-white">
+                        <h3 className="font-bold text-xl">Koch-Chemie Professional Detailing Course</h3>
+                        <p className="text-white/90 text-sm">4-day intensive certification program</p>
+                      </div>
                     </div>
-                  </div>
+                    
+                    <div className="p-4 space-y-4">
+                      <div className="space-y-2">
+                        <h4 className="font-semibold">What You'll Learn:</h4>
+                        <div className="grid grid-cols-1 gap-2 text-sm">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Professional detailing techniques</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Advanced polishing and correction</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Complete Koch-Chemie product knowledge</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Surface assessment and treatment</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Machine polishing mastery</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Quality control and business practices</span>
+                          </div>
+                        </div>
+                      </div>
 
-                  <div className="bg-gradient-to-r from-blue-50 to-blue-50/25 p-4 rounded-lg border">
-                    <h3 className="font-semibold mb-2">Vehicle Wrapping Fundamentals</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Master the basics of professional vehicle wrapping
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-blue-600">$499</span>
-                      <button className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm">
-                        Enroll Now
-                      </button>
-                    </div>
-                  </div>
+                      <div className="grid grid-cols-2 gap-4 text-sm bg-muted/30 p-3 rounded-lg">
+                        <div>
+                          <span className="font-medium">Duration:</span>
+                          <div className="font-semibold">4 Days</div>
+                        </div>
+                        <div>
+                          <span className="font-medium">Format:</span>
+                          <div className="font-semibold">Hands-on</div>
+                        </div>
+                        <div>
+                          <span className="font-medium">Group Size:</span>
+                          <div className="font-semibold">Small Groups</div>
+                        </div>
+                        <div>
+                          <span className="font-medium">Location:</span>
+                          <div className="font-semibold">Atarot, Jerusalem</div>
+                        </div>
+                      </div>
 
-                  <div className="bg-gradient-to-r from-green-50 to-green-50/25 p-4 rounded-lg border">
-                    <h3 className="font-semibold mb-2">Advanced Wrapping Techniques</h3>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Complex curves, commercial wraps, and business setup
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-green-600">$799</span>
-                      <button className="bg-green-600 text-white px-4 py-2 rounded-md text-sm">
-                        Enroll Now
-                      </button>
+                      <div className="space-y-2">
+                        <h4 className="font-semibold">Course Includes:</h4>
+                        <div className="grid grid-cols-1 gap-1 text-sm">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Professional Koch-Chemie product kit</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Equipment and tools access</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Training materials and manual</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Official certification upon completion</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Lunch and refreshments included</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Post-course support and guidance</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2">
+                        <div>
+                          <span className="text-sm text-muted-foreground">Contact for pricing</span>
+                          <div className="font-bold text-primary text-lg">Professional Course</div>
+                        </div>
+                        <Button className="bg-primary text-primary-foreground">
+                          Enroll Now
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  </Card>
                 </div>
               </div>
             </TabsContent>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calculator, Camera, CheckCircle } from 'lucide-react';
+import { Calculator, Camera, CheckCircle, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCart } from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
@@ -16,6 +16,7 @@ interface ServicePackage {
   coverage: string;
   timeEstimate: string;
   popular?: boolean;
+  image: string;
 }
 
 export const MobileServiceCalculator: React.FC = () => {
@@ -32,6 +33,7 @@ export const MobileServiceCalculator: React.FC = () => {
       description: 'Perfect for compact cars and sedans',
       coverage: 'Partial coverage',
       timeEstimate: '3-4 hours',
+      image: '/lovable-uploads/2bcb5a0f-eefd-4bf9-be12-dbc2d1bea8da.png',
       features: [
         'Hood and roof wrapping',
         'Mirror caps',
@@ -41,12 +43,13 @@ export const MobileServiceCalculator: React.FC = () => {
     },
     {
       id: 'medium',
-      name: 'Medium Vehicle Package',
+      name: 'Medium Vehicle Package', 
       price: 2200,
       description: 'Ideal for SUVs and larger sedans',
       coverage: 'Extended coverage',
       timeEstimate: '6-8 hours',
       popular: true,
+      image: '/lovable-uploads/5888e030-a950-4019-a5ea-9d9287fbdcc7.png',
       features: [
         'Full body coverage',
         'Window tinting',
@@ -60,8 +63,9 @@ export const MobileServiceCalculator: React.FC = () => {
       name: 'Large Vehicle Package',
       price: 3500,
       description: 'For trucks and commercial vehicles',
-      coverage: 'Complete coverage',
+      coverage: 'Complete coverage', 
       timeEstimate: '8-12 hours',
+      image: '/lovable-uploads/4896db9d-9036-4002-9b50-391aefd27f2b.png',
       features: [
         'Full commercial wrap',
         'Custom graphics',
@@ -77,12 +81,29 @@ export const MobileServiceCalculator: React.FC = () => {
       description: 'Premium sports car treatment',
       coverage: 'Performance coverage',
       timeEstimate: '10-14 hours',
+      image: '/lovable-uploads/5bc324f9-8392-4f77-a7ca-4888e1502d41.png',
       features: [
         'Performance vinyl',
-        'Custom racing stripes',
+        'Custom racing stripes', 
         'Aerodynamic considerations',
         '5-year warranty',
         'Track-ready finish'
+      ]
+    },
+    {
+      id: 'xlarge',
+      name: 'X-Large Package',
+      price: 5500,
+      description: 'For oversized vehicles and fleet wraps',
+      coverage: 'Maximum coverage',
+      timeEstimate: '12-16 hours',
+      image: '/lovable-uploads/baa55ddc-7737-4bef-b3ae-c2f59f4cf3d9.png',
+      features: [
+        'Full fleet capability',
+        'Commercial branding',
+        'Heavy-duty materials',
+        '7-year warranty',
+        'Fleet maintenance program'
       ]
     }
   ];
@@ -99,7 +120,7 @@ export const MobileServiceCalculator: React.FC = () => {
       variantId: 'default',
       variantSize: 'Standard',
       price: pkg.price,
-      imageUrl: '/placeholder.svg',
+      imageUrl: pkg.image,
       categoryName: 'Vehicle Wrapping Services'
     });
     
@@ -135,43 +156,55 @@ export const MobileServiceCalculator: React.FC = () => {
         {servicePackages.map((pkg) => (
           <Card 
             key={pkg.id}
-            className={`p-4 cursor-pointer transition-all duration-200 ${
+            className={`overflow-hidden cursor-pointer transition-all duration-200 ${
               selectedPackage === pkg.id 
                 ? 'ring-2 ring-primary border-primary' 
                 : 'hover:shadow-md'
             }`}
             onClick={() => handleSelectPackage(pkg.id)}
           >
-            <div className="space-y-3">
-              {/* Package Header */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-lg">{pkg.name}</h3>
-                  {pkg.popular && (
-                    <Badge variant="default" className="text-xs">
-                      Most Popular
-                    </Badge>
-                  )}
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-primary">
-                    ${pkg.price.toLocaleString()}
-                  </div>
-                </div>
+            {/* Package Image */}
+            <div className="relative h-40 overflow-hidden">
+              <img
+                src={pkg.image}
+                alt={pkg.name}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              
+              {/* Price Badge */}
+              <div className="absolute top-3 right-3">
+                <Badge variant="default" className="text-lg font-bold px-3 py-1">
+                  ${pkg.price.toLocaleString()}
+                </Badge>
               </div>
+              
+              {/* Popular Badge */}
+              {pkg.popular && (
+                <div className="absolute top-3 left-3">
+                  <Badge variant="secondary" className="bg-yellow-500 text-black font-semibold">
+                    Most Popular
+                  </Badge>
+                </div>
+              )}
+              
+              {/* Package Name Overlay */}
+              <div className="absolute bottom-3 left-3 right-3">
+                <h3 className="font-bold text-white text-xl">{pkg.name}</h3>
+                <p className="text-white/90 text-sm">{pkg.description}</p>
+              </div>
+            </div>
 
-              {/* Description */}
-              <p className="text-muted-foreground text-sm">{pkg.description}</p>
-
+            <div className="p-4 space-y-3">
               {/* Package Details */}
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="font-medium">Coverage:</span>
-                  <div className="text-muted-foreground">{pkg.coverage}</div>
+                  <span className="font-medium text-muted-foreground">Coverage:</span>
+                  <div className="font-semibold">{pkg.coverage}</div>
                 </div>
                 <div>
-                  <span className="font-medium">Time:</span>
-                  <div className="text-muted-foreground">{pkg.timeEstimate}</div>
+                  <span className="font-medium text-muted-foreground">Time:</span>
+                  <div className="font-semibold">{pkg.timeEstimate}</div>
                 </div>
               </div>
 
@@ -210,6 +243,7 @@ export const MobileServiceCalculator: React.FC = () => {
                     className="flex items-center gap-2"
                   >
                     Add to Cart
+                    <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
               )}
