@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Search, ShoppingCart, Filter, Grid, List, Package, CreditCard, Eye } from 'lucide-react';
+import { Search, ShoppingCart, Filter, CreditCard, Eye } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -43,7 +43,6 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<MobileProduct | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<string>('');
@@ -196,49 +195,45 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
   return (
     <div className="space-y-4">
-      {/* Header */}
+      {/* Banner Section */}
       {!compact && (
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">{t('mobile.products.title')}</h2>
-          <div className="flex items-center gap-2">
-            {getTotalItems() > 0 && (
-              <Button
-                onClick={handleGoToCheckout}
-                className="flex items-center gap-2"
-                size="sm"
-              >
-                <CreditCard className="h-4 w-4" />
-                {t('mobile.products.checkout')} ({getTotalItems()})
-              </Button>
-            )}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-            >
-              {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <Filter className="h-4 w-4" />
-            </Button>
+        <div className="relative h-48 overflow-hidden rounded-lg">
+          <img 
+            src="/lovable-uploads/e91b8d4d-6296-4f40-9156-b6b791a8858f.png" 
+            alt="Koch-Chemie Product Catalog"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center p-4">
+            <h1 className="text-2xl font-bold text-white mb-2">Koch-Chemie Product Catalog</h1>
+            <p className="text-white/90 text-sm max-w-xs leading-relaxed">
+              Discover our complete range of professional automotive detailing products. Each product is available in multiple sizes to meet your specific needs.
+            </p>
           </div>
         </div>
       )}
 
       {/* Search and Filters */}
       <div className="space-y-3">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-          <Input
-            placeholder={t('mobile.products.search_placeholder')}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <Input
+              placeholder={t('mobile.products.search_placeholder')}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          {!compact && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+              className="px-3"
+            >
+              <Filter className="h-4 w-4" />
+            </Button>
+          )}
         </div>
 
         {(showFilters || compact) && (
@@ -282,169 +277,62 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         </Card>
       )}
 
-      {/* Product Grid/List */}
-      <div className={
-        viewMode === 'grid' 
-          ? "grid grid-cols-2 gap-4" 
-          : "space-y-4"
-      }>
+      {/* Product Grid */}
+      <div className="grid grid-cols-2 gap-4">
         {displayProducts.map(product => (
           <Card key={product.id} className="overflow-hidden">
-            {viewMode === 'grid' ? (
-              // Grid View
-              <div className="space-y-3">
-                <div className="aspect-square relative">
-                  <img
-                    src={product.image_url}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <Badge 
-                    variant="secondary" 
-                    className="absolute top-2 left-2 text-xs"
-                  >
-                    {product.product_code}
-                  </Badge>
-                </div>
-                <div className="p-3 space-y-2">
-                  <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {product.description}
-                  </p>
-                  
-                  {/* Price Range */}
-                  <div className="text-sm font-medium text-primary">
-                    {product.variants.length === 1 ? (
-                      formatPrice(product.variants[0].price)
-                    ) : (
-                      `${formatPrice(Math.min(...product.variants.map(v => v.price)))} - ${formatPrice(Math.max(...product.variants.map(v => v.price)))}`
-                    )}
-                  </div>
-
-                  {/* Quick Add or View Options */}
-                  <div className="flex gap-2">
-                    {product.variants.length === 1 ? (
-                      <Button
-                        size="sm"
-                        onClick={() => handleAddToCart(product, product.variants[0].id)}
-                        className="flex-1 h-8"
-                      >
-                        <ShoppingCart className="h-3 w-3 mr-1" />
-                        {t('mobile.products.add_to_cart')}
-                      </Button>
-                    ) : (
-                      <>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleViewProduct(product)}
-                              className="flex-1 h-8"
-                            >
-                              <Eye className="h-3 w-3 mr-1" />
-                              View
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-md">
-                            <DialogHeader>
-                              <DialogTitle>{product.name}</DialogTitle>
-                            </DialogHeader>
-                            <div className="space-y-4">
-                              <img
-                                src={product.image_url}
-                                alt={product.name}
-                                className="w-full h-48 object-cover rounded"
-                              />
-                              <p className="text-sm text-muted-foreground">
-                                {product.description}
-                              </p>
-                              
-                              <div className="space-y-3">
-                                <label className="text-sm font-medium">Select Size:</label>
-                                <Select value={selectedVariant} onValueChange={setSelectedVariant}>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Choose size" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {product.variants.map(variant => (
-                                      <SelectItem key={variant.id} value={variant.id}>
-                                        {variant.size} - {formatPrice(variant.price)}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                              
-                              <Button
-                                onClick={() => handleQuickAdd(product, selectedVariant)}
-                                disabled={!selectedVariant}
-                                className="w-full"
-                              >
-                                <ShoppingCart className="h-4 w-4 mr-2" />
-                                Add to Cart
-                              </Button>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                        <Button
-                          size="sm"
-                          onClick={() => handleAddToCart(product, product.variants[0].id)}
-                          className="h-8 px-3"
-                        >
-                          <ShoppingCart className="h-3 w-3" />
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              // List View
-              <div className="flex gap-3 p-3">
+            <div className="space-y-3">
+              <div className="aspect-square relative">
                 <img
                   src={product.image_url}
                   alt={product.name}
-                  className="w-16 h-16 object-cover rounded flex-shrink-0"
+                  className="w-full h-full object-cover"
                 />
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-start justify-between">
-                    <h3 className="font-medium text-sm">{product.name}</h3>
-                    <Badge variant="secondary" className="text-xs">
-                      {product.product_code}
-                    </Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {product.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm font-medium text-primary">
-                      {product.variants.length === 1 ? (
-                        formatPrice(product.variants[0].price)
-                      ) : (
-                        `${formatPrice(Math.min(...product.variants.map(v => v.price)))} - ${formatPrice(Math.max(...product.variants.map(v => v.price)))}`
-                      )}
-                    </div>
-                    {product.variants.length === 1 ? (
-                      <Button
-                        size="sm"
-                        onClick={() => handleAddToCart(product, product.variants[0].id)}
-                        className="h-8 px-3"
-                      >
-                        <ShoppingCart className="h-3 w-3 mr-1" />
-                        Add
-                      </Button>
-                    ) : (
+                <Badge 
+                  variant="secondary" 
+                  className="absolute top-2 left-2 text-xs"
+                >
+                  {product.product_code}
+                </Badge>
+              </div>
+              <div className="p-3 space-y-2">
+                <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
+                <p className="text-xs text-muted-foreground line-clamp-2">
+                  {product.description}
+                </p>
+                
+                {/* Price Range */}
+                <div className="text-sm font-medium text-primary">
+                  {product.variants.length === 1 ? (
+                    formatPrice(product.variants[0].price)
+                  ) : (
+                    `${formatPrice(Math.min(...product.variants.map(v => v.price)))} - ${formatPrice(Math.max(...product.variants.map(v => v.price)))}`
+                  )}
+                </div>
+
+                {/* Quick Add or View Options */}
+                <div className="flex gap-2">
+                  {product.variants.length === 1 ? (
+                    <Button
+                      size="sm"
+                      onClick={() => handleAddToCart(product, product.variants[0].id)}
+                      className="flex-1 h-8"
+                    >
+                      <ShoppingCart className="h-3 w-3 mr-1" />
+                      {t('mobile.products.add_to_cart')}
+                    </Button>
+                  ) : (
+                    <>
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button
+                            variant="outline"
                             size="sm"
                             onClick={() => handleViewProduct(product)}
-                            className="h-8 px-3"
+                            className="flex-1 h-8"
                           >
-                            <Package className="h-3 w-3 mr-1" />
-                            Select
+                            <Eye className="h-3 w-3 mr-1" />
+                            View
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-md">
@@ -453,9 +341,16 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                           </DialogHeader>
                           <div className="space-y-4">
                             <img
-                              src={product.image_url}
+                              src={selectedProduct && selectedVariant ? 
+                                (selectedProduct.variants.find(v => v.id === selectedVariant)?.size === '1L' ? 
+                                  product.image_url.replace('.png', '-1L.png').replace('.jpg', '-1L.jpg') : 
+                                  product.image_url) : 
+                                product.image_url}
                               alt={product.name}
                               className="w-full h-48 object-cover rounded"
+                              onError={(e) => {
+                                e.currentTarget.src = product.image_url;
+                              }}
                             />
                             <p className="text-sm text-muted-foreground">
                               {product.description}
@@ -488,11 +383,18 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                           </div>
                         </DialogContent>
                       </Dialog>
-                    )}
-                  </div>
+                      <Button
+                        size="sm"
+                        onClick={() => handleAddToCart(product, product.variants[0].id)}
+                        className="h-8 px-3"
+                      >
+                        <ShoppingCart className="h-3 w-3" />
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
           </Card>
         ))}
       </div>
