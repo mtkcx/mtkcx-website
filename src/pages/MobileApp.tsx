@@ -36,6 +36,7 @@ const MobileApp: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("home");
 
   const handleLogout = async () => {
     await signOut();
@@ -44,6 +45,11 @@ const MobileApp: React.FC = () => {
 
   const handleNavigation = (path: string) => {
     navigate(path);
+    setIsMenuOpen(false);
+  };
+
+  const handleTabSwitch = (tab: string) => {
+    setActiveTab(tab);
     setIsMenuOpen(false);
   };
 
@@ -63,11 +69,11 @@ const MobileApp: React.FC = () => {
   }
 
   const menuItems = [
-    { icon: Home, label: 'Home', action: () => setIsMenuOpen(false) },
-    { icon: Calculator, label: 'Calculator', action: () => setIsMenuOpen(false) },
-    { icon: Quote, label: 'Get Quote', action: () => setIsMenuOpen(false) },
-    { icon: ShoppingBag, label: 'Products', action: () => handleNavigation('/products') },
-    { icon: BookOpen, label: 'Courses', action: () => handleNavigation('/courses') },
+    { icon: Home, label: 'Home', action: () => handleTabSwitch('home') },
+    { icon: Calculator, label: 'Packages', action: () => handleTabSwitch('calculator') },
+    { icon: Camera, label: 'Get Quote', action: () => handleTabSwitch('photo') },
+    { icon: ShoppingBag, label: 'Products', action: () => handleTabSwitch('products') },
+    { icon: BookOpen, label: 'Courses', action: () => handleTabSwitch('courses') },
     { icon: Phone, label: 'Contact', action: () => handleNavigation('/contact') },
     { icon: MapPin, label: 'About', action: () => handleNavigation('/about') },
   ];
@@ -189,7 +195,7 @@ const MobileApp: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <Tabs defaultValue="home" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="pb-20">
             <TabsContent value="home" className="m-0">
               <MobileHome />
