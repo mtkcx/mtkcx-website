@@ -50,11 +50,11 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-background p-4" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-md mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+        {/* Fixed Header */}
+        <div className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center justify-between py-2 -mx-4 px-4 border-b">
           <Button variant="ghost" size="sm" onClick={onBack}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {t('common.back')}
+            Back
           </Button>
           <img 
             src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
