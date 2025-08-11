@@ -113,29 +113,29 @@ export const MobileHome: React.FC = () => {
         <div className="grid grid-cols-2 gap-3">
           <div className="aspect-square rounded-lg overflow-hidden">
             <img
-              src="/lovable-uploads/3df6143b-1e24-4063-ac21-1f8d68e1c558.png"
-              alt="Vehicle wrapping project"
+              src="/lovable-uploads/36a5b06f-591b-4391-afb4-afc8339e30d0.png"
+              alt="Ferrari vehicle wrap project"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="aspect-square rounded-lg overflow-hidden">
             <img
-              src="/lovable-uploads/467c4fc8-85d3-4b19-a924-11162bf078e7.png"
-              alt="Custom wrap design"
+              src="/lovable-uploads/958f8b61-60b5-4d04-a76e-918b20e5f00e.png"
+              alt="BMW M5 custom wrap design"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="aspect-square rounded-lg overflow-hidden">
             <img
-              src="/lovable-uploads/3d7dc22e-86ff-41c1-be13-22c68e59c932.png"
-              alt="Professional detailing"
+              src="/lovable-uploads/21ac7e3a-0b5f-4f29-82e3-585d03ee269e.png"
+              alt="Luxury boat interior detailing"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="aspect-square rounded-lg overflow-hidden">
             <img
-              src="/lovable-uploads/027350b0-6659-443a-bf00-5ce996bb68be.png"
-              alt="Paint protection film"
+              src="/lovable-uploads/22562b53-7b93-496f-9407-a2e6053a37b5.png"
+              alt="Mercedes AMG with racing stripe wrap"
               className="w-full h-full object-cover"
             />
           </div>
