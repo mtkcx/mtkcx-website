@@ -1149,6 +1149,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      demote_admin_to_user: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
       emergency_validate_guest_order: {
         Args: {
           p_order_id: string
@@ -1228,6 +1232,10 @@ export type Database = {
       migrate_email_conversations_to_users: {
         Args: Record<PropertyKey, never>
         Returns: number
+      }
+      promote_user_to_admin: {
+        Args: { target_user_id: string }
+        Returns: boolean
       }
       set_chat_context: {
         Args: Record<PropertyKey, never>
