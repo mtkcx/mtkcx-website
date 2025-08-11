@@ -54,6 +54,15 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     fetchProducts();
   }, []);
 
+  // Handle category filtering from URL parameters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    if (category) {
+      setSelectedCategory(category);
+    }
+  }, []);
+
   const fetchProducts = async () => {
     try {
       const { data, error } = await supabase
@@ -291,11 +300,21 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         {displayProducts.map(product => (
           <Card key={product.id} className="overflow-hidden">
             <div className="flex gap-3 p-3">
-              <img
-                src={product.image_url}
-                alt={product.name}
-                className="w-16 h-16 object-cover rounded flex-shrink-0"
-              />
+              <div className="relative">
+                <img
+                  src={product.image_url}
+                  alt={product.name}
+                  className="w-16 h-16 object-cover rounded flex-shrink-0"
+                />
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="absolute inset-0 w-16 h-16 p-0 bg-black/60 hover:bg-black/70 opacity-0 hover:opacity-100 transition-opacity rounded"
+                  onClick={() => handleViewProduct(product)}
+                >
+                  <Eye className="h-4 w-4 text-white" />
+                </Button>
+              </div>
               <div className="flex-1 space-y-2">
                 <div className="flex items-start justify-between">
                   <h3 className="font-medium text-sm">{product.name}</h3>

@@ -74,50 +74,56 @@ export const MobileHome: React.FC = () => {
         <h2 className="text-xl font-bold text-center">Our Main Categories</h2>
         <div className="grid gap-4">
           {/* Interior Cleaning */}
-          <Card className="overflow-hidden">
-            <div className="flex items-center gap-4 p-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Shield className="h-8 w-8 text-primary" />
+          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => window.location.href = '/mobile?tab=products&category=interior-cleaning'}>
+            <div className="relative">
+              <img 
+                src="/lovable-uploads/46cc7ba0-4b05-48a2-b131-498255ed57d5.png" 
+                alt="Interior Cleaning Products"
+                className="w-full h-32 object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="text-center text-white">
+                  <h3 className="font-bold text-lg">Interior Cleaning</h3>
+                  <p className="text-sm opacity-90">Professional interior detailing products</p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg">Interior Cleaning</h3>
-                <p className="text-sm text-muted-foreground">
-                  Professional interior detailing products for complete cabin care
-                </p>
-              </div>
-              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              <ArrowRight className="absolute top-1/2 right-4 transform -translate-y-1/2 h-6 w-6 text-white" />
             </div>
           </Card>
 
           {/* Exterior Cleaning */}
-          <Card className="overflow-hidden">
-            <div className="flex items-center gap-4 p-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Zap className="h-8 w-8 text-primary" />
+          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => window.location.href = '/mobile?tab=products&category=exterior-cleaning'}>
+            <div className="relative">
+              <img 
+                src="/lovable-uploads/753d6730-8e66-43fa-bd31-394bffb75e77.png" 
+                alt="Exterior Cleaning Products"
+                className="w-full h-32 object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="text-center text-white">
+                  <h3 className="font-bold text-lg">Exterior Cleaning</h3>
+                  <p className="text-sm opacity-90">Advanced exterior care solutions</p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg">Exterior Cleaning</h3>
-                <p className="text-sm text-muted-foreground">
-                  Advanced exterior care solutions for spotless vehicle surfaces
-                </p>
-              </div>
-              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              <ArrowRight className="absolute top-1/2 right-4 transform -translate-y-1/2 h-6 w-6 text-white" />
             </div>
           </Card>
 
           {/* Polished & Coatings */}
-          <Card className="overflow-hidden">
-            <div className="flex items-center gap-4 p-4">
-              <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Palette className="h-8 w-8 text-primary" />
+          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => window.location.href = '/mobile?tab=products&category=polished-coatings'}>
+            <div className="relative">
+              <img 
+                src="/lovable-uploads/af980fad-dfd1-4cfc-b5ee-5932499d69e3.png" 
+                alt="Polished & Coatings Products"
+                className="w-full h-32 object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="text-center text-white">
+                  <h3 className="font-bold text-lg">Polished & Coatings</h3>
+                  <p className="text-sm opacity-90">Premium polishes and protective coatings</p>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg">Polished & Coatings</h3>
-                <p className="text-sm text-muted-foreground">
-                  Premium polishes and protective coatings for lasting shine
-                </p>
-              </div>
-              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              <ArrowRight className="absolute top-1/2 right-4 transform -translate-y-1/2 h-6 w-6 text-white" />
             </div>
           </Card>
         </div>
