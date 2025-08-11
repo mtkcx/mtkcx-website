@@ -49,6 +49,9 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [showFilters, setShowFilters] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<MobileProduct | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<string>('');
+  const [categories, setCategories] = useState<Array<{id: string, name: string, slug: string}>>([]);
+  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
 
   useEffect(() => {
     fetchProducts();
@@ -65,7 +68,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
   const fetchProducts = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch products
+      const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
           *,
@@ -91,9 +95,19 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         .eq('status', 'active')
         .order('name');
 
-      if (error) throw error;
+      if (productsError) throw productsError;
 
-      const transformedProducts = data
+      // Fetch categories separately
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('categories')
+        .select('id, name, slug, name_he, name_ar')
+        .order('display_order');
+
+      if (categoriesError) throw categoriesError;
+
+      setCategories(categoriesData || []);
+
+      const transformedProducts = productsData
         ?.filter(product => product.product_variants?.length > 0)
         .map(product => {
           const primaryImage = product.product_images?.find(img => img.is_primary) || 
@@ -119,7 +133,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
       setProducts(transformedProducts);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching data:', error);
       toast({
         title: t('common.error'),
         description: t('mobile.products.failed_to_load'),
@@ -140,12 +154,10 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     return matchesSearch && matchesCategory;
   });
 
-  const categories = Array.from(new Set(products.map(p => p.category.slug)))
-    .map(slug => {
-      const product = products.find(p => p.category.slug === slug);
-      return product ? { slug, name: product.category.name } : null;
-    })
-    .filter(Boolean);
+  const handleEnlargeImage = (imageUrl: string) => {
+    setSelectedImageUrl(imageUrl);
+    setIsImageDialogOpen(true);
+  };
 
   const handleAddToCart = (product: MobileProduct, variantId: string) => {
     const variant = product.variants.find(v => v.id === variantId);
@@ -263,7 +275,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             >
               {t('categories.all_products')}
             </Button>
-            {categories.map(category => category && (
+            {categories.map(category => (
               <Button
                 key={category.slug}
                 variant={selectedCategory === category.slug ? "default" : "outline"}
@@ -310,7 +322,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                   variant="secondary"
                   size="sm"
                   className="absolute inset-0 w-16 h-16 p-0 bg-black/60 hover:bg-black/70 opacity-0 hover:opacity-100 transition-opacity rounded"
-                  onClick={() => handleViewProduct(product)}
+                  onClick={() => handleEnlargeImage(product.image_url)}
                 >
                   <Eye className="h-4 w-4 text-white" />
                 </Button>
@@ -437,6 +449,22 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           )}
         </div>
       )}
+
+      {/* Image Enlargement Dialog */}
+      <Dialog open={isImageDialogOpen} onOpenChange={setIsImageDialogOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Product Image</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <img
+              src={selectedImageUrl}
+              alt="Product enlarged view"
+              className="w-full max-h-96 object-contain rounded"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
