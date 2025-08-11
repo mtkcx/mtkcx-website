@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Calculator, Camera, CheckCircle, ArrowRight, Plus, Minus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useCart } from '@/contexts/CartContext';
@@ -39,6 +40,14 @@ interface SelectedPart extends VehiclePart {
   totalPrice: number;
 }
 
+interface VehicleSize {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  packages: Omit<ServicePackage, 'image'>[];
+}
+
 export const MobileServiceCalculator: React.FC = () => {
   const { t } = useLanguage();
   const { addToCart } = useCart();
@@ -46,210 +55,230 @@ export const MobileServiceCalculator: React.FC = () => {
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [selectedParts, setSelectedParts] = useState<SelectedPart[]>([]);
   const [selectedVehicleSize, setSelectedVehicleSize] = useState<string>('medium');
-  
-  const servicePackages: ServicePackage[] = [
+
+  const vehicleSizes: VehicleSize[] = [
     {
       id: 'small',
-      name: 'Small Vehicle - Hood & Bumpers',
-      price: 4500,
+      name: 'Small Vehicle',
       description: 'Perfect for compact cars',
-      coverage: 'Hood & Bumpers',
-      timeEstimate: '3-4 hours',
       image: '/lovable-uploads/e3007686-384d-48f1-8701-5abb7189c19a.png',
-      features: ['Front Bumper', 'Rear Bumper', 'Hood']
-    },
-    {
-      id: 'small-full-front',
-      name: 'Small Vehicle - Full Front',
-      price: 5000,
-      description: 'Front protection package',
-      coverage: 'Full Front',
-      timeEstimate: '4-5 hours',
-      image: '/lovable-uploads/e3007686-384d-48f1-8701-5abb7189c19a.png',
-      features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
-    },
-    {
-      id: 'small-full-car',
-      name: 'Small Vehicle - Full Car',
-      price: 11500,
-      description: 'Complete vehicle protection',
-      coverage: 'Full Car',
-      timeEstimate: '8-10 hours',
-      popular: true,
-      image: '/lovable-uploads/e3007686-384d-48f1-8701-5abb7189c19a.png',
-      features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
-    },
-    {
-      id: 'small-complete',
-      name: 'Small Vehicle - Complete Coverage',
-      price: 14000,
-      description: 'Maximum protection package',
-      coverage: 'Complete Coverage',
-      timeEstimate: '10-12 hours',
-      image: '/lovable-uploads/e3007686-384d-48f1-8701-5abb7189c19a.png',
-      features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+      packages: [
+        {
+          id: 'small-hood-bumpers',
+          name: 'Hood & Bumpers',
+          price: 4500,
+          description: 'Basic protection',
+          coverage: 'Hood & Bumpers',
+          timeEstimate: '3-4 hours',
+          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+        },
+        {
+          id: 'small-full-front',
+          name: 'Full Front',
+          price: 5000,
+          description: 'Front protection package',
+          coverage: 'Full Front',
+          timeEstimate: '4-5 hours',
+          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+        },
+        {
+          id: 'small-full-car',
+          name: 'Full Car',
+          price: 11500,
+          description: 'Complete vehicle protection',
+          coverage: 'Full Car',
+          timeEstimate: '8-10 hours',
+          popular: true,
+          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+        },
+        {
+          id: 'small-complete',
+          name: 'Complete Coverage',
+          price: 14000,
+          description: 'Maximum protection package',
+          coverage: 'Complete Coverage',
+          timeEstimate: '10-12 hours',
+          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+        }
+      ]
     },
     {
       id: 'medium',
-      name: 'Medium Vehicle - Hood & Bumpers',
-      price: 5200,
+      name: 'Medium Vehicle',
       description: 'Ideal for SUVs and larger sedans',
-      coverage: 'Hood & Bumpers',
-      timeEstimate: '4-5 hours',
       image: '/lovable-uploads/b6c55eb0-1bae-416c-9423-91c12502da3e.png',
-      features: ['Front Bumper', 'Rear Bumper', 'Hood']
-    },
-    {
-      id: 'medium-full-front',
-      name: 'Medium Vehicle - Full Front',
-      price: 5500,
-      description: 'Front protection package',
-      coverage: 'Full Front',
-      timeEstimate: '5-6 hours',
-      image: '/lovable-uploads/b6c55eb0-1bae-416c-9423-91c12502da3e.png',
-      features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
-    },
-    {
-      id: 'medium-full-car',
-      name: 'Medium Vehicle - Full Car',
-      price: 13500,
-      description: 'Complete vehicle protection',
-      coverage: 'Full Car',
-      timeEstimate: '10-12 hours',
-      popular: true,
-      image: '/lovable-uploads/b6c55eb0-1bae-416c-9423-91c12502da3e.png',
-      features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
-    },
-    {
-      id: 'medium-complete',
-      name: 'Medium Vehicle - Complete Coverage',
-      price: 16000,
-      description: 'Maximum protection package',
-      coverage: 'Complete Coverage',
-      timeEstimate: '12-14 hours',
-      image: '/lovable-uploads/b6c55eb0-1bae-416c-9423-91c12502da3e.png',
-      features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+      packages: [
+        {
+          id: 'medium-hood-bumpers',
+          name: 'Hood & Bumpers',
+          price: 5200,
+          description: 'Basic protection',
+          coverage: 'Hood & Bumpers',
+          timeEstimate: '4-5 hours',
+          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+        },
+        {
+          id: 'medium-full-front',
+          name: 'Full Front',
+          price: 5500,
+          description: 'Front protection package',
+          coverage: 'Full Front',
+          timeEstimate: '5-6 hours',
+          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+        },
+        {
+          id: 'medium-full-car',
+          name: 'Full Car',
+          price: 13500,
+          description: 'Complete vehicle protection',
+          coverage: 'Full Car',
+          timeEstimate: '10-12 hours',
+          popular: true,
+          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+        },
+        {
+          id: 'medium-complete',
+          name: 'Complete Coverage',
+          price: 16000,
+          description: 'Maximum protection package',
+          coverage: 'Complete Coverage',
+          timeEstimate: '12-14 hours',
+          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+        }
+      ]
     },
     {
       id: 'large',
-      name: 'Large Vehicle - Hood & Bumpers',
-      price: 6000,
+      name: 'Large Vehicle',
       description: 'For trucks and large SUVs',
-      coverage: 'Hood & Bumpers',
-      timeEstimate: '5-6 hours',
       image: '/lovable-uploads/a9121f45-a22a-4a93-b147-5c6d1d3c31a4.png',
-      features: ['Front Bumper', 'Rear Bumper', 'Hood']
-    },
-    {
-      id: 'large-full-front',
-      name: 'Large Vehicle - Full Front',
-      price: 6500,
-      description: 'Front protection package',
-      coverage: 'Full Front',
-      timeEstimate: '6-7 hours',
-      image: '/lovable-uploads/a9121f45-a22a-4a93-b147-5c6d1d3c31a4.png',
-      features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
-    },
-    {
-      id: 'large-full-car',
-      name: 'Large Vehicle - Full Car',
-      price: 15300,
-      description: 'Complete vehicle protection',
-      coverage: 'Full Car',
-      timeEstimate: '12-14 hours',
-      image: '/lovable-uploads/a9121f45-a22a-4a93-b147-5c6d1d3c31a4.png',
-      features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
-    },
-    {
-      id: 'large-complete',
-      name: 'Large Vehicle - Complete Coverage',
-      price: 18000,
-      description: 'Maximum protection package',
-      coverage: 'Complete Coverage',
-      timeEstimate: '14-16 hours',
-      image: '/lovable-uploads/a9121f45-a22a-4a93-b147-5c6d1d3c31a4.png',
-      features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+      packages: [
+        {
+          id: 'large-hood-bumpers',
+          name: 'Hood & Bumpers',
+          price: 6000,
+          description: 'Basic protection',
+          coverage: 'Hood & Bumpers',
+          timeEstimate: '5-6 hours',
+          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+        },
+        {
+          id: 'large-full-front',
+          name: 'Full Front',
+          price: 6500,
+          description: 'Front protection package',
+          coverage: 'Full Front',
+          timeEstimate: '6-7 hours',
+          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+        },
+        {
+          id: 'large-full-car',
+          name: 'Full Car',
+          price: 15300,
+          description: 'Complete vehicle protection',
+          coverage: 'Full Car',
+          timeEstimate: '12-14 hours',
+          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+        },
+        {
+          id: 'large-complete',
+          name: 'Complete Coverage',
+          price: 18000,
+          description: 'Maximum protection package',
+          coverage: 'Complete Coverage',
+          timeEstimate: '14-16 hours',
+          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+        }
+      ]
     },
     {
       id: 'sport',
-      name: 'Sport Vehicle - Hood & Bumpers',
-      price: 6000,
+      name: 'Sport Vehicle',
       description: 'Premium sports car treatment',
-      coverage: 'Hood & Bumpers',
-      timeEstimate: '5-6 hours',
       image: '/lovable-uploads/d8dbc27b-44d0-45d2-9523-5ebbf8bc6b49.png',
-      features: ['Front Bumper', 'Rear Bumper', 'Hood']
-    },
-    {
-      id: 'sport-full-front',
-      name: 'Sport Vehicle - Full Front',
-      price: 6500,
-      description: 'Front protection package',
-      coverage: 'Full Front',
-      timeEstimate: '6-7 hours',
-      image: '/lovable-uploads/d8dbc27b-44d0-45d2-9523-5ebbf8bc6b49.png',
-      features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
-    },
-    {
-      id: 'sport-full-car',
-      name: 'Sport Vehicle - Full Car',
-      price: 14300,
-      description: 'Complete vehicle protection',
-      coverage: 'Full Car',
-      timeEstimate: '12-14 hours',
-      popular: true,
-      image: '/lovable-uploads/d8dbc27b-44d0-45d2-9523-5ebbf8bc6b49.png',
-      features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
-    },
-    {
-      id: 'sport-complete',
-      name: 'Sport Vehicle - Complete Coverage',
-      price: 17000,
-      description: 'Maximum protection package',
-      coverage: 'Complete Coverage',
-      timeEstimate: '14-16 hours',
-      image: '/lovable-uploads/d8dbc27b-44d0-45d2-9523-5ebbf8bc6b49.png',
-      features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+      packages: [
+        {
+          id: 'sport-hood-bumpers',
+          name: 'Hood & Bumpers',
+          price: 6000,
+          description: 'Basic protection',
+          coverage: 'Hood & Bumpers',
+          timeEstimate: '5-6 hours',
+          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+        },
+        {
+          id: 'sport-full-front',
+          name: 'Full Front',
+          price: 6500,
+          description: 'Front protection package',
+          coverage: 'Full Front',
+          timeEstimate: '6-7 hours',
+          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+        },
+        {
+          id: 'sport-full-car',
+          name: 'Full Car',
+          price: 14300,
+          description: 'Complete vehicle protection',
+          coverage: 'Full Car',
+          timeEstimate: '12-14 hours',
+          popular: true,
+          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+        },
+        {
+          id: 'sport-complete',
+          name: 'Complete Coverage',
+          price: 17000,
+          description: 'Maximum protection package',
+          coverage: 'Complete Coverage',
+          timeEstimate: '14-16 hours',
+          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+        }
+      ]
     },
     {
       id: 'xlarge',
-      name: 'X-Large Vehicle - Hood & Bumpers',
-      price: 8000,
+      name: 'X-Large Vehicle',
       description: 'For oversized vehicles and fleet',
-      coverage: 'Hood & Bumpers',
-      timeEstimate: '6-7 hours',
       image: '/lovable-uploads/145cd8d5-1a51-41fd-b825-3197cfaa948f.png',
-      features: ['Front Bumper', 'Rear Bumper', 'Hood']
-    },
-    {
-      id: 'xlarge-full-front',
-      name: 'X-Large Vehicle - Full Front',
-      price: 8500,
-      description: 'Front protection package',
-      coverage: 'Full Front',
-      timeEstimate: '7-8 hours',
-      image: '/lovable-uploads/145cd8d5-1a51-41fd-b825-3197cfaa948f.png',
-      features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
-    },
-    {
-      id: 'xlarge-full-car',
-      name: 'X-Large Vehicle - Full Car',
-      price: 17300,
-      description: 'Complete vehicle protection',
-      coverage: 'Full Car',
-      timeEstimate: '14-16 hours',
-      image: '/lovable-uploads/145cd8d5-1a51-41fd-b825-3197cfaa948f.png',
-      features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
-    },
-    {
-      id: 'xlarge-complete',
-      name: 'X-Large Vehicle - Complete Coverage',
-      price: 20000,
-      description: 'Maximum protection package',
-      coverage: 'Complete Coverage',
-      timeEstimate: '16-18 hours',
-      image: '/lovable-uploads/145cd8d5-1a51-41fd-b825-3197cfaa948f.png',
-      features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+      packages: [
+        {
+          id: 'xlarge-hood-bumpers',
+          name: 'Hood & Bumpers',
+          price: 8000,
+          description: 'Basic protection',
+          coverage: 'Hood & Bumpers',
+          timeEstimate: '6-7 hours',
+          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+        },
+        {
+          id: 'xlarge-full-front',
+          name: 'Full Front',
+          price: 8500,
+          description: 'Front protection package',
+          coverage: 'Full Front',
+          timeEstimate: '7-8 hours',
+          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+        },
+        {
+          id: 'xlarge-full-car',
+          name: 'Full Car',
+          price: 17300,
+          description: 'Complete vehicle protection',
+          coverage: 'Full Car',
+          timeEstimate: '14-16 hours',
+          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+        },
+        {
+          id: 'xlarge-complete',
+          name: 'Complete Coverage',
+          price: 20000,
+          description: 'Maximum protection package',
+          coverage: 'Complete Coverage',
+          timeEstimate: '16-18 hours',
+          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+        }
+      ]
     }
   ];
 
@@ -338,21 +367,21 @@ export const MobileServiceCalculator: React.FC = () => {
     setSelectedPackage(packageId);
   };
 
-  const handleAddToCart = (pkg: ServicePackage) => {
+  const handleAddToCart = (pkg: Omit<ServicePackage, 'image'>, vehicleSize: VehicleSize) => {
     addToCart({
       productId: pkg.id,
-      productName: pkg.name,
+      productName: `${vehicleSize.name} - ${pkg.name}`,
       productCode: pkg.id,
       variantId: 'default',
       variantSize: 'Standard',
       price: pkg.price,
-      imageUrl: pkg.image,
+      imageUrl: vehicleSize.image,
       categoryName: 'Vehicle Wrapping Services'
     });
     
     toast({
       title: 'Service Added',
-      description: `${pkg.name} has been added to your cart`,
+      description: `${vehicleSize.name} - ${pkg.name} has been added to your cart`,
     });
   };
 
@@ -452,103 +481,111 @@ export const MobileServiceCalculator: React.FC = () => {
         </TabsList>
 
         <TabsContent value="packages" className="space-y-4">
-          {servicePackages.map((pkg) => (
-            <Card 
-              key={pkg.id}
-              className={`overflow-hidden cursor-pointer transition-all duration-200 ${
-                selectedPackage === pkg.id 
-                  ? 'ring-2 ring-primary border-primary' 
-                  : 'hover:shadow-md'
-              }`}
-              onClick={() => handleSelectPackage(pkg.id)}
-            >
-              {/* Package Image */}
-              <div className="relative h-40 overflow-hidden">
-                <img
-                  src={pkg.image}
-                  alt={pkg.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                
-                {/* Price Badge */}
-                <div className="absolute top-3 right-3">
-                  <Badge variant="default" className="text-lg font-bold px-3 py-1">
-                    ₪{pkg.price.toLocaleString()}
-                  </Badge>
-                </div>
-                
-                {/* Popular Badge */}
-                {pkg.popular && (
-                  <div className="absolute top-3 left-3">
-                    <Badge variant="secondary" className="bg-yellow-500 text-black font-semibold">
-                      Most Popular
-                    </Badge>
-                  </div>
-                )}
-                
-                {/* Package Name Overlay */}
-                <div className="absolute bottom-3 left-3 right-3">
-                  <h3 className="font-bold text-white text-xl">{pkg.name}</h3>
-                  <p className="text-white/90 text-sm">{pkg.description}</p>
-                </div>
-              </div>
-
-              <div className="p-4 space-y-3">
-                {/* Package Details */}
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="font-medium text-muted-foreground">Coverage:</span>
-                    <div className="font-semibold">{pkg.coverage}</div>
-                  </div>
-                  <div>
-                    <span className="font-medium text-muted-foreground">Time:</span>
-                    <div className="font-semibold">{pkg.timeEstimate}</div>
-                  </div>
-                </div>
-
-                {/* Features */}
-                <div className="space-y-2">
-                  <h4 className="font-medium text-sm">What's included:</h4>
-                  <div className="grid grid-cols-1 gap-1">
-                    {pkg.features.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                        <span className="text-muted-foreground">{feature}</span>
+          <Accordion type="single" collapsible className="space-y-4">
+            {vehicleSizes.map((vehicleSize) => (
+              <AccordionItem key={vehicleSize.id} value={vehicleSize.id}>
+                <Card className="overflow-hidden">
+                  <AccordionTrigger className="hover:no-underline">
+                    <div className="flex items-center space-x-4 w-full">
+                      <div className="relative w-24 h-16 rounded-lg overflow-hidden">
+                        <img
+                          src={vehicleSize.image}
+                          alt={vehicleSize.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
-                    ))}
-                  </div>
-                </div>
+                      <div className="flex-1 text-left">
+                        <h3 className="font-bold text-lg">{vehicleSize.name}</h3>
+                        <p className="text-sm text-muted-foreground">{vehicleSize.description}</p>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+                  
+                  <AccordionContent>
+                    <div className="space-y-3 pt-4">
+                      {vehicleSize.packages.map((pkg) => (
+                        <Card 
+                          key={pkg.id}
+                          className={`p-4 cursor-pointer transition-all duration-200 ${
+                            selectedPackage === pkg.id 
+                              ? 'ring-2 ring-primary border-primary' 
+                              : 'hover:shadow-md'
+                          }`}
+                          onClick={() => handleSelectPackage(pkg.id)}
+                        >
+                          <div className="flex justify-between items-start mb-3">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <h4 className="font-semibold">{pkg.name}</h4>
+                                {pkg.popular && (
+                                  <Badge variant="secondary" className="bg-yellow-500 text-black text-xs">
+                                    Popular
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-sm text-muted-foreground">{pkg.description}</p>
+                            </div>
+                            <Badge variant="default" className="text-lg font-bold px-3 py-1">
+                              ₪{pkg.price.toLocaleString()}
+                            </Badge>
+                          </div>
 
-                {/* Action Buttons */}
-                {selectedPackage === pkg.id && (
-                  <div className="grid grid-cols-2 gap-3 pt-2">
-                    <Button 
-                      variant="outline" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRequestQuote();
-                      }}
-                      className="flex items-center gap-2"
-                    >
-                      <Camera className="h-4 w-4" />
-                      Get Quote
-                    </Button>
-                    <Button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAddToCart(pkg);
-                      }}
-                      className="flex items-center gap-2"
-                    >
-                      Add to Cart
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </Card>
-          ))}
+                          <div className="grid grid-cols-2 gap-4 text-sm mb-3">
+                            <div>
+                              <span className="font-medium text-muted-foreground">Coverage:</span>
+                              <div className="font-semibold">{pkg.coverage}</div>
+                            </div>
+                            <div>
+                              <span className="font-medium text-muted-foreground">Time:</span>
+                              <div className="font-semibold">{pkg.timeEstimate}</div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2 mb-3">
+                            <h5 className="font-medium text-sm">What's included:</h5>
+                            <div className="grid grid-cols-1 gap-1">
+                              {pkg.features.map((feature, index) => (
+                                <div key={index} className="flex items-center gap-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                                  <span className="text-muted-foreground">{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {selectedPackage === pkg.id && (
+                            <div className="grid grid-cols-2 gap-3 pt-2">
+                              <Button 
+                                variant="outline" 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleRequestQuote();
+                                }}
+                                className="flex items-center gap-2"
+                              >
+                                <Camera className="h-4 w-4" />
+                                Get Quote
+                              </Button>
+                              <Button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleAddToCart(pkg, vehicleSize);
+                                }}
+                                className="flex items-center gap-2"
+                              >
+                                Add to Cart
+                                <ArrowRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )}
+                        </Card>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </Card>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </TabsContent>
 
         <TabsContent value="parts" className="space-y-4">

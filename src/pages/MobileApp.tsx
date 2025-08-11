@@ -49,11 +49,11 @@ const MobileApp: React.FC = () => {
       <div className="min-h-screen bg-background">
         {/* Header */}
         <div className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
-          <div className="flex items-center justify-center p-4">
+          <div className="flex items-center justify-center p-6">
             <img 
               src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
               alt="MT KCx Logo" 
-              className="h-12 w-auto"
+              className="h-20 w-auto"
             />
           </div>
         </div>
