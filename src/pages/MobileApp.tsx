@@ -83,6 +83,10 @@ const MobileApp: React.FC = () => {
   const handleTabSwitch = (tab: string) => {
     setActiveTab(tab);
     setIsMenuOpen(false);
+    setShowAuth(false);
+    setShowContact(false);
+    setShowAbout(false);
+    setShowCheckout(false);
     // Scroll to top when changing tabs
     window.scrollTo(0, 0);
   };
@@ -107,13 +111,85 @@ const MobileApp: React.FC = () => {
   }
 
   const menuItems = [
-    { icon: Home, label: t('nav.home'), action: () => handleTabSwitch('home') },
-    { icon: Calculator, label: t('mobile.nav.packages'), action: () => handleTabSwitch('calculator') },
-    { icon: Camera, label: t('mobile.nav.quote'), action: () => handleTabSwitch('photo') },
-    { icon: ShoppingBag, label: t('nav.products'), action: () => handleTabSwitch('products') },
-    { icon: BookOpen, label: t('nav.courses'), action: () => handleTabSwitch('courses') },
-    { icon: Phone, label: t('nav.contact'), action: handleShowContact },
-    { icon: MapPin, label: t('nav.about'), action: handleShowAbout },
+    { 
+      icon: Home, 
+      label: t('nav.home'), 
+      action: () => {
+        setActiveTab('home');
+        setShowAuth(false);
+        setShowContact(false);
+        setShowAbout(false);
+        setShowCheckout(false);
+        setIsMenuOpen(false);
+        window.scrollTo(0, 0);
+      }
+    },
+    { 
+      icon: Calculator, 
+      label: t('mobile.nav.packages'), 
+      action: () => {
+        setActiveTab('calculator');
+        setShowAuth(false);
+        setShowContact(false);
+        setShowAbout(false);
+        setShowCheckout(false);
+        setIsMenuOpen(false);
+        window.scrollTo(0, 0);
+      }
+    },
+    { 
+      icon: Camera, 
+      label: t('mobile.nav.quote'), 
+      action: () => {
+        setActiveTab('photo');
+        setShowAuth(false);
+        setShowContact(false);
+        setShowAbout(false);
+        setShowCheckout(false);
+        setIsMenuOpen(false);
+        window.scrollTo(0, 0);
+      }
+    },
+    { 
+      icon: ShoppingBag, 
+      label: t('nav.products'), 
+      action: () => {
+        setActiveTab('products');
+        setShowAuth(false);
+        setShowContact(false);
+        setShowAbout(false);
+        setShowCheckout(false);
+        setIsMenuOpen(false);
+        window.scrollTo(0, 0);
+      }
+    },
+    { 
+      icon: BookOpen, 
+      label: t('nav.courses'), 
+      action: () => {
+        setActiveTab('courses');
+        setShowAuth(false);
+        setShowContact(false);
+        setShowAbout(false);
+        setShowCheckout(false);
+        setIsMenuOpen(false);
+        window.scrollTo(0, 0);
+      }
+    },
+    { 
+      icon: Phone, 
+      label: t('nav.contact'), 
+      action: () => {
+        handleShowContact();
+      }
+    },
+    { 
+      icon: MapPin, 
+      label: t('nav.about'), 
+      action: () => {
+        handleShowAbout();
+      }
+    },
     ...(user ? [{ icon: Shield, label: t('mobile.nav.admin'), action: () => handleTabSwitch('dashboard') }] : []),
   ];
 
@@ -279,10 +355,14 @@ const MobileApp: React.FC = () => {
               src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
               alt="MTKCx Logo" 
               className="h-20 w-auto cursor-pointer"
-              onClick={() => {
-                setActiveTab('home');
-                window.scrollTo(0, 0);
-              }}
+            onClick={() => {
+              setActiveTab('home');
+              setShowAuth(false);
+              setShowContact(false);
+              setShowAbout(false);
+              setShowCheckout(false);
+              window.scrollTo(0, 0);
+            }}
             />
 
             {/* Cart Button */}
