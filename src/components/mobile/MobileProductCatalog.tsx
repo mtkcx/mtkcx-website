@@ -25,6 +25,13 @@ interface MobileProduct {
     name_he: string;
     name_ar: string;
   };
+  allCategories?: Array<{
+    id: string;
+    name: string;
+    slug: string;
+    name_he: string;
+    name_ar: string;
+  }>;
   variants: Array<{
     id: string;
     size: string;
@@ -68,12 +75,13 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
   const fetchProducts = async () => {
     try {
-      // Fetch products
+      // Fetch products with all their relationships
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
           *,
           product_categories!product_categories_product_id_fkey (
+            category_id,
             categories!product_categories_category_id_fkey (
               id,
               name,
@@ -97,7 +105,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
       if (productsError) throw productsError;
 
-      // Fetch categories separately
+      // Fetch all categories separately
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('categories')
         .select('id, name, slug, name_he, name_ar')
@@ -105,6 +113,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
       if (categoriesError) throw categoriesError;
 
+      console.log('Categories fetched:', categoriesData);
       setCategories(categoriesData || []);
 
       const transformedProducts = productsData
@@ -112,7 +121,12 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         .map(product => {
           const primaryImage = product.product_images?.find(img => img.is_primary) || 
                              product.product_images?.[0];
-          const category = product.product_categories?.[0]?.categories;
+          
+          // Get all categories for this product
+          const productCategories = product.product_categories?.map(pc => pc.categories).filter(Boolean) || [];
+          const primaryCategory = productCategories[0];
+
+          console.log(`Product ${product.name} categories:`, productCategories.map(c => c?.slug));
 
           return {
             id: product.id,
@@ -121,15 +135,23 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             product_code: product.product_code || '',
             image_url: primaryImage?.image_url || product.image_url || '/placeholder.svg',
             category: {
-              id: category?.id || '',
-              name: category?.name || 'Uncategorized',
-              slug: category?.slug || 'uncategorized',
-              name_he: category?.name_he || '',
-              name_ar: category?.name_ar || ''
+              id: primaryCategory?.id || '',
+              name: primaryCategory?.name || 'Uncategorized',
+              slug: primaryCategory?.slug || 'uncategorized',
+              name_he: primaryCategory?.name_he || '',
+              name_ar: primaryCategory?.name_ar || ''
             },
+            // Store all categories for filtering
+            allCategories: productCategories,
             variants: product.product_variants || []
           };
         }) || [];
+
+      console.log('Transformed products:', transformedProducts.map(p => ({
+        name: p.name,
+        category: p.category.slug,
+        allCategories: p.allCategories?.map(c => c?.slug)
+      })));
 
       setProducts(transformedProducts);
     } catch (error) {
@@ -149,7 +171,12 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.product_code.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCategory = !selectedCategory || product.category.slug === selectedCategory;
+    // Check if product matches selected category (check both primary category and all categories)
+    const matchesCategory = !selectedCategory || 
+      product.category.slug === selectedCategory ||
+      product.allCategories?.some(cat => cat.slug === selectedCategory);
+    
+    console.log(`Product ${product.name}: selected=${selectedCategory}, primary=${product.category.slug}, all=${product.allCategories?.map(c => c.slug)}, matches=${matchesCategory}`);
     
     return matchesSearch && matchesCategory;
   });
