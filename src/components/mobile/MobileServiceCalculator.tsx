@@ -4,9 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Calculator, Camera, CheckCircle, ArrowRight, Plus, Minus } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Calculator, Camera, CheckCircle, Plus, Minus, Upload, Phone, Mail, User } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useCart } from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 
 interface ServicePackage {
@@ -48,13 +51,28 @@ interface VehicleSize {
   packages: Omit<ServicePackage, 'image'>[];
 }
 
+interface QuoteFormData {
+  name: string;
+  phone: string;
+  email: string;
+  description: string;
+  carImage: File | null;
+}
+
 export const MobileServiceCalculator: React.FC = () => {
   const { t } = useLanguage();
-  const { addToCart } = useCart();
   const { toast } = useToast();
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [selectedParts, setSelectedParts] = useState<SelectedPart[]>([]);
   const [selectedVehicleSize, setSelectedVehicleSize] = useState<string>('medium');
+  const [quoteForm, setQuoteForm] = useState<QuoteFormData>({
+    name: '',
+    phone: '',
+    email: '',
+    description: '',
+    carImage: null
+  });
+  const [isQuoteDialogOpen, setIsQuoteDialogOpen] = useState(false);
 
   const vehicleSizes: VehicleSize[] = [
     {
@@ -367,22 +385,38 @@ export const MobileServiceCalculator: React.FC = () => {
     setSelectedPackage(packageId);
   };
 
-  const handleAddToCart = (pkg: Omit<ServicePackage, 'image'>, vehicleSize: VehicleSize) => {
-    addToCart({
-      productId: pkg.id,
-      productName: `${vehicleSize.name} - ${pkg.name}`,
-      productCode: pkg.id,
-      variantId: 'default',
-      variantSize: 'Standard',
-      price: pkg.price,
-      imageUrl: vehicleSize.image,
-      categoryName: 'Vehicle Wrapping Services'
-    });
-    
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setQuoteForm(prev => ({ ...prev, carImage: file }));
+    }
+  };
+
+  const handleSubmitQuote = () => {
+    if (!quoteForm.name || !quoteForm.phone || !quoteForm.email) {
+      toast({
+        title: 'Missing Information',
+        description: 'Please fill in all required fields',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    // Here you would typically send the quote request to your backend
     toast({
-      title: 'Service Added',
-      description: `${vehicleSize.name} - ${pkg.name} has been added to your cart`,
+      title: 'Quote Requested',
+      description: 'We\'ll contact you within 24 hours with your personalized quote',
     });
+
+    // Reset form and close dialog
+    setQuoteForm({
+      name: '',
+      phone: '',
+      email: '',
+      description: '',
+      carImage: null
+    });
+    setIsQuoteDialogOpen(false);
   };
 
   const addPart = (part: VehiclePart) => {
@@ -432,34 +466,108 @@ export const MobileServiceCalculator: React.FC = () => {
     return selectedParts.reduce((total, part) => total + part.totalPrice, 0);
   };
 
-  const addPartsToCart = () => {
-    selectedParts.forEach(part => {
-      addToCart({
-        productId: part.id,
-        productName: `${part.name} (${part.vehicleSize})`,
-        productCode: part.id,
-        variantId: part.vehicleSize,
-        variantSize: part.vehicleSize,
-        price: part.totalPrice,
-        imageUrl: part.image,
-        categoryName: 'Vehicle Parts'
-      });
-    });
+  const QuoteDialog = () => (
+    <Dialog open={isQuoteDialogOpen} onOpenChange={setIsQuoteDialogOpen}>
+      <DialogContent className="sm:max-w-md mx-auto max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Camera className="h-5 w-5" />
+            Request Quote
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name" className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              Name *
+            </Label>
+            <Input
+              id="name"
+              placeholder="Your full name"
+              value={quoteForm.name}
+              onChange={(e) => setQuoteForm(prev => ({ ...prev, name: e.target.value }))}
+            />
+          </div>
 
-    toast({
-      title: 'Parts Added to Cart',
-      description: `${selectedParts.length} parts added for ₪${getTotalPrice().toLocaleString()}`,
-    });
+          <div className="space-y-2">
+            <Label htmlFor="phone" className="flex items-center gap-2">
+              <Phone className="h-4 w-4" />
+              Phone Number *
+            </Label>
+            <Input
+              id="phone"
+              placeholder="Your phone number"
+              value={quoteForm.phone}
+              onChange={(e) => setQuoteForm(prev => ({ ...prev, phone: e.target.value }))}
+            />
+          </div>
 
-    setSelectedParts([]);
-  };
+          <div className="space-y-2">
+            <Label htmlFor="email" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              Email *
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="your.email@example.com"
+              value={quoteForm.email}
+              onChange={(e) => setQuoteForm(prev => ({ ...prev, email: e.target.value }))}
+            />
+          </div>
 
-  const handleRequestQuote = () => {
-    toast({
-      title: 'Quote Request',
-      description: 'Redirecting to quote form...',
-    });
-  };
+          <div className="space-y-2">
+            <Label htmlFor="car-image" className="flex items-center gap-2">
+              <Upload className="h-4 w-4" />
+              Car Image
+            </Label>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+              <input
+                id="car-image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              <label htmlFor="car-image" className="cursor-pointer">
+                <Upload className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                <p className="text-sm text-muted-foreground">
+                  {quoteForm.carImage ? quoteForm.carImage.name : 'Click to upload car photo'}
+                </p>
+              </label>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">
+              Additional Details
+            </Label>
+            <Textarea
+              id="description"
+              placeholder="Tell us about your specific needs, preferred colors, or any special requirements..."
+              value={quoteForm.description}
+              onChange={(e) => setQuoteForm(prev => ({ ...prev, description: e.target.value }))}
+              rows={3}
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button 
+              variant="outline" 
+              onClick={() => setIsQuoteDialogOpen(false)}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSubmitQuote} className="flex-1">
+              Submit Quote Request
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 
   return (
     <div className="space-y-6 p-4">
@@ -470,7 +578,7 @@ export const MobileServiceCalculator: React.FC = () => {
           <h2 className="text-2xl font-bold">Vehicle Wrapping Calculator</h2>
         </div>
         <p className="text-muted-foreground">
-          Choose packages or build your custom solution
+          Get accurate quotes for your vehicle wrapping needs
         </p>
       </div>
 
@@ -554,29 +662,16 @@ export const MobileServiceCalculator: React.FC = () => {
                           </div>
 
                           {selectedPackage === pkg.id && (
-                            <div className="grid grid-cols-2 gap-3 pt-2">
-                              <Button 
-                                variant="outline" 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRequestQuote();
-                                }}
-                                className="flex items-center gap-2"
-                              >
-                                <Camera className="h-4 w-4" />
-                                Get Quote
-                              </Button>
-                              <Button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleAddToCart(pkg, vehicleSize);
-                                }}
-                                className="flex items-center gap-2"
-                              >
-                                Add to Cart
-                                <ArrowRight className="h-4 w-4" />
-                              </Button>
-                            </div>
+                            <Button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setIsQuoteDialogOpen(true);
+                              }}
+                              className="w-full flex items-center gap-2"
+                            >
+                              <Camera className="h-4 w-4" />
+                              Get Quote
+                            </Button>
                           )}
                         </Card>
                       ))}
@@ -677,10 +772,10 @@ export const MobileServiceCalculator: React.FC = () => {
               </div>
               <Button 
                 className="w-full mt-3" 
-                onClick={addPartsToCart}
-                disabled={selectedParts.length === 0}
+                onClick={() => setIsQuoteDialogOpen(true)}
               >
-                Add All to Cart
+                <Camera className="h-4 w-4 mr-2" />
+                Get Quote for Selected Parts
               </Button>
             </Card>
           )}
@@ -694,11 +789,17 @@ export const MobileServiceCalculator: React.FC = () => {
           <p className="text-sm text-muted-foreground">
             Our experts can create a personalized package for your specific needs
           </p>
-          <Button variant="outline" className="w-full">
+          <Button 
+            variant="outline" 
+            className="w-full"
+            onClick={() => setIsQuoteDialogOpen(true)}
+          >
             Speak with an Expert
           </Button>
         </div>
       </Card>
+
+      <QuoteDialog />
     </div>
   );
 };
