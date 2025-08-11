@@ -144,10 +144,10 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
           </Sheet>
 
           {/* Logo - Clickable */}
-          <img 
-            src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
-            alt="MTKCx Logo" 
-            className="h-12 w-auto cursor-pointer"
+            <img 
+              src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
+              alt="MTKCx Logo" 
+              className="h-16 w-auto cursor-pointer"
             onClick={() => {
               onTabSwitch('home');
               window.scrollTo(0, 0);

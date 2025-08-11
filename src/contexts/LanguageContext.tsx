@@ -334,7 +334,7 @@ const translations = {
     'mobile.products.items_text': 'items in your cart',
 
     // Mobile Service Calculator translations
-    'mobile.services.calculator_title': 'MTKCx Packages',
+    'mobile.services.calculator_title': 'MT Wraps Packages',
     'mobile.services.get_accurate_quotes': 'Get accurate quotes for your vehicle wrapping needs',
     'mobile.services.packages': 'Service Packages',
     'mobile.services.custom_quote': 'Custom Quote',
