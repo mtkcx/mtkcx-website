@@ -51,8 +51,8 @@ const MobileApp: React.FC = () => {
         <div className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
           <div className="flex items-center justify-center p-4">
             <img 
-              src="/lovable-uploads/93339d8c-e8b6-44d4-a598-f792a3019f2d.png" 
-              alt="MTKCX Logo" 
+              src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
+              alt="MT KCx Logo" 
               className="h-12 w-auto"
             />
           </div>
