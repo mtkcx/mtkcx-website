@@ -63,7 +63,7 @@ const MobileApp: React.FC = () => {
   }
 
   const menuItems = [
-    { icon: Home, label: 'Home', action: () => handleNavigation('/') },
+    { icon: Home, label: 'Home', action: () => setIsMenuOpen(false) },
     { icon: Calculator, label: 'Calculator', action: () => setIsMenuOpen(false) },
     { icon: Quote, label: 'Get Quote', action: () => setIsMenuOpen(false) },
     { icon: ShoppingBag, label: 'Products', action: () => handleNavigation('/products') },
