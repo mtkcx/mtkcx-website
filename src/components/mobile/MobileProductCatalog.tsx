@@ -286,120 +286,104 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         </Card>
       )}
 
-      {/* Product Grid */}
-      <div className="grid grid-cols-2 gap-4">
+      {/* Product List */}
+      <div className="space-y-4">
         {displayProducts.map(product => (
           <Card key={product.id} className="overflow-hidden">
-            <div className="space-y-3">
-              <div className="aspect-square relative">
-                <img
-                  src={product.image_url}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-                <Badge 
-                  variant="secondary" 
-                  className="absolute top-2 left-2 text-xs"
-                >
-                  {product.product_code}
-                </Badge>
-              </div>
-              <div className="p-3 space-y-2">
-                <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
+            <div className="flex gap-3 p-3">
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="w-16 h-16 object-cover rounded flex-shrink-0"
+              />
+              <div className="flex-1 space-y-2">
+                <div className="flex items-start justify-between">
+                  <h3 className="font-medium text-sm">{product.name}</h3>
+                  <Badge variant="secondary" className="text-xs">
+                    {product.product_code}
+                  </Badge>
+                </div>
                 <p className="text-xs text-muted-foreground line-clamp-2">
                   {product.description}
                 </p>
                 
-                {/* Price Range */}
-                <div className="text-sm font-medium text-primary">
-                  {product.variants.length === 1 ? (
-                    formatPrice(product.variants[0].price)
-                  ) : (
-                    `${formatPrice(Math.min(...product.variants.map(v => v.price)))} - ${formatPrice(Math.max(...product.variants.map(v => v.price)))}`
-                  )}
-                </div>
-
-                {/* Quick Add or View Options */}
-                <div className="flex gap-2">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm font-medium text-primary">
+                    {product.variants.length === 1 ? (
+                      formatPrice(product.variants[0].price)
+                    ) : (
+                      `${formatPrice(Math.min(...product.variants.map(v => v.price)))} - ${formatPrice(Math.max(...product.variants.map(v => v.price)))}`
+                    )}
+                  </div>
                   {product.variants.length === 1 ? (
                     <Button
                       size="sm"
                       onClick={() => handleAddToCart(product, product.variants[0].id)}
-                      className="flex-1 h-8"
+                      className="h-8 px-3"
                     >
                       <ShoppingCart className="h-3 w-3 mr-1" />
-                      {t('mobile.products.add_to_cart')}
+                      Add
                     </Button>
                   ) : (
-                    <>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewProduct(product)}
-                            className="flex-1 h-8"
-                          >
-                            <Eye className="h-3 w-3 mr-1" />
-                            View
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-md">
-                          <DialogHeader>
-                            <DialogTitle>{product.name}</DialogTitle>
-                          </DialogHeader>
-                          <div className="space-y-4">
-                            <img
-                              src={selectedProduct && selectedVariant ? 
-                                (selectedProduct.variants.find(v => v.id === selectedVariant)?.size === '1L' ? 
-                                  product.image_url.replace('.png', '-1L.png').replace('.jpg', '-1L.jpg') : 
-                                  product.image_url) : 
-                                product.image_url}
-                              alt={product.name}
-                              className="w-full h-48 object-cover rounded"
-                              onError={(e) => {
-                                e.currentTarget.src = product.image_url;
-                              }}
-                            />
-                            <p className="text-sm text-muted-foreground">
-                              {product.description}
-                            </p>
-                            
-                            <div className="space-y-3">
-                              <label className="text-sm font-medium">Select Size:</label>
-                              <Select value={selectedVariant} onValueChange={setSelectedVariant}>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Choose size" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {product.variants.map(variant => (
-                                    <SelectItem key={variant.id} value={variant.id}>
-                                      {variant.size} - {formatPrice(variant.price)}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            
-                            <Button
-                              onClick={() => handleQuickAdd(product, selectedVariant)}
-                              disabled={!selectedVariant}
-                              className="w-full"
-                            >
-                              <ShoppingCart className="h-4 w-4 mr-2" />
-                              Add to Cart
-                            </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          onClick={() => handleViewProduct(product)}
+                          className="h-8 px-3"
+                        >
+                          <Eye className="h-3 w-3 mr-1" />
+                          Select
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>{product.name}</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <img
+                            src={selectedProduct && selectedVariant ? 
+                              (selectedProduct.variants.find(v => v.id === selectedVariant)?.size === '1L' ? 
+                                product.image_url.replace('.png', '-1L.png').replace('.jpg', '-1L.jpg') : 
+                                product.image_url) : 
+                              product.image_url}
+                            alt={product.name}
+                            className="w-full h-48 object-cover rounded"
+                            onError={(e) => {
+                              e.currentTarget.src = product.image_url;
+                            }}
+                          />
+                          <p className="text-sm text-muted-foreground">
+                            {product.description}
+                          </p>
+                          
+                          <div className="space-y-3">
+                            <label className="text-sm font-medium">Select Size:</label>
+                            <Select value={selectedVariant} onValueChange={setSelectedVariant}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choose size" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {product.variants.map(variant => (
+                                  <SelectItem key={variant.id} value={variant.id}>
+                                    {variant.size} - {formatPrice(variant.price)}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </div>
-                        </DialogContent>
-                      </Dialog>
-                      <Button
-                        size="sm"
-                        onClick={() => handleAddToCart(product, product.variants[0].id)}
-                        className="h-8 px-3"
-                      >
-                        <ShoppingCart className="h-3 w-3" />
-                      </Button>
-                    </>
+                          
+                          <Button
+                            onClick={() => handleQuickAdd(product, selectedVariant)}
+                            disabled={!selectedVariant}
+                            className="w-full"
+                          >
+                            <ShoppingCart className="h-4 w-4 mr-2" />
+                            Add to Cart
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   )}
                 </div>
               </div>
