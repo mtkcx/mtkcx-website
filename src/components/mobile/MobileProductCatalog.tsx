@@ -154,6 +154,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     return matchesSearch && matchesCategory;
   });
 
+  const handleCategorySelect = (categorySlug: string | null) => {
+    setSelectedCategory(categorySlug);
+    setShowFilters(false); // Close filter when category is selected
+  };
+
   const handleEnlargeImage = (imageUrl: string) => {
     setSelectedImageUrl(imageUrl);
     setIsImageDialogOpen(true);
@@ -271,7 +276,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             <Button
               variant={selectedCategory === null ? "default" : "outline"}
               size="sm"
-              onClick={() => setSelectedCategory(null)}
+              onClick={() => handleCategorySelect(null)}
             >
               {t('categories.all_products')}
             </Button>
@@ -280,7 +285,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                 key={category.slug}
                 variant={selectedCategory === category.slug ? "default" : "outline"}
                 size="sm"
-                onClick={() => setSelectedCategory(category.slug)}
+                onClick={() => handleCategorySelect(category.slug)}
               >
                 {category.name}
               </Button>
