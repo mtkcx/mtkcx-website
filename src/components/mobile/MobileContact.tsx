@@ -1,0 +1,324 @@
+import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Clock, 
+  Send,
+  MessageSquare,
+  User,
+  Building,
+  Car,
+  Package,
+  GraduationCap,
+  CheckCircle,
+  ArrowLeft
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
+
+interface MobileContactProps {
+  onBack: () => void;
+}
+
+export const MobileContact: React.FC<MobileContactProps> = ({ onBack }) => {
+  const { toast } = useToast();
+  const { t, isRTL } = useLanguage();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    subject: '',
+    message: '',
+    serviceInterest: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: t('contact.success_title'),
+        description: t('contact.success_desc'),
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        subject: '',
+        message: '',
+        serviceInterest: ''
+      });
+    } catch (error) {
+      toast({
+        title: t('contact.error_title'),
+        description: t('contact.error_desc'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const contactInfo = [
+    {
+      icon: Phone,
+      title: t('contact.phone_title'),
+      details: "0527738586",
+      description: t('contact.phone_desc')
+    },
+    {
+      icon: Mail,
+      title: t('contact.email_title'),
+      details: "info@mtkcx.com",
+      description: t('contact.email_desc')
+    },
+    {
+      icon: MapPin,
+      title: t('contact.location_title'),
+      details: "Atarot, Jerusalem",
+      description: t('contact.location_desc')
+    },
+    {
+      icon: Clock,
+      title: t('contact.hours_title'),
+      details: t('contact.hours_details'),
+      description: t('contact.hours_desc')
+    }
+  ];
+
+  const services = [
+    { value: "products", label: t('contact.koch_products'), icon: Package },
+    { value: "training", label: t('contact.detailing_training'), icon: GraduationCap },
+    { value: "wrapping", label: t('contact.vehicle_wrapping'), icon: Car },
+    { value: "consultation", label: t('contact.professional_consultation'), icon: MessageSquare },
+    { value: "other", label: t('contact.other_services'), icon: Building }
+  ];
+
+  return (
+    <div className="min-h-screen bg-background p-4" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="max-w-md mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" size="sm" onClick={onBack}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            {t('common.back')}
+          </Button>
+          <img 
+            src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
+            alt="MT KCx Logo" 
+            className="h-8 w-auto"
+          />
+        </div>
+
+        {/* Hero Section */}
+        <div className="text-center space-y-4">
+          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+            {t('contact.badge')}
+          </Badge>
+          <h1 className="text-2xl font-bold">{t('contact.title')}</h1>
+          <p className="text-muted-foreground">
+            {t('contact.subtitle')}
+          </p>
+        </div>
+
+        {/* Contact Form */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">{t('contact.form_title')}</CardTitle>
+            <CardDescription>
+              {t('contact.form_subtitle')}
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    {t('contact.name')}
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    placeholder={t('contact.name_placeholder')}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="flex items-center gap-2">
+                    <Mail className="w-4 h-4" />
+                    {t('contact.email')}
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    placeholder={t('contact.email_placeholder')}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  {t('contact.phone')}
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="+972 XX-XXXX-XXX"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="serviceInterest">{t('contact.service_interest')}</Label>
+                <select
+                  id="serviceInterest"
+                  name="serviceInterest"
+                  value={formData.serviceInterest}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                >
+                  <option value="">{t('contact.service_interest_placeholder')}</option>
+                  {services.map((service) => (
+                    <option key={service.value} value={service.value}>
+                      {service.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="subject" className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  {t('contact.subject')}
+                </Label>
+                <Input
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  required
+                  placeholder={t('contact.subject_placeholder')}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="message">{t('contact.message')}</Label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                  rows={4}
+                  placeholder={t('contact.message_placeholder')}
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>{t('contact.sending')}</>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 mr-2" />
+                    {t('contact.send_message')}
+                  </>
+                )}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        {/* Contact Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">{t('contact.info_title')}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {contactInfo.map((info, index) => {
+              const IconComponent = info.icon;
+              return (
+                <div key={index} className="flex items-start space-x-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <IconComponent className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-sm">{info.title}</h3>
+                    <p className="text-sm font-medium text-primary">{info.details}</p>
+                    <p className="text-xs text-muted-foreground">{info.description}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+
+        {/* Why Choose Us */}
+        <Card className="bg-primary/5">
+          <CardHeader>
+            <CardTitle className="text-lg text-primary">
+              {t('common.why_choose_mt')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center space-x-3">
+              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+              <span className="text-sm">{t('common.official_partner')}</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+              <span className="text-sm">{t('common.professional_training_programs')}</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+              <span className="text-sm">{t('common.expert_wrapping_services')}</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+              <span className="text-sm">{t('common.fast_response_time')}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};

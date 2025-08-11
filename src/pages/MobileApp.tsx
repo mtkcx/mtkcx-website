@@ -3,13 +3,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MobileServiceCalculator } from '@/components/mobile/MobileServiceCalculator';
 import { MobileProductCatalog } from '@/components/mobile/MobileProductCatalog';
 import { MobileHome } from '@/components/mobile/MobileHome';
 import { MobileCheckout } from '@/components/mobile/MobileCheckout';
 import { MobileDashboard } from '@/components/mobile/MobileDashboard';
 import { MobileEnrollmentDialog } from '@/components/mobile/MobileEnrollmentDialog';
+import { MobileAuth } from '@/components/mobile/MobileAuth';
+import { MobileContact } from '@/components/mobile/MobileContact';
+import { MobileAbout } from '@/components/mobile/MobileAbout';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   Calculator, 
@@ -28,7 +33,8 @@ import {
   Phone,
   Mail,
   MapPin,
-  Shield
+  Shield,
+  Globe
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import SEOHead from '@/components/SEOHead';
@@ -37,26 +43,44 @@ import { useNavigate } from 'react-router-dom';
 
 const MobileApp: React.FC = () => {
   const { user, signOut } = useAuth();
+  const { currentLanguage, setLanguage, t, isRTL } = useLanguage();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
   const [showCheckout, setShowCheckout] = useState(false);
   const [isEnrollmentDialogOpen, setIsEnrollmentDialogOpen] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
 
   const handleLogout = async () => {
     await signOut();
     setIsMenuOpen(false);
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
+  const handleShowAuth = () => {
+    setShowAuth(true);
+    setIsMenuOpen(false);
+  };
+
+  const handleShowContact = () => {
+    setShowContact(true);
+    setIsMenuOpen(false);
+  };
+
+  const handleShowAbout = () => {
+    setShowAbout(true);
     setIsMenuOpen(false);
   };
 
   const handleTabSwitch = (tab: string) => {
     setActiveTab(tab);
     setIsMenuOpen(false);
+  };
+
+  const handleLanguageChange = (lang: string) => {
+    setLanguage(lang as 'en' | 'ar' | 'he');
   };
 
   // Redirect desktop users
@@ -74,14 +98,29 @@ const MobileApp: React.FC = () => {
     );
   }
 
+  // Show auth screen
+  if (showAuth) {
+    return <MobileAuth onBack={() => setShowAuth(false)} />;
+  }
+
+  // Show contact screen
+  if (showContact) {
+    return <MobileContact onBack={() => setShowContact(false)} />;
+  }
+
+  // Show about screen
+  if (showAbout) {
+    return <MobileAbout onBack={() => setShowAbout(false)} />;
+  }
+
   const menuItems = [
-    { icon: Home, label: 'Home', action: () => handleTabSwitch('home') },
+    { icon: Home, label: t('nav.home'), action: () => handleTabSwitch('home') },
     { icon: Calculator, label: 'Packages', action: () => handleTabSwitch('calculator') },
     { icon: Camera, label: 'Get Quote', action: () => handleTabSwitch('photo') },
-    { icon: ShoppingBag, label: 'Products', action: () => handleTabSwitch('products') },
-    { icon: BookOpen, label: 'Courses', action: () => handleTabSwitch('courses') },
-    { icon: Phone, label: 'Contact', action: () => handleNavigation('/contact') },
-    { icon: MapPin, label: 'About', action: () => handleNavigation('/about') },
+    { icon: ShoppingBag, label: t('nav.products'), action: () => handleTabSwitch('products') },
+    { icon: BookOpen, label: t('nav.courses'), action: () => handleTabSwitch('courses') },
+    { icon: Phone, label: t('nav.contact'), action: handleShowContact },
+    { icon: MapPin, label: t('nav.about'), action: handleShowAbout },
     ...(user ? [{ icon: Shield, label: 'Admin Dashboard', action: () => handleTabSwitch('dashboard') }] : []),
   ];
 
@@ -93,7 +132,7 @@ const MobileApp: React.FC = () => {
         keywords="mobile app, vehicle wrapping, koch chemie mobile, car detailing app, wrapping calculator"
       />
       
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
         {/* Header with Menu */}
         <div className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
           <div className="flex items-center justify-between p-4">
@@ -117,13 +156,33 @@ const MobileApp: React.FC = () => {
                 </SheetHeader>
                 
                 <div className="space-y-4 mt-6">
+                  {/* Language Selector */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 px-3">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm font-medium">Language</span>
+                    </div>
+                    <Select value={currentLanguage} onValueChange={handleLanguageChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en">English</SelectItem>
+                        <SelectItem value="ar">العربية</SelectItem>
+                        <SelectItem value="he">עברית</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <Separator />
+
                   {/* User Section */}
                   {user ? (
                     <Card className="p-4 bg-primary/5">
                       <div className="flex items-center gap-3">
                         <UserCircle className="h-10 w-10 text-primary" />
                         <div>
-                          <p className="font-semibold">Welcome back!</p>
+                          <p className="font-semibold">{t('dashboard.welcome')}!</p>
                           <p className="text-sm text-muted-foreground">{user.email}</p>
                         </div>
                       </div>
@@ -132,14 +191,14 @@ const MobileApp: React.FC = () => {
                     <Card className="p-4">
                       <div className="text-center space-y-3">
                         <p className="text-sm text-muted-foreground">
-                          Sign in to access your account
+                          {t('auth.signin_to_request_quote')}
                         </p>
                         <Button 
-                          onClick={() => handleNavigation('/auth')}
+                          onClick={handleShowAuth}
                           className="w-full"
                         >
                           <LogIn className="h-4 w-4 mr-2" />
-                          Sign In
+                          {t('auth.sign_in')}
                         </Button>
                       </div>
                     </Card>
@@ -169,10 +228,10 @@ const MobileApp: React.FC = () => {
                         <Button
                           variant="ghost"
                           className="w-full justify-start"
-                          onClick={() => handleNavigation('/profile')}
+                          onClick={() => handleShowAuth()}
                         >
                           <Settings className="h-4 w-4 mr-3" />
-                          Profile Settings
+                          {t('dashboard.edit_profile')}
                         </Button>
                         <Button
                           variant="ghost"
@@ -180,7 +239,7 @@ const MobileApp: React.FC = () => {
                           onClick={handleLogout}
                         >
                           <LogOut className="h-4 w-4 mr-3" />
-                          Sign Out
+                          {t('auth.sign_out')}
                         </Button>
                       </div>
                     </>
@@ -198,14 +257,9 @@ const MobileApp: React.FC = () => {
             />
 
             {/* Cart Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowCheckout(true)}
-              className="relative"
-            >
-              <ShoppingBag className="h-5 w-5" />
-            </Button>
+            <div className="relative">
+              <CartButton />
+            </div>
           </div>
         </div>
 
@@ -238,9 +292,9 @@ const MobileApp: React.FC = () => {
                 <div className="space-y-6">
                   <div className="text-center space-y-2">
                     <BookOpen className="h-12 w-12 text-primary mx-auto" />
-                    <h2 className="text-2xl font-bold">Professional Training</h2>
+                    <h2 className="text-2xl font-bold">{t('courses.title')}</h2>
                     <p className="text-muted-foreground">
-                      Master professional car detailing with Koch-Chemie certification
+                      {t('courses.subtitle')}
                     </p>
                   </div>
 
@@ -254,63 +308,63 @@ const MobileApp: React.FC = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         <div className="absolute bottom-3 left-3 right-3 text-white">
-                          <h3 className="font-bold text-xl">Koch-Chemie Professional Detailing Course</h3>
-                          <p className="text-white/90 text-sm">4-day intensive certification program</p>
+                          <h3 className="font-bold text-xl">{t('courses.course_title')}</h3>
+                          <p className="text-white/90 text-sm">{t('courses.four_days')} {t('courses.interactive_format')}</p>
                         </div>
                       </div>
                       
                       <div className="p-4 space-y-4">
                         <div className="space-y-2">
-                          <h4 className="font-semibold">What You'll Learn:</h4>
+                          <h4 className="font-semibold">{t('courses.what_learn')}</h4>
                           <div className="grid grid-cols-1 gap-2 text-sm">
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Professional detailing techniques</span>
+                              <span>{t('courses.professional_techniques')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Advanced polishing and correction</span>
+                              <span>{t('courses.advanced_polishing')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Complete Koch-Chemie product knowledge</span>
+                              <span>{t('courses.product_knowledge')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Surface assessment and treatment</span>
+                              <span>{t('courses.surface_assessment')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Machine polishing mastery</span>
+                              <span>{t('courses.machine_polishing')}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>Quality control and business practices</span>
+                              <span>{t('courses.business_practices')}</span>
                             </div>
                           </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4 text-sm bg-muted/30 p-3 rounded-lg">
                           <div>
-                            <span className="font-medium">Duration:</span>
-                            <div className="font-semibold">4 Days</div>
+                            <span className="font-medium">{t('courses.course_duration')}:</span>
+                            <div className="font-semibold">{t('courses.four_days')}</div>
                           </div>
                           <div>
-                            <span className="font-medium">Format:</span>
-                            <div className="font-semibold">Hands-on</div>
+                            <span className="font-medium">{t('courses.training_format')}:</span>
+                            <div className="font-semibold">{t('courses.interactive_format')}</div>
                           </div>
                           <div>
-                            <span className="font-medium">Group Size:</span>
-                            <div className="font-semibold">Small Groups</div>
+                            <span className="font-medium">{t('courses.class_size')}:</span>
+                            <div className="font-semibold">{t('courses.small_groups')}</div>
                           </div>
                           <div>
-                            <span className="font-medium">Location:</span>
-                            <div className="font-semibold">Atarot, Jerusalem</div>
+                            <span className="font-medium">{t('courses.location')}:</span>
+                            <div className="font-semibold">{t('courses.atarot_location')}</div>
                           </div>
                         </div>
 
                         <div className="space-y-2">
-                          <h4 className="font-semibold">Course Includes:</h4>
+                          <h4 className="font-semibold">{t('courses.course_includes')}:</h4>
                           <div className="grid grid-cols-1 gap-1 text-sm">
                             <div className="flex items-center gap-2">
                               <CheckCircle className="h-4 w-4 text-green-500" />
@@ -341,14 +395,14 @@ const MobileApp: React.FC = () => {
 
                         <div className="flex items-center justify-between pt-2">
                           <div>
-                            <span className="text-sm text-muted-foreground">Contact for pricing</span>
-                            <div className="font-bold text-primary text-lg">Professional Course</div>
+                            <span className="text-sm text-muted-foreground">{t('courses.contact_pricing')}</span>
+                            <div className="font-bold text-primary text-lg">{t('courses.professional_certification')}</div>
                           </div>
                           <Button 
                             className="bg-primary text-primary-foreground"
                             onClick={() => setIsEnrollmentDialogOpen(true)}
                           >
-                            Enroll Now
+                            {t('courses.enroll_now')}
                           </Button>
                         </div>
                       </div>
@@ -367,7 +421,7 @@ const MobileApp: React.FC = () => {
                 <div className="space-y-6">
                   <div className="text-center space-y-2">
                     <Camera className="h-12 w-12 text-primary mx-auto" />
-                    <h2 className="text-2xl font-bold">Get Instant Quote</h2>
+                    <h2 className="text-2xl font-bold">{t('quote.request_title')}</h2>
                     <p className="text-muted-foreground">
                       Take photos of your vehicle for an accurate quote
                     </p>
@@ -407,7 +461,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
                 >
                   <Home className="h-5 w-5" />
-                  <span className="text-xs">Home</span>
+                  <span className="text-xs">{t('nav.home')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
@@ -431,7 +485,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
                 >
                   <ShoppingBag className="h-5 w-5" />
-                  <span className="text-xs">Products</span>
+                  <span className="text-xs">{t('nav.products')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
@@ -439,7 +493,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
                 >
                   <BookOpen className="h-5 w-5" />
-                  <span className="text-xs">Courses</span>
+                  <span className="text-xs">{t('nav.courses')}</span>
                 </TabsTrigger>
                 
                 {user && (
