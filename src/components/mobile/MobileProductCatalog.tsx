@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -59,35 +59,38 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [categories, setCategories] = useState<Array<{id: string, name: string, slug: string}>>([]);
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
+  const [imageLoadErrors, setImageLoadErrors] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // Handle category filtering from URL parameters
+  // Memoized URL parameter handling
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
-    if (category) {
+    if (category && category !== selectedCategory) {
       setSelectedCategory(category);
     }
-  }, []);
+  }, [selectedCategory]);
 
-  const fetchProducts = async () => {
+  // Optimized data fetching with minimal queries
+  const fetchProducts = useCallback(async () => {
     try {
-      // Fetch products with all their relationships
+      // Single optimized query to get everything we need
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
-          *,
+          id,
+          name,
+          description,
+          product_code,
+          image_url,
           product_categories!product_categories_product_id_fkey (
-            category_id,
             categories!product_categories_category_id_fkey (
               id,
               name,
-              slug,
-              name_he,
-              name_ar
+              slug
             )
           ),
           product_variants!product_variants_product_id_fkey (
@@ -105,28 +108,23 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
       if (productsError) throw productsError;
 
-      // Fetch all categories separately
-      const { data: categoriesData, error: categoriesError } = await supabase
-        .from('categories')
-        .select('id, name, slug, name_he, name_ar')
-        .order('display_order');
-
-      if (categoriesError) throw categoriesError;
-
-      console.log('Categories fetched:', categoriesData);
-      setCategories(categoriesData || []);
-
+      // Extract unique categories from products data to avoid extra query
+      const categoryMap = new Map();
       const transformedProducts = productsData
         ?.filter(product => product.product_variants?.length > 0)
         .map(product => {
           const primaryImage = product.product_images?.find(img => img.is_primary) || 
                              product.product_images?.[0];
           
-          // Get all categories for this product
           const productCategories = product.product_categories?.map(pc => pc.categories).filter(Boolean) || [];
           const primaryCategory = productCategories[0];
 
-          console.log(`Product ${product.name} categories:`, productCategories.map(c => c?.slug));
+          // Collect categories for the category list
+          productCategories.forEach(cat => {
+            if (cat && !categoryMap.has(cat.slug)) {
+              categoryMap.set(cat.slug, { id: cat.id, name: cat.name, slug: cat.slug });
+            }
+          });
 
           return {
             id: product.id,
@@ -138,21 +136,20 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
               id: primaryCategory?.id || '',
               name: primaryCategory?.name || 'Uncategorized',
               slug: primaryCategory?.slug || 'uncategorized',
-              name_he: primaryCategory?.name_he || '',
-              name_ar: primaryCategory?.name_ar || ''
+              name_he: '',
+              name_ar: ''
             },
-            // Store all categories for filtering
-            allCategories: productCategories,
+            allCategories: productCategories.map(cat => ({
+              ...cat,
+              name_he: '',
+              name_ar: ''
+            })),
             variants: product.product_variants || []
           };
         }) || [];
 
-      console.log('Transformed products:', transformedProducts.map(p => ({
-        name: p.name,
-        category: p.category.slug,
-        allCategories: p.allCategories?.map(c => c?.slug)
-      })));
-
+      // Set categories from extracted data
+      setCategories(Array.from(categoryMap.values()));
       setProducts(transformedProducts);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -164,34 +161,40 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     } finally {
       setLoading(false);
     }
-  };
+  }, [t, toast]);
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = !searchTerm || 
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.product_code.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    // Check if product matches selected category (check both primary category and all categories)
-    const matchesCategory = !selectedCategory || 
-      product.category.slug === selectedCategory ||
-      product.allCategories?.some(cat => cat.slug === selectedCategory);
-    
-    console.log(`Product ${product.name}: selected=${selectedCategory}, primary=${product.category.slug}, all=${product.allCategories?.map(c => c.slug)}, matches=${matchesCategory}`);
-    
-    return matchesSearch && matchesCategory;
-  });
+  // Memoized filtered products for performance
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      const matchesSearch = !searchTerm || 
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.product_code.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesCategory = !selectedCategory || 
+        product.category.slug === selectedCategory ||
+        product.allCategories?.some(cat => cat.slug === selectedCategory);
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [products, searchTerm, selectedCategory]);
 
-  const handleCategorySelect = (categorySlug: string | null) => {
+  // Memoized display products for compact mode
+  const displayProducts = useMemo(() => {
+    return compact ? filteredProducts.slice(0, 6) : filteredProducts;
+  }, [filteredProducts, compact]);
+
+  // Optimized handlers with useCallback
+  const handleCategorySelect = useCallback((categorySlug: string | null) => {
     setSelectedCategory(categorySlug);
-    setShowFilters(false); // Close filter when category is selected
-  };
+    setShowFilters(false);
+  }, []);
 
-  const handleEnlargeImage = (imageUrl: string) => {
+  const handleEnlargeImage = useCallback((imageUrl: string) => {
     setSelectedImageUrl(imageUrl);
     setIsImageDialogOpen(true);
-  };
+  }, []);
 
-  const handleAddToCart = (product: MobileProduct, variantId: string) => {
+  const handleAddToCart = useCallback((product: MobileProduct, variantId: string) => {
     const variant = product.variants.find(v => v.id === variantId);
     if (!variant) return;
 
@@ -210,44 +213,41 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       title: t('mobile.products.added_to_cart'),
       description: `${product.name} (${variant.size}) ${t('mobile.products.added_description')}`
     });
-  };
+  }, [addToCart, t, toast]);
 
-  const handleQuickAdd = (product: MobileProduct, variantId: string) => {
+  const handleQuickAdd = useCallback((product: MobileProduct, variantId: string) => {
     handleAddToCart(product, variantId);
     setSelectedProduct(null);
     setSelectedVariant('');
-  };
+  }, [handleAddToCart]);
 
-  const handleViewProduct = (product: MobileProduct) => {
+  const handleViewProduct = useCallback((product: MobileProduct) => {
     setSelectedProduct(product);
     setSelectedVariant(product.variants[0]?.id || '');
-  };
+  }, []);
 
-  const handleGoToCheckout = () => {
-    if (onCheckout) {
-      onCheckout();
-    } else {
-      // Don't navigate to external checkout, use the mobile checkout component
-      // This will be handled by the parent component
-      onCheckout && onCheckout();
-    }
-  };
+  // Optimized image error handling
+  const handleImageError = useCallback((imageUrl: string) => {
+    setImageLoadErrors(prev => new Set(prev).add(imageUrl));
+  }, []);
 
-  const formatPrice = (price: number) => {
+  const formatPrice = useCallback((price: number) => {
     return `₪${price.toLocaleString()}`;
-  };
+  }, []);
 
-  const displayProducts = compact ? filteredProducts.slice(0, 6) : filteredProducts;
-
+  // Early return for loading with optimized skeleton
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-3">
         {[...Array(6)].map((_, i) => (
-          <Card key={i} className="p-4">
-            <div className="animate-pulse space-y-3">
-              <div className="h-32 bg-muted rounded" />
-              <div className="h-4 bg-muted rounded w-3/4" />
-              <div className="h-3 bg-muted rounded w-1/2" />
+          <Card key={i} className="p-3">
+            <div className="flex gap-3">
+              <div className="w-16 h-16 bg-muted rounded animate-pulse" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 bg-muted rounded animate-pulse w-3/4" />
+                <div className="h-3 bg-muted rounded animate-pulse w-1/2" />
+                <div className="h-4 bg-muted rounded animate-pulse w-1/4" />
+              </div>
             </div>
           </Card>
         ))}
@@ -331,7 +331,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                 {getTotalItems()} {t('mobile.products.items_text')}
               </p>
             </div>
-            <Button onClick={handleGoToCheckout} className="flex items-center gap-2">
+            <Button onClick={onCheckout} className="flex items-center gap-2">
               <CreditCard className="h-4 w-4" />
               {t('mobile.products.checkout')}
             </Button>
@@ -346,9 +346,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             <div className="flex gap-3 p-3">
               <div className="relative">
                 <img
-                  src={product.image_url}
+                  src={imageLoadErrors.has(product.image_url) ? '/placeholder.svg' : product.image_url}
                   alt={product.name}
                   className="w-16 h-16 object-cover rounded flex-shrink-0"
+                  loading="lazy"
+                  onError={() => handleImageError(product.image_url)}
                 />
                 <Button
                   variant="secondary"

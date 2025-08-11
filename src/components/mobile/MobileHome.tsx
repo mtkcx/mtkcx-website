@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +16,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-export const MobileHome: React.FC = () => {
+const MobileHome: React.FC = memo(() => {
   const { user } = useAuth();
   const { t } = useLanguage();
 
@@ -39,6 +39,7 @@ export const MobileHome: React.FC = () => {
             src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png"
             alt="Professional vehicle wrapping showcase"
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-4 left-4 right-4 text-white">
@@ -80,6 +81,7 @@ export const MobileHome: React.FC = () => {
                 src="/lovable-uploads/46cc7ba0-4b05-48a2-b131-498255ed57d5.png" 
                 alt="Interior Cleaning Products"
                 className="w-full h-32 object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center text-white">
@@ -98,6 +100,7 @@ export const MobileHome: React.FC = () => {
                 src="/lovable-uploads/753d6730-8e66-43fa-bd31-394bffb75e77.png" 
                 alt="Exterior Cleaning Products"
                 className="w-full h-32 object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center text-white">
@@ -116,6 +119,7 @@ export const MobileHome: React.FC = () => {
                 src="/lovable-uploads/af980fad-dfd1-4cfc-b5ee-5932499d69e3.png" 
                 alt="Polished & Coatings Products"
                 className="w-full h-32 object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center text-white">
@@ -176,6 +180,7 @@ export const MobileHome: React.FC = () => {
               src="/lovable-uploads/36a5b06f-591b-4391-afb4-afc8339e30d0.png"
               alt="Ferrari vehicle wrap project"
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
           <div className="aspect-square rounded-lg overflow-hidden">
@@ -183,6 +188,7 @@ export const MobileHome: React.FC = () => {
               src="/lovable-uploads/958f8b61-60b5-4d04-a76e-918b20e5f00e.png"
               alt="BMW M5 custom wrap design"
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
           <div className="aspect-square rounded-lg overflow-hidden">
@@ -190,6 +196,7 @@ export const MobileHome: React.FC = () => {
               src="/lovable-uploads/21ac7e3a-0b5f-4f29-82e3-585d03ee269e.png"
               alt="Luxury boat interior detailing"
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
           <div className="aspect-square rounded-lg overflow-hidden">
@@ -197,6 +204,7 @@ export const MobileHome: React.FC = () => {
               src="/lovable-uploads/22562b53-7b93-496f-9407-a2e6053a37b5.png"
               alt="Mercedes AMG with racing stripe wrap"
               className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
         </div>
@@ -271,4 +279,6 @@ export const MobileHome: React.FC = () => {
       )}
     </div>
   );
-};
+});
+
+export { MobileHome };
