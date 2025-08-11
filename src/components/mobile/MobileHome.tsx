@@ -14,19 +14,21 @@ import {
   Palette
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const MobileHome: React.FC = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   return (
     <div className="space-y-6 p-4">
       {/* Welcome Section */}
       <div className="text-center space-y-4">
         <h1 className="text-3xl font-bold text-primary">
-          Welcome to MTKCx
+          {t('mobile.home.welcome_title')}
         </h1>
         <p className="text-lg text-muted-foreground">
-          Your Premium Vehicle Wrapping & Detailing Specialists
+          {t('mobile.home.welcome_subtitle')}
         </p>
       </div>
 
@@ -40,9 +42,9 @@ export const MobileHome: React.FC = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           <div className="absolute bottom-4 left-4 right-4 text-white">
-            <h2 className="font-bold text-xl mb-2">Professional Excellence</h2>
+            <h2 className="font-bold text-xl mb-2">{t('mobile.home.hero_title')}</h2>
             <p className="text-sm opacity-90">
-              Transforming vehicles with precision and style
+              {t('mobile.home.hero_subtitle')}
             </p>
           </div>
         </div>
@@ -50,36 +52,34 @@ export const MobileHome: React.FC = () => {
 
       {/* About Us */}
       <Card className="p-6 space-y-4">
-        <h2 className="text-2xl font-bold text-center">Who We Are</h2>
+        <h2 className="text-2xl font-bold text-center">{t('mobile.home.about_title')}</h2>
         <p className="text-muted-foreground leading-relaxed">
-          MTKCx stands as Jerusalem's premier destination for automotive excellence, specializing in advanced paint protection films, 
-          custom vehicle wraps, and professional detailing services. As an official Koch-Chemie partner, we combine years of expertise 
-          with cutting-edge techniques and premium materials to transform and protect vehicles while maintaining the highest standards of quality and precision.
+          {t('mobile.home.about_description')}
         </p>
         
         <div className="grid grid-cols-2 gap-4 mt-6">
           <div className="text-center space-y-2">
             <div className="text-2xl font-bold text-primary">250+</div>
-            <p className="text-sm text-muted-foreground">Premium Products</p>
+            <p className="text-sm text-muted-foreground">{t('mobile.home.premium_products')}</p>
           </div>
           <div className="text-center space-y-2">
             <div className="text-2xl font-bold text-primary">1000+</div>
-            <p className="text-sm text-muted-foreground">Satisfied Customers</p>
+            <p className="text-sm text-muted-foreground">{t('mobile.home.satisfied_customers')}</p>
           </div>
         </div>
       </Card>
 
       {/* Our Services */}
       <Card className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">What We Offer</h2>
+        <h2 className="text-xl font-bold">{t('mobile.home.services_title')}</h2>
         
         <div className="space-y-4">
           <div className="flex items-start gap-3">
             <Shield className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-semibold">Koch-Chemie Premium Products</h3>
+              <h3 className="font-semibold">{t('mobile.home.service_1_title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Official distributor of Koch-Chemie's complete professional range including polishes, waxes, ceramic coatings, and detailing tools.
+                {t('mobile.home.service_1_desc')}
               </p>
             </div>
           </div>
@@ -87,9 +87,9 @@ export const MobileHome: React.FC = () => {
           <div className="flex items-start gap-3">
             <Palette className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-semibold">Professional Vehicle Wrapping</h3>
+              <h3 className="font-semibold">{t('mobile.home.service_2_title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Custom vehicle wraps, paint protection film installation, and commercial fleet branding with premium materials and expert craftsmanship.
+                {t('mobile.home.service_2_desc')}
               </p>
             </div>
           </div>
@@ -97,9 +97,9 @@ export const MobileHome: React.FC = () => {
           <div className="flex items-start gap-3">
             <Zap className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-semibold">Professional Training & Education</h3>
+              <h3 className="font-semibold">{t('mobile.home.service_3_title')}</h3>
               <p className="text-sm text-muted-foreground">
-                Comprehensive Koch-Chemie certification courses, hands-on training workshops, and professional development programs.
+                {t('mobile.home.service_3_desc')}
               </p>
             </div>
           </div>
@@ -108,7 +108,7 @@ export const MobileHome: React.FC = () => {
 
       {/* Gallery */}
       <Card className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">Our Work</h2>
+        <h2 className="text-xl font-bold">{t('mobile.home.gallery_title')}</h2>
         
         <div className="grid grid-cols-2 gap-3">
           <div className="aspect-square rounded-lg overflow-hidden">
@@ -144,56 +144,56 @@ export const MobileHome: React.FC = () => {
 
       {/* Why Choose MT KCx */}
       <Card className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">Why Choose MTKCx?</h2>
+        <h2 className="text-xl font-bold">{t('mobile.home.why_choose_title')}</h2>
         
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Official Koch-Chemie partnership and certification</span>
+            <span className="text-sm">{t('mobile.home.feature_1')}</span>
           </div>
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Premium German-engineered products and materials</span>
+            <span className="text-sm">{t('mobile.home.feature_2')}</span>
           </div>
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Comprehensive warranties on all services</span>
+            <span className="text-sm">{t('mobile.home.feature_3')}</span>
           </div>
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Professional training and certification programs</span>
+            <span className="text-sm">{t('mobile.home.feature_4')}</span>
           </div>
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Expert installation and personalized service</span>
+            <span className="text-sm">{t('mobile.home.feature_5')}</span>
           </div>
         </div>
       </Card>
 
       {/* Visit Our Facility */}
       <Card className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">Visit Our Facility</h2>
+        <h2 className="text-xl font-bold">{t('mobile.home.visit_title')}</h2>
         
         <div className="space-y-3">
           <div>
-            <h3 className="font-semibold">Location</h3>
-            <p className="text-sm text-muted-foreground">Atarot Industrial Zone, Jerusalem</p>
+            <h3 className="font-semibold">{t('mobile.home.location_title')}</h3>
+            <p className="text-sm text-muted-foreground">{t('mobile.home.location_text')}</p>
           </div>
           
           <div>
-            <h3 className="font-semibold">What We Do</h3>
+            <h3 className="font-semibold">{t('mobile.home.services_badge_title')}</h3>
             <div className="flex flex-wrap gap-2 mt-2">
-              <Badge variant="secondary">Koch-Chemie Products</Badge>
-              <Badge variant="secondary">Vehicle Wrapping Services</Badge>
-              <Badge variant="secondary">Professional Training</Badge>
-              <Badge variant="secondary">Paint Protection Film</Badge>
-              <Badge variant="secondary">Certification Courses</Badge>
+              <Badge variant="secondary">{t('mobile.home.badge_1')}</Badge>
+              <Badge variant="secondary">{t('mobile.home.badge_2')}</Badge>
+              <Badge variant="secondary">{t('mobile.home.badge_3')}</Badge>
+              <Badge variant="secondary">{t('mobile.home.badge_4')}</Badge>
+              <Badge variant="secondary">{t('mobile.home.badge_5')}</Badge>
             </div>
           </div>
           
           <div>
-            <h3 className="font-semibold">Established</h3>
-            <p className="text-sm text-muted-foreground">Founded in 2020, serving Jerusalem with excellence</p>
+            <h3 className="font-semibold">{t('mobile.home.established_title')}</h3>
+            <p className="text-sm text-muted-foreground">{t('mobile.home.established_text')}</p>
           </div>
         </div>
       </Card>
@@ -202,9 +202,9 @@ export const MobileHome: React.FC = () => {
       {user && (
         <Card className="p-6 space-y-4 bg-primary/5 border-primary/20">
           <div className="text-center space-y-2">
-            <h3 className="text-lg font-semibold">Welcome back!</h3>
+            <h3 className="text-lg font-semibold">{t('mobile.home.welcome_back')}</h3>
             <p className="text-sm text-muted-foreground">
-              Ready to explore our latest services and products?
+              {t('mobile.home.welcome_back_desc')}
             </p>
           </div>
         </Card>

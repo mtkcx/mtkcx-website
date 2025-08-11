@@ -62,16 +62,22 @@ const MobileApp: React.FC = () => {
   const handleShowAuth = () => {
     setShowAuth(true);
     setIsMenuOpen(false);
+    // Scroll to top when opening auth
+    window.scrollTo(0, 0);
   };
 
   const handleShowContact = () => {
     setShowContact(true);
     setIsMenuOpen(false);
+    // Scroll to top when opening contact
+    window.scrollTo(0, 0);
   };
 
   const handleShowAbout = () => {
     setShowAbout(true);
     setIsMenuOpen(false);
+    // Scroll to top when opening about
+    window.scrollTo(0, 0);
   };
 
   const handleTabSwitch = (tab: string) => {
@@ -117,13 +123,13 @@ const MobileApp: React.FC = () => {
 
   const menuItems = [
     { icon: Home, label: t('nav.home'), action: () => handleTabSwitch('home') },
-    { icon: Calculator, label: 'Packages', action: () => handleTabSwitch('calculator') },
-    { icon: Camera, label: 'Get Quote', action: () => handleTabSwitch('photo') },
+    { icon: Calculator, label: t('mobile.nav.packages'), action: () => handleTabSwitch('calculator') },
+    { icon: Camera, label: t('mobile.nav.quote'), action: () => handleTabSwitch('photo') },
     { icon: ShoppingBag, label: t('nav.products'), action: () => handleTabSwitch('products') },
     { icon: BookOpen, label: t('nav.courses'), action: () => handleTabSwitch('courses') },
     { icon: Phone, label: t('nav.contact'), action: handleShowContact },
     { icon: MapPin, label: t('nav.about'), action: handleShowAbout },
-    ...(user ? [{ icon: Shield, label: 'Admin Dashboard', action: () => handleTabSwitch('dashboard') }] : []),
+    ...(user ? [{ icon: Shield, label: t('mobile.nav.admin'), action: () => handleTabSwitch('dashboard') }] : []),
   ];
 
   return (
@@ -279,7 +285,7 @@ const MobileApp: React.FC = () => {
           />
         ) : (
           /* Main Content */
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabSwitch} className="w-full">
             <div className="pb-20">
               <TabsContent value="home" className="m-0">
                 <MobileHome />
@@ -474,7 +480,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
                 >
                   <Calculator className="h-5 w-5" />
-                  <span className="text-xs">Packages</span>
+                  <span className="text-xs">{t('mobile.nav.packages')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
@@ -482,7 +488,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
                 >
                   <Camera className="h-5 w-5" />
-                  <span className="text-xs">Quote</span>
+                  <span className="text-xs">{t('mobile.nav.quote')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
@@ -507,7 +513,7 @@ const MobileApp: React.FC = () => {
                     className="flex-col gap-1 data-[state=active]:bg-primary/10"
                   >
                     <Shield className="h-5 w-5" />
-                    <span className="text-xs">Admin</span>
+                    <span className="text-xs">{t('mobile.nav.admin')}</span>
                   </TabsTrigger>
                 )}
               </TabsList>
