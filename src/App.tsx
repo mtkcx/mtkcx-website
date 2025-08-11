@@ -41,6 +41,7 @@ import SecurityMonitor from "@/components/SecurityMonitor";
 import ScrollToTop from "@/components/ScrollToTop";
 import SecureOrderLookup from "./pages/SecureOrderLookup";
 import SecurityDashboard from "./pages/SecurityDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +84,7 @@ const App = () => (
                  <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
                  <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
                  <Route path="/admin/security" element={<AdminProtectedRoute><SecurityDashboard /></AdminProtectedRoute>} />
+                 <Route path="/admin" element={<AdminDashboard />} />
                  <Route path="/mobile" element={<MobileApp />} />
                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                  <Route path="*" element={<NotFound />} />

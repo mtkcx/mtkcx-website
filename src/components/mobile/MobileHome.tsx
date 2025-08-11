@@ -52,34 +52,34 @@ export const MobileHome: React.FC = () => {
       <Card className="p-6 space-y-4">
         <h2 className="text-2xl font-bold text-center">Who We Are</h2>
         <p className="text-muted-foreground leading-relaxed">
-          MT KCx is Israel's leading vehicle wrapping and detailing company, specializing in premium paint protection films, 
-          custom wraps, and professional detailing services. With years of experience and cutting-edge techniques, 
-          we transform and protect vehicles while maintaining the highest standards of quality.
+          MT KCx stands as Israel's premier destination for automotive excellence, specializing in advanced paint protection films, 
+          custom vehicle wraps, and professional detailing services. As an official Koch-Chemie partner, we combine years of expertise 
+          with cutting-edge techniques and premium materials to transform and protect vehicles while maintaining the highest standards of quality and precision.
         </p>
         
         <div className="grid grid-cols-2 gap-4 mt-6">
           <div className="text-center space-y-2">
-            <div className="text-2xl font-bold text-primary">500+</div>
-            <p className="text-sm text-muted-foreground">Vehicles Wrapped</p>
+            <div className="text-2xl font-bold text-primary">250+</div>
+            <p className="text-sm text-muted-foreground">Premium Products</p>
           </div>
           <div className="text-center space-y-2">
-            <div className="text-2xl font-bold text-primary">5+</div>
-            <p className="text-sm text-muted-foreground">Years Experience</p>
+            <div className="text-2xl font-bold text-primary">1000+</div>
+            <p className="text-sm text-muted-foreground">Satisfied Customers</p>
           </div>
         </div>
       </Card>
 
       {/* Our Services */}
       <Card className="p-6 space-y-4">
-        <h2 className="text-xl font-bold">Our Services</h2>
+        <h2 className="text-xl font-bold">What We Offer</h2>
         
         <div className="space-y-4">
           <div className="flex items-start gap-3">
             <Shield className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-semibold">Paint Protection Film</h3>
+              <h3 className="font-semibold">Koch-Chemie Premium Products</h3>
               <p className="text-sm text-muted-foreground">
-                Premium PPF installation to protect your vehicle's paint from scratches, chips, and environmental damage.
+                Official distributor of Koch-Chemie's complete professional range including polishes, waxes, ceramic coatings, and detailing tools.
               </p>
             </div>
           </div>
@@ -87,9 +87,9 @@ export const MobileHome: React.FC = () => {
           <div className="flex items-start gap-3">
             <Palette className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-semibold">Custom Vehicle Wraps</h3>
+              <h3 className="font-semibold">Professional Vehicle Wrapping</h3>
               <p className="text-sm text-muted-foreground">
-                Complete color changes, custom designs, and commercial branding solutions.
+                Custom vehicle wraps, paint protection film installation, and commercial fleet branding with premium materials and expert craftsmanship.
               </p>
             </div>
           </div>
@@ -97,9 +97,9 @@ export const MobileHome: React.FC = () => {
           <div className="flex items-start gap-3">
             <Zap className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
             <div>
-              <h3 className="font-semibold">Professional Detailing</h3>
+              <h3 className="font-semibold">Professional Training & Education</h3>
               <p className="text-sm text-muted-foreground">
-                Koch-Chemie certified detailing services and training courses.
+                Comprehensive Koch-Chemie certification courses, hands-on training workshops, and professional development programs.
               </p>
             </div>
           </div>
@@ -142,52 +142,62 @@ export const MobileHome: React.FC = () => {
         </div>
       </Card>
 
-      {/* Why Choose Us */}
+      {/* Why Choose MT KCx */}
       <Card className="p-6 space-y-4">
         <h2 className="text-xl font-bold">Why Choose MT KCx?</h2>
         
         <div className="space-y-3">
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Koch-Chemie certified professionals</span>
+            <span className="text-sm">Official Koch-Chemie partnership and certification</span>
           </div>
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Premium materials and equipment</span>
+            <span className="text-sm">Premium German-engineered products and materials</span>
           </div>
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Comprehensive warranties</span>
+            <span className="text-sm">Comprehensive warranties on all services</span>
           </div>
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Personalized customer service</span>
+            <span className="text-sm">Professional training and certification programs</span>
           </div>
           <div className="flex items-center gap-3">
             <CheckCircle className="h-5 w-5 text-green-500" />
-            <span className="text-sm">Competitive pricing in NIS</span>
+            <span className="text-sm">Expert installation and personalized service</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <CheckCircle className="h-5 w-5 text-green-500" />
+            <span className="text-sm">Competitive pricing with transparent costs in NIS</span>
           </div>
         </div>
       </Card>
 
-      {/* Location & Contact */}
+      {/* Visit Our Facility */}
       <Card className="p-6 space-y-4">
         <h2 className="text-xl font-bold">Visit Our Facility</h2>
         
         <div className="space-y-3">
           <div>
             <h3 className="font-semibold">Location</h3>
-            <p className="text-sm text-muted-foreground">Atarot, Jerusalem, Israel</p>
+            <p className="text-sm text-muted-foreground">Atarot Industrial Zone, Jerusalem, Israel</p>
           </div>
           
           <div>
-            <h3 className="font-semibold">Specializations</h3>
+            <h3 className="font-semibold">What We Do</h3>
             <div className="flex flex-wrap gap-2 mt-2">
+              <Badge variant="secondary">Koch-Chemie Products</Badge>
+              <Badge variant="secondary">Vehicle Wrapping Services</Badge>
+              <Badge variant="secondary">Professional Training</Badge>
               <Badge variant="secondary">Paint Protection Film</Badge>
-              <Badge variant="secondary">Vehicle Wraps</Badge>
-              <Badge variant="secondary">Koch-Chemie Training</Badge>
-              <Badge variant="secondary">Professional Detailing</Badge>
+              <Badge variant="secondary">Certification Courses</Badge>
             </div>
+          </div>
+          
+          <div>
+            <h3 className="font-semibold">Established</h3>
+            <p className="text-sm text-muted-foreground">Founded in 2020, serving Israel with excellence</p>
           </div>
         </div>
       </Card>

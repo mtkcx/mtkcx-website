@@ -77,6 +77,8 @@ const MobileApp: React.FC = () => {
   const handleTabSwitch = (tab: string) => {
     setActiveTab(tab);
     setIsMenuOpen(false);
+    // Scroll to top when changing tabs
+    window.scrollTo(0, 0);
   };
 
   const handleLanguageChange = (lang: string) => {
@@ -253,7 +255,10 @@ const MobileApp: React.FC = () => {
               src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
               alt="MT KCx Logo" 
               className="h-16 w-auto cursor-pointer"
-              onClick={() => setActiveTab('home')}
+              onClick={() => {
+                setActiveTab('home');
+                window.scrollTo(0, 0);
+              }}
             />
 
             {/* Cart Button */}
