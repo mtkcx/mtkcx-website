@@ -15,6 +15,7 @@ import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Courses from "./pages/Courses";
+import MobileApp from "./pages/MobileApp";
 import Gallery from "./pages/Gallery";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
@@ -82,6 +83,7 @@ const App = () => (
                  <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
                  <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
                  <Route path="/admin/security" element={<AdminProtectedRoute><SecurityDashboard /></AdminProtectedRoute>} />
+                 <Route path="/mobile" element={<MobileApp />} />
                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                  <Route path="*" element={<NotFound />} />
                </Routes>
