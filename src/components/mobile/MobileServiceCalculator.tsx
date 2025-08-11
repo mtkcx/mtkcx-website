@@ -19,7 +19,6 @@ interface ServicePackage {
   description: string;
   features: string[];
   coverage: string;
-  timeEstimate: string;
   popular?: boolean;
   image: string;
 }
@@ -87,7 +86,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 4500,
           description: 'Basic protection',
           coverage: 'Hood & Bumpers',
-          timeEstimate: '3-4 hours',
           features: ['Front Bumper', 'Rear Bumper', 'Hood']
         },
         {
@@ -96,7 +94,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 5000,
           description: 'Front protection package',
           coverage: 'Full Front',
-          timeEstimate: '4-5 hours',
           features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
         },
         {
@@ -105,7 +102,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 11500,
           description: 'Complete vehicle protection',
           coverage: 'Full Car',
-          timeEstimate: '8-10 hours',
           popular: true,
           features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
         },
@@ -115,7 +111,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 14000,
           description: 'Maximum protection package',
           coverage: 'Complete Coverage',
-          timeEstimate: '10-12 hours',
           features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
         }
       ]
@@ -132,7 +127,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 5200,
           description: 'Basic protection',
           coverage: 'Hood & Bumpers',
-          timeEstimate: '4-5 hours',
           features: ['Front Bumper', 'Rear Bumper', 'Hood']
         },
         {
@@ -141,7 +135,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 5500,
           description: 'Front protection package',
           coverage: 'Full Front',
-          timeEstimate: '5-6 hours',
           features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
         },
         {
@@ -150,7 +143,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 13500,
           description: 'Complete vehicle protection',
           coverage: 'Full Car',
-          timeEstimate: '10-12 hours',
           popular: true,
           features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
         },
@@ -160,7 +152,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 16000,
           description: 'Maximum protection package',
           coverage: 'Complete Coverage',
-          timeEstimate: '12-14 hours',
           features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
         }
       ]
@@ -177,7 +168,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 6000,
           description: 'Basic protection',
           coverage: 'Hood & Bumpers',
-          timeEstimate: '5-6 hours',
           features: ['Front Bumper', 'Rear Bumper', 'Hood']
         },
         {
@@ -186,7 +176,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 6500,
           description: 'Front protection package',
           coverage: 'Full Front',
-          timeEstimate: '6-7 hours',
           features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
         },
         {
@@ -195,7 +184,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 15300,
           description: 'Complete vehicle protection',
           coverage: 'Full Car',
-          timeEstimate: '12-14 hours',
           features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
         },
         {
@@ -204,7 +192,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 18000,
           description: 'Maximum protection package',
           coverage: 'Complete Coverage',
-          timeEstimate: '14-16 hours',
           features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
         }
       ]
@@ -221,7 +208,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 6000,
           description: 'Basic protection',
           coverage: 'Hood & Bumpers',
-          timeEstimate: '5-6 hours',
           features: ['Front Bumper', 'Rear Bumper', 'Hood']
         },
         {
@@ -230,7 +216,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 6500,
           description: 'Front protection package',
           coverage: 'Full Front',
-          timeEstimate: '6-7 hours',
           features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
         },
         {
@@ -239,7 +224,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 14300,
           description: 'Complete vehicle protection',
           coverage: 'Full Car',
-          timeEstimate: '12-14 hours',
           popular: true,
           features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
         },
@@ -249,7 +233,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 17000,
           description: 'Maximum protection package',
           coverage: 'Complete Coverage',
-          timeEstimate: '14-16 hours',
           features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
         }
       ]
@@ -266,7 +249,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 8000,
           description: 'Basic protection',
           coverage: 'Hood & Bumpers',
-          timeEstimate: '6-7 hours',
           features: ['Front Bumper', 'Rear Bumper', 'Hood']
         },
         {
@@ -275,7 +257,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 8500,
           description: 'Front protection package',
           coverage: 'Full Front',
-          timeEstimate: '7-8 hours',
           features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
         },
         {
@@ -284,7 +265,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 17300,
           description: 'Complete vehicle protection',
           coverage: 'Full Car',
-          timeEstimate: '14-16 hours',
           features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
         },
         {
@@ -293,7 +273,6 @@ export const MobileServiceCalculator: React.FC = () => {
           price: 20000,
           description: 'Maximum protection package',
           coverage: 'Complete Coverage',
-          timeEstimate: '16-18 hours',
           features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
         }
       ]
@@ -638,14 +617,10 @@ export const MobileServiceCalculator: React.FC = () => {
                             </Badge>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-4 text-sm mb-3">
+                          <div className="grid grid-cols-1 gap-4 text-sm mb-3">
                             <div>
                               <span className="font-medium text-muted-foreground">Coverage:</span>
                               <div className="font-semibold">{pkg.coverage}</div>
-                            </div>
-                            <div>
-                              <span className="font-medium text-muted-foreground">Time:</span>
-                              <div className="font-semibold">{pkg.timeEstimate}</div>
                             </div>
                           </div>
 

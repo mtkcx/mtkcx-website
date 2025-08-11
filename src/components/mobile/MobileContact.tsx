@@ -216,7 +216,7 @@ export const MobileContact: React.FC<MobileContactProps> = ({
           <img 
             src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
             alt="MTKCx Logo" 
-            className="h-16 w-auto cursor-pointer"
+            className="h-20 w-auto cursor-pointer"
             onClick={() => {
               onTabSwitch('home');
               window.scrollTo(0, 0);
