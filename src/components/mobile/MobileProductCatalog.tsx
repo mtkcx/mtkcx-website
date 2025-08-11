@@ -19,8 +19,11 @@ interface MobileProduct {
   product_code: string;
   image_url: string;
   category: {
+    id: string;
     name: string;
     slug: string;
+    name_he: string;
+    name_ar: string;
   };
   variants: Array<{
     id: string;
@@ -59,8 +62,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           *,
           product_categories!product_categories_product_id_fkey (
             categories!product_categories_category_id_fkey (
+              id,
               name,
-              slug
+              slug,
+              name_he,
+              name_ar
             )
           ),
           product_variants!product_variants_product_id_fkey (
@@ -92,8 +98,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             product_code: product.product_code || '',
             image_url: primaryImage?.image_url || product.image_url || '/placeholder.svg',
             category: {
+              id: category?.id || '',
               name: category?.name || 'Uncategorized',
               slug: category?.slug || 'uncategorized',
+              name_he: category?.name_he || '',
+              name_ar: category?.name_ar || ''
             },
             variants: product.product_variants || []
           };

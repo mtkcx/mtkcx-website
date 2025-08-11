@@ -69,6 +69,60 @@ export const MobileHome: React.FC = () => {
         </div>
       </Card>
 
+      {/* Main Categories */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-bold text-center">Our Main Categories</h2>
+        <div className="grid gap-4">
+          {/* Interior Cleaning */}
+          <Card className="overflow-hidden">
+            <div className="flex items-center gap-4 p-4">
+              <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Shield className="h-8 w-8 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-lg">Interior Cleaning</h3>
+                <p className="text-sm text-muted-foreground">
+                  Professional interior detailing products for complete cabin care
+                </p>
+              </div>
+              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+            </div>
+          </Card>
+
+          {/* Exterior Cleaning */}
+          <Card className="overflow-hidden">
+            <div className="flex items-center gap-4 p-4">
+              <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Zap className="h-8 w-8 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-lg">Exterior Cleaning</h3>
+                <p className="text-sm text-muted-foreground">
+                  Advanced exterior care solutions for spotless vehicle surfaces
+                </p>
+              </div>
+              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+            </div>
+          </Card>
+
+          {/* Polished & Coatings */}
+          <Card className="overflow-hidden">
+            <div className="flex items-center gap-4 p-4">
+              <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
+                <Palette className="h-8 w-8 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-lg">Polished & Coatings</h3>
+                <p className="text-sm text-muted-foreground">
+                  Premium polishes and protective coatings for lasting shine
+                </p>
+              </div>
+              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+            </div>
+          </Card>
+        </div>
+      </div>
+
       {/* Our Services */}
       <Card className="p-6 space-y-4">
         <h2 className="text-xl font-bold">{t('mobile.home.services_title')}</h2>
