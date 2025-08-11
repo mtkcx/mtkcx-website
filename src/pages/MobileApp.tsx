@@ -7,6 +7,8 @@ import { MobileServiceCalculator } from '@/components/mobile/MobileServiceCalcul
 import { MobileProductCatalog } from '@/components/mobile/MobileProductCatalog';
 import { MobileHome } from '@/components/mobile/MobileHome';
 import { MobileCheckout } from '@/components/mobile/MobileCheckout';
+import { MobileDashboard } from '@/components/mobile/MobileDashboard';
+import { MobileEnrollmentDialog } from '@/components/mobile/MobileEnrollmentDialog';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
@@ -25,7 +27,8 @@ import {
   Settings,
   Phone,
   Mail,
-  MapPin
+  MapPin,
+  Shield
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import SEOHead from '@/components/SEOHead';
@@ -39,6 +42,7 @@ const MobileApp: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
   const [showCheckout, setShowCheckout] = useState(false);
+  const [isEnrollmentDialogOpen, setIsEnrollmentDialogOpen] = useState(false);
 
   const handleLogout = async () => {
     await signOut();
@@ -78,6 +82,7 @@ const MobileApp: React.FC = () => {
     { icon: BookOpen, label: 'Courses', action: () => handleTabSwitch('courses') },
     { icon: Phone, label: 'Contact', action: () => handleNavigation('/contact') },
     { icon: MapPin, label: 'About', action: () => handleNavigation('/about') },
+    ...(user ? [{ icon: Shield, label: 'Admin Dashboard', action: () => handleTabSwitch('dashboard') }] : []),
   ];
 
   return (
@@ -184,11 +189,12 @@ const MobileApp: React.FC = () => {
               </SheetContent>
             </Sheet>
 
-            {/* Logo */}
+            {/* Logo - Clickable */}
             <img 
               src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
               alt="MT KCx Logo" 
-              className="h-16 w-auto"
+              className="h-16 w-auto cursor-pointer"
+              onClick={() => setActiveTab('home')}
             />
 
             {/* Cart Button */}
@@ -338,7 +344,10 @@ const MobileApp: React.FC = () => {
                             <span className="text-sm text-muted-foreground">Contact for pricing</span>
                             <div className="font-bold text-primary text-lg">Professional Course</div>
                           </div>
-                          <Button className="bg-primary text-primary-foreground">
+                          <Button 
+                            className="bg-primary text-primary-foreground"
+                            onClick={() => setIsEnrollmentDialogOpen(true)}
+                          >
                             Enroll Now
                           </Button>
                         </div>
@@ -347,6 +356,12 @@ const MobileApp: React.FC = () => {
                   </div>
                 </div>
               </TabsContent>
+
+              {user && (
+                <TabsContent value="dashboard" className="m-0">
+                  <MobileDashboard />
+                </TabsContent>
+              )}
 
               <TabsContent value="photo" className="m-0 p-4">
                 <div className="space-y-6">
@@ -385,8 +400,8 @@ const MobileApp: React.FC = () => {
             </div>
 
             {/* Bottom Navigation */}
-            <div className="fixed bottom-0 left-0 right-0 bg-background border-t">
-              <TabsList className="grid w-full grid-cols-5 bg-transparent h-16 rounded-none">
+            <div className="fixed bottom-0 left-0 right-0 bg-background border-t" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+              <TabsList className={`grid w-full ${user ? 'grid-cols-6' : 'grid-cols-5'} bg-transparent h-16 rounded-none`}>
                 <TabsTrigger 
                   value="home" 
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
@@ -426,8 +441,24 @@ const MobileApp: React.FC = () => {
                   <BookOpen className="h-5 w-5" />
                   <span className="text-xs">Courses</span>
                 </TabsTrigger>
+                
+                {user && (
+                  <TabsTrigger 
+                    value="dashboard" 
+                    className="flex-col gap-1 data-[state=active]:bg-primary/10"
+                  >
+                    <Shield className="h-5 w-5" />
+                    <span className="text-xs">Admin</span>
+                  </TabsTrigger>
+                )}
               </TabsList>
             </div>
+
+            {/* Enrollment Dialog */}
+            <MobileEnrollmentDialog
+              isOpen={isEnrollmentDialogOpen}
+              onClose={() => setIsEnrollmentDialogOpen(false)}
+            />
           </Tabs>
         )}
       </div>
