@@ -30,9 +30,10 @@ interface MobileProduct {
 
 interface MobileProductCatalogProps {
   compact?: boolean;
+  onCheckout?: () => void;
 }
 
-export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = false }) => {
+export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = false, onCheckout }) => {
   const { addToCart, getTotalItems } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -160,7 +161,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   };
 
   const handleGoToCheckout = () => {
-    navigate('/checkout');
+    if (onCheckout) {
+      onCheckout();
+    } else {
+      navigate('/checkout');
+    }
   };
 
   const formatPrice = (price: number) => {
