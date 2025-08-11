@@ -42,6 +42,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import SecureOrderLookup from "./pages/SecureOrderLookup";
 import SecurityDashboard from "./pages/SecurityDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import MobileAdminDashboard from "./pages/MobileAdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -86,6 +87,7 @@ const App = () => (
                  <Route path="/admin/security" element={<AdminProtectedRoute><SecurityDashboard /></AdminProtectedRoute>} />
                  <Route path="/admin" element={<AdminDashboard />} />
                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                 <Route path="/admin/dashboard/mobile" element={<MobileAdminDashboard />} />
                  <Route path="/mobile" element={<MobileApp />} />
                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                  <Route path="*" element={<NotFound />} />
