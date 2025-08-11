@@ -106,21 +106,6 @@ const MobileApp: React.FC = () => {
     );
   }
 
-  // Show auth screen
-  if (showAuth) {
-    return <MobileAuth onBack={() => setShowAuth(false)} />;
-  }
-
-  // Show contact screen
-  if (showContact) {
-    return <MobileContact onBack={() => setShowContact(false)} />;
-  }
-
-  // Show about screen
-  if (showAbout) {
-    return <MobileAbout onBack={() => setShowAbout(false)} />;
-  }
-
   const menuItems = [
     { icon: Home, label: t('nav.home'), action: () => handleTabSwitch('home') },
     { icon: Calculator, label: t('mobile.nav.packages'), action: () => handleTabSwitch('calculator') },
@@ -131,6 +116,39 @@ const MobileApp: React.FC = () => {
     { icon: MapPin, label: t('nav.about'), action: handleShowAbout },
     ...(user ? [{ icon: Shield, label: t('mobile.nav.admin'), action: () => handleTabSwitch('dashboard') }] : []),
   ];
+
+  // Show auth screen
+  if (showAuth) {
+    return <MobileAuth onBack={() => setShowAuth(false)} />;
+  }
+
+  // Show contact screen
+  if (showContact) {
+    return <MobileContact 
+      onBack={() => setShowContact(false)}
+      onTabSwitch={handleTabSwitch}
+      onShowAbout={handleShowAbout}
+      isMenuOpen={isMenuOpen}
+      setIsMenuOpen={setIsMenuOpen}
+      currentLanguage={currentLanguage}
+      handleLanguageChange={handleLanguageChange}
+      menuItems={menuItems}
+    />;
+  }
+
+  // Show about screen
+  if (showAbout) {
+    return <MobileAbout 
+      onBack={() => setShowAbout(false)}
+      onTabSwitch={handleTabSwitch}
+      onShowContact={handleShowContact}
+      isMenuOpen={isMenuOpen}
+      setIsMenuOpen={setIsMenuOpen}
+      currentLanguage={currentLanguage}
+      handleLanguageChange={handleLanguageChange}
+      menuItems={menuItems}
+    />;
+  }
 
   return (
     <>
@@ -157,7 +175,7 @@ const MobileApp: React.FC = () => {
                     <img 
                       src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
                       alt="MTKCx Logo"
-                      className="h-8 w-auto"
+                      className="h-12 w-auto"
                     />
                     Menu
                   </SheetTitle>
@@ -260,7 +278,7 @@ const MobileApp: React.FC = () => {
             <img 
               src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
               alt="MTKCx Logo" 
-              className="h-16 w-auto cursor-pointer"
+              className="h-12 w-auto cursor-pointer"
               onClick={() => {
                 setActiveTab('home');
                 window.scrollTo(0, 0);

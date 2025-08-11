@@ -13,15 +13,42 @@ import {
   CheckCircle,
   MapPin,
   Calendar,
-  ArrowLeft
+  ArrowLeft,
+  Menu,
+  Globe
 } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useCart } from '@/contexts/CartContext';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import CartButton from '@/components/CartButton';
 
 interface MobileAboutProps {
   onBack: () => void;
+  onTabSwitch: (tab: string) => void;
+  onShowContact: () => void;
+  isMenuOpen: boolean;
+  setIsMenuOpen: (open: boolean) => void;
+  currentLanguage: string;
+  handleLanguageChange: (lang: string) => void;
+  menuItems: Array<{
+    icon: any;
+    label: string;
+    action: () => void;
+  }>;
 }
 
-export const MobileAbout: React.FC<MobileAboutProps> = ({ onBack }) => {
+export const MobileAbout: React.FC<MobileAboutProps> = ({ 
+  onBack, 
+  onTabSwitch, 
+  onShowContact, 
+  isMenuOpen, 
+  setIsMenuOpen, 
+  currentLanguage, 
+  handleLanguageChange, 
+  menuItems 
+}) => {
   const { t, isRTL } = useLanguage();
   
   const achievements = [
@@ -48,20 +75,93 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({ onBack }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-background p-4" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="max-w-md mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <Button variant="ghost" size="sm" onClick={onBack}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
-          </Button>
+    <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
+      {/* Header with Menu */}
+      <div className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
+        <div className="flex items-center justify-between p-4">
+          {/* Hamburger Menu */}
+          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-80">
+              <SheetHeader>
+                <SheetTitle className="flex items-center gap-2">
+                  <img 
+                    src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
+                    alt="MTKCx Logo"
+                    className="h-12 w-auto"
+                  />
+                  Menu
+                </SheetTitle>
+              </SheetHeader>
+              
+              <div className="space-y-4 mt-6">
+                {/* Language Selector */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 px-3">
+                    <Globe className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Language</span>
+                  </div>
+                  <Select value={currentLanguage} onValueChange={handleLanguageChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="ar">العربية</SelectItem>
+                      <SelectItem value="he">עברית</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Separator />
+
+                {/* Menu Items */}
+                <div className="space-y-2">
+                  {menuItems.map((item, index) => {
+                    const IconComponent = item.icon;
+                    return (
+                      <Button
+                        key={index}
+                        variant="ghost"
+                        className="w-full justify-start"
+                        onClick={() => {
+                          item.action();
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <IconComponent className="h-4 w-4 mr-3" />
+                        {item.label}
+                      </Button>
+                    );
+                  })}
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* Logo - Clickable */}
           <img 
             src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
             alt="MTKCx Logo" 
-            className="h-8 w-auto"
+            className="h-12 w-auto cursor-pointer"
+            onClick={() => {
+              onTabSwitch('home');
+              window.scrollTo(0, 0);
+            }}
           />
+
+          {/* Cart Button */}
+          <div className="relative">
+            <CartButton />
+          </div>
         </div>
+      </div>
+
+      <div className="max-w-md mx-auto space-y-6 p-4">
 
         {/* Hero Section */}
         <div className="text-center space-y-4">
