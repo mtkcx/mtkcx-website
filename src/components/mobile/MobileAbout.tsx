@@ -50,6 +50,19 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-background p-4" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-md mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" size="sm" onClick={onBack}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+          <img 
+            src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
+            alt="MTKCx Logo" 
+            className="h-8 w-auto"
+          />
+        </div>
+
         {/* Hero Section */}
         <div className="text-center space-y-4">
           <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
@@ -66,7 +79,7 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({ onBack }) => {
           <div className="relative h-48">
             <img
               src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png"
-              alt="MT Wraps professional automotive facility"
+              alt="MTKCx professional automotive facility"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

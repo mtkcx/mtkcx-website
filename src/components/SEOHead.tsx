@@ -22,9 +22,9 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   structuredData
 }) => {
   const { currentLanguage } = useLanguage();
-  const defaultTitle = 'Koch-Chemie Professional Car Care Products | MT Wraps - Official Distributor';
+  const defaultTitle = 'Koch-Chemie Professional Car Care Products | MTKCx - Official Distributor';
   const defaultDescription = 'Official Koch-Chemie distributor offering premium German car detailing products, professional training courses, and expert car wrapping services. Shop authentic Koch-Chemie products online.';
-  const defaultKeywords = 'koch chemie, car detailing, automotive cleaning, professional car care, german car products, car wrapping, detailing training, MT Wraps';
+  const defaultKeywords = 'koch chemie, car detailing, automotive cleaning, professional car care, german car products, car wrapping, detailing training, MTKCx';
   const defaultImage = 'https://kochchemie-east-hub.lovable.app/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png';
   const baseUrl = 'https://kochchemie-east-hub.lovable.app';
 
@@ -50,7 +50,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta property="og:image" content={finalImage} />
       <meta property="og:url" content={finalUrl} />
       <meta property="og:type" content={type} />
-      <meta property="og:site_name" content="MT Wraps" />
+      <meta property="og:site_name" content="MTKCx" />
       <meta property="og:locale" content={currentLanguage === 'ar' ? 'ar_SA' : currentLanguage === 'he' ? 'he_IL' : 'en_US'} />
 
       {/* Twitter Card Meta Tags */}
