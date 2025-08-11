@@ -76,204 +76,204 @@ export const MobileServiceCalculator: React.FC = () => {
   const vehicleSizes: VehicleSize[] = [
     {
       id: 'small',
-      name: 'Small Vehicle',
-      description: 'Perfect for compact cars',
+      name: t('mobile.services.small_vehicle'),
+      description: t('mobile.services.small_description'),
       image: '/lovable-uploads/e3007686-384d-48f1-8701-5abb7189c19a.png',
       packages: [
         {
           id: 'small-hood-bumpers',
-          name: 'Hood & Bumpers',
+          name: t('mobile.services.hood_bumpers'),
           price: 4500,
-          description: 'Basic protection',
-          coverage: 'Hood & Bumpers',
-          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+          description: t('mobile.services.hood_bumpers_desc'),
+          coverage: t('mobile.services.hood_bumpers_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.rear_bumper'), t('mobile.services.hood')]
         },
         {
           id: 'small-full-front',
-          name: 'Full Front',
+          name: t('mobile.services.full_front'),
           price: 5000,
-          description: 'Front protection package',
-          coverage: 'Full Front',
-          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+          description: t('mobile.services.full_front_desc'),
+          coverage: t('mobile.services.full_front_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.front_fenders'), t('mobile.services.hood'), t('mobile.services.headlights'), t('mobile.services.mirrors')]
         },
         {
           id: 'small-full-car',
-          name: 'Full Car',
+          name: t('mobile.services.full_car'),
           price: 11500,
-          description: 'Complete vehicle protection',
-          coverage: 'Full Car',
+          description: t('mobile.services.full_car_desc'),
+          coverage: t('mobile.services.full_car_coverage'),
           popular: true,
-          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+          features: [t('mobile.services.all_body_panels'), t('mobile.services.fenders'), t('mobile.services.side_pillars'), t('mobile.services.hood'), t('mobile.services.trunk'), t('mobile.services.doors')]
         },
         {
           id: 'small-complete',
-          name: 'Complete Coverage',
+          name: t('mobile.services.complete_coverage'),
           price: 14000,
-          description: 'Maximum protection package',
-          coverage: 'Complete Coverage',
-          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+          description: t('mobile.services.complete_coverage_desc'),
+          coverage: t('mobile.services.complete_coverage_coverage'),
+          features: [t('mobile.services.full_car'), t('mobile.services.roof'), t('mobile.services.lights'), t('mobile.services.mirrors')]
         }
       ]
     },
     {
       id: 'medium',
-      name: 'Medium Vehicle',
-      description: 'Ideal for SUVs and larger sedans',
+      name: t('mobile.services.medium_vehicle'),
+      description: t('mobile.services.medium_description'),
       image: '/lovable-uploads/b6c55eb0-1bae-416c-9423-91c12502da3e.png',
       packages: [
         {
           id: 'medium-hood-bumpers',
-          name: 'Hood & Bumpers',
+          name: t('mobile.services.hood_bumpers'),
           price: 5200,
-          description: 'Basic protection',
-          coverage: 'Hood & Bumpers',
-          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+          description: t('mobile.services.hood_bumpers_desc'),
+          coverage: t('mobile.services.hood_bumpers_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.rear_bumper'), t('mobile.services.hood')]
         },
         {
           id: 'medium-full-front',
-          name: 'Full Front',
+          name: t('mobile.services.full_front'),
           price: 5500,
-          description: 'Front protection package',
-          coverage: 'Full Front',
-          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+          description: t('mobile.services.full_front_desc'),
+          coverage: t('mobile.services.full_front_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.front_fenders'), t('mobile.services.hood'), t('mobile.services.headlights'), t('mobile.services.mirrors')]
         },
         {
           id: 'medium-full-car',
-          name: 'Full Car',
+          name: t('mobile.services.full_car'),
           price: 13500,
-          description: 'Complete vehicle protection',
-          coverage: 'Full Car',
+          description: t('mobile.services.full_car_desc'),
+          coverage: t('mobile.services.full_car_coverage'),
           popular: true,
-          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+          features: [t('mobile.services.all_body_panels'), t('mobile.services.fenders'), t('mobile.services.side_pillars'), t('mobile.services.hood'), t('mobile.services.trunk'), t('mobile.services.doors')]
         },
         {
           id: 'medium-complete',
-          name: 'Complete Coverage',
+          name: t('mobile.services.complete_coverage'),
           price: 16000,
-          description: 'Maximum protection package',
-          coverage: 'Complete Coverage',
-          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+          description: t('mobile.services.complete_coverage_desc'),
+          coverage: t('mobile.services.complete_coverage_coverage'),
+          features: [t('mobile.services.full_car'), t('mobile.services.roof'), t('mobile.services.lights'), t('mobile.services.mirrors')]
         }
       ]
     },
     {
       id: 'large',
-      name: 'Large Vehicle',
-      description: 'For trucks and large SUVs',
+      name: t('mobile.services.large_vehicle'),
+      description: t('mobile.services.large_description'),
       image: '/lovable-uploads/a9121f45-a22a-4a93-b147-5c6d1d3c31a4.png',
       packages: [
         {
           id: 'large-hood-bumpers',
-          name: 'Hood & Bumpers',
+          name: t('mobile.services.hood_bumpers'),
           price: 6000,
-          description: 'Basic protection',
-          coverage: 'Hood & Bumpers',
-          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+          description: t('mobile.services.hood_bumpers_desc'),
+          coverage: t('mobile.services.hood_bumpers_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.rear_bumper'), t('mobile.services.hood')]
         },
         {
           id: 'large-full-front',
-          name: 'Full Front',
+          name: t('mobile.services.full_front'),
           price: 6500,
-          description: 'Front protection package',
-          coverage: 'Full Front',
-          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+          description: t('mobile.services.full_front_desc'),
+          coverage: t('mobile.services.full_front_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.front_fenders'), t('mobile.services.hood'), t('mobile.services.headlights'), t('mobile.services.mirrors')]
         },
         {
           id: 'large-full-car',
-          name: 'Full Car',
+          name: t('mobile.services.full_car'),
           price: 15300,
-          description: 'Complete vehicle protection',
-          coverage: 'Full Car',
-          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+          description: t('mobile.services.full_car_desc'),
+          coverage: t('mobile.services.full_car_coverage'),
+          features: [t('mobile.services.all_body_panels'), t('mobile.services.fenders'), t('mobile.services.side_pillars'), t('mobile.services.hood'), t('mobile.services.trunk'), t('mobile.services.doors')]
         },
         {
           id: 'large-complete',
-          name: 'Complete Coverage',
+          name: t('mobile.services.complete_coverage'),
           price: 18000,
-          description: 'Maximum protection package',
-          coverage: 'Complete Coverage',
-          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+          description: t('mobile.services.complete_coverage_desc'),
+          coverage: t('mobile.services.complete_coverage_coverage'),
+          features: [t('mobile.services.full_car'), t('mobile.services.roof'), t('mobile.services.lights'), t('mobile.services.mirrors')]
         }
       ]
     },
     {
       id: 'sport',
-      name: 'Sport Vehicle',
-      description: 'Premium sports car treatment',
+      name: t('mobile.services.sport_vehicle'),
+      description: t('mobile.services.sport_description'),
       image: '/lovable-uploads/d8dbc27b-44d0-45d2-9523-5ebbf8bc6b49.png',
       packages: [
         {
           id: 'sport-hood-bumpers',
-          name: 'Hood & Bumpers',
+          name: t('mobile.services.hood_bumpers'),
           price: 6000,
-          description: 'Basic protection',
-          coverage: 'Hood & Bumpers',
-          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+          description: t('mobile.services.hood_bumpers_desc'),
+          coverage: t('mobile.services.hood_bumpers_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.rear_bumper'), t('mobile.services.hood')]
         },
         {
           id: 'sport-full-front',
-          name: 'Full Front',
+          name: t('mobile.services.full_front'),
           price: 6500,
-          description: 'Front protection package',
-          coverage: 'Full Front',
-          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+          description: t('mobile.services.full_front_desc'),
+          coverage: t('mobile.services.full_front_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.front_fenders'), t('mobile.services.hood'), t('mobile.services.headlights'), t('mobile.services.mirrors')]
         },
         {
           id: 'sport-full-car',
-          name: 'Full Car',
+          name: t('mobile.services.full_car'),
           price: 14300,
-          description: 'Complete vehicle protection',
-          coverage: 'Full Car',
+          description: t('mobile.services.full_car_desc'),
+          coverage: t('mobile.services.full_car_coverage'),
           popular: true,
-          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+          features: [t('mobile.services.all_body_panels'), t('mobile.services.fenders'), t('mobile.services.side_pillars'), t('mobile.services.hood'), t('mobile.services.trunk'), t('mobile.services.doors')]
         },
         {
           id: 'sport-complete',
-          name: 'Complete Coverage',
+          name: t('mobile.services.complete_coverage'),
           price: 17000,
-          description: 'Maximum protection package',
-          coverage: 'Complete Coverage',
-          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+          description: t('mobile.services.complete_coverage_desc'),
+          coverage: t('mobile.services.complete_coverage_coverage'),
+          features: [t('mobile.services.full_car'), t('mobile.services.roof'), t('mobile.services.lights'), t('mobile.services.mirrors')]
         }
       ]
     },
     {
       id: 'xlarge',
-      name: 'X-Large Vehicle',
-      description: 'For oversized vehicles and fleet',
+      name: t('mobile.services.xlarge_vehicle'),
+      description: t('mobile.services.xlarge_description'),
       image: '/lovable-uploads/145cd8d5-1a51-41fd-b825-3197cfaa948f.png',
       packages: [
         {
           id: 'xlarge-hood-bumpers',
-          name: 'Hood & Bumpers',
+          name: t('mobile.services.hood_bumpers'),
           price: 8000,
-          description: 'Basic protection',
-          coverage: 'Hood & Bumpers',
-          features: ['Front Bumper', 'Rear Bumper', 'Hood']
+          description: t('mobile.services.hood_bumpers_desc'),
+          coverage: t('mobile.services.hood_bumpers_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.rear_bumper'), t('mobile.services.hood')]
         },
         {
           id: 'xlarge-full-front',
-          name: 'Full Front',
+          name: t('mobile.services.full_front'),
           price: 8500,
-          description: 'Front protection package',
-          coverage: 'Full Front',
-          features: ['Front Bumper', 'Front Fenders', 'Hood', 'Headlights', 'Mirrors']
+          description: t('mobile.services.full_front_desc'),
+          coverage: t('mobile.services.full_front_coverage'),
+          features: [t('mobile.services.front_bumper'), t('mobile.services.front_fenders'), t('mobile.services.hood'), t('mobile.services.headlights'), t('mobile.services.mirrors')]
         },
         {
           id: 'xlarge-full-car',
-          name: 'Full Car',
+          name: t('mobile.services.full_car'),
           price: 17300,
-          description: 'Complete vehicle protection',
-          coverage: 'Full Car',
-          features: ['All body panels', 'Fenders', 'Side Pillars', 'Hood', 'Trunk', 'Doors']
+          description: t('mobile.services.full_car_desc'),
+          coverage: t('mobile.services.full_car_coverage'),
+          features: [t('mobile.services.all_body_panels'), t('mobile.services.fenders'), t('mobile.services.side_pillars'), t('mobile.services.hood'), t('mobile.services.trunk'), t('mobile.services.doors')]
         },
         {
           id: 'xlarge-complete',
-          name: 'Complete Coverage',
+          name: t('mobile.services.complete_coverage'),
           price: 20000,
-          description: 'Maximum protection package',
-          coverage: 'Complete Coverage',
-          features: ['Full Car', 'Roof', 'Lights', 'Mirrors']
+          description: t('mobile.services.complete_coverage_desc'),
+          coverage: t('mobile.services.complete_coverage_coverage'),
+          features: [t('mobile.services.full_car'), t('mobile.services.roof'), t('mobile.services.lights'), t('mobile.services.mirrors')]
         }
       ]
     }

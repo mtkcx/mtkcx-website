@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { BookOpen, User, Mail, Phone } from 'lucide-react';
 
 interface MobileEnrollmentDialogProps {
@@ -25,14 +26,15 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !formData.phone) {
       toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields",
+        title: t('mobile.enrollment.missing_info'),
+        description: t('mobile.enrollment.fill_required'),
         variant: "destructive",
       });
       return;
@@ -56,8 +58,8 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
       }
 
       toast({
-        title: "Enrollment Submitted!",
-        description: "We'll contact you soon with course details and scheduling information.",
+        title: t('mobile.enrollment.success'),
+        description: t('mobile.enrollment.success_desc'),
       });
 
       // Reset form and close dialog
@@ -72,8 +74,8 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
     } catch (error: any) {
       console.error('Enrollment error:', error);
       toast({
-        title: "Enrollment Failed",
-        description: error.message || "There was an error submitting your enrollment. Please try again.",
+        title: t('mobile.enrollment.failed'),
+        description: error.message || t('mobile.enrollment.error_desc'),
         variant: "destructive",
       });
     } finally {
@@ -91,7 +93,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-primary" />
-            Enroll in Course
+            {t('mobile.enrollment.title')}
           </DialogTitle>
         </DialogHeader>
 
@@ -99,13 +101,13 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
           <div className="space-y-2">
             <Label htmlFor="name" className="flex items-center gap-2">
               <User className="h-4 w-4" />
-              Full Name *
+              {t('mobile.enrollment.full_name')} *
             </Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              placeholder="Enter your full name"
+              placeholder={t('auth.enter_full_name')}
               required
             />
           </div>
@@ -113,14 +115,14 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
           <div className="space-y-2">
             <Label htmlFor="email" className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
-              Email Address *
+              {t('mobile.enrollment.email')} *
             </Label>
             <Input
               id="email"
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
-              placeholder="Enter your email"
+              placeholder={t('auth.enter_email')}
               required
             />
           </div>
@@ -128,32 +130,32 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
           <div className="space-y-2">
             <Label htmlFor="phone" className="flex items-center gap-2">
               <Phone className="h-4 w-4" />
-              Phone Number *
+              {t('mobile.enrollment.phone')} *
             </Label>
             <Input
               id="phone"
               type="tel"
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
-              placeholder="Enter your phone number"
+              placeholder={t('auth.enter_phone')}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="course_type">Course Type</Label>
+            <Label htmlFor="course_type">{t('mobile.enrollment.course_type')}</Label>
             <Select
               value={formData.course_type}
               onValueChange={(value) => handleInputChange('course_type', value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select course type" />
+                <SelectValue placeholder={t('mobile.enrollment.course_type')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="professional_detailing">Professional Detailing</SelectItem>
-                <SelectItem value="paint_correction">Paint Correction</SelectItem>
-                <SelectItem value="ppf_installation">PPF Installation</SelectItem>
-                <SelectItem value="vehicle_wrapping">Vehicle Wrapping</SelectItem>
+                <SelectItem value="professional_detailing">{t('mobile.enrollment.professional_detailing')}</SelectItem>
+                <SelectItem value="paint_correction">{t('mobile.enrollment.paint_correction')}</SelectItem>
+                <SelectItem value="ppf_installation">{t('mobile.enrollment.ppf_installation')}</SelectItem>
+                <SelectItem value="vehicle_wrapping">{t('mobile.enrollment.vehicle_wrapping')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -164,7 +166,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
               className="w-full"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit Enrollment'}
+              {isSubmitting ? t('mobile.enrollment.submitting') : t('mobile.enrollment.submit')}
             </Button>
             <Button
               type="button"
@@ -172,7 +174,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
               onClick={onClose}
               className="w-full"
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
           </DialogFooter>
         </form>
