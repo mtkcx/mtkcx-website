@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Calculator, Camera, CheckCircle, Plus, Minus, Upload, Phone, Mail, User } from 'lucide-react';
+import { Calculator, Camera, CheckCircle, Plus, Minus, Upload, Phone, Mail, User, Eye } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -72,6 +72,8 @@ export const MobileServiceCalculator: React.FC = () => {
     carImage: null
   });
   const [isQuoteDialogOpen, setIsQuoteDialogOpen] = useState(false);
+  const [selectedImageForView, setSelectedImageForView] = useState<string | null>(null);
+  const [imageViewDialogOpen, setImageViewDialogOpen] = useState(false);
 
   const vehicleSizes: VehicleSize[] = [
     {
@@ -283,85 +285,90 @@ export const MobileServiceCalculator: React.FC = () => {
     {
       id: 'front-bumper',
       name: 'Front Bumper',
-      image: '/lovable-uploads/8093c693-7d1d-42cc-a953-c5bf760ad293.png',
+      image: '/lovable-uploads/8c8b384c-6ddd-47ac-97fd-ef1686e3fff0.png',
       prices: { small: 1500, medium: 1700, large: 2000, sport: 2000, xlarge: 2300 }
     },
     {
       id: 'rear-bumper',
       name: 'Rear Bumper',
-      image: '/lovable-uploads/8093c693-7d1d-42cc-a953-c5bf760ad293.png',
+      image: '/lovable-uploads/8c8b384c-6ddd-47ac-97fd-ef1686e3fff0.png',
       prices: { small: 1500, medium: 1700, large: 2000, sport: 2000, xlarge: 2300 }
     },
     {
       id: 'front-fender',
       name: 'Front Fender',
-      image: '/lovable-uploads/8093c693-7d1d-42cc-a953-c5bf760ad293.png',
+      image: '/lovable-uploads/8c8b384c-6ddd-47ac-97fd-ef1686e3fff0.png',
       prices: { small: 600, medium: 750, large: 850, sport: 750, xlarge: 950 }
     },
     {
       id: 'rear-fender',
       name: 'Rear Fender',
-      image: '/lovable-uploads/8093c693-7d1d-42cc-a953-c5bf760ad293.png',
+      image: '/lovable-uploads/8c8b384c-6ddd-47ac-97fd-ef1686e3fff0.png',
       prices: { small: 1500, medium: 2000, large: 2300, sport: 2000, xlarge: 2300 }
     },
     {
       id: 'trunk',
       name: 'Trunk',
-      image: '/lovable-uploads/8093c693-7d1d-42cc-a953-c5bf760ad293.png',
+      image: '/lovable-uploads/8c8b384c-6ddd-47ac-97fd-ef1686e3fff0.png',
       prices: { small: 1000, medium: 1200, large: 1400, sport: 1200, xlarge: 1500 }
     },
     {
       id: 'hood',
       name: 'Hood',
-      image: '/lovable-uploads/8093c693-7d1d-42cc-a953-c5bf760ad293.png',
+      image: '/lovable-uploads/8c8b384c-6ddd-47ac-97fd-ef1686e3fff0.png',
       prices: { small: 1500, medium: 1800, large: 2000, sport: 2000, xlarge: 2300 }
     },
     {
       id: 'door',
       name: 'Door',
-      image: '/lovable-uploads/8093c693-7d1d-42cc-a953-c5bf760ad293.png',
+      image: '/lovable-uploads/8c8b384c-6ddd-47ac-97fd-ef1686e3fff0.png',
       prices: { small: 1000, medium: 1200, large: 1300, sport: 1200, xlarge: 1400 }
     },
     {
       id: 'roof',
       name: 'Roof',
-      image: '/lovable-uploads/8093c693-7d1d-42cc-a953-c5bf760ad293.png',
+      image: '/lovable-uploads/8c8b384c-6ddd-47ac-97fd-ef1686e3fff0.png',
       prices: { small: 1500, medium: 1800, large: 2000, sport: 1800, xlarge: 2300 }
     },
     {
       id: 'headlights',
       name: 'Headlights',
-      image: '/lovable-uploads/c3ed6ff6-3bf3-4569-a0fe-ec927c126aaf.png',
+      image: '/lovable-uploads/e0d5e1b3-b756-477b-a944-69fd6e8c3b79.png',
       prices: { small: 500, medium: 500, large: 500, sport: 500, xlarge: 500 }
     },
     {
       id: 'mirrors',
       name: 'Mirrors',
-      image: '/lovable-uploads/c3ed6ff6-3bf3-4569-a0fe-ec927c126aaf.png',
+      image: '/lovable-uploads/e0d5e1b3-b756-477b-a944-69fd6e8c3b79.png',
       prices: { small: 500, medium: 500, large: 500, sport: 500, xlarge: 500 }
     },
     {
       id: 'rocker-panel',
       name: 'Rocker Panel',
-      image: '/lovable-uploads/c3ed6ff6-3bf3-4569-a0fe-ec927c126aaf.png',
+      image: '/lovable-uploads/e0d5e1b3-b756-477b-a944-69fd6e8c3b79.png',
       prices: { small: 500, medium: 500, large: 500, sport: 500, xlarge: 500 }
     },
     {
       id: 'fender-guard',
       name: 'Fender Guard',
-      image: '/lovable-uploads/c3ed6ff6-3bf3-4569-a0fe-ec927c126aaf.png',
+      image: '/lovable-uploads/e0d5e1b3-b756-477b-a944-69fd6e8c3b79.png',
       prices: { small: 500, medium: 500, large: 500, sport: 500, xlarge: 500 }
     },
     {
       id: 'rear-roof',
       name: 'Rear Roof',
-      image: '/lovable-uploads/c3ed6ff6-3bf3-4569-a0fe-ec927c126aaf.png',
+      image: '/lovable-uploads/e0d5e1b3-b756-477b-a944-69fd6e8c3b79.png',
       prices: { small: 500, medium: 500, large: 500, sport: 500, xlarge: 500 }
     }
   ];
 
   const handleSelectPackage = (packageId: string) => {
     setSelectedPackage(packageId);
+  };
+
+  const handleViewImage = (imageUrl: string) => {
+    setSelectedImageForView(imageUrl);
+    setImageViewDialogOpen(true);
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -580,6 +587,17 @@ export const MobileServiceCalculator: React.FC = () => {
                           alt={vehicleSize.name}
                           className="w-full h-full object-cover"
                         />
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          className="absolute top-1 right-1 h-6 w-6 p-0"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleViewImage(vehicleSize.image);
+                          }}
+                        >
+                          <Eye className="h-3 w-3" />
+                        </Button>
                       </div>
                       <div className="flex-1 text-left">
                         <h3 className="font-bold text-lg">{vehicleSize.name}</h3>
@@ -689,11 +707,28 @@ export const MobileServiceCalculator: React.FC = () => {
               return (
                 <Card key={`${part.id}-${selectedVehicleSize}`} className="p-4">
                   <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-semibold">{part.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        ₪{partPrice.toLocaleString()} per piece
-                      </p>
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden">
+                        <img
+                          src={part.image}
+                          alt={part.name}
+                          className="w-full h-full object-cover"
+                        />
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          className="absolute top-0 right-0 h-4 w-4 p-0"
+                          onClick={() => handleViewImage(part.image)}
+                        >
+                          <Eye className="h-2 w-2" />
+                        </Button>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold">{part.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          ₪{partPrice.toLocaleString()} per piece
+                        </p>
+                      </div>
                     </div>
                     
                     <div className="flex items-center gap-3">
@@ -775,6 +810,24 @@ export const MobileServiceCalculator: React.FC = () => {
       </Card>
 
       <QuoteDialog />
+
+      {/* Image View Dialog */}
+      <Dialog open={imageViewDialogOpen} onOpenChange={setImageViewDialogOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>View Image</DialogTitle>
+          </DialogHeader>
+          {selectedImageForView && (
+            <div className="flex justify-center">
+              <img
+                src={selectedImageForView}
+                alt="Part Image"
+                className="max-w-full max-h-96 object-contain rounded-lg"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -296,10 +296,6 @@ const MobileApp: React.FC = () => {
         {showCheckout ? (
           <MobileCheckout
             onBack={() => setShowCheckout(false)}
-            onPaymentSuccess={() => {
-              setShowCheckout(false);
-              setActiveTab('home');
-            }}
           />
         ) : (
           /* Main Content */

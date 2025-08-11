@@ -166,7 +166,9 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     if (onCheckout) {
       onCheckout();
     } else {
-      navigate('/checkout');
+      // Don't navigate to external checkout, use the mobile checkout component
+      // This will be handled by the parent component
+      onCheckout && onCheckout();
     }
   };
 
