@@ -395,8 +395,8 @@ export const MobileServiceCalculator: React.FC = () => {
   const handleSubmitQuote = () => {
     if (!quoteForm.name || !quoteForm.phone || !quoteForm.email) {
       toast({
-        title: 'Missing Information',
-        description: 'Please fill in all required fields',
+        title: t('quote.missing_information'),
+        description: t('quote.fill_required_fields'),
         variant: 'destructive'
       });
       return;
@@ -404,8 +404,8 @@ export const MobileServiceCalculator: React.FC = () => {
 
     // Here you would typically send the quote request to your backend
     toast({
-      title: 'Quote Requested',
-      description: 'We\'ll contact you within 24 hours with your personalized quote',
+      title: t('quote.request_submitted'),
+      description: t('quote.contact_within_24h'),
     });
 
     // Reset form and close dialog
@@ -472,7 +472,7 @@ export const MobileServiceCalculator: React.FC = () => {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Camera className="h-5 w-5" />
-            Request Quote
+            {t('quote.request_title')}
           </DialogTitle>
         </DialogHeader>
         
@@ -575,17 +575,17 @@ export const MobileServiceCalculator: React.FC = () => {
       <div className="text-center space-y-2">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Calculator className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">MT Wraps Packages</h2>
+          <h2 className="text-2xl font-bold">{t('mobile.services.calculator_title')}</h2>
         </div>
         <p className="text-muted-foreground">
-          Get accurate quotes for your vehicle wrapping needs
+          {t('mobile.services.get_accurate_quotes')}
         </p>
       </div>
 
       <Tabs defaultValue="packages" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="packages">Service Packages</TabsTrigger>
-          <TabsTrigger value="parts">Individual Parts</TabsTrigger>
+          <TabsTrigger value="packages">{t('mobile.services.packages')}</TabsTrigger>
+          <TabsTrigger value="parts">{t('mobile.services.parts_pricing')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="packages" className="space-y-4">
@@ -686,7 +686,7 @@ export const MobileServiceCalculator: React.FC = () => {
         <TabsContent value="parts" className="space-y-4">
           {/* Vehicle Size Selector */}
           <Card className="p-4">
-            <h3 className="font-semibold mb-3">Select Vehicle Size</h3>
+            <h3 className="font-semibold mb-3">{t('mobile.services.vehicle_size')}</h3>
             <div className="grid grid-cols-5 gap-2">
               {['small', 'medium', 'large', 'sport', 'xlarge'].map((size) => (
                 <Button

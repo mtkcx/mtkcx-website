@@ -304,6 +304,10 @@ const translations = {
     'quote.message_placeholder': 'Tell us more about your project requirements...',
     'quote.submitting': 'Submitting...',
     'quote.submit_request': 'Submit Request',
+    'quote.missing_information': 'Missing Information',
+    'quote.fill_required_fields': 'Please fill in all required fields',
+    'quote.request_submitted': 'Quote Requested',
+    'quote.contact_within_24h': 'We\'ll contact you within 24 hours with your personalized quote',
 
     // Enrollment Dialog
     'enrollment.dialog_title': 'Course Enrollment Request',
@@ -317,6 +321,34 @@ const translations = {
     'enrollment.submit': 'Submit Request',
     'enrollment.submitting': 'Submitting...',
     'enrollment.success_title': 'Request Submitted!',
+
+    // Mobile Products translations
+    'mobile.products.title': 'Koch-Chemie Products',
+    'mobile.products.search_placeholder': 'Search products...',
+    'mobile.products.add_to_cart': 'Add to Cart',
+    'mobile.products.checkout': 'Checkout',
+    'mobile.products.added_to_cart': 'Added to Cart',
+    'mobile.products.added_description': 'added to cart',
+    'mobile.products.failed_to_load': 'Failed to load products',
+    'mobile.products.cart_ready': 'Cart Ready',
+    'mobile.products.items_text': 'items in your cart',
+
+    // Mobile Service Calculator translations
+    'mobile.services.calculator_title': 'MT Wraps Packages',
+    'mobile.services.get_accurate_quotes': 'Get accurate quotes for your vehicle wrapping needs',
+    'mobile.services.packages': 'Service Packages',
+    'mobile.services.custom_quote': 'Custom Quote',
+    'mobile.services.parts_pricing': 'Individual Parts',
+    'mobile.services.select_parts': 'Select Parts',
+    'mobile.services.vehicle_size': 'Select Vehicle Size',
+    'mobile.services.get_quote': 'Get Quote',
+    'mobile.services.total_estimate': 'Total Estimate',
+    
+    // Mobile Courses translations
+    'mobile.courses.title': 'Training Courses',
+    'mobile.courses.enroll_now': 'Enroll Now',
+    'mobile.courses.course_details': 'Course Details',
+    'mobile.courses.certification': 'Professional Certification',
     'enrollment.success_message': 'Thank you for your interest! We\'ll contact you within 24 hours about the Koch Chemie Professional Detailing & Polishing Certification.',
     'enrollment.error_message': 'Failed to submit enrollment request. Please try again.',
     'enrollment.fill_all_fields': 'Please fill in all required fields.',
@@ -1786,6 +1818,40 @@ const translations = {
     'admin.orders.table.quantity': 'الكمية',
     'admin.orders.table.unit_price': 'سعر الوحدة',
     'admin.orders.table.total': 'المجموع',
+
+    // Mobile Products translations
+    'mobile.products.title': 'منتجات Koch-Chemie',
+    'mobile.products.search_placeholder': 'البحث في المنتجات...',
+    'mobile.products.add_to_cart': 'أضف إلى السلة',
+    'mobile.products.checkout': 'الدفع',
+    'mobile.products.added_to_cart': 'تمت الإضافة إلى السلة',
+    'mobile.products.added_description': 'تم إضافته إلى السلة',
+    'mobile.products.failed_to_load': 'فشل في تحميل المنتجات',
+    'mobile.products.cart_ready': 'السلة جاهزة',
+    'mobile.products.items_text': 'عناصر في سلتك',
+
+    // Mobile Service Calculator translations
+    'mobile.services.calculator_title': 'حزم MT Wraps',
+    'mobile.services.get_accurate_quotes': 'احصل على عروض أسعار دقيقة لاحتياجات تغليف سيارتك',
+    'mobile.services.packages': 'حزم الخدمة',
+    'mobile.services.custom_quote': 'عرض سعر مخصص',
+    'mobile.services.parts_pricing': 'أجزاء فردية',
+    'mobile.services.select_parts': 'اختر الأجزاء',
+    'mobile.services.vehicle_size': 'اختر حجم السيارة',
+    'mobile.services.get_quote': 'احصل على عرض سعر',
+    'mobile.services.total_estimate': 'التقدير الإجمالي',
+    
+    // Mobile Courses translations
+    'mobile.courses.title': 'دورات التدريب',
+    'mobile.courses.enroll_now': 'سجل الآن',
+    'mobile.courses.course_details': 'تفاصيل الدورة',
+    'mobile.courses.certification': 'الشهادة المهنية',
+
+    // Quote Dialog additional translations
+    'quote.missing_information': 'معلومات مفقودة',
+    'quote.fill_required_fields': 'يرجى ملء جميع الحقول المطلوبة',
+    'quote.request_submitted': 'تم طلب عرض السعر',
+    'quote.contact_within_24h': 'سنتواصل معك خلال 24 ساعة مع عرض السعر الشخصي الخاص بك',
   },
   he: {
     // Navigation

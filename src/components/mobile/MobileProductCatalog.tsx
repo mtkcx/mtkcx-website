@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Search, ShoppingCart, Filter, Grid, List, Package, CreditCard, Eye } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -35,6 +36,7 @@ interface MobileProductCatalogProps {
 
 export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = false, onCheckout }) => {
   const { addToCart, getTotalItems } = useCart();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [products, setProducts] = useState<MobileProduct[]>([]);
@@ -102,8 +104,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     } catch (error) {
       console.error('Error fetching products:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to load products',
+        title: t('common.error'),
+        description: t('mobile.products.failed_to_load'),
         variant: 'destructive'
       });
     } finally {
@@ -144,8 +146,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     });
 
     toast({
-      title: 'Added to Cart',
-      description: `${product.name} (${variant.size}) added to cart`
+      title: t('mobile.products.added_to_cart'),
+      description: `${product.name} (${variant.size}) ${t('mobile.products.added_description')}`
     });
   };
 
@@ -195,7 +197,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       {/* Header */}
       {!compact && (
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">Koch-Chemie Products</h2>
+          <h2 className="text-xl font-bold">{t('mobile.products.title')}</h2>
           <div className="flex items-center gap-2">
             {getTotalItems() > 0 && (
               <Button
@@ -204,7 +206,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                 size="sm"
               >
                 <CreditCard className="h-4 w-4" />
-                Checkout ({getTotalItems()})
+                {t('mobile.products.checkout')} ({getTotalItems()})
               </Button>
             )}
             <Button
@@ -230,7 +232,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
-            placeholder="Search products..."
+            placeholder={t('mobile.products.search_placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -244,7 +246,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
               size="sm"
               onClick={() => setSelectedCategory(null)}
             >
-              All
+              {t('categories.all_products')}
             </Button>
             {categories.map(category => category && (
               <Button
@@ -265,14 +267,14 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         <Card className="p-4 bg-primary/5 border-primary/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold">Cart Ready</p>
+              <p className="font-semibold">{t('mobile.products.cart_ready')}</p>
               <p className="text-sm text-muted-foreground">
-                {getTotalItems()} items in your cart
+                {getTotalItems()} {t('mobile.products.items_text')}
               </p>
             </div>
             <Button onClick={handleGoToCheckout} className="flex items-center gap-2">
               <CreditCard className="h-4 w-4" />
-              Checkout
+              {t('mobile.products.checkout')}
             </Button>
           </div>
         </Card>
@@ -326,7 +328,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                         className="flex-1 h-8"
                       >
                         <ShoppingCart className="h-3 w-3 mr-1" />
-                        Add to Cart
+                        {t('mobile.products.add_to_cart')}
                       </Button>
                     ) : (
                       <>
