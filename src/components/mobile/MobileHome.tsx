@@ -99,7 +99,7 @@ const MobileHome: React.FC = memo(() => {
 
       {/* Main Categories */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-center">Our Main Categories</h2>
+        <h2 className="text-xl font-bold text-center">{t('mobile.home.main_categories')}</h2>
         <div className="grid gap-4">
           {/* Interior Cleaning */}
           <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleCategoryNavigation('interior-cleaning')}>
@@ -112,8 +112,8 @@ const MobileHome: React.FC = memo(() => {
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <h3 className="font-bold text-lg">Interior Cleaning</h3>
-                  <p className="text-sm opacity-90">Professional interior detailing products</p>
+                  <h3 className="font-bold text-lg">{t('mobile.home.interior_cleaning')}</h3>
+                  <p className="text-sm opacity-90">{t('mobile.home.interior_cleaning_desc')}</p>
                 </div>
               </div>
               <ArrowRight className="absolute top-1/2 right-4 transform -translate-y-1/2 h-6 w-6 text-white" />
@@ -131,8 +131,8 @@ const MobileHome: React.FC = memo(() => {
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <h3 className="font-bold text-lg">Exterior Cleaning</h3>
-                  <p className="text-sm opacity-90">Advanced exterior care solutions</p>
+                  <h3 className="font-bold text-lg">{t('mobile.home.exterior_cleaning')}</h3>
+                  <p className="text-sm opacity-90">{t('mobile.home.exterior_cleaning_desc')}</p>
                 </div>
               </div>
               <ArrowRight className="absolute top-1/2 right-4 transform -translate-y-1/2 h-6 w-6 text-white" />
@@ -150,8 +150,8 @@ const MobileHome: React.FC = memo(() => {
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <h3 className="font-bold text-lg">Polished & Coatings</h3>
-                  <p className="text-sm opacity-90">Premium polishes and protective coatings</p>
+                  <h3 className="font-bold text-lg">{t('mobile.home.polished_coatings')}</h3>
+                  <p className="text-sm opacity-90">{t('mobile.home.polished_coatings_desc')}</p>
                 </div>
               </div>
               <ArrowRight className="absolute top-1/2 right-4 transform -translate-y-1/2 h-6 w-6 text-white" />

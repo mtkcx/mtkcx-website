@@ -148,7 +148,7 @@ export const MobileContact: React.FC<MobileContactProps> = ({
     {
       icon: MapPin,
       title: t('contact.location_title'),
-      details: "Atarot, Jerusalem",
+      details: t('contact.location_address'),
       description: t('contact.location_desc')
     },
     {

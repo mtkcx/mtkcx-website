@@ -281,9 +281,9 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center p-4">
-            <h1 className="text-2xl font-bold text-white mb-2">Koch-Chemie Product Catalog</h1>
+            <h1 className="text-2xl font-bold text-white mb-2">{t('mobile.products.banner_title')}</h1>
             <p className="text-white/90 text-sm max-w-xs leading-relaxed">
-              Discover our complete range of professional automotive detailing products. Each product is available in multiple sizes to meet your specific needs.
+              {t('mobile.products.banner_subtitle')}
             </p>
           </div>
         </div>
@@ -295,7 +295,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder="Search products..."
+              placeholder={t('mobile.products.search_placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -320,7 +320,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
               size="sm"
               onClick={() => setSelectedCategory(null)}
             >
-              All Products
+              {t('mobile.products.all_categories')}
             </Button>
             {categories.map(category => (
               <Button
@@ -341,14 +341,14 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         <Card className="p-4 bg-primary/5 border-primary/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold">Ready to checkout</p>
+              <p className="font-semibold">{t('mobile.products.cart_ready')}</p>
               <p className="text-sm text-muted-foreground">
-                {getTotalItems()} items in cart
+                {getTotalItems()} {t('mobile.products.items_text')}
               </p>
             </div>
             <Button onClick={onCheckout} className="flex items-center gap-2">
               <CreditCard className="h-4 w-4" />
-              Checkout
+              {t('mobile.products.checkout')}
             </Button>
           </div>
         </Card>
@@ -394,8 +394,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                  
                  {/* Variant Selection */}
                  {product.product_variants && product.product_variants.length > 0 && (
-                   <div className="flex items-center gap-2">
-                     <Label className="text-xs whitespace-nowrap">{t('mobile.services.size')}:</Label>
+                    <div className="flex items-center gap-2">
+                      <Label className="text-xs whitespace-nowrap">{t('mobile.products.size')}:</Label>
                      <Select 
                        value={selectedVariants[product.id]?.variantId || ''} 
                        onValueChange={(variantId) => {
@@ -450,7 +450,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       {/* Empty State */}
       {filteredProducts.length === 0 && !loading && (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">No products found</p>
+          <div className="text-muted-foreground mb-2">{t('mobile.products.no_products')}</div>
+          <div className="text-sm text-muted-foreground">{t('mobile.products.no_products_desc')}</div>
         </div>
       )}
 

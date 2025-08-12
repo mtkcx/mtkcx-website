@@ -22,6 +22,11 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
   const { t } = useLanguage();
   const { toast } = useToast();
 
+  // Scroll to top when component mounts
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [formData, setFormData] = useState({
     email: '',
     fullName: '',
