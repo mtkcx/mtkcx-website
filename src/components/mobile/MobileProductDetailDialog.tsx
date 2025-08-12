@@ -157,6 +157,8 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   // Get safety icons for display
   const safetyIcons = product.safety_icons || [];
 
+  console.log('About to render dialog');
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
