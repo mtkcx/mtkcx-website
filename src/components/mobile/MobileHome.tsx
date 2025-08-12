@@ -63,7 +63,7 @@ const MobileHome: React.FC = memo(() => {
       <Card className="overflow-hidden">
         <div className="relative h-48">
           <img
-            src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png"
+            src="/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png"
             alt="Professional vehicle wrapping showcase"
             className="w-full h-full object-cover"
             loading="lazy"

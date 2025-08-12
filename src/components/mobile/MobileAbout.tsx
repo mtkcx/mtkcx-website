@@ -185,15 +185,15 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
         <Card className="overflow-hidden">
           <div className="relative h-48">
             <img
-              src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png"
-              alt="MTKCx professional automotive facility"
+              src="/lovable-uploads/3df6143b-1e24-4063-ac21-1f8d68e1c558.png"
+              alt="MTKCx company building and professional facility"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             <div className="absolute bottom-4 left-4 right-4 text-white">
-              <h2 className="font-bold text-lg mb-2">Professional Excellence</h2>
+              <h2 className="font-bold text-lg mb-2">{t('about.story_title')}</h2>
               <p className="text-sm opacity-90">
-                Crafting excellence in automotive care
+                {t('about.badge')}
               </p>
             </div>
           </div>
