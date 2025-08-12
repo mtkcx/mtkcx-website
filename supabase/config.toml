@@ -70,3 +70,6 @@ verify_jwt = false
 
 [functions.secure-newsletter-signup]
 verify_jwt = false
+
+[functions.submit-contact-message]
+verify_jwt = false

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ContactMessagesManager from '@/components/ContactMessagesManager';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -351,11 +352,12 @@ export const MobileAdminDashboard: React.FC = () => {
 
       {/* Data Tables */}
       <Tabs defaultValue="customers" className="space-y-3">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="customers" className="text-xs">Customers</TabsTrigger>
           <TabsTrigger value="orders" className="text-xs">Orders</TabsTrigger>
           <TabsTrigger value="quotes" className="text-xs">Quotes</TabsTrigger>
           <TabsTrigger value="enrollments" className="text-xs">Enrollments</TabsTrigger>
+          <TabsTrigger value="messages" className="text-xs">Messages</TabsTrigger>
           <TabsTrigger value="users" className="text-xs">Users</TabsTrigger>
         </TabsList>
         
@@ -447,6 +449,10 @@ export const MobileAdminDashboard: React.FC = () => {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="messages" className="space-y-3">
+          <ContactMessagesManager isMobile={true} />
         </TabsContent>
 
         <TabsContent value="users" className="space-y-3">

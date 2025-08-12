@@ -13,6 +13,7 @@ import AdminProtectedRoute from '@/components/AdminProtectedRoute';
 import { Package, Users, GraduationCap, TrendingUp, Crown, UserCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
+import ContactMessagesManager from '@/components/ContactMessagesManager';
 
 interface Order {
   id: string;
@@ -351,6 +352,7 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="quotes">Quotes</TabsTrigger>
             <TabsTrigger value="enrollments">Enrollments</TabsTrigger>
+            <TabsTrigger value="messages">Contact Messages</TabsTrigger>
             <TabsTrigger value="users">User Management</TabsTrigger>
           </TabsList>
           
@@ -442,6 +444,10 @@ const AdminDashboard: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="messages" className="space-y-4">
+            <ContactMessagesManager />
           </TabsContent>
 
           <TabsContent value="users" className="space-y-4">

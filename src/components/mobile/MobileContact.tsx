@@ -31,6 +31,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
@@ -88,8 +89,21 @@ export const MobileContact: React.FC<MobileContactProps> = ({
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { data, error } = await supabase.functions.invoke('submit-contact-message', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company || '',
+          subject: formData.subject,
+          message: formData.message,
+          serviceInterest: formData.serviceInterest
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
       
       toast({
         title: t('contact.success_title'),
@@ -107,6 +121,7 @@ export const MobileContact: React.FC<MobileContactProps> = ({
         serviceInterest: ''
       });
     } catch (error) {
+      console.error('Contact form error:', error);
       toast({
         title: t('contact.error_title'),
         description: t('contact.error_desc'),

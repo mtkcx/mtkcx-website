@@ -24,6 +24,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
 import contactBanner from '@/assets/contact-banner.jpg';
 
 const Contact = () => {
@@ -53,9 +54,21 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      // Here you would typically send the form data to your backend
-      // For now, we'll just show a success message
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      const { data, error } = await supabase.functions.invoke('submit-contact-message', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company || '',
+          subject: formData.subject,
+          message: formData.message,
+          serviceInterest: formData.serviceInterest
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
       
       toast({
         title: t('contact.success_title'),
@@ -73,6 +86,7 @@ const Contact = () => {
         serviceInterest: ''
       });
     } catch (error) {
+      console.error('Contact form error:', error);
       toast({
         title: t('contact.error_title'),
         description: t('contact.error_desc'),
