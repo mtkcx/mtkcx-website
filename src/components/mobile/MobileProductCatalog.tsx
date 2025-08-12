@@ -12,6 +12,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { ImageEnlargementDialog } from './ImageEnlargementDialog';
+import { MobileProductDetailDialog } from './MobileProductDetailDialog';
 
 interface MobileProductCatalogProps {
   compact?: boolean;
@@ -31,6 +32,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [selectedVariants, setSelectedVariants] = useState<Record<string, { variantId: string; size: string; price: number }>>({});
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
+  const [showProductDetail, setShowProductDetail] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   
   // Initialize mobile features hook
   const mobileFeatures = {
@@ -95,9 +98,15 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         .select(`
           id,
           name,
+          name_ar,
+          name_he,
           description,
+          description_ar,
+          description_he,
           product_code,
           image_url,
+          safety_icons,
+          featured,
           product_categories!product_categories_product_id_fkey (
             categories!product_categories_category_id_fkey (
               id,
@@ -108,7 +117,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           product_variants!product_variants_product_id_fkey (
             id,
             size,
-            price
+            price,
+            is_primary
           ),
           product_images!product_images_product_id_fkey (
             id,
@@ -250,6 +260,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     setShowImageDialog(true);
   }, []);
 
+  const handleProductClick = useCallback((product: any) => {
+    setSelectedProduct(product);
+    setShowProductDetail(true);
+  }, []);
+
   // Early return for loading with optimized skeleton
   if (loading) {
     return (
@@ -358,11 +373,16 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       <div className="space-y-3">
         {filteredProducts.map(product => (
           <Card key={product.id} className="overflow-hidden">
-            <div className="flex gap-3 p-3">
+            <div 
+              className="flex gap-3 p-3 cursor-pointer" 
+              onClick={() => handleProductClick(product)}
+            >
               <div className="relative">
                 <img
                   src={getCurrentProductImage(product)}
-                  alt={product.name}
+                  alt={currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                       currentLanguage === 'he' ? (product.name_he || product.name) :
+                       product.name}
                   className="w-20 h-20 object-cover rounded flex-shrink-0"
                   loading="lazy"
                   onError={(e) => {
@@ -373,7 +393,10 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                   variant="secondary"
                   size="sm"
                   className="absolute inset-0 w-20 h-20 p-0 bg-black/60 hover:bg-black/70 opacity-0 hover:opacity-100 transition-opacity rounded"
-                  onClick={() => handleImageClick(getCurrentProductImage(product))}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleImageClick(getCurrentProductImage(product));
+                  }}
                 >
                   <Eye className="h-4 w-4 text-white" />
                 </Button>
@@ -392,34 +415,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                    </Badge>
                  </div>
                  
-                 {/* Variant Selection */}
-                 {product.product_variants && product.product_variants.length > 0 && (
-                    <div className="flex items-center gap-2">
-                      <Label className="text-xs whitespace-nowrap">{t('mobile.products.size')}:</Label>
-                     <Select 
-                       value={selectedVariants[product.id]?.variantId || ''} 
-                       onValueChange={(variantId) => {
-                         const variant = product.product_variants.find((v: any) => v.id === variantId);
-                         if (variant) {
-                           handleVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
-                         }
-                       }}
-                     >
-                       <SelectTrigger className="h-8 text-xs">
-                         <SelectValue placeholder={selectedVariants[product.id]?.size || "Choose"} />
-                       </SelectTrigger>
-                       <SelectContent>
-                         {product.product_variants.map((variant: any) => (
-                           <SelectItem key={variant.id} value={variant.id}>
-                             {variant.size} - ₪{parseFloat(variant.price).toLocaleString()}
-                           </SelectItem>
-                         ))}
-                       </SelectContent>
-                     </Select>
-                   </div>
-                 )}
-                 
-                 {/* Product Description */}
+                 {/* Product Description Preview */}
                  {(product.description || product.description_ar || product.description_he) && (
                    <p className="text-xs text-muted-foreground line-clamp-2">
                      {currentLanguage === 'ar' ? (product.description_ar || product.description) :
@@ -428,18 +424,35 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                    </p>
                  )}
                  
+                 {/* Quick Actions */}
                  <div className="flex items-center justify-between">
-                   <div className="font-bold text-primary">
+                   <div className="font-bold text-primary text-sm">
                      ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
                    </div>
-                   <Button
-                     onClick={() => addToCart(product)}
-                     size="sm"
-                     className="h-8 px-3"
-                   >
-                     <ShoppingCart className="h-3 w-3 mr-1" />
-                     {t('mobile.products.add_to_cart')}
-                   </Button>
+                   <div className="flex gap-1">
+                     <Button
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         addToCart(product);
+                       }}
+                       size="sm"
+                       className="h-7 px-2 text-xs"
+                     >
+                       <ShoppingCart className="h-3 w-3 mr-1" />
+                       {t('mobile.products.add')}
+                     </Button>
+                     <Button
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         handleProductClick(product);
+                       }}
+                       variant="outline"
+                       size="sm"
+                       className="h-7 px-2 text-xs"
+                     >
+                       {t('mobile.products.view')}
+                     </Button>
+                   </div>
                  </div>
                </div>
             </div>
@@ -461,6 +474,16 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         onClose={() => setShowImageDialog(false)}
         imageUrl={selectedImageUrl}
         title="Product Image"
+      />
+
+      {/* Product Detail Dialog */}
+      <MobileProductDetailDialog
+        product={selectedProduct}
+        isOpen={showProductDetail}
+        onClose={() => setShowProductDetail(false)}
+        selectedVariants={selectedVariants}
+        onVariantChange={handleVariantChange}
+        getCurrentProductImage={getCurrentProductImage}
       />
     </div>
   );
