@@ -153,11 +153,11 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="professional_detailing">{t('mobile.enrollment.professional_detailing')}</SelectItem>
-                <SelectItem value="paint_correction">{t('mobile.enrollment.paint_correction')}</SelectItem>
-                <SelectItem value="ppf_installation">{t('mobile.enrollment.ppf_installation')}</SelectItem>
-                <SelectItem value="vehicle_wrapping">{t('mobile.enrollment.vehicle_wrapping')}</SelectItem>
               </SelectContent>
             </Select>
+            <p className="text-xs text-muted-foreground">
+              {t('mobile.enrollment.single_course_note')}
+            </p>
           </div>
 
           <DialogFooter className="flex-col space-y-2">
