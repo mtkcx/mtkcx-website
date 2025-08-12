@@ -20,8 +20,11 @@ export const ImageEnlargementDialog: React.FC<ImageEnlargementDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="flex items-center justify-between">
             {title}
+            <Button variant="ghost" size="sm" onClick={onClose}>
+              <X className="h-4 w-4" />
+            </Button>
           </DialogTitle>
         </DialogHeader>
         <div className="flex items-center justify-center">
