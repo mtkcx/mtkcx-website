@@ -4,40 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Search, ShoppingCart, Filter, CreditCard, Eye } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Search, ShoppingCart, Filter, CreditCard } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
-
-interface MobileProduct {
-  id: string;
-  name: string;
-  description: string;
-  product_code: string;
-  image_url: string;
-  category: {
-    id: string;
-    name: string;
-    slug: string;
-    name_he: string;
-    name_ar: string;
-  };
-  allCategories?: Array<{
-    id: string;
-    name: string;
-    slug: string;
-    name_he: string;
-    name_ar: string;
-  }>;
-  variants: Array<{
-    id: string;
-    size: string;
-    price: number;
-  }>;
-}
 
 interface MobileProductCatalogProps {
   compact?: boolean;
@@ -45,21 +17,26 @@ interface MobileProductCatalogProps {
 }
 
 export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = false, onCheckout }) => {
-  const { addToCart, getTotalItems } = useCart();
+  const { addToCart: addItemToCart, getTotalItems } = useCart();
   const { t } = useLanguage();
   const { toast } = useToast();
-  const navigate = useNavigate();
-  const [products, setProducts] = useState<MobileProduct[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<MobileProduct | null>(null);
-  const [selectedVariant, setSelectedVariant] = useState<string>('');
   const [categories, setCategories] = useState<Array<{id: string, name: string, slug: string}>>([]);
-  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
-  const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
-  const [imageLoadErrors, setImageLoadErrors] = useState<Set<string>>(new Set());
+  const [selectedVariants, setSelectedVariants] = useState<Record<string, { variantId: string; size: string; price: number }>>({});
+  
+  // Initialize mobile features hook
+  const mobileFeatures = {
+    canUseHaptics: () => typeof window !== 'undefined' && 'vibrate' in navigator,
+    hapticFeedback: (type: string) => {
+      if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate(type === 'light' ? 10 : 50);
+      }
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -85,10 +62,9 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     };
   }, []);
 
-  // Optimized data fetching with minimal queries
+  // Optimized data fetching
   const fetchProducts = useCallback(async () => {
     try {
-      // Single optimized query to get everything we need
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
@@ -110,8 +86,10 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             price
           ),
           product_images!product_images_product_id_fkey (
+            id,
             image_url,
-            is_primary
+            is_primary,
+            variant_id
           )
         `)
         .eq('status', 'active')
@@ -119,18 +97,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
       if (productsError) throw productsError;
 
-      // Extract unique categories from products data to avoid extra query
       const categoryMap = new Map();
       const transformedProducts = productsData
         ?.filter(product => product.product_variants?.length > 0)
         .map(product => {
-          const primaryImage = product.product_images?.find(img => img.is_primary) || 
-                             product.product_images?.[0];
-          
           const productCategories = product.product_categories?.map(pc => pc.categories).filter(Boolean) || [];
-          const primaryCategory = productCategories[0];
-
-          // Collect categories for the category list
           productCategories.forEach(cat => {
             if (cat && !categoryMap.has(cat.slug)) {
               categoryMap.set(cat.slug, { id: cat.id, name: cat.name, slug: cat.slug });
@@ -138,35 +109,20 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           });
 
           return {
-            id: product.id,
-            name: product.name,
-            description: product.description || '',
-            product_code: product.product_code || '',
-            image_url: primaryImage?.image_url || product.image_url || '/placeholder.svg',
-            category: {
-              id: primaryCategory?.id || '',
-              name: primaryCategory?.name || 'Uncategorized',
-              slug: primaryCategory?.slug || 'uncategorized',
-              name_he: '',
-              name_ar: ''
-            },
-            allCategories: productCategories.map(cat => ({
-              ...cat,
-              name_he: '',
-              name_ar: ''
-            })),
-            variants: product.product_variants || []
+            ...product,
+            product_categories: product.product_categories,
+            product_variants: product.product_variants,
+            product_images: product.product_images
           };
         }) || [];
 
-      // Set categories from extracted data
       setCategories(Array.from(categoryMap.values()));
       setProducts(transformedProducts);
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
         title: t('common.error'),
-        description: t('mobile.products.failed_to_load'),
+        description: 'Failed to load products',
         variant: 'destructive'
       });
     } finally {
@@ -174,7 +130,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     }
   }, [t, toast]);
 
-  // Memoized filtered products for performance
+  // Memoized filtered products
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
       const matchesSearch = !searchTerm || 
@@ -182,117 +138,78 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         product.product_code.toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesCategory = !selectedCategory || 
-        product.category.slug === selectedCategory ||
-        product.allCategories?.some(cat => cat.slug === selectedCategory);
+        product.product_categories?.some((pc: any) => pc.categories?.slug === selectedCategory);
       
       return matchesSearch && matchesCategory;
     });
   }, [products, searchTerm, selectedCategory]);
 
-  // Memoized display products for compact mode
-  const displayProducts = useMemo(() => {
-    return compact ? filteredProducts.slice(0, 6) : filteredProducts;
-  }, [filteredProducts, compact]);
+  const handleVariantChange = (productId: string, variantId: string, size: string, price: number) => {
+    setSelectedVariants(prev => ({
+      ...prev,
+      [productId]: { variantId, size, price }
+    }));
+  };
 
-  // Optimized handlers with useCallback
-  const handleCategorySelect = useCallback((categorySlug: string | null) => {
-    setSelectedCategory(categorySlug);
-    setShowFilters(false);
-  }, []);
+  const getSelectedVariant = (productId: string) => {
+    return selectedVariants[productId];
+  };
 
-  const handleEnlargeImage = useCallback((imageUrl: string) => {
-    setSelectedImageUrl(imageUrl);
-    setIsImageDialogOpen(true);
-  }, []);
+  const getCurrentProductImage = (product: any) => {
+    const selectedVariant = getSelectedVariant(product.id);
+    
+    if (selectedVariant) {
+      // Find image for selected variant
+      const variantImage = product.product_images?.find((img: any) => 
+        img.variant_id === selectedVariant.variantId
+      );
+      if (variantImage) return variantImage.image_url;
+    }
+    
+    // Fall back to primary image or first image
+    const primaryImage = product.product_images?.find((img: any) => img.is_primary);
+    if (primaryImage) return primaryImage.image_url;
+    
+    return product.product_images?.[0]?.image_url || product.image_url;
+  };
 
-  const handleAddToCart = useCallback((product: MobileProduct, variantId: string) => {
-    const variant = product.variants.find(v => v.id === variantId);
-    if (!variant) return;
+  const addToCart = (product: any) => {
+    const selectedVariant = getSelectedVariant(product.id);
+    
+    if (!selectedVariant && product.product_variants?.length > 0) {
+      toast({
+        title: 'Please select a size',
+        description: 'Please choose a product size before adding to cart',
+        variant: 'destructive'
+      });
+      return;
+    }
 
-    addToCart({
+    const cartItem = {
       productId: product.id,
       productName: product.name,
       productCode: product.product_code,
-      variantId: variantId,
-      variantSize: variant.size,
-      price: variant.price,
-      imageUrl: product.image_url,
-      categoryName: product.category.name
-    });
-
-    toast({
-      title: t('mobile.products.added_to_cart'),
-      description: `${product.name} (${variant.size}) ${t('mobile.products.added_description')}`,
-      duration: 1000 // Auto-dismiss after 1 second
-    });
-  }, [addToCart, t, toast]);
-
-  const handleQuickAdd = useCallback((product: MobileProduct, variantId: string) => {
-    handleAddToCart(product, variantId);
-    setSelectedProduct(null);
-    setSelectedVariant('');
-  }, [handleAddToCart]);
-
-  const handleViewProduct = useCallback((product: MobileProduct) => {
-    setSelectedProduct(product);
-    setSelectedVariant(product.variants[0]?.id || '');
-  }, []);
-
-  // Optimized image error handling
-  const handleImageError = useCallback((imageUrl: string) => {
-    setImageLoadErrors(prev => new Set(prev).add(imageUrl));
-  }, []);
-
-  const formatPrice = useCallback((price: number) => {
-    return `₪${price.toLocaleString()}`;
-  }, []);
-
-  // Get product image based on selected variant
-  const getProductImageForVariant = useCallback((product: MobileProduct, variantId: string) => {
-    if (!variantId) return product.image_url;
-    
-    const variant = product.variants.find(v => v.id === variantId);
-    if (!variant) return product.image_url;
-    
-    // Try to find variant-specific image based on size
-    const sizeSpecificImage = product.image_url.replace(/\.(jpg|jpeg|png|webp)$/i, `-${variant.size}.$1`);
-    
-    // For common sizes, try different naming patterns
-    const commonSizePatterns = {
-      '1L': ['-1L', '-1000ml', '-1000ML'],
-      '500ml': ['-500ml', '-500ML', '-0.5L'],
-      '750ml': ['-750ml', '-750ML', '-0.75L'],
-      '5L': ['-5L', '-5000ml', '-5000ML']
+      variantId: selectedVariant?.variantId || null,
+      variantSize: selectedVariant?.size || 'default',
+      price: selectedVariant?.price || parseFloat(product.product_variants?.[0]?.price || '0'),
+      quantity: 1,
+      imageUrl: getCurrentProductImage(product),
+      categoryName: product.product_categories?.[0]?.categories?.name || 'Unknown'
     };
-    
-    const patterns = commonSizePatterns[variant.size as keyof typeof commonSizePatterns] || [`-${variant.size}`];
-    
-    // Return the first pattern that might exist, fallback to original
-    for (const pattern of patterns) {
-      const imageWithPattern = product.image_url.replace(/\.(jpg|jpeg|png|webp)$/i, `${pattern}.$1`);
-      if (imageWithPattern !== product.image_url) {
-        return imageWithPattern;
-      }
-    }
-    
-    return product.image_url;
-  }, []);
 
-  const formatPriceRange = useCallback((variants: Array<{id: string, size: string, price: number}>) => {
-    if (variants.length === 1) {
-      return `${formatPrice(variants[0].price)} (${variants[0].size})`;
+    addItemToCart(cartItem);
+    
+    // Haptic feedback
+    if (mobileFeatures.canUseHaptics()) {
+      mobileFeatures.hapticFeedback('light');
     }
     
-    const sortedVariants = [...variants].sort((a, b) => a.price - b.price);
-    const minVariant = sortedVariants[0];
-    const maxVariant = sortedVariants[sortedVariants.length - 1];
-    
-    if (minVariant.price === maxVariant.price) {
-      return `${formatPrice(minVariant.price)} (${variants.map(v => v.size).join(', ')})`;
-    }
-    
-    return `${formatPrice(minVariant.price)} (${minVariant.size}) - ${formatPrice(maxVariant.price)} (${maxVariant.size})`;
-  }, [formatPrice]);
+    toast({
+      title: 'Added to cart',
+      description: `${product.name} has been added to your cart`,
+      duration: 1000 // 1 second
+    });
+  };
 
   // Early return for loading with optimized skeleton
   if (loading) {
@@ -339,7 +256,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder={t('mobile.products.search_placeholder')}
+              placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -362,16 +279,16 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             <Button
               variant={selectedCategory === null ? "default" : "outline"}
               size="sm"
-              onClick={() => handleCategorySelect(null)}
+              onClick={() => setSelectedCategory(null)}
             >
-              {t('categories.all_products')}
+              All Products
             </Button>
             {categories.map(category => (
               <Button
                 key={category.slug}
                 variant={selectedCategory === category.slug ? "default" : "outline"}
                 size="sm"
-                onClick={() => handleCategorySelect(category.slug)}
+                onClick={() => setSelectedCategory(category.slug)}
               >
                 {category.name}
               </Button>
@@ -385,182 +302,97 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         <Card className="p-4 bg-primary/5 border-primary/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold">{t('mobile.products.cart_ready')}</p>
+              <p className="font-semibold">Ready to checkout</p>
               <p className="text-sm text-muted-foreground">
-                {getTotalItems()} {t('mobile.products.items_text')}
+                {getTotalItems()} items in cart
               </p>
             </div>
             <Button onClick={onCheckout} className="flex items-center gap-2">
               <CreditCard className="h-4 w-4" />
-              {t('mobile.products.checkout')}
+              Checkout
             </Button>
           </div>
         </Card>
       )}
 
-      {/* Product List */}
-      <div className="space-y-4">
-        {displayProducts.map(product => (
+      {/* Product Grid */}
+      <div className="grid grid-cols-2 gap-3">
+        {filteredProducts.map(product => (
           <Card key={product.id} className="overflow-hidden">
-            <div className="flex gap-3 p-3">
-              <div className="relative">
+            <div className="p-3">
+              {/* Product Image */}
+              <div className="aspect-square mb-3 bg-gray-100 rounded-lg overflow-hidden">
                 <img
-                  src={imageLoadErrors.has(product.image_url) ? '/placeholder.svg' : product.image_url}
+                  src={getCurrentProductImage(product)}
                   alt={product.name}
-                  className="w-16 h-16 object-cover rounded flex-shrink-0"
+                  className="w-full h-full object-cover"
                   loading="lazy"
-                  onError={() => handleImageError(product.image_url)}
+                  onError={(e) => {
+                    e.currentTarget.src = '/placeholder.svg';
+                  }}
                 />
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="absolute inset-0 w-16 h-16 p-0 bg-black/60 hover:bg-black/70 opacity-0 hover:opacity-100 transition-opacity rounded"
-                  onClick={() => handleEnlargeImage(product.image_url)}
-                >
-                  <Eye className="h-4 w-4 text-white" />
-                </Button>
               </div>
-              <div className="flex-1 space-y-2">
-                <div className="flex items-start justify-between">
-                  <h3 className="font-medium text-sm">{product.name}</h3>
+              
+              {/* Product Info */}
+              <div className="space-y-2">
+                <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
+                
+                {/* Variant Selection */}
+                {product.product_variants && product.product_variants.length > 0 && (
+                  <div className="mb-3">
+                    <Label className="text-sm mb-2 block">Select size</Label>
+                    <Select 
+                      value={selectedVariants[product.id]?.variantId || ''} 
+                      onValueChange={(variantId) => {
+                        const variant = product.product_variants.find((v: any) => v.id === variantId);
+                        if (variant) {
+                          handleVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="w-full h-8">
+                        <SelectValue placeholder="Choose size" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {product.product_variants.map((variant: any) => (
+                          <SelectItem key={variant.id} value={variant.id}>
+                            {variant.size} - ₪{parseFloat(variant.price).toLocaleString()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                
+                <div className="flex items-center justify-between mb-3">
+                  <div className="font-bold text-lg text-primary">
+                    ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
+                  </div>
                   <Badge variant="secondary" className="text-xs">
                     {product.product_code}
                   </Badge>
                 </div>
-                <p className="text-xs text-muted-foreground line-clamp-2">
-                  {product.description}
-                </p>
                 
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-primary">
-                    {formatPriceRange(product.variants)}
-                  </div>
-                  {product.variants.length === 1 ? (
-                    <Button
-                      size="sm"
-                      onClick={() => handleAddToCart(product, product.variants[0].id)}
-                      className="h-8 px-3"
-                    >
-                      <ShoppingCart className="h-3 w-3 mr-1" />
-                      Add
-                    </Button>
-                  ) : (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          size="sm"
-                          onClick={() => handleViewProduct(product)}
-                          className="h-8 px-3"
-                        >
-                          <Eye className="h-3 w-3 mr-1" />
-                          Select
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-md">
-                        <DialogHeader>
-                          <DialogTitle>{product.name}</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          {/* Primary Product Image */}
-                          <div className="relative">
-                            <img
-                              src={getProductImageForVariant(product, selectedVariant)}
-                              alt={product.name}
-                              className="w-full h-48 object-cover rounded"
-                              onError={(e) => {
-                                e.currentTarget.src = product.image_url;
-                              }}
-                            />
-                            {selectedVariant && (
-                              <Badge className="absolute top-2 right-2">
-                                {product.variants.find(v => v.id === selectedVariant)?.size}
-                              </Badge>
-                            )}
-                          </div>
-
-                          {/* Product Description */}
-                          <p className="text-sm text-muted-foreground">
-                            {product.description}
-                          </p>
-                          
-                          {/* Size Selection */}
-                          <div className="space-y-3">
-                            <label className="text-sm font-medium">Select Size:</label>
-                            <Select value={selectedVariant} onValueChange={setSelectedVariant}>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Choose size" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {product.variants.map(variant => (
-                                  <SelectItem key={variant.id} value={variant.id}>
-                                    {variant.size} - {formatPrice(variant.price)}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          
-                          <Button
-                            onClick={() => handleQuickAdd(product, selectedVariant)}
-                            disabled={!selectedVariant}
-                            className="w-full"
-                          >
-                            <ShoppingCart className="h-4 w-4 mr-2" />
-                            Add to Cart
-                          </Button>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                </div>
+                <Button
+                  onClick={() => addToCart(product)}
+                  className="w-full h-8 text-sm"
+                  size="sm"
+                >
+                  <ShoppingCart className="h-3 w-3 mr-1" />
+                  Add to Cart
+                </Button>
               </div>
             </div>
           </Card>
         ))}
       </div>
 
-      {/* Show More Button (for compact mode) */}
-      {compact && filteredProducts.length > 6 && (
-        <Button variant="outline" className="w-full">
-          View All {filteredProducts.length} Products
-        </Button>
-      )}
-
       {/* Empty State */}
-      {!loading && displayProducts.length === 0 && (
+      {filteredProducts.length === 0 && !loading && (
         <div className="text-center py-8">
           <p className="text-muted-foreground">No products found</p>
-          {(searchTerm || selectedCategory) && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setSearchTerm('');
-                setSelectedCategory(null);
-              }}
-              className="mt-2"
-            >
-              Clear Filters
-            </Button>
-          )}
         </div>
       )}
-
-      {/* Image Enlargement Dialog */}
-      <Dialog open={isImageDialogOpen} onOpenChange={setIsImageDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Product Image</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <img
-              src={selectedImageUrl}
-              alt="Product enlarged view"
-              className="w-full max-h-96 object-contain rounded"
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

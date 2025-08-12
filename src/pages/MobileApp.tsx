@@ -390,8 +390,21 @@ const MobileApp: React.FC = () => {
             }}
             />
 
-            {/* Cart Button */}
-            <div className="relative">
+            {/* Right Side - Language Selector and Cart */}
+            <div className="flex items-center gap-2">
+              {/* Language Selector */}
+              <Select value={currentLanguage} onValueChange={handleLanguageChange}>
+                <SelectTrigger className="w-16 h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">EN</SelectItem>
+                  <SelectItem value="ar">AR</SelectItem>
+                  <SelectItem value="he">HE</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              {/* Cart Button */}
               <CartButton />
             </div>
           </div>
