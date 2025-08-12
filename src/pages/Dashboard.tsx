@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { CustomerDashboard } from '@/components/CustomerDashboard';
 
 interface Quote {
   id: string;
@@ -287,6 +288,11 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             </div>
+          </div>
+
+          {/* Customer Dashboard - Order History & Stats */}
+          <div className="mt-8">
+            <CustomerDashboard />
           </div>
 
           {/* Quick Actions */}
