@@ -225,55 +225,30 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
             <div className="space-y-4 mb-4">
               {/* Price and Variant Selection */}
               {product.product_variants && product.product_variants.length > 0 && (
-                <Card className="p-4 border-2 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
-                  <div className="space-y-4">
+                <Card className="p-3">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Package className="h-4 w-4 text-primary" />
-                        <Label className="text-base font-semibold text-primary">{t('mobile.products.select_size')}:</Label>
-                      </div>
-                      <div className="text-xl font-bold text-primary">
+                      <Label className="text-sm font-medium">{t('mobile.products.size')}:</Label>
+                      <div className="text-lg font-bold text-primary">
                         ₪{(selectedVariant?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
                       </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <div className="text-sm text-muted-foreground">
-                        {selectedVariant ? 
-                          `${t('mobile.products.selected')}: ${selectedVariant.size}` : 
-                          t('mobile.products.choose_size_below')
-                        }
-                      </div>
-                      <Select 
-                        value={selectedVariant?.variantId || ''} 
-                        onValueChange={handleVariantChange}
-                      >
-                        <SelectTrigger className="h-12 bg-background border-2 border-primary/30 hover:border-primary/50 focus:border-primary">
-                          <SelectValue placeholder={t('mobile.products.choose_size')} />
-                        </SelectTrigger>
-                        <SelectContent className="z-50 bg-background border-2">
-                          {product.product_variants.map((variant: any) => (
-                            <SelectItem 
-                              key={variant.id} 
-                              value={variant.id}
-                              className="hover:bg-primary/10 focus:bg-primary/10"
-                            >
-                              <div className="flex items-center justify-between w-full">
-                                <span className="font-medium">{variant.size}</span>
-                                <span className="text-primary font-bold ml-3">
-                                  ₪{parseFloat(variant.price).toLocaleString()}
-                                </span>
-                                {variant.is_primary && (
-                                  <Badge variant="secondary" className="ml-2 text-xs">
-                                    {t('mobile.products.primary')}
-                                  </Badge>
-                                )}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <Select 
+                      value={selectedVariant?.variantId || ''} 
+                      onValueChange={handleVariantChange}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('mobile.products.choose_size')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {product.product_variants.map((variant: any) => (
+                          <SelectItem key={variant.id} value={variant.id}>
+                            {variant.size} - ₪{parseFloat(variant.price).toLocaleString()}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </Card>
               )}

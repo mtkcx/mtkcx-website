@@ -192,11 +192,21 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     });
   }, [products, searchTerm, selectedCategory, currentLanguage]);
 
-  const handleVariantChange = (productId: string, variantId: string, size: string, price: number) => {
-    setSelectedVariants(prev => ({
-      ...prev,
-      [productId]: { variantId, size, price }
-    }));
+  const handleVariantChange = (productId: string, variantId: string) => {
+    const product = products.find(p => p.id === productId);
+    if (product && product.product_variants) {
+      const variant = product.product_variants.find((v: any) => v.id === variantId);
+      if (variant) {
+        setSelectedVariants(prev => ({
+          ...prev,
+          [productId]: { 
+            variantId, 
+            size: variant.size, 
+            price: parseFloat(variant.price) 
+          }
+        }));
+      }
+    }
   };
 
   const getSelectedVariant = (productId: string) => {
@@ -449,39 +459,62 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                    </p>
                  )}
                  
-                 {/* Quick Actions */}
-                 <div className="flex items-center justify-between">
-                   <div className="font-bold text-primary text-sm">
-                     ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
-                   </div>
-                   <div className="flex gap-1">
-                     <Button
-                       onClick={(e) => {
-                         e.stopPropagation();
-                         addToCart(product);
-                       }}
-                       size="sm"
-                       className="h-7 px-2 text-xs"
-                     >
-                       <ShoppingCart className="h-3 w-3 mr-1" />
-                       {t('mobile.products.add')}
-                     </Button>
-                     <Button
-                       onClick={(e) => {
-                         e.stopPropagation();
-                         handleProductClick(product);
-                       }}
-                       variant="outline"
-                       size="sm"
-                       className="h-7 px-2 text-xs"
-                     >
-                       {t('mobile.products.view')}
-                     </Button>
-                   </div>
-                 </div>
-               </div>
-            </div>
-          </Card>
+                  {/* Price and Size Selection */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="font-bold text-primary text-sm">
+                        ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
+                      </div>
+                      {product.product_variants && product.product_variants.length > 1 && (
+                        <div className="flex-1 max-w-[100px] ml-2">
+                          <Select 
+                            value={selectedVariants[product.id]?.variantId || ''} 
+                            onValueChange={(variantId) => handleVariantChange(product.id, variantId)}
+                          >
+                            <SelectTrigger className="h-6 text-xs bg-background border border-muted">
+                              <SelectValue placeholder="Size" />
+                            </SelectTrigger>
+                            <SelectContent className="z-50 bg-background">
+                              {product.product_variants.map((variant: any) => (
+                                <SelectItem key={variant.id} value={variant.id} className="text-xs">
+                                  {variant.size}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Quick Actions */}
+                    <div className="flex gap-1">
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product);
+                        }}
+                        size="sm"
+                        className="h-7 px-2 text-xs flex-1"
+                      >
+                        <ShoppingCart className="h-3 w-3 mr-1" />
+                        {t('mobile.products.add')}
+                      </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleProductClick(product);
+                        }}
+                        variant="outline"
+                        size="sm"
+                        className="h-7 px-2 text-xs flex-1"
+                      >
+                        {t('mobile.products.view')}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
         ))}
       </div>
 
