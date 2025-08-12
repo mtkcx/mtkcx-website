@@ -424,10 +424,6 @@ export const MobileContact: React.FC<MobileContactProps> = ({
           <CardContent className="space-y-3">
             <div className="flex items-center space-x-3">
               <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-              <span className="text-sm">{t('common.paint_protection_films')}</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
               <span className="text-sm">{t('common.official_partner')}</span>
             </div>
             <div className="flex items-center space-x-3">
