@@ -43,13 +43,7 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showImageZoom, setShowImageZoom] = useState(false);
 
-  console.log('MobileProductDetailDialog - product:', product);
-  console.log('MobileProductDetailDialog - isOpen:', isOpen);
-  
-  if (!product) {
-    console.log('MobileProductDetailDialog - No product provided');
-    return null;
-  }
+  if (!product) return null;
 
   // Get localized content
   const getLocalizedContent = (field: string) => {

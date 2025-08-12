@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -94,7 +93,6 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   // Optimized data fetching
   const fetchProducts = useCallback(async () => {
     try {
-      console.log('Fetching products...');
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
@@ -134,17 +132,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         .eq('status', 'active')
         .order('name');
 
-      console.log('Raw products data:', productsData);
-      console.log('Products error:', productsError);
-
       if (productsError) throw productsError;
 
       const categoryMap = new Map();
       const transformedProducts = productsData
-        ?.filter(product => {
-          console.log('Product before filter:', product.name, 'has variants:', product.product_variants?.length || 0);
-          return product.product_variants?.length > 0;
-        })
+        ?.filter(product => product.product_variants?.length > 0)
         .map(product => {
           const productCategories = product.product_categories?.map(pc => pc.categories).filter(Boolean) || [];
           productCategories.forEach(cat => {
@@ -168,8 +160,6 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         }) || [];
 
       setCategories(Array.from(categoryMap.values()));
-      console.log('Final transformed products count:', transformedProducts.length);
-      console.log('Setting products:', transformedProducts);
       setProducts(transformedProducts);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -291,15 +281,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   }, []);
 
   const handleProductClick = useCallback((product: any) => {
-    console.log('=== PRODUCT CLICKED ===');
-    console.log('Product clicked:', product);
-    console.log('Product has variants:', product?.product_variants?.length || 0);
-    console.log('Product has images:', product?.product_images?.length || 0);
-    console.log('Setting selected product...');
     setSelectedProduct(product);
-    console.log('Setting show product detail to true...');
     setShowProductDetail(true);
-    console.log('=== CLICK HANDLER COMPLETE ===');
   }, []);
 
   // Early return for loading with optimized skeleton
@@ -519,16 +502,14 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       />
 
       {/* Product Detail Dialog */}
-      <ErrorBoundary fallback={<div className="p-4 text-red-600">Error loading product detail</div>}>
-        <MobileProductDetailDialog
-          product={selectedProduct}
-          isOpen={showProductDetail}
-          onClose={() => setShowProductDetail(false)}
-          selectedVariants={selectedVariants}
-          onVariantChange={handleVariantChange}
-          getCurrentProductImage={getCurrentProductImage}
-        />
-      </ErrorBoundary>
+      <MobileProductDetailDialog
+        product={selectedProduct}
+        isOpen={showProductDetail}
+        onClose={() => setShowProductDetail(false)}
+        selectedVariants={selectedVariants}
+        onVariantChange={handleVariantChange}
+        getCurrentProductImage={getCurrentProductImage}
+      />
     </div>
   );
 };
