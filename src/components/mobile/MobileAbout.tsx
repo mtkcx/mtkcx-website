@@ -170,8 +170,8 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="en">EN</SelectItem>
-                <SelectItem value="ar">ع</SelectItem>
-                <SelectItem value="he">ע</SelectItem>
+                <SelectItem value="ar">AR</SelectItem>
+                <SelectItem value="he">HE</SelectItem>
               </SelectContent>
             </Select>
             
@@ -378,52 +378,52 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
       </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-        <div className="grid grid-cols-5 bg-transparent h-16">
+      <div className={`fixed bottom-0 left-0 right-0 bg-background border-t ${isRTL ? 'rtl' : 'ltr'}`} style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <div className="grid w-full grid-cols-5 bg-transparent h-16 rounded-none" dir={isRTL ? 'rtl' : 'ltr'}>
           <Button 
             variant="ghost"
-            className="flex-col gap-1 h-full rounded-none"
+            className="flex-col gap-1 min-h-[64px] rounded-none"
             onClick={() => onTabSwitch('home')}
           >
-            <Home className="h-5 w-5" />
-            <span className="text-xs">{t('nav.home')}</span>
+            <Home className="h-5 w-5 flex-shrink-0" />
+            <span className="text-[10px] leading-tight px-1">{t('nav.home')}</span>
           </Button>
           
           <Button 
             variant="ghost"
-            className="flex-col gap-1 h-full rounded-none"
+            className="flex-col gap-1 min-h-[64px] rounded-none"
             onClick={() => onTabSwitch('products')}
           >
-            <ShoppingBag className="h-5 w-5" />
-            <span className="text-xs">{t('nav.products')}</span>
+            <ShoppingBag className="h-5 w-5 flex-shrink-0" />
+            <span className="text-[10px] leading-tight px-1">{t('nav.products')}</span>
           </Button>
           
           <Button 
             variant="ghost"
-            className="flex-col gap-1 h-full rounded-none"
+            className="flex-col gap-1 min-h-[64px] rounded-none"
             onClick={() => onTabSwitch('courses')}
           >
-            <BookOpen className="h-5 w-5" />
-            <span className="text-xs">{t('nav.courses')}</span>
+            <BookOpen className="h-5 w-5 flex-shrink-0" />
+            <span className="text-[10px] leading-tight px-1">{t('nav.courses')}</span>
           </Button>
           
           <Button 
             variant="ghost"
-            className="flex-col gap-1 h-full rounded-none"
+            className="flex-col gap-1 min-h-[64px] rounded-none"
             onClick={onShowContact}
           >
-            <MessageCircle className="h-5 w-5" />
-            <span className="text-xs">{t('nav.contact')}</span>
+            <MessageCircle className="h-5 w-5 flex-shrink-0" />
+            <span className="text-[10px] leading-tight px-1">{t('nav.contact')}</span>
           </Button>
           
           <Button 
             variant="ghost"
-            className="flex-col gap-1 h-full rounded-none"
+            className="flex-col gap-1 min-h-[64px] rounded-none"
             onClick={() => onTabSwitch('dashboard')}
           >
-            <UserIcon className="h-5 w-5" />
-            <span className="text-xs truncate w-full px-1">
-              {isAdmin ? 'Admin' : (profile?.full_name || user?.email?.split('@')[0] || t('nav.profile'))}
+            <UserIcon className="h-5 w-5 flex-shrink-0" />
+            <span className="text-xs truncate max-w-full px-1 leading-tight">
+              {isAdmin ? t('mobile.nav.admin') : (profile?.full_name || user?.email?.split('@')[0] || t('nav.profile'))}
             </span>
           </Button>
         </div>
