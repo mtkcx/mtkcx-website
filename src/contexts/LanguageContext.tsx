@@ -20,6 +20,7 @@ const translations = {
     'nav.wrapping': 'Car Wrapping',
     'nav.about': 'About',
     'nav.contact': 'Contact',
+    'nav.profile': 'Profile',
     
     // Hero Section
     'hero.title': 'Premium Car Care & Training Solutions',
@@ -1097,6 +1098,7 @@ const translations = {
     'nav.wrapping': 'تغليف السيارات',
     'nav.about': 'عن الشركة',
     'nav.contact': 'اتصل بنا',
+    'nav.profile': 'الملف الشخصي',
     
     // Hero Section
     'hero.title': 'حلول متميزة لرعاية وتدريب السيارات',
@@ -2107,6 +2109,7 @@ const translations = {
     'nav.wrapping': 'עיטוף רכבים',
     'nav.about': 'אודות',
     'nav.contact': 'צור קשר',
+    'nav.profile': 'פרופיל',
     
     // Hero Section
     'hero.title': 'פתרונות מתקדמים לטיפוח והכשרת רכבים',

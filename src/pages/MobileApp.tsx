@@ -19,7 +19,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   Calculator, 
   ShoppingBag, 
-  User, 
+  User as UserIcon, 
   Home,
   Camera,
   BookOpen,
@@ -34,7 +34,8 @@ import {
   Mail,
   MapPin,
   Shield,
-  Globe
+  Globe,
+  MessageCircle
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import SEOHead from '@/components/SEOHead';
@@ -42,7 +43,7 @@ import CartButton from '@/components/CartButton';
 import { useNavigate } from 'react-router-dom';
 
 const MobileApp: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const { currentLanguage, setLanguage, t, isRTL } = useLanguage();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -581,9 +582,8 @@ const MobileApp: React.FC = () => {
               </TabsContent>
             </div>
 
-            {/* Bottom Navigation */}
             <div className="fixed bottom-0 left-0 right-0 bg-background border-t" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-              <TabsList className={`grid w-full ${user ? 'grid-cols-5' : 'grid-cols-4'} bg-transparent h-16 rounded-none`}>
+              <TabsList className="grid w-full grid-cols-5 bg-transparent h-16 rounded-none">
                 <TabsTrigger 
                   value="home" 
                   className="flex-col gap-1 data-[state=active]:bg-primary/10"
@@ -591,23 +591,6 @@ const MobileApp: React.FC = () => {
                   <Home className="h-5 w-5" />
                   <span className="text-xs">{t('nav.home')}</span>
                 </TabsTrigger>
-                
-                {/* Hidden packages and quote navigation */}
-                {/* <TabsTrigger 
-                  value="calculator" 
-                  className="flex-col gap-1 data-[state=active]:bg-primary/10"
-                >
-                  <Calculator className="h-5 w-5" />
-                  <span className="text-xs">{t('mobile.nav.packages')}</span>
-                </TabsTrigger>
-                
-                <TabsTrigger 
-                  value="photo" 
-                  className="flex-col gap-1 data-[state=active]:bg-primary/10"
-                >
-                  <Camera className="h-5 w-5" />
-                  <span className="text-xs">{t('mobile.nav.quote')}</span>
-                </TabsTrigger> */}
                 
                 <TabsTrigger 
                   value="products" 
@@ -630,19 +613,19 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 h-full rounded-none"
                   onClick={handleShowContact}
                 >
-                  <Phone className="h-5 w-5" />
+                  <MessageCircle className="h-5 w-5" />
                   <span className="text-xs">{t('nav.contact')}</span>
                 </Button>
                 
-                {user && (
-                  <TabsTrigger 
-                    value="dashboard" 
-                    className="flex-col gap-1 data-[state=active]:bg-primary/10"
-                  >
-                    <Shield className="h-5 w-5" />
-                    <span className="text-xs">{t('mobile.nav.admin')}</span>
-                  </TabsTrigger>
-                )}
+                <TabsTrigger 
+                  value="dashboard" 
+                  className="flex-col gap-1 data-[state=active]:bg-primary/10"
+                >
+                  <UserIcon className="h-5 w-5" />
+                  <span className="text-xs truncate w-full px-1">
+                    {profile?.full_name || user?.email?.split('@')[0] || t('nav.profile')}
+                  </span>
+                </TabsTrigger>
               </TabsList>
             </div>
 

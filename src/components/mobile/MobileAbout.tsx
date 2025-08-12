@@ -17,13 +17,14 @@ import {
   Menu,
   Globe,
   Home,
-  Calculator,
-  Camera,
   ShoppingBag,
-  BookOpen
+  BookOpen,
+  MessageCircle,
+  User as UserIcon
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -55,6 +56,7 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
   menuItems 
 }) => {
   const { t, isRTL } = useLanguage();
+  const { user, profile } = useAuth();
   
   const achievements = [
     { icon: Award, title: t('about.achievement_1'), description: t('about.achievement_1_desc') },
@@ -372,24 +374,6 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
           <Button 
             variant="ghost"
             className="flex-col gap-1 h-full rounded-none"
-            onClick={() => onTabSwitch('calculator')}
-          >
-            <Calculator className="h-5 w-5" />
-            <span className="text-xs">{t('mobile.nav.packages')}</span>
-          </Button>
-          
-          <Button 
-            variant="ghost"
-            className="flex-col gap-1 h-full rounded-none"
-            onClick={() => onTabSwitch('photo')}
-          >
-            <Camera className="h-5 w-5" />
-            <span className="text-xs">{t('mobile.nav.quote')}</span>
-          </Button>
-          
-          <Button 
-            variant="ghost"
-            className="flex-col gap-1 h-full rounded-none"
             onClick={() => onTabSwitch('products')}
           >
             <ShoppingBag className="h-5 w-5" />
@@ -403,6 +387,26 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
           >
             <BookOpen className="h-5 w-5" />
             <span className="text-xs">{t('nav.courses')}</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className="flex-col gap-1 h-full rounded-none"
+            onClick={onShowContact}
+          >
+            <MessageCircle className="h-5 w-5" />
+            <span className="text-xs">{t('nav.contact')}</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className="flex-col gap-1 h-full rounded-none"
+            onClick={() => onTabSwitch('dashboard')}
+          >
+            <UserIcon className="h-5 w-5" />
+            <span className="text-xs truncate w-full px-1">
+              {profile?.full_name || user?.email?.split('@')[0] || t('nav.profile')}
+            </span>
           </Button>
         </div>
       </div>
