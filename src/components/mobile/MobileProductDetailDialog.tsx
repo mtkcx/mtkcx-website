@@ -5,7 +5,17 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
-import { ShoppingCart, Eye, Star, Package, Shield, Sparkles, Zap, Info } from 'lucide-react';
+import { 
+  ShoppingCart, 
+  Eye, 
+  Star, 
+  Package, 
+  Shield,
+  Sparkles,
+  Zap,
+  Heart,
+  Info
+} from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -32,10 +42,8 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   const { toast } = useToast();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showImageZoom, setShowImageZoom] = useState(false);
-  
-  if (!product) {
-    return null;
-  }
+
+  if (!product) return null;
 
   // Get localized content
   const getLocalizedContent = (field: string) => {

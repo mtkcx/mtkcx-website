@@ -18,9 +18,9 @@ export const ImageEnlargementDialog: React.FC<ImageEnlargementDialogProps> = ({
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden p-0">
-        <DialogHeader className="p-4">
-          <DialogTitle className="text-center">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden">
+        <DialogHeader>
+          <DialogTitle>
             {title}
           </DialogTitle>
         </DialogHeader>
