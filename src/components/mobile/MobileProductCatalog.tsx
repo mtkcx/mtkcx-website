@@ -290,11 +290,15 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   }, []);
 
   const handleProductClick = useCallback((product: any) => {
+    console.log('=== PRODUCT CLICKED ===');
     console.log('Product clicked:', product);
     console.log('Product has variants:', product?.product_variants?.length || 0);
     console.log('Product has images:', product?.product_images?.length || 0);
+    console.log('Setting selected product...');
     setSelectedProduct(product);
+    console.log('Setting show product detail to true...');
     setShowProductDetail(true);
+    console.log('=== CLICK HANDLER COMPLETE ===');
   }, []);
 
   // Early return for loading with optimized skeleton
