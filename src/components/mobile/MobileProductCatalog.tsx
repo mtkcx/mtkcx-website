@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -518,14 +519,16 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       />
 
       {/* Product Detail Dialog */}
-      <MobileProductDetailDialog
-        product={selectedProduct}
-        isOpen={showProductDetail}
-        onClose={() => setShowProductDetail(false)}
-        selectedVariants={selectedVariants}
-        onVariantChange={handleVariantChange}
-        getCurrentProductImage={getCurrentProductImage}
-      />
+      <ErrorBoundary fallback={<div className="p-4 text-red-600">Error loading product detail</div>}>
+        <MobileProductDetailDialog
+          product={selectedProduct}
+          isOpen={showProductDetail}
+          onClose={() => setShowProductDetail(false)}
+          selectedVariants={selectedVariants}
+          onVariantChange={handleVariantChange}
+          getCurrentProductImage={getCurrentProductImage}
+        />
+      </ErrorBoundary>
     </div>
   );
 };
