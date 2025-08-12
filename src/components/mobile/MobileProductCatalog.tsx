@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Search, ShoppingCart, Filter, CreditCard, Eye } from 'lucide-react';
+import { Search, ShoppingCart, Filter, CreditCard, Eye, Info, ChevronDown, ChevronUp } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -31,6 +31,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [selectedVariants, setSelectedVariants] = useState<Record<string, { variantId: string; size: string; price: number }>>({});
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
+  const [expandedDescriptions, setExpandedDescriptions] = useState<Record<string, boolean>>({});
   
   // Initialize mobile features hook
   const mobileFeatures = {
@@ -277,6 +278,13 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     setShowImageDialog(true);
   }, []);
 
+  const toggleDescription = useCallback((productId: string) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [productId]: !prev[productId]
+    }));
+  }, []);
+
 
   // Early return for loading with optimized skeleton
   if (loading) {
@@ -430,13 +438,55 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                    </Badge>
                  </div>
                  
-                 {/* Product Description Preview */}
+                 {/* Product Description with expand/collapse */}
                  {(product.description || product.description_ar || product.description_he) && (
-                   <p className="text-xs text-muted-foreground line-clamp-2">
-                     {currentLanguage === 'ar' ? (product.description_ar || product.description) :
-                      currentLanguage === 'he' ? (product.description_he || product.description) :
-                      product.description}
-                   </p>
+                   <div className="space-y-1">
+                     <div className={`text-xs text-muted-foreground leading-relaxed ${
+                       expandedDescriptions[product.id] ? '' : 'line-clamp-2'
+                     }`}>
+                       {currentLanguage === 'ar' ? (product.description_ar || product.description) :
+                        currentLanguage === 'he' ? (product.description_he || product.description) :
+                        product.description}
+                     </div>
+                     {(product.description || product.description_ar || product.description_he)?.length > 100 && (
+                       <button
+                         onClick={(e) => {
+                           e.stopPropagation();
+                           toggleDescription(product.id);
+                         }}
+                         className="flex items-center gap-1 text-xs text-primary hover:underline"
+                       >
+                         {expandedDescriptions[product.id] ? (
+                           <>
+                             <span>{t('mobile.products.show_less')}</span>
+                             <ChevronUp className="h-3 w-3" />
+                           </>
+                         ) : (
+                           <>
+                             <span>{t('mobile.products.show_more')}</span>
+                             <ChevronDown className="h-3 w-3" />
+                           </>
+                         )}
+                       </button>
+                     )}
+                   </div>
+                 )}
+
+                 {/* Product Features */}
+                 {product.safety_icons && product.safety_icons.length > 0 && (
+                   <div className="flex items-center gap-1 flex-wrap">
+                     <Info className="h-3 w-3 text-primary" />
+                     {product.safety_icons.slice(0, 2).map((icon: string, index: number) => (
+                       <Badge key={index} variant="outline" className="text-xs px-1 py-0">
+                         {icon}
+                       </Badge>
+                     ))}
+                     {product.safety_icons.length > 2 && (
+                       <Badge variant="outline" className="text-xs px-1 py-0">
+                         +{product.safety_icons.length - 2}
+                       </Badge>
+                     )}
+                   </div>
                  )}
                  
                   {/* Size Selection and Price */}
