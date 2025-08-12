@@ -629,7 +629,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
                   <Home className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight px-1">{t('nav.home')}</span>
+                  <span className="text-xs truncate max-w-full leading-tight">{t('nav.home')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
@@ -637,7 +637,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
                   <ShoppingBag className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight px-1">{t('nav.products')}</span>
+                  <span className="text-xs truncate max-w-full leading-tight">{t('nav.products')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
@@ -645,7 +645,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
                   <BookOpen className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight px-1">{t('nav.courses')}</span>
+                  <span className="text-xs truncate max-w-full leading-tight">{t('nav.courses')}</span>
                 </TabsTrigger>
                 
                 <Button
@@ -654,7 +654,7 @@ const MobileApp: React.FC = () => {
                   onClick={handleShowContact}
                 >
                   <MessageCircle className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight px-1">{t('nav.contact')}</span>
+                  <span className="text-xs truncate max-w-full leading-tight">{t('nav.contact')}</span>
                 </Button>
                 
                 <TabsTrigger 
