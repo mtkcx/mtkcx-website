@@ -199,6 +199,23 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     }));
   };
 
+  const handleVariantChangeFromDropdown = (productId: string, variantId: string) => {
+    const product = products.find(p => p.id === productId);
+    if (product && product.product_variants) {
+      const variant = product.product_variants.find((v: any) => v.id === variantId);
+      if (variant) {
+        setSelectedVariants(prev => ({
+          ...prev,
+          [productId]: { 
+            variantId, 
+            size: variant.size, 
+            price: parseFloat(variant.price) 
+          }
+        }));
+      }
+    }
+  };
+
   const getSelectedVariant = (productId: string) => {
     return selectedVariants[productId];
   };
@@ -449,37 +466,34 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                    </p>
                  )}
                  
-                  {/* Size Selection and Price */}
-                  {product.product_variants && product.product_variants.length > 0 && (
-                    <div className="mb-2">
-                      <Select 
-                        value={selectedVariants[product.id]?.variantId || ''} 
-                        onValueChange={(variantId) => {
-                          const variant = product.product_variants?.find((v: any) => v.id === variantId);
-                          if (variant) {
-                            handleVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
-                          }
-                        }}
-                      >
-                        <SelectTrigger className="h-7 text-xs">
-                          <SelectValue placeholder="Size" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {product.product_variants.map((variant: any) => (
-                            <SelectItem key={variant.id} value={variant.id}>
-                              {variant.size} - ₪{parseFloat(variant.price).toLocaleString()}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                  {/* Price and Size Selection */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="font-bold text-primary text-sm">
+                        ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
+                      </div>
+                      {product.product_variants && product.product_variants.length > 1 && (
+                        <div className="flex-1 max-w-[100px] ml-2">
+                          <Select 
+                            value={selectedVariants[product.id]?.variantId || ''} 
+                            onValueChange={(variantId) => handleVariantChangeFromDropdown(product.id, variantId)}
+                          >
+                            <SelectTrigger className="h-6 text-xs bg-background border border-muted">
+                              <SelectValue placeholder="Size" />
+                            </SelectTrigger>
+                            <SelectContent className="z-50 bg-background">
+                              {product.product_variants.map((variant: any) => (
+                                <SelectItem key={variant.id} value={variant.id} className="text-xs">
+                                  {variant.size}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
                     </div>
-                  )}
-                  
-                  {/* Quick Actions */}
-                  <div className="flex items-center justify-between">
-                    <div className="font-bold text-primary text-sm">
-                      ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
-                    </div>
+                    
+                    {/* Quick Actions */}
                     <div className="flex gap-1">
                       <Button
                         onClick={(e) => {
@@ -487,7 +501,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                           addToCart(product);
                         }}
                         size="sm"
-                        className="h-8 px-3 text-xs whitespace-nowrap"
+                        className="h-7 px-2 text-xs flex-1"
                       >
                         <ShoppingCart className="h-3 w-3 mr-1" />
                         {t('mobile.products.add')}
@@ -499,15 +513,15 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                         }}
                         variant="outline"
                         size="sm"
-                        className="h-8 px-3 text-xs whitespace-nowrap"
+                        className="h-7 px-2 text-xs flex-1"
                       >
                         {t('mobile.products.view')}
                       </Button>
                     </div>
                   </div>
-               </div>
-            </div>
-          </Card>
+                </div>
+              </div>
+            </Card>
         ))}
       </div>
 
