@@ -2169,6 +2169,10 @@ const translations = {
     'mobile.courses.official_certification': 'الشهادة الرسمية عند الإنجاز',
     'mobile.courses.lunch_included': 'الغداء والمرطبات مشمولة',
     'mobile.courses.ongoing_support': 'الدعم المستمر والوصول إلى شبكة الشهادة',
+    
+    // Common translations
+    'common.menu': 'القائمة',
+    'common.language': 'اللغة',
   },
   he: {
     // Navigation
