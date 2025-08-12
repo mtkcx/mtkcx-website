@@ -6,13 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Search, ShoppingCart, Filter, CreditCard, Eye, Info } from 'lucide-react';
+import { Search, ShoppingCart, Filter, CreditCard, Eye, Info, ChevronDown, ChevronUp } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { ImageEnlargementDialog } from './ImageEnlargementDialog';
-import { MobileProductDetailDialog } from './MobileProductDetailDialog';
 
 interface MobileProductCatalogProps {
   compact?: boolean;
@@ -32,8 +31,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [selectedVariants, setSelectedVariants] = useState<Record<string, { variantId: string; size: string; price: number }>>({});
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
-  const [showDetailDialog, setShowDetailDialog] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [expandedDescriptions, setExpandedDescriptions] = useState<Record<string, boolean>>({});
   
   // Initialize mobile features hook
   const mobileFeatures = {
@@ -280,10 +278,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     setShowImageDialog(true);
   }, []);
 
-  const handleProductClick = useCallback((product: any) => {
-    console.log('Product clicked:', product);
-    setSelectedProduct(product);
-    setShowDetailDialog(true);
+  const toggleDescription = useCallback((productId: string) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [productId]: !prev[productId]
+    }));
   }, []);
 
   const handleCategorySelect = (categorySlug: string | null) => {
@@ -405,10 +404,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       <div className="space-y-3">
         {filteredProducts.map(product => (
            <Card key={product.id} className="overflow-hidden">
-            <div 
-              className="flex gap-3 p-3 cursor-pointer" 
-              onClick={() => handleProductClick(product)}
-            >
+            <div className="flex gap-3 p-3">
               <div className="relative">
                 <img
                   src={getCurrentProductImage(product)}
@@ -446,15 +442,40 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                      {product.product_code}
                    </Badge>
                  </div>
-                  
-                  {/* Product Description Preview */}
-                  {(product.description || product.description_ar || product.description_he) && (
-                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                      {currentLanguage === 'ar' ? (product.description_ar || product.description) :
-                       currentLanguage === 'he' ? (product.description_he || product.description) :
-                       product.description}
-                    </p>
-                  )}
+                   
+                   {/* Product Description with expandable preview */}
+                   {(product.description || product.description_ar || product.description_he) && (
+                     <div className="space-y-1">
+                       <div className={`text-xs text-muted-foreground leading-relaxed ${
+                         expandedDescriptions[product.id] ? '' : 'line-clamp-2'
+                       }`}>
+                         {currentLanguage === 'ar' ? (product.description_ar || product.description) :
+                          currentLanguage === 'he' ? (product.description_he || product.description) :
+                          product.description}
+                       </div>
+                       {(product.description || product.description_ar || product.description_he)?.length > 80 && (
+                         <button
+                           onClick={(e) => {
+                             e.stopPropagation();
+                             toggleDescription(product.id);
+                           }}
+                           className="flex items-center gap-1 text-xs text-primary hover:underline focus:outline-none"
+                         >
+                           {expandedDescriptions[product.id] ? (
+                             <>
+                               <span>{t('mobile.products.show_less')}</span>
+                               <ChevronUp className="h-3 w-3" />
+                             </>
+                           ) : (
+                             <>
+                               <span>{t('mobile.products.show_more')}</span>
+                               <ChevronDown className="h-3 w-3" />
+                             </>
+                           )}
+                         </button>
+                       )}
+                     </div>
+                   )}
 
                  {/* Product Features */}
                  {product.safety_icons && product.safety_icons.length > 0 && (
@@ -538,16 +559,6 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         onClose={() => setShowImageDialog(false)}
         imageUrl={selectedImageUrl}
         title="Product Image"
-      />
-      
-      {/* Product Detail Dialog */}
-      <MobileProductDetailDialog
-        product={selectedProduct}
-        isOpen={showDetailDialog}
-        onClose={() => setShowDetailDialog(false)}
-        selectedVariants={selectedVariants}
-        onVariantChange={handleVariantChange}
-        getCurrentProductImage={getCurrentProductImage}
       />
 
     </div>
