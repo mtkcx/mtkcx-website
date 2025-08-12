@@ -221,7 +221,10 @@ const MobileApp: React.FC = () => {
         handleShowAbout();
       }
     },
-    ...(user ? [{ icon: Shield, label: t('mobile.nav.admin'), action: () => handleTabSwitch('dashboard') }] : []),
+    ...(user ? [
+      { icon: Shield, label: t('mobile.nav.dashboard'), action: () => handleTabSwitch('dashboard') },
+      ...(isAdmin ? [{ icon: Shield, label: t('mobile.nav.admin'), action: () => handleTabSwitch('admin') }] : [])
+    ] : []),
   ];
 
   // Show auth screen
@@ -563,20 +566,14 @@ const MobileApp: React.FC = () => {
               {user && (
                 <TabsContent value="dashboard" className="m-0">
                   {isAdmin ? (
-                    <div className="p-4">
-                      <div className="mb-4 text-center">
-                        <h2 className="text-lg font-bold text-primary">Admin Dashboard</h2>
-                        <p className="text-sm text-muted-foreground">Full administrative controls</p>
+                    <div className="min-h-screen bg-background">
+                      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b p-4">
+                        <div className="text-center">
+                          <h1 className="text-lg font-semibold text-primary">{t('mobile.nav.admin')}</h1>
+                          <p className="text-sm text-muted-foreground">Full administrative controls</p>
+                        </div>
                       </div>
-                      <Button 
-                        onClick={() => navigate('/admin/dashboard/mobile')} 
-                        className="w-full mb-4"
-                        size="lg"
-                      >
-                        <Settings className="h-5 w-5 mr-2" />
-                        Open Admin Dashboard
-                      </Button>
-                      <MobileDashboard />
+                      <MobileAdminDashboard />
                     </div>
                   ) : (
                     <MobileDashboard />

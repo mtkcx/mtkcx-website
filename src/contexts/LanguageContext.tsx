@@ -465,6 +465,7 @@ const translations = {
     // Mobile Navigation translations
     'mobile.nav.packages': 'Packages',
     'mobile.nav.quote': 'Quote',
+    'mobile.nav.dashboard': 'Dashboard',
     'mobile.nav.admin': 'Admin',
     
     // Mobile Courses translations
@@ -2131,6 +2132,7 @@ const translations = {
     // Mobile Navigation translations
     'mobile.nav.packages': 'الحزم',
     'mobile.nav.quote': 'عرض سعر',
+    'mobile.nav.dashboard': 'لوحة التحكم',
     'mobile.nav.admin': 'المدير',
     
     // Mobile Courses translations
@@ -3111,6 +3113,7 @@ const translations = {
     // Mobile Navigation translations
     'mobile.nav.packages': 'חבילות',
     'mobile.nav.quote': 'הצעת מחיר',
+    'mobile.nav.dashboard': 'לוח מחוונים',
     'mobile.nav.admin': 'מנהל',
     
     // Mobile Courses translations
