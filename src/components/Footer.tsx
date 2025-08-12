@@ -8,15 +8,15 @@ const Footer = () => {
     isRTL
   } = useLanguage();
   return <footer className="bg-primary text-primary-foreground">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8">
           {/* Company Info */}
-          <div className="space-y-4">
-            <h3 className="font-bold text-lg">{t('footer.company_name')}</h3>
+          <div className="space-y-3 sm:space-y-4 lg:col-span-2">
+            <h3 className="font-bold text-base sm:text-lg">{t('footer.company_name')}</h3>
             <p className="text-primary-foreground/80 leading-relaxed text-sm">
               {t('footer.company_desc')}
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3 sm:space-x-4">
               <a href="https://www.facebook.com/p/MT-Detailing-61558524899198/" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Facebook className="w-5 h-5 flex-shrink-0" />
               </a>

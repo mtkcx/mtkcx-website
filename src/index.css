@@ -102,6 +102,35 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-alexandria;
+    /* Enable font display swap for better performance */
+    font-display: swap;
+  }
+  
+  /* Performance optimizations */
+  img {
+    @apply object-cover;
+    /* Enable hardware acceleration for images */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Smooth scrolling with reduced motion support */
+  html {
+    scroll-behavior: smooth;
+    transition: none !important;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
   
   /* Ensure RTL direction is maintained */
@@ -113,8 +142,52 @@ All colors MUST be HSL.
     direction: ltr !important;
   }
   
-  /* Prevent layout jumping when changing direction */
-  html {
-    transition: none !important;
+  /* Responsive text sizing */
+  .text-responsive {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  
+  .text-responsive-lg {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+  }
+  
+  /* Enhanced mobile touch targets */
+  @media (max-width: 767px) {
+    button, [role="button"], a[href] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+}
+
+@layer utilities {
+  /* Performance utilities */
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+  
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Responsive grid utilities */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
+  }
+  
+  /* Container utilities for consistent spacing */
+  .container-fluid {
+    @apply w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16;
+  }
+  
+  /* Aspect ratio utilities */
+  .aspect-video-responsive {
+    @apply aspect-video sm:aspect-[4/3] lg:aspect-video;
   }
 }

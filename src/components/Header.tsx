@@ -62,34 +62,40 @@ const Header = () => {
     href: '/contact'
   }];
   return <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-background/95 w-full" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="w-full px-6 py-4">
+      <div className="w-full px-4 sm:px-6 py-2 sm:py-4">
         <div className="flex items-center justify-between w-full">
           {/* Logo - Left */}
           <div className="flex items-center">
             <Link to="/">
-              <img src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" alt="MT KCx Logo" className="h-40 w-auto" />
+              <img 
+                src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" 
+                alt="MT KCx Logo" 
+                className="h-24 sm:h-32 md:h-36 lg:h-40 w-auto gpu-accelerated"
+                loading="eager"
+                decoding="async"
+              />
             </Link>
           </div>
 
           {/* Desktop Navigation - Center */}
           <nav className="hidden lg:flex items-center justify-center flex-1 max-w-2xl mx-8">
             <div className="flex items-center space-x-4">
-              {navigationItems.map(item => <Link key={item.key} to={item.href} className="text-foreground hover:text-primary transition-colors font-medium py-2 rounded-md hover:bg-primary/5 px-[7px]" onClick={() => window.scrollTo(0, 0)}>
+              {navigationItems.map(item => <Link key={item.key} to={item.href} className="text-foreground hover:text-primary transition-colors font-medium py-2 rounded-md hover:bg-primary/5 px-3 whitespace-nowrap" onClick={() => window.scrollTo(0, 0)}>
                 {t(item.key)}
               </Link>)}
             </div>
           </nav>
 
           {/* Right Side Controls */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             {/* Cart Button */}
             <CartButton />
             
             {/* Authentication Controls */}
             {user ? <div className="relative group">
-                <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-4 py-2">
+                <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-2 sm:px-4 py-2">
                   <User className="h-5 w-5" />
-                  <span className="hidden sm:inline">
+                  <span className="hidden sm:inline text-sm">
                     {profile?.full_name || user.email?.split('@')[0] || 'Account'}
                   </span>
                 </Button>
@@ -116,26 +122,26 @@ const Header = () => {
                     {t('auth.sign_out')}
                   </button>
                 </div>
-              </div> : <Button variant="ghost" size="lg" onClick={() => { navigate('/auth'); window.scrollTo(0, 0); }} className="flex items-center space-x-2 px-4 py-2">
+              </div> : <Button variant="ghost" size="lg" onClick={() => { navigate('/auth'); window.scrollTo(0, 0); }} className="flex items-center space-x-2 px-2 sm:px-4 py-2">
                 <User className="h-5 w-5" />
-                <span className="hidden sm:inline">{t('auth.sign_in')}</span>
+                <span className="hidden sm:inline text-sm">{t('auth.sign_in')}</span>
               </Button>}
 
             {/* Search Button */}
-            <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-4 py-2">
+            <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-2 sm:px-4 py-2">
               <Search className="h-5 w-5" />
-              <span className="hidden sm:inline">{t('common.search')}</span>
+              <span className="hidden sm:inline text-sm">{t('common.search')}</span>
             </Button>
 
             {/* Language Dropdown */}
             <div className="relative group">
-              <Button variant="ghost" size="lg" className="flex items-center space-x-3 px-4 py-2 min-w-[120px]">
+              <Button variant="ghost" size="lg" className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-4 py-2 min-w-[100px] sm:min-w-[120px]">
                 <Globe className="h-5 w-5" />
                 <span className="flex items-center space-x-2">
                   <span className="text-lg">
                     {languages.find(lang => lang.code === currentLanguage)?.flag}
                   </span>
-                  <span className="hidden sm:inline font-medium">
+                  <span className="hidden sm:inline font-medium text-sm">
                     {languages.find(lang => lang.code === currentLanguage)?.name}
                   </span>
                 </span>

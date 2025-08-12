@@ -13,44 +13,50 @@ const Hero = () => {
     t,
     isRTL
   } = useLanguage();
-  return <section className="relative min-h-[80vh] flex items-center justify-center">
+  return <section className="relative min-h-[80vh] sm:min-h-[85vh] lg:min-h-[80vh] flex items-center justify-center">
       {/* Hero Banner Image */}
       <div className="absolute inset-0">
-        <img src="/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png" alt="Professional car detailing banner" className="w-full h-full object-cover" />
+        <img 
+          src="/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png" 
+          alt="Professional car detailing banner" 
+          className="w-full h-full object-cover gpu-accelerated" 
+          loading="eager"
+          decoding="async"
+        />
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
       
-      <div className="container relative z-10 px-4 mx-auto py-[78px] w-full">
-        <div className="max-w-4xl mx-auto text-center w-full">
-          <div className="mb-8">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium mb-6 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4 mr-2" />
+      <div className="container relative z-10 px-4 sm:px-6 mx-auto py-12 sm:py-16 lg:py-20 w-full">
+        <div className="max-w-4xl mx-auto text-center w-full animate-fade-in">
+          <div className="mb-6 sm:mb-8">
+            <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-white/10 text-white text-xs sm:text-sm font-medium mb-4 sm:mb-6 backdrop-blur-sm">
+              <Sparkles className="w-3 sm:w-4 h-3 sm:h-4 mr-2" />
               {t('common.official_partner')}
             </div>
             
-            <h1 className="text-5xl font-bold text-white mb-6 leading-tight md:text-4xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
               {t('hero.title')}
             </h1>
             
-            <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed md:text-base">
+            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
               {t('hero.subtitle')}
             </p>
           </div>
 
-          <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <Button size="lg" className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm" onClick={() => {
+          <div className={`flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+            <Button size="lg" className="px-6 sm:px-8 py-4 sm:py-6 h-auto min-w-[180px] sm:min-w-[200px] border-2 text-sm will-change-transform hover:scale-105 transition-transform" onClick={() => {
               navigate('/products');
               window.scrollTo(0, 0);
             }}>
-              <ShoppingCart className="w-5 h-5 mr-2" />
+              <ShoppingCart className="w-4 sm:w-5 h-4 sm:h-5 mr-2" />
               {t('hero.cta.products')}
             </Button>
             
-            <Button variant="outline" size="lg" className="px-8 py-6 h-auto min-w-[200px] border-2 text-sm" onClick={() => {
+            <Button variant="outline" size="lg" className="px-6 sm:px-8 py-4 sm:py-6 h-auto min-w-[180px] sm:min-w-[200px] border-2 text-sm text-white border-white/30 hover:bg-white/10 will-change-transform hover:scale-105 transition-transform" onClick={() => {
               navigate('/courses');
               window.scrollTo(0, 0);
             }}>
-              <GraduationCap className="w-5 h-5 mr-2" />
+              <GraduationCap className="w-4 sm:w-5 h-4 sm:h-5 mr-2" />
               {t('hero.cta.courses')}
             </Button>
 
