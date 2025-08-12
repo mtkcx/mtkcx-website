@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Edit, Trash2, Package, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Package, ChevronLeft, ChevronRight, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -344,6 +344,32 @@ export default function ProductAdmin() {
     }
   };
 
+  const toggleProductStatus = async (productId: string, currentStatus: 'active' | 'inactive') => {
+    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+    
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ status: newStatus })
+        .eq('id', productId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `Product ${newStatus === 'active' ? 'activated' : 'set to draft'}`,
+      });
+      
+      loadProducts();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update product status",
+        variant: "destructive",
+      });
+    }
+  };
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -437,7 +463,17 @@ export default function ProductAdmin() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Products ({filteredProducts.length})</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Products ({filteredProducts.length})</CardTitle>
+                  <div className="text-sm text-muted-foreground">
+                    <span className="inline-flex items-center gap-1">
+                      <Eye className="h-3 w-3" /> Active products are visible on website
+                    </span>
+                    <span className="inline-flex items-center gap-1 ml-4">
+                      <EyeOff className="h-3 w-3" /> Draft products are hidden
+                    </span>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -481,29 +517,43 @@ export default function ProductAdmin() {
                                     {product.variants.length} sizes
                                   </Badge>
                                 </TableCell>
-                                <TableCell>
-                                  <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
-                                    {product.status}
-                                  </Badge>
-                                  {product.featured && (
-                                    <Badge variant="outline" className="ml-1">Featured</Badge>
-                                  )}
-                                </TableCell>
-                                <TableCell className="text-right space-x-2">
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => handleEditProduct(product)}
-                                  >
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => handleDeleteProduct(product.id!)}
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
+                                 <TableCell>
+                                   <div className="flex items-center gap-2">
+                                     <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
+                                       {product.status === 'active' ? 'Active' : 'Draft'}
+                                     </Badge>
+                                     {product.featured && (
+                                       <Badge variant="outline" className="ml-1">Featured</Badge>
+                                     )}
+                                   </div>
+                                 </TableCell>
+                                 <TableCell className="text-right space-x-2">
+                                   <Button
+                                     variant="ghost"
+                                     size="sm"
+                                     onClick={() => toggleProductStatus(product.id!, product.status)}
+                                     title={product.status === 'active' ? 'Set to Draft' : 'Make Active'}
+                                   >
+                                     {product.status === 'active' ? (
+                                       <EyeOff className="h-4 w-4" />
+                                     ) : (
+                                       <Eye className="h-4 w-4" />
+                                     )}
+                                   </Button>
+                                   <Button
+                                     variant="ghost"
+                                     size="sm"
+                                     onClick={() => handleEditProduct(product)}
+                                   >
+                                     <Edit className="h-4 w-4" />
+                                   </Button>
+                                   <Button
+                                     variant="ghost"
+                                     size="sm"
+                                     onClick={() => handleDeleteProduct(product.id!)}
+                                   >
+                                     <Trash2 className="h-4 w-4" />
+                                   </Button>
                                 </TableCell>
                               </TableRow>
                             ))}
@@ -723,18 +773,18 @@ export default function ProductAdmin() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
-                  <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value: 'active' | 'inactive') => setFormData({ ...formData, status: value })}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                 <div>
+                   <Label htmlFor="status">Status</Label>
+                   <Select value={formData.status} onValueChange={(value: 'active' | 'inactive') => setFormData({ ...formData, status: value })}>
+                     <SelectTrigger>
+                       <SelectValue placeholder="Select status" />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="active">Active</SelectItem>
+                       <SelectItem value="inactive">Draft</SelectItem>
+                     </SelectContent>
+                   </Select>
+                 </div>
                 <div className="flex items-center space-x-2 pt-6">
                   <input
                     type="checkbox"
