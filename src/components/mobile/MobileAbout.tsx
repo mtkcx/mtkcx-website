@@ -223,7 +223,7 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
             </p>
             <div className="flex items-center text-sm text-primary">
               <MapPin className="w-4 h-4 mr-2" />
-              <span>Atarot, Jerusalem</span>
+              <span>{t('about.location_jerusalem')}</span>
             </div>
           </CardContent>
         </Card>
@@ -310,7 +310,8 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
 
         {/* Our Values */}
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-primary text-center">{t('about.values_title')}</h2>
+          <h2 className="text-xl font-bold text-primary text-center">{t('about.core_values')}</h2>
+          <p className="text-sm text-muted-foreground text-center">{t('about.core_values_desc')}</p>
           <div className="grid grid-cols-2 gap-4">
             {values.map((value, index) => {
               const IconComponent = value.icon;
@@ -352,7 +353,7 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-center text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4 mr-2" />
-                <span>Atarot, Jerusalem</span>
+                <span>{t('about.location_jerusalem')}</span>
               </div>
               <div className="flex items-center justify-center text-sm text-muted-foreground">
                 <Calendar className="w-4 h-4 mr-2" />
