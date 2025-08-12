@@ -473,15 +473,6 @@ export const MobileAdminDashboard: React.FC = () => {
                 <MobileNotificationManager />
               </CardContent>
             </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Push Notifications</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <NotificationCenter isOpen={true} onClose={() => {}} />
-              </CardContent>
-            </Card>
           </div>
         </TabsContent>
 
