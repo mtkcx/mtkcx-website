@@ -323,6 +323,7 @@ const translations = {
     'mobile.products.features': 'Features',
     'mobile.products.category': 'Category',
     'mobile.products.choose_size': 'Choose size',
+    'mobile.products.size': 'Size',
     'mobile.products.premium_quality': 'Premium Quality',
     'mobile.products.professional_grade': 'Professional Grade',
     'mobile.products.ready_to_use': 'Ready to Use',
