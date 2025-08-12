@@ -289,6 +289,10 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
               <div className="space-y-2">
                 <div className="flex items-center text-sm">
                   <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                  <span>{t('about.paint_protection_films')}</span>
+                </div>
+                <div className="flex items-center text-sm">
+                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                   <span>{t('about.custom_designs')}</span>
                 </div>
                 <div className="flex items-center text-sm">
