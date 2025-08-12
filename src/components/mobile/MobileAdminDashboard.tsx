@@ -27,6 +27,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
 import { MobileNotificationManager } from './MobileNotificationManager';
+import { NotificationCenter } from './NotificationCenter';
 
 interface Order {
   id: string;
@@ -463,7 +464,25 @@ export const MobileAdminDashboard: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="notifications" className="space-y-3">
-          <MobileNotificationManager />
+          <div className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">SMS System</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <MobileNotificationManager />
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Push Notifications</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <NotificationCenter isOpen={true} onClose={() => {}} />
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="users" className="space-y-3">
