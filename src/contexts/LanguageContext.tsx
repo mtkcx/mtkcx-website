@@ -204,7 +204,7 @@ const translations = {
     'about.story_title': 'Our Story',
     'about.story_p1': 'We are proud to be an official Koch-Chemie distribution partner, bringing world-class German car care products directly to professionals and enthusiasts across the region.',
     'about.story_p2': 'With years of hands-on experience in detailing, polishing, and surface treatment, we don\'t just sell products — we live the craft. Our deep understanding of the industry allows us to provide tailored solutions for every stage of vehicle care, from pre-wash to final finish.',
-    'about.story_p3': 'We are also the founders of MTKCx, one of the leading names in high-quality vehicle wrapping and customization. Our work speaks for itself — precision, creativity, and premium execution on every car we touch.',
+    'about.story_p3': 'We are also the founders of MT Wraps, one of the leading names in high-quality vehicle wrapping and customization. Our work speaks for itself — precision, creativity, and premium execution on every car we touch.',
     'about.koch_partner': 'Koch-Chemie Official Partner',
     'about.koch_desc': 'Since 1968, Koch-Chemie has been the benchmark for professional car care. As their official partner, we bring you authentic German engineering excellence.',
     'about.achievements': 'Key Achievements',
