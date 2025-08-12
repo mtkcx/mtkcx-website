@@ -5,17 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
-import { 
-  ShoppingCart, 
-  Eye, 
-  Star, 
-  Package, 
-  Shield,
-  Sparkles,
-  Zap,
-  Heart,
-  Info
-} from 'lucide-react';
+import { ShoppingCart, Eye, Star, Package, Shield, Sparkles, Zap, Info } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -43,26 +33,26 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showImageZoom, setShowImageZoom] = useState(false);
 
-  console.log('Dialog render - product:', !!product, 'isOpen:', isOpen);
-
-  if (!product) {
-    console.log('No product, returning null');
-    return null;
-  }
+  if (!product) return null;
 
   // Get localized content
   const getLocalizedContent = (field: string) => {
-    const baseField = product[field];
-    const arField = product[`${field}_ar`];
-    const heField = product[`${field}_he`];
+    try {
+      const baseField = product[field];
+      const arField = product[`${field}_ar`];
+      const heField = product[`${field}_he`];
 
-    switch (currentLanguage) {
-      case 'ar':
-        return arField || baseField || '';
-      case 'he':
-        return heField || baseField || '';
-      default:
-        return baseField || '';
+      switch (currentLanguage) {
+        case 'ar':
+          return arField || baseField || '';
+        case 'he':
+          return heField || baseField || '';
+        default:
+          return baseField || '';
+      }
+    } catch (error) {
+      console.error('Error in getLocalizedContent:', error);
+      return '';
     }
   };
 
@@ -77,87 +67,97 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   const selectedVariant = selectedVariants[product.id];
 
   const addToCart = () => {
-    if (!selectedVariant && product.product_variants?.length > 0) {
+    try {
+      if (!selectedVariant && product.product_variants?.length > 0) {
+        toast({
+          title: t('mobile.products.select_size'),
+          description: t('mobile.products.select_size_desc'),
+          variant: 'destructive'
+        });
+        return;
+      }
+
+      const cartItem = {
+        productId: product.id,
+        productName: productName,
+        productCode: product.product_code,
+        variantId: selectedVariant?.variantId || null,
+        variantSize: selectedVariant?.size || 'default',
+        price: selectedVariant?.price || parseFloat(product.product_variants?.[0]?.price || '0'),
+        quantity: 1,
+        imageUrl: getCurrentProductImage(product),
+        categoryName: product.product_categories?.[0]?.categories?.name || 'Unknown'
+      };
+
+      addItemToCart(cartItem);
+      
       toast({
-        title: t('mobile.products.select_size'),
-        description: t('mobile.products.select_size_desc'),
-        variant: 'destructive'
+        title: t('mobile.products.added_to_cart'),
+        description: `${productName} ${t('mobile.products.added_description')}`,
+        duration: 2000
       });
-      return;
+
+      onClose();
+    } catch (error) {
+      console.error('Error adding to cart:', error);
     }
-
-    const cartItem = {
-      productId: product.id,
-      productName: productName,
-      productCode: product.product_code,
-      variantId: selectedVariant?.variantId || null,
-      variantSize: selectedVariant?.size || 'default',
-      price: selectedVariant?.price || parseFloat(product.product_variants?.[0]?.price || '0'),
-      quantity: 1,
-      imageUrl: getCurrentProductImage(product),
-      categoryName: product.product_categories?.[0]?.categories?.name || 'Unknown'
-    };
-
-    addItemToCart(cartItem);
-    
-    toast({
-      title: t('mobile.products.added_to_cart'),
-      description: `${productName} ${t('mobile.products.added_description')}`,
-      duration: 2000
-    });
-
-    onClose();
   };
 
   const handleVariantChange = (variantId: string) => {
-    const variant = product.product_variants?.find((v: any) => v.id === variantId);
-    if (variant) {
-      onVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
-      
-      // Update active image to show variant-specific image if available
-      if (product.product_images?.length > 0) {
-        const variantImageIndex = product.product_images.findIndex((img: any) => 
-          img.variant_id === variantId
-        );
-        if (variantImageIndex !== -1) {
-          setActiveImageIndex(variantImageIndex);
-        } else {
-          // If no variant-specific image, try to show primary image
-          const primaryImageIndex = product.product_images.findIndex((img: any) => img.is_primary);
-          if (primaryImageIndex !== -1) {
-            setActiveImageIndex(primaryImageIndex);
+    try {
+      const variant = product.product_variants?.find((v: any) => v.id === variantId);
+      if (variant) {
+        onVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
+        
+        // Update active image to show variant-specific image if available
+        if (product.product_images?.length > 0) {
+          const variantImageIndex = product.product_images.findIndex((img: any) => 
+            img.variant_id === variantId
+          );
+          if (variantImageIndex !== -1) {
+            setActiveImageIndex(variantImageIndex);
+          } else {
+            // If no variant-specific image, try to show primary image
+            const primaryImageIndex = product.product_images.findIndex((img: any) => img.is_primary);
+            if (primaryImageIndex !== -1) {
+              setActiveImageIndex(primaryImageIndex);
+            }
           }
         }
       }
+    } catch (error) {
+      console.error('Error handling variant change:', error);
     }
   };
 
   // Update images when variant changes or component mounts
   useEffect(() => {
-    if (product.product_images?.length > 0) {
-      const selectedVariant = selectedVariants[product.id];
-      if (selectedVariant) {
-        const variantImageIndex = product.product_images.findIndex((img: any) => 
-          img.variant_id === selectedVariant.variantId
-        );
-        if (variantImageIndex !== -1) {
-          setActiveImageIndex(variantImageIndex);
-          return;
+    try {
+      if (product.product_images?.length > 0) {
+        const selectedVariant = selectedVariants[product.id];
+        if (selectedVariant) {
+          const variantImageIndex = product.product_images.findIndex((img: any) => 
+            img.variant_id === selectedVariant.variantId
+          );
+          if (variantImageIndex !== -1) {
+            setActiveImageIndex(variantImageIndex);
+            return;
+          }
+        }
+        
+        // Default to primary image if no variant-specific image
+        const primaryImageIndex = product.product_images.findIndex((img: any) => img.is_primary);
+        if (primaryImageIndex !== -1) {
+          setActiveImageIndex(primaryImageIndex);
         }
       }
-      
-      // Default to primary image if no variant-specific image
-      const primaryImageIndex = product.product_images.findIndex((img: any) => img.is_primary);
-      if (primaryImageIndex !== -1) {
-        setActiveImageIndex(primaryImageIndex);
-      }
+    } catch (error) {
+      console.error('Error in useEffect:', error);
     }
   }, [product, selectedVariants]);
 
   // Get safety icons for display
   const safetyIcons = product.safety_icons || [];
-
-  console.log('About to render dialog');
 
   return (
     <>
