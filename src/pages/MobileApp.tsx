@@ -95,6 +95,7 @@ const MobileApp: React.FC = () => {
 
   const handleShowContact = () => {
     setShowContact(true);
+    setShowAbout(false); // Clear about state
     setIsMenuOpen(false);
     // Scroll to top when opening contact
     window.scrollTo(0, 0);
@@ -102,6 +103,7 @@ const MobileApp: React.FC = () => {
 
   const handleShowAbout = () => {
     setShowAbout(true);
+    setShowContact(false); // Clear contact state
     setIsMenuOpen(false);
     // Scroll to top when opening about
     window.scrollTo(0, 0);

@@ -95,12 +95,12 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
             </SheetTrigger>
             <SheetContent side="left" className="w-80">
               <SheetHeader>
-                <SheetTitle className="flex items-center gap-2">
-                  <img 
-                    src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
-                    alt="MTKCx Logo"
-                    className="h-12 w-auto"
-                  />
+                  <SheetTitle className="flex items-center gap-2">
+                    <img 
+                      src="/lovable-uploads/409047d3-4e0e-421a-a478-96987ccd7f9b.png" 
+                      alt="MT KCx Logo"
+                      className="h-12 w-auto"
+                    />
                   {t('common.menu')}
                 </SheetTitle>
               </SheetHeader>
@@ -152,8 +152,8 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
 
           {/* Logo - Clickable */}
           <img 
-            src="/lovable-uploads/d780ca10-1c5a-4f83-bbf2-ff0e6949ad40.png" 
-            alt="MTKCx Logo" 
+            src="/lovable-uploads/409047d3-4e0e-421a-a478-96987ccd7f9b.png" 
+            alt="MT KCx Logo"
             className="h-20 w-auto cursor-pointer"
             onClick={() => {
               onTabSwitch('home');
