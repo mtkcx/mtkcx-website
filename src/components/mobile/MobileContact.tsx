@@ -425,16 +425,54 @@ export const MobileContact: React.FC<MobileContactProps> = ({
         </Card>
       </div>
 
-      {/* Back Button */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-        <Button 
-          onClick={onBack}
-          className="w-full"
-          variant="outline"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          {t('common.back')}
-        </Button>
+      {/* Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <div className="grid grid-cols-5 bg-transparent h-16">
+          <Button 
+            variant="ghost"
+            className="flex-col gap-1 h-full rounded-none"
+            onClick={() => onTabSwitch('home')}
+          >
+            <Home className="h-5 w-5" />
+            <span className="text-xs">{t('nav.home')}</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className="flex-col gap-1 h-full rounded-none"
+            onClick={() => onTabSwitch('calculator')}
+          >
+            <Calculator className="h-5 w-5" />
+            <span className="text-xs">{t('mobile.nav.packages')}</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className="flex-col gap-1 h-full rounded-none"
+            onClick={() => onTabSwitch('photo')}
+          >
+            <Camera className="h-5 w-5" />
+            <span className="text-xs">{t('mobile.nav.quote')}</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className="flex-col gap-1 h-full rounded-none"
+            onClick={() => onTabSwitch('products')}
+          >
+            <ShoppingBag className="h-5 w-5" />
+            <span className="text-xs">{t('nav.products')}</span>
+          </Button>
+          
+          <Button 
+            variant="ghost"
+            className="flex-col gap-1 h-full rounded-none"
+            onClick={() => onTabSwitch('courses')}
+          >
+            <BookOpen className="h-5 w-5" />
+            <span className="text-xs">{t('nav.courses')}</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
