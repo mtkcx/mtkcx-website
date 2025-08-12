@@ -13,11 +13,12 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Minus, Plus, Trash2, ShoppingCart } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const CartDrawer: React.FC = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     items,
     isOpen,
@@ -33,7 +34,15 @@ const CartDrawer: React.FC = () => {
     if (items.length === 0) return;
     
     setIsOpen(false);
-    navigate('/checkout');
+    
+    // Check if we're on mobile route
+    if (location.pathname === '/mobile') {
+      // Trigger mobile checkout via custom event
+      window.dispatchEvent(new CustomEvent('mobile-checkout-open'));
+    } else {
+      // Navigate to regular checkout page
+      navigate('/checkout');
+    }
   };
 
   const formatPrice = (price: number) => {

@@ -68,10 +68,16 @@ const MobileApp: React.FC = () => {
       }, 100);
     };
 
+    const handleMobileCheckout = () => {
+      setShowCheckout(true);
+    };
+
     window.addEventListener('navigate-to-products', handleNavigateToProducts as EventListener);
+    window.addEventListener('mobile-checkout-open', handleMobileCheckout);
     
     return () => {
       window.removeEventListener('navigate-to-products', handleNavigateToProducts as EventListener);
+      window.removeEventListener('mobile-checkout-open', handleMobileCheckout);
     };
   }, []);
 
