@@ -807,6 +807,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          is_primary: boolean | null
           price: number
           product_id: string
           size: string
@@ -817,6 +818,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          is_primary?: boolean | null
           price: number
           product_id: string
           size: string
@@ -827,6 +829,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          is_primary?: boolean | null
           price?: number
           product_id?: string
           size?: string

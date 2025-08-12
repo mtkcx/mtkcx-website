@@ -18,6 +18,7 @@ interface ProductVariant {
   price: number;
   stock_quantity: number;
   sku: string;
+  is_primary: boolean;
 }
 
 interface ProductImage {
@@ -86,7 +87,8 @@ const ProductDetail = () => {
               size,
               price,
               stock_quantity,
-              sku
+              sku,
+              is_primary
             ),
             product_images (
               id,
@@ -142,9 +144,10 @@ const ProductDetail = () => {
           setProduct(transformedProduct);
           setCurrentImage(transformedProduct.image_url);
           
-          // Auto-select first available variant
+          // Auto-select primary variant or first available variant
           if (transformedProduct.variants.length > 0) {
-            setSelectedVariant(transformedProduct.variants[0]);
+            const primaryVariant = transformedProduct.variants.find(v => v.is_primary);
+            setSelectedVariant(primaryVariant || transformedProduct.variants[0]);
           }
         }
       } catch (error) {

@@ -12,6 +12,7 @@ interface ProductVariant {
   price: number;
   stock_quantity: number;
   sku: string;
+  is_primary: boolean;
 }
 
 interface ProductVariantSelectorProps {
@@ -55,8 +56,13 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
     }
   };
 
-  // Sort variants by size for logical ordering
+  // Sort variants by primary first, then by size for logical ordering
   const sortedVariants = [...variants].sort((a, b) => {
+    // Primary variant comes first
+    if (a.is_primary && !b.is_primary) return -1;
+    if (!a.is_primary && b.is_primary) return 1;
+    
+    // Then sort by size
     const sizeOrder = ['250ml', '500ml', '750ml', '1L', '5L', '10L', '20L'];
     return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
   });
@@ -76,10 +82,15 @@ const ProductVariantSelector: React.FC<ProductVariantSelectorProps> = ({
               }`}
               onClick={() => onVariantSelect(variant)}
             >
-              <CardContent className="p-4 text-center">
-                <div className="space-y-2">
-                  <Package className="w-6 h-6 mx-auto text-muted-foreground" />
-                  <div className="font-semibold text-lg">{variant.size}</div>
+            <CardContent className="p-4 text-center">
+              <div className="space-y-2">
+                <div className="flex items-center justify-center gap-2">
+                  <Package className="w-6 h-6 text-muted-foreground" />
+                  {variant.is_primary && (
+                    <Badge variant="default" className="text-xs">Primary</Badge>
+                  )}
+                </div>
+                <div className="font-semibold text-lg">{variant.size}</div>
                    {variant.price > 0 ? (
                      <div className="text-primary font-bold text-xl">
                        ₪{variant.price}
