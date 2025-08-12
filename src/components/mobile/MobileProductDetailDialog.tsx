@@ -43,7 +43,13 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showImageZoom, setShowImageZoom] = useState(false);
 
-  if (!product) return null;
+  // Debug logging
+  console.log('MobileProductDetailDialog rendered with:', { product, isOpen });
+
+  if (!product) {
+    console.log('No product provided to dialog');
+    return null;
+  }
 
   // Get localized content
   const getLocalizedContent = (field: string) => {
@@ -155,7 +161,7 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-sm mx-auto h-[90vh] flex flex-col p-0">
+        <DialogContent className="max-w-sm mx-auto h-[90vh] flex flex-col p-0 bg-background">
           <DialogHeader className="p-4 pb-2">
             <DialogTitle className="text-lg leading-tight pr-8">
               {productName}

@@ -281,6 +281,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   }, []);
 
   const handleProductClick = useCallback((product: any) => {
+    console.log('Product clicked:', product);
     setSelectedProduct(product);
     setShowDetailDialog(true);
   }, []);
