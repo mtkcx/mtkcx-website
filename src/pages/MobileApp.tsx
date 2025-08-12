@@ -9,6 +9,7 @@ import { MobileProductCatalog } from '@/components/mobile/MobileProductCatalog';
 import { MobileHome } from '@/components/mobile/MobileHome';
 import { MobileCheckout } from '@/components/mobile/MobileCheckout';
 import { MobileDashboard } from '@/components/mobile/MobileDashboard';
+import { MobileAdminDashboard } from '@/components/mobile/MobileAdminDashboard';
 import { MobileEnrollmentDialog } from '@/components/mobile/MobileEnrollmentDialog';
 import { MobileAuth } from '@/components/mobile/MobileAuth';
 import { MobileContact } from '@/components/mobile/MobileContact';
@@ -542,7 +543,7 @@ const MobileApp: React.FC = () => {
 
               {user && (
                 <TabsContent value="dashboard" className="m-0">
-                  <MobileDashboard />
+                  {isAdmin ? <MobileAdminDashboard /> : <MobileDashboard />}
                 </TabsContent>
               )}
 
