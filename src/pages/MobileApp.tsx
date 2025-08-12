@@ -43,7 +43,7 @@ import CartButton from '@/components/CartButton';
 import { useNavigate } from 'react-router-dom';
 
 const MobileApp: React.FC = () => {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, isAdmin, signOut } = useAuth();
   const { currentLanguage, setLanguage, t, isRTL } = useLanguage();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -623,7 +623,7 @@ const MobileApp: React.FC = () => {
                 >
                   <UserIcon className="h-5 w-5" />
                   <span className="text-xs truncate w-full px-1">
-                    {profile?.full_name || user?.email?.split('@')[0] || t('nav.profile')}
+                    {isAdmin ? 'Admin' : (profile?.full_name || user?.email?.split('@')[0] || t('nav.profile'))}
                   </span>
                 </TabsTrigger>
               </TabsList>

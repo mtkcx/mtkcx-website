@@ -429,7 +429,7 @@ const translations = {
     'mobile.home.hero_title': 'Professional Excellence',
     'mobile.home.hero_subtitle': 'Transforming vehicles with precision and style',
     'mobile.home.about_title': 'Who We Are',
-    'mobile.home.about_description': 'MTKCx stands as Jerusalem\'s premier destination for automotive excellence, specializing in advanced paint protection films, custom vehicle wraps, and professional detailing services. As an official Koch-Chemie partner, we combine years of expertise with cutting-edge techniques and premium materials to transform and protect vehicles while maintaining the highest standards of quality and precision.',
+    'mobile.home.about_description': 'MTKCx stands as Jerusalem\'s premium destination for automotive excellence, specializing in advanced paint protection films, custom vehicle wraps, and professional detailing services. As an official Koch-Chemie partner, we combine years of expertise with cutting-edge techniques and premium materials to transform and protect vehicles while maintaining the highest standards of quality and precision.',
     'mobile.home.premium_products': 'Premium Products',
     'mobile.home.satisfied_customers': 'Satisfied Customers',
     'mobile.home.services_title': 'What We Offer',

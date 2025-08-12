@@ -63,7 +63,7 @@ export const MobileContact: React.FC<MobileContactProps> = ({
 }) => {
   const { toast } = useToast();
   const { t, isRTL } = useLanguage();
-  const { user, profile } = useAuth();
+  const { user, profile, isAdmin } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -472,7 +472,7 @@ export const MobileContact: React.FC<MobileContactProps> = ({
           >
             <UserIcon className="h-5 w-5" />
             <span className="text-xs truncate w-full px-1">
-              {profile?.full_name || user?.email?.split('@')[0] || t('nav.profile')}
+              {isAdmin ? 'Admin' : (profile?.full_name || user?.email?.split('@')[0] || t('nav.profile'))}
             </span>
           </Button>
         </div>
