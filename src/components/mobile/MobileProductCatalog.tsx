@@ -247,6 +247,37 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     return `₪${price.toLocaleString()}`;
   }, []);
 
+  // Get product image based on selected variant
+  const getProductImageForVariant = useCallback((product: MobileProduct, variantId: string) => {
+    if (!variantId) return product.image_url;
+    
+    const variant = product.variants.find(v => v.id === variantId);
+    if (!variant) return product.image_url;
+    
+    // Try to find variant-specific image based on size
+    const sizeSpecificImage = product.image_url.replace(/\.(jpg|jpeg|png|webp)$/i, `-${variant.size}.$1`);
+    
+    // For common sizes, try different naming patterns
+    const commonSizePatterns = {
+      '1L': ['-1L', '-1000ml', '-1000ML'],
+      '500ml': ['-500ml', '-500ML', '-0.5L'],
+      '750ml': ['-750ml', '-750ML', '-0.75L'],
+      '5L': ['-5L', '-5000ml', '-5000ML']
+    };
+    
+    const patterns = commonSizePatterns[variant.size as keyof typeof commonSizePatterns] || [`-${variant.size}`];
+    
+    // Return the first pattern that might exist, fallback to original
+    for (const pattern of patterns) {
+      const imageWithPattern = product.image_url.replace(/\.(jpg|jpeg|png|webp)$/i, `${pattern}.$1`);
+      if (imageWithPattern !== product.image_url) {
+        return imageWithPattern;
+      }
+    }
+    
+    return product.image_url;
+  }, []);
+
   const formatPriceRange = useCallback((variants: Array<{id: string, size: string, price: number}>) => {
     if (variants.length === 1) {
       return `${formatPrice(variants[0].price)} (${variants[0].size})`;
@@ -430,22 +461,29 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                           <DialogTitle>{product.name}</DialogTitle>
                         </DialogHeader>
                         <div className="space-y-4">
-                          <img
-                            src={selectedProduct && selectedVariant ? 
-                              (selectedProduct.variants.find(v => v.id === selectedVariant)?.size === '1L' ? 
-                                product.image_url.replace('.png', '-1L.png').replace('.jpg', '-1L.jpg') : 
-                                product.image_url) : 
-                              product.image_url}
-                            alt={product.name}
-                            className="w-full h-48 object-cover rounded"
-                            onError={(e) => {
-                              e.currentTarget.src = product.image_url;
-                            }}
-                          />
+                          {/* Primary Product Image */}
+                          <div className="relative">
+                            <img
+                              src={getProductImageForVariant(product, selectedVariant)}
+                              alt={product.name}
+                              className="w-full h-48 object-cover rounded"
+                              onError={(e) => {
+                                e.currentTarget.src = product.image_url;
+                              }}
+                            />
+                            {selectedVariant && (
+                              <Badge className="absolute top-2 right-2">
+                                {product.variants.find(v => v.id === selectedVariant)?.size}
+                              </Badge>
+                            )}
+                          </div>
+
+                          {/* Product Description */}
                           <p className="text-sm text-muted-foreground">
                             {product.description}
                           </p>
                           
+                          {/* Size Selection */}
                           <div className="space-y-3">
                             <label className="text-sm font-medium">Select Size:</label>
                             <Select value={selectedVariant} onValueChange={setSelectedVariant}>

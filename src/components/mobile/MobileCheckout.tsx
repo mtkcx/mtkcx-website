@@ -11,6 +11,7 @@ import { ArrowLeft, CreditCard, Truck, Shield, Clock, CheckCircle2 } from 'lucid
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MobileCheckoutProps {
   onBack: () => void;
@@ -51,11 +52,42 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
     setIsProcessing(true);
 
     try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Create order in database
+      const { data: orderData, error: orderError } = await supabase
+        .from('mobile_orders')
+        .insert({
+          customer_email: formData.email,
+          customer_name: formData.fullName,
+          customer_phone: formData.phone,
+          shipping_city: formData.city,
+          shipping_address: formData.address,
+          shipping_location: formData.location,
+          payment_method: formData.paymentMethod,
+          order_notes: formData.orderNotes,
+          total_amount: total,
+          status: 'pending',
+          order_items: items.map(item => ({
+            product_id: item.productId,
+            product_name: item.productName,
+            product_code: item.productCode,
+            variant_id: item.variantId,
+            variant_size: item.variantSize,
+            price: item.price,
+            quantity: item.quantity,
+            image_url: item.imageUrl,
+            category_name: item.categoryName
+          })),
+          created_at: new Date().toISOString(),
+          order_source: 'mobile_app'
+        })
+        .select()
+        .single();
 
-      const total = getTotalPrice();
-      
+      if (orderError) {
+        console.error('Order creation error:', orderError);
+        throw new Error('Failed to create order');
+      }
+
       toast({
         title: t('checkout.order_success'),
         description: t('checkout.order_success_desc').replace('{total}', `₪${total.toLocaleString()}`),
