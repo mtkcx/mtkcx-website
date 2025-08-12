@@ -16,7 +16,7 @@ import {
   Eye, 
   Trash2, 
   Users, 
-  MessageSquare,
+  MessageCircle,
   Check,
   X,
   Globe,
@@ -116,7 +116,7 @@ export const MobileNotificationManager: React.FC = () => {
       message: '',
       message_ar: '',
       message_he: '',
-      notification_type: 'general'
+      notification_type: 'order_confirmed'
     });
     setEditingNotification(null);
   };
@@ -143,13 +143,13 @@ export const MobileNotificationManager: React.FC = () => {
 
       if (error) throw error;
 
-      toast.success('Notification created successfully');
+      toast.success('SMS template created successfully');
       setIsCreateDialogOpen(false);
       resetForm();
       fetchNotifications();
     } catch (error) {
-      console.error('Error creating notification:', error);
-      toast.error('Failed to create notification');
+      console.error('Error creating SMS template:', error);
+      toast.error('Failed to create SMS template');
     }
   };
 
@@ -261,13 +261,22 @@ export const MobileNotificationManager: React.FC = () => {
 
   const getNotificationTypeColor = (type: string) => {
     switch (type) {
-      case 'order':
-        return 'bg-blue-100 text-blue-800';
-      case 'promotion':
+      case 'order_confirmed':
         return 'bg-green-100 text-green-800';
-      case 'warning':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'general':
+      case 'order_shipped':
+        return 'bg-blue-100 text-blue-800';
+      case 'order_delivered':
+        return 'bg-purple-100 text-purple-800';
+      case 'payment_received':
+        return 'bg-emerald-100 text-emerald-800';
+      case 'appointment_reminder':
+        return 'bg-orange-100 text-orange-800';
+      case 'promotion':
+        return 'bg-pink-100 text-pink-800';
+      case 'welcome':
+        return 'bg-indigo-100 text-indigo-800';
+      case 'order_cancelled':
+        return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -298,7 +307,7 @@ export const MobileNotificationManager: React.FC = () => {
   const NotificationForm = () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="notification_type">Notification Type</Label>
+        <Label htmlFor="notification_type">SMS Message Type</Label>
         <Select 
           value={formData.notification_type} 
           onValueChange={(value) => setFormData(prev => ({ ...prev, notification_type: value }))}
@@ -307,55 +316,105 @@ export const MobileNotificationManager: React.FC = () => {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="general">General</SelectItem>
-            <SelectItem value="order">Order Update</SelectItem>
-            <SelectItem value="promotion">Promotion</SelectItem>
-            <SelectItem value="warning">Warning</SelectItem>
+            <SelectItem value="order_confirmed">Order Confirmed</SelectItem>
+            <SelectItem value="order_shipped">Order Shipped</SelectItem>
+            <SelectItem value="order_delivered">Order Delivered</SelectItem>
+            <SelectItem value="payment_received">Payment Received</SelectItem>
+            <SelectItem value="appointment_reminder">Appointment Reminder</SelectItem>
+            <SelectItem value="promotion">Promotion/Offer</SelectItem>
+            <SelectItem value="welcome">Welcome Message</SelectItem>
+            <SelectItem value="order_cancelled">Order Cancelled</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
+      {/* Quick Templates */}
+      <div className="space-y-2">
+        <Label>Quick Templates</Label>
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setFormData(prev => ({
+              ...prev,
+              title: 'Order Confirmed',
+              title_ar: 'تم تأكيد الطلب',
+              title_he: 'הזמנה אושרה',
+              message: 'Your order #{ORDER_NUMBER} has been confirmed. Total: ₪{AMOUNT}. We will prepare it shortly.',
+              message_ar: 'تم تأكيد طلبك رقم #{ORDER_NUMBER}. المجموع: ₪{AMOUNT}. سنقوم بتحضيره قريباً.',
+              message_he: 'הזמנתך מס\' #{ORDER_NUMBER} אושרה. סה"כ: ₪{AMOUNT}. נכין אותה בקרוב.',
+              notification_type: 'order_confirmed'
+            }))}
+            className="text-xs"
+          >
+            Order Confirmed
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setFormData(prev => ({
+              ...prev,
+              title: 'Order Shipped',
+              title_ar: 'تم شحن الطلب',
+              title_he: 'הזמנה נשלחה',
+              message: 'Great news! Your order #{ORDER_NUMBER} is on its way. Track: {TRACKING_NUMBER}',
+              message_ar: 'أخبار رائعة! طلبك رقم #{ORDER_NUMBER} في الطريق. تتبع: {TRACKING_NUMBER}',
+              message_he: 'חדשות טובות! הזמנתך מס\' #{ORDER_NUMBER} בדרך. מעקב: {TRACKING_NUMBER}',
+              notification_type: 'order_shipped'
+            }))}
+            className="text-xs"
+          >
+            Order Shipped
+          </Button>
+        </div>
+      </div>
+
       {/* English Fields */}
       <div className="space-y-2">
-        <Label htmlFor="title">Title (English) *</Label>
+        <Label htmlFor="title">SMS Title (English) *</Label>
         <Input
           id="title"
           value={formData.title}
           onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-          placeholder="Enter notification title"
+          placeholder="Enter SMS title"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message">Message (English) *</Label>
+        <Label htmlFor="message">SMS Message (English) *</Label>
         <Textarea
           id="message"
           value={formData.message}
           onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-          placeholder="Enter notification message"
+          placeholder="Enter SMS message (use {ORDER_NUMBER}, {AMOUNT}, {TRACKING_NUMBER} for dynamic values)"
           rows={3}
         />
+        <div className="text-xs text-muted-foreground">
+          Available variables: {'{ORDER_NUMBER}'}, {'{AMOUNT}'}, {'{TRACKING_NUMBER}'}, {'{CUSTOMER_NAME}'}
+        </div>
       </div>
 
       {/* Arabic Fields */}
       <div className="space-y-2">
-        <Label htmlFor="title_ar">Title (Arabic)</Label>
+        <Label htmlFor="title_ar">SMS Title (Arabic)</Label>
         <Input
           id="title_ar"
           value={formData.title_ar}
           onChange={(e) => setFormData(prev => ({ ...prev, title_ar: e.target.value }))}
-          placeholder="أدخل عنوان الإشعار"
+          placeholder="أدخل عنوان الرسالة"
           dir="rtl"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message_ar">Message (Arabic)</Label>
+        <Label htmlFor="message_ar">SMS Message (Arabic)</Label>
         <Textarea
           id="message_ar"
           value={formData.message_ar}
           onChange={(e) => setFormData(prev => ({ ...prev, message_ar: e.target.value }))}
-          placeholder="أدخل رسالة الإشعار"
+          placeholder="أدخل نص الرسالة"
           rows={3}
           dir="rtl"
         />
@@ -363,7 +422,7 @@ export const MobileNotificationManager: React.FC = () => {
 
       {/* Hebrew Fields */}
       <div className="space-y-2">
-        <Label htmlFor="title_he">Title (Hebrew)</Label>
+        <Label htmlFor="title_he">SMS Title (Hebrew)</Label>
         <Input
           id="title_he"
           value={formData.title_he}
@@ -374,12 +433,12 @@ export const MobileNotificationManager: React.FC = () => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="message_he">Message (Hebrew)</Label>
+        <Label htmlFor="message_he">SMS Message (Hebrew)</Label>
         <Textarea
           id="message_he"
           value={formData.message_he}
           onChange={(e) => setFormData(prev => ({ ...prev, message_he: e.target.value }))}
-          placeholder="הכנס הודעת התראה"
+          placeholder="הכנס טקסט הודעה"
           rows={3}
           dir="rtl"
         />
@@ -390,7 +449,7 @@ export const MobileNotificationManager: React.FC = () => {
           onClick={editingNotification ? handleUpdate : handleCreate}
           className="flex-1"
         >
-          {editingNotification ? 'Update' : 'Create'} Notification
+          {editingNotification ? 'Update' : 'Create'} SMS Template
         </Button>
         <Button 
           variant="outline" 
@@ -416,10 +475,10 @@ export const MobileNotificationManager: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-semibold flex items-center gap-2">
-            <Bell className="h-5 w-5" />
-            Notification Manager
+            <MessageCircle className="h-5 w-5" />
+            Customer SMS Manager
           </h2>
-          <p className="text-sm text-muted-foreground">Create and manage customer notifications</p>
+          <p className="text-sm text-muted-foreground">Create and manage SMS templates for customers</p>
         </div>
         
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
@@ -431,7 +490,7 @@ export const MobileNotificationManager: React.FC = () => {
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>Create New Notification</DialogTitle>
+              <DialogTitle>Create New SMS Template</DialogTitle>
             </DialogHeader>
             <NotificationForm />
           </DialogContent>
@@ -441,12 +500,12 @@ export const MobileNotificationManager: React.FC = () => {
       <Tabs defaultValue="templates" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="templates" className="text-xs">
-            <MessageSquare className="h-4 w-4 mr-1" />
-            Templates
+            <MessageCircle className="h-4 w-4 mr-1" />
+            SMS Templates
           </TabsTrigger>
           <TabsTrigger value="sent" className="text-xs">
             <Send className="h-4 w-4 mr-1" />
-            Sent History
+            SMS History
           </TabsTrigger>
         </TabsList>
 
@@ -456,7 +515,7 @@ export const MobileNotificationManager: React.FC = () => {
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Edit className="h-4 w-4" />
-                  Editing Notification
+                  Editing SMS Template
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -469,8 +528,8 @@ export const MobileNotificationManager: React.FC = () => {
             <Card>
               <CardContent className="text-center py-8">
                 <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No notification templates found.</p>
-                <p className="text-sm text-muted-foreground">Create your first notification template above.</p>
+                <p className="text-muted-foreground">No SMS templates found.</p>
+                <p className="text-sm text-muted-foreground">Create your first SMS template above.</p>
               </CardContent>
             </Card>
           ) : (
@@ -587,8 +646,8 @@ export const MobileNotificationManager: React.FC = () => {
             <Card>
               <CardContent className="text-center py-8">
                 <Send className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No notifications sent yet.</p>
-                <p className="text-sm text-muted-foreground">Sent notifications will appear here.</p>
+                <p className="text-muted-foreground">No SMS messages sent yet.</p>
+                <p className="text-sm text-muted-foreground">Sent SMS messages will appear here.</p>
               </CardContent>
             </Card>
           ) : (

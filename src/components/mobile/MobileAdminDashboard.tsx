@@ -354,14 +354,18 @@ export const MobileAdminDashboard: React.FC = () => {
 
       {/* Data Tables */}
       <Tabs defaultValue="customers" className="space-y-3">
-        <TabsList className="grid w-full grid-cols-7">
-          <TabsTrigger value="customers" className="text-xs">Customers</TabsTrigger>
-          <TabsTrigger value="orders" className="text-xs">Orders</TabsTrigger>
-          <TabsTrigger value="quotes" className="text-xs">Quotes</TabsTrigger>
-          <TabsTrigger value="enrollments" className="text-xs">Enrollments</TabsTrigger>
-          <TabsTrigger value="messages" className="text-xs">Messages</TabsTrigger>
-          <TabsTrigger value="notifications" className="text-xs">Notifications</TabsTrigger>
-          <TabsTrigger value="users" className="text-xs">Users</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-4 gap-1">
+          <TabsTrigger value="customers" className="text-[10px] px-1">Customers</TabsTrigger>
+          <TabsTrigger value="orders" className="text-[10px] px-1">Orders</TabsTrigger>
+          <TabsTrigger value="quotes" className="text-[10px] px-1">Quotes</TabsTrigger>
+          <TabsTrigger value="enrollments" className="text-[10px] px-1">Enrollments</TabsTrigger>
+        </TabsList>
+        
+        {/* Secondary tabs row */}
+        <TabsList className="grid w-full grid-cols-3 gap-1 mt-2">
+          <TabsTrigger value="messages" className="text-[10px] px-1">Messages</TabsTrigger>
+          <TabsTrigger value="notifications" className="text-[10px] px-1">SMS System</TabsTrigger>
+          <TabsTrigger value="users" className="text-[10px] px-1">Users</TabsTrigger>
         </TabsList>
         
         <TabsContent value="customers" className="space-y-3">

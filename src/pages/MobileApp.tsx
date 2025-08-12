@@ -562,7 +562,25 @@ const MobileApp: React.FC = () => {
 
               {user && (
                 <TabsContent value="dashboard" className="m-0">
-                  {isAdmin ? <MobileAdminDashboard /> : <MobileDashboard />}
+                  {isAdmin ? (
+                    <div className="p-4">
+                      <div className="mb-4 text-center">
+                        <h2 className="text-lg font-bold text-primary">Admin Dashboard</h2>
+                        <p className="text-sm text-muted-foreground">Full administrative controls</p>
+                      </div>
+                      <Button 
+                        onClick={() => navigate('/admin/dashboard/mobile')} 
+                        className="w-full mb-4"
+                        size="lg"
+                      >
+                        <Settings className="h-5 w-5 mr-2" />
+                        Open Admin Dashboard
+                      </Button>
+                      <MobileDashboard />
+                    </div>
+                  ) : (
+                    <MobileDashboard />
+                  )}
                 </TabsContent>
               )}
 
