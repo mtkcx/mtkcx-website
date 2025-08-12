@@ -324,16 +324,16 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
             <div className="flex gap-2">
               <Button
                 variant="outline"
-                className="flex-1"
+                className="flex-1 h-10 whitespace-nowrap"
                 onClick={onClose}
               >
                 {t('common.close')}
               </Button>
               <Button
                 onClick={addToCart}
-                className="flex-1"
+                className="flex-1 h-10 whitespace-nowrap"
               >
-                <ShoppingCart className="h-4 w-4 mr-2" />
+                <ShoppingCart className="h-4 w-4 mr-1" />
                 {t('mobile.products.add_to_cart')}
               </Button>
             </div>
