@@ -65,12 +65,18 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     fetchProducts();
   }, []);
 
-  // Memoized URL parameter handling
+  // Handle category filtering from URL parameters and clear on navigation
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
-    if (category && category !== selectedCategory) {
+    const tab = urlParams.get('tab');
+    
+    // Only set category if we're on products tab and have a category parameter
+    if (tab === 'products' && category && category !== selectedCategory) {
       setSelectedCategory(category);
+    } else if (tab !== 'products' || !category) {
+      // Clear category filter if not on products tab or no category in URL
+      setSelectedCategory(null);
     }
   }, [selectedCategory]);
 
@@ -235,6 +241,22 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     return `₪${price.toLocaleString()}`;
   }, []);
 
+  const formatPriceRange = useCallback((variants: Array<{id: string, size: string, price: number}>) => {
+    if (variants.length === 1) {
+      return `${formatPrice(variants[0].price)} (${variants[0].size})`;
+    }
+    
+    const sortedVariants = [...variants].sort((a, b) => a.price - b.price);
+    const minVariant = sortedVariants[0];
+    const maxVariant = sortedVariants[sortedVariants.length - 1];
+    
+    if (minVariant.price === maxVariant.price) {
+      return `${formatPrice(minVariant.price)} (${variants.map(v => v.size).join(', ')})`;
+    }
+    
+    return `${formatPrice(minVariant.price)} (${minVariant.size}) - ${formatPrice(maxVariant.price)} (${maxVariant.size})`;
+  }, [formatPrice]);
+
   // Early return for loading with optimized skeleton
   if (loading) {
     return (
@@ -374,11 +396,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                 
                 <div className="flex items-center justify-between">
                   <div className="text-sm font-medium text-primary">
-                    {product.variants.length === 1 ? (
-                      formatPrice(product.variants[0].price)
-                    ) : (
-                      `${formatPrice(Math.min(...product.variants.map(v => v.price)))} - ${formatPrice(Math.max(...product.variants.map(v => v.price)))}`
-                    )}
+                    {formatPriceRange(product.variants)}
                   </div>
                   {product.variants.length === 1 ? (
                     <Button

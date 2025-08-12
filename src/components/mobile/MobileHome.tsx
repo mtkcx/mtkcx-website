@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +19,16 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const MobileHome: React.FC = memo(() => {
   const { user } = useAuth();
   const { t } = useLanguage();
+
+  // Optimized navigation handlers to prevent lag
+  const handleCategoryNavigation = useCallback((category: string) => {
+    // Use hash-based navigation for instant response
+    window.location.hash = `#products-${category}`;
+    // Then update the actual URL
+    setTimeout(() => {
+      window.location.href = `/mobile?tab=products&category=${category}`;
+    }, 0);
+  }, []);
 
   return (
     <div className="space-y-6 p-4">
@@ -75,7 +85,7 @@ const MobileHome: React.FC = memo(() => {
         <h2 className="text-xl font-bold text-center">Our Main Categories</h2>
         <div className="grid gap-4">
           {/* Interior Cleaning */}
-          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => window.location.href = '/mobile?tab=products&category=interior-cleaning'}>
+          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleCategoryNavigation('interior-cleaning')}>
             <div className="relative">
               <img 
                 src="/lovable-uploads/46cc7ba0-4b05-48a2-b131-498255ed57d5.png" 
@@ -94,7 +104,7 @@ const MobileHome: React.FC = memo(() => {
           </Card>
 
           {/* Exterior Cleaning */}
-          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => window.location.href = '/mobile?tab=products&category=exterior-cleaning'}>
+          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleCategoryNavigation('exterior-cleaning')}>
             <div className="relative">
               <img 
                 src="/lovable-uploads/753d6730-8e66-43fa-bd31-394bffb75e77.png" 
@@ -113,7 +123,7 @@ const MobileHome: React.FC = memo(() => {
           </Card>
 
           {/* Polished & Coatings */}
-          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => window.location.href = '/mobile?tab=products&category=polished-coatings'}>
+          <Card className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleCategoryNavigation('polished-coatings')}>
             <div className="relative">
               <img 
                 src="/lovable-uploads/af980fad-dfd1-4cfc-b5ee-5932499d69e3.png" 

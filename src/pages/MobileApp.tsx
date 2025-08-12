@@ -54,15 +54,18 @@ const MobileApp: React.FC = () => {
   const [showContact, setShowContact] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
 
-  // Handle URL parameters for category filtering
+  // Handle URL parameters for category filtering and clear on navigation
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get('tab');
     
     if (tab === 'products') {
       setActiveTab('products');
+    } else if (tab && tab !== activeTab) {
+      // Clear any category filters when switching tabs
+      setActiveTab(tab);
     }
-  }, []);
+  }, [activeTab]);
 
   const handleLogout = async () => {
     await signOut();
