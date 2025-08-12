@@ -89,8 +89,8 @@ const App = () => (
                  <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
                  <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
                  <Route path="/admin/security" element={<AdminProtectedRoute><SecurityDashboard /></AdminProtectedRoute>} />
-                 <Route path="/admin" element={<AdminDashboard />} />
-                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                 <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+                 <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
                  <Route path="/admin/dashboard/mobile" element={<MobileAdminDashboard />} />
                  <Route path="/mobile" element={<MobileApp />} />
                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

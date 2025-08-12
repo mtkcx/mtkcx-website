@@ -52,7 +52,7 @@ const Hero = () => {
               {t('hero.cta.products')}
             </Button>
             
-            <Button variant="outline" size="lg" className="px-6 sm:px-8 py-4 sm:py-6 h-auto min-w-[180px] sm:min-w-[200px] border-2 text-sm text-white border-white/30 hover:bg-white/10 will-change-transform hover:scale-105 transition-transform" onClick={() => {
+            <Button variant="outline-white" size="lg" className="px-6 sm:px-8 py-4 sm:py-6 h-auto min-w-[180px] sm:min-w-[200px] text-sm will-change-transform hover:scale-105 transition-transform" onClick={() => {
               navigate('/courses');
               window.scrollTo(0, 0);
             }}>
