@@ -20,14 +20,12 @@ const MobileHome: React.FC = memo(() => {
   const { user } = useAuth();
   const { t } = useLanguage();
 
-  // Optimized navigation handlers to prevent lag
+  // Navigation handlers for mobile app
   const handleCategoryNavigation = useCallback((category: string) => {
-    // Use hash-based navigation for instant response
-    window.location.hash = `#products-${category}`;
-    // Then update the actual URL
-    setTimeout(() => {
-      window.location.href = `/mobile?tab=products&category=${category}`;
-    }, 0);
+    // Dispatch custom event for category navigation
+    window.dispatchEvent(new CustomEvent('navigate-to-products', { 
+      detail: { category } 
+    }));
   }, []);
 
   return (

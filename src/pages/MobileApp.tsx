@@ -54,18 +54,24 @@ const MobileApp: React.FC = () => {
   const [showContact, setShowContact] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
 
-  // Handle URL parameters for category filtering and clear on navigation
+  // Handle navigation events from home page
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const tab = urlParams.get('tab');
-    
-    if (tab === 'products') {
+    const handleNavigateToProducts = (event: CustomEvent) => {
       setActiveTab('products');
-    } else if (tab && tab !== activeTab) {
-      // Clear any category filters when switching tabs
-      setActiveTab(tab);
-    }
-  }, [activeTab]);
+      // Pass category to products component via event
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('set-product-category', { 
+          detail: { category: event.detail.category } 
+        }));
+      }, 100);
+    };
+
+    window.addEventListener('navigate-to-products', handleNavigateToProducts as EventListener);
+    
+    return () => {
+      window.removeEventListener('navigate-to-products', handleNavigateToProducts as EventListener);
+    };
+  }, []);
 
   const handleLogout = async () => {
     await signOut();
@@ -100,6 +106,10 @@ const MobileApp: React.FC = () => {
     setShowContact(false);
     setShowAbout(false);
     setShowCheckout(false);
+    // Clear product filters when switching tabs
+    if (tab !== 'products') {
+      window.dispatchEvent(new CustomEvent('clear-product-filters'));
+    }
     // Scroll to top when changing tabs
     window.scrollTo(0, 0);
   };

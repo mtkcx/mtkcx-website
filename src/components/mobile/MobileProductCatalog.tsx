@@ -65,20 +65,25 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     fetchProducts();
   }, []);
 
-  // Handle category filtering from URL parameters and clear on navigation
+  // Handle navigation events from home page and tab switching
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get('category');
-    const tab = urlParams.get('tab');
-    
-    // Only set category if we're on products tab and have a category parameter
-    if (tab === 'products' && category && category !== selectedCategory) {
-      setSelectedCategory(category);
-    } else if (tab !== 'products' || !category) {
-      // Clear category filter if not on products tab or no category in URL
+    const handleSetCategory = (event: CustomEvent) => {
+      setSelectedCategory(event.detail.category);
+    };
+
+    const handleClearFilters = () => {
       setSelectedCategory(null);
-    }
-  }, [selectedCategory]);
+      setSearchTerm('');
+    };
+
+    window.addEventListener('set-product-category', handleSetCategory as EventListener);
+    window.addEventListener('clear-product-filters', handleClearFilters as EventListener);
+    
+    return () => {
+      window.removeEventListener('set-product-category', handleSetCategory as EventListener);
+      window.removeEventListener('clear-product-filters', handleClearFilters as EventListener);
+    };
+  }, []);
 
   // Optimized data fetching with minimal queries
   const fetchProducts = useCallback(async () => {
