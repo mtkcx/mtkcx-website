@@ -27,7 +27,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
 import { MobileNotificationManager } from './MobileNotificationManager';
-import { NotificationCenter } from './NotificationCenter';
 
 interface Order {
   id: string;
