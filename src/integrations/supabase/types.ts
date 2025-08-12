@@ -1170,6 +1170,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_manage_users: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       check_api_rate_limit: {
         Args: {
           p_endpoint: string
@@ -1207,6 +1211,10 @@ export type Database = {
         Args: { target_user_id: string }
         Returns: boolean
       }
+      demote_admin_to_user_secure: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
       emergency_validate_guest_order: {
         Args: {
           p_order_id: string
@@ -1228,6 +1236,15 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_admin_users: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          user_id: string
+          email: string
+          created_at: string
+          full_name: string
+        }[]
+      }
       get_security_stats: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -1238,6 +1255,10 @@ export type Database = {
         }[]
       }
       is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_admin_secure: {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
@@ -1288,6 +1309,10 @@ export type Database = {
         Returns: number
       }
       promote_user_to_admin: {
+        Args: { target_user_id: string }
+        Returns: boolean
+      }
+      promote_user_to_admin_secure: {
         Args: { target_user_id: string }
         Returns: boolean
       }

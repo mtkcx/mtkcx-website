@@ -14,6 +14,7 @@ import { Package, Users, GraduationCap, TrendingUp, Crown, UserCheck } from 'luc
 import { toast } from 'sonner';
 import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
 import ContactMessagesManager from '@/components/ContactMessagesManager';
+import { AdminUserManager } from '@/components/AdminUserManager';
 
 interface Order {
   id: string;
@@ -450,8 +451,8 @@ const AdminDashboard: React.FC = () => {
             <ContactMessagesManager />
           </TabsContent>
 
-          <TabsContent value="users" className="space-y-4">
-            <UserRoleManager />
+          <TabsContent value="users" className="space-y-6">
+            <AdminUserManager />
           </TabsContent>
         </Tabs>
       </div>
