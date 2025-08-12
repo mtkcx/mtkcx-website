@@ -52,21 +52,20 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
     setIsProcessing(true);
 
     try {
-      // Create order in database
+      // Create order in database using the orders table
       const { data: orderData, error: orderError } = await supabase
-        .from('mobile_orders')
+        .from('orders')
         .insert({
-          customer_email: formData.email,
+          email: formData.email,
           customer_name: formData.fullName,
           customer_phone: formData.phone,
-          shipping_city: formData.city,
-          shipping_address: formData.address,
-          shipping_location: formData.location,
-          payment_method: formData.paymentMethod,
-          order_notes: formData.orderNotes,
-          total_amount: total,
-          status: 'pending',
-          order_items: items.map(item => ({
+          customer_city: formData.city,
+          customer_address: formData.address,
+          payment_gateway: formData.paymentMethod,
+          notes: formData.orderNotes,
+          amount: totalPrice,
+          order_type: 'mobile_app',
+          items: items.map(item => ({
             product_id: item.productId,
             product_name: item.productName,
             product_code: item.productCode,
@@ -76,9 +75,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
             quantity: item.quantity,
             image_url: item.imageUrl,
             category_name: item.categoryName
-          })),
-          created_at: new Date().toISOString(),
-          order_source: 'mobile_app'
+          }))
         })
         .select()
         .single();
@@ -90,7 +87,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
 
       toast({
         title: t('checkout.order_success'),
-        description: t('checkout.order_success_desc').replace('{total}', `₪${total.toLocaleString()}`),
+        description: t('checkout.order_success_desc').replace('{total}', `₪${totalPrice.toLocaleString()}`),
       });
 
       // Clear cart and reset form

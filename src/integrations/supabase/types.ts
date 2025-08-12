@@ -424,6 +424,60 @@ export type Database = {
         }
         Relationships: []
       }
+      mobile_orders: {
+        Row: {
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          id: string
+          order_items: Json
+          order_notes: string | null
+          order_source: string
+          payment_method: string
+          shipping_address: string | null
+          shipping_city: string | null
+          shipping_location: string
+          status: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          id?: string
+          order_items: Json
+          order_notes?: string | null
+          order_source?: string
+          payment_method?: string
+          shipping_address?: string | null
+          shipping_city?: string | null
+          shipping_location: string
+          status?: string
+          total_amount: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string
+          id?: string
+          order_items?: Json
+          order_notes?: string | null
+          order_source?: string
+          payment_method?: string
+          shipping_address?: string | null
+          shipping_city?: string | null
+          shipping_location?: string
+          status?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       newsletter_subscriptions: {
         Row: {
           created_at: string
