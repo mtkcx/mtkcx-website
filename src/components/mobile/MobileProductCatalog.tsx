@@ -12,7 +12,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { ImageEnlargementDialog } from './ImageEnlargementDialog';
-import { MobileProductDetailDialog } from './MobileProductDetailDialog';
 
 interface MobileProductCatalogProps {
   compact?: boolean;
@@ -32,8 +31,6 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [selectedVariants, setSelectedVariants] = useState<Record<string, { variantId: string; size: string; price: number }>>({});
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
-  const [showProductDetail, setShowProductDetail] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   
   // Initialize mobile features hook
   const mobileFeatures = {
@@ -280,10 +277,6 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     setShowImageDialog(true);
   }, []);
 
-  const handleProductClick = useCallback((product: any) => {
-    setSelectedProduct(product);
-    setShowProductDetail(true);
-  }, []);
 
   // Early return for loading with optimized skeleton
   if (loading) {
@@ -398,10 +391,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       <div className="space-y-3">
         {filteredProducts.map(product => (
           <Card key={product.id} className="overflow-hidden">
-            <div 
-              className="flex gap-3 p-3 cursor-pointer" 
-              onClick={() => handleProductClick(product)}
-            >
+            <div className="flex gap-3 p-3">{/* Removed cursor-pointer and onClick */}
               <div className="relative">
                 <img
                   src={getCurrentProductImage(product)}
@@ -492,17 +482,6 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                         <ShoppingCart className="h-3 w-3 mr-1" />
                         {t('mobile.products.add')}
                       </Button>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleProductClick(product);
-                        }}
-                        variant="outline"
-                        size="sm"
-                        className="h-8 px-3 text-xs whitespace-nowrap"
-                      >
-                        {t('mobile.products.view')}
-                      </Button>
                     </div>
                   </div>
                </div>
@@ -527,15 +506,6 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         title="Product Image"
       />
 
-      {/* Product Detail Dialog */}
-      <MobileProductDetailDialog
-        product={selectedProduct}
-        isOpen={showProductDetail}
-        onClose={() => setShowProductDetail(false)}
-        selectedVariants={selectedVariants}
-        onVariantChange={handleVariantChange}
-        getCurrentProductImage={getCurrentProductImage}
-      />
     </div>
   );
 };
