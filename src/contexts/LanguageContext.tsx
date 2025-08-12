@@ -326,6 +326,10 @@ const translations = {
     'mobile.products.premium_quality': 'Premium Quality',
     'mobile.products.professional_grade': 'Professional Grade',
     'mobile.products.ready_to_use': 'Ready to Use',
+    'mobile.products.all_categories': 'All Categories',
+    'mobile.products.filter': 'Filter',
+    'mobile.products.no_products': 'No products found',
+    'mobile.products.no_products_desc': 'Try adjusting your search or filter criteria',
 
     // Mobile Services - Package Titles
     'mobile.services.small_vehicle': 'Small Vehicle',
@@ -1616,6 +1620,10 @@ const translations = {
     'mobile.products.premium_quality': 'جودة فائقة',
     'mobile.products.professional_grade': 'درجة مهنية',
     'mobile.products.ready_to_use': 'جاهز للاستخدام',
+    'mobile.products.all_categories': 'جميع الفئات',
+    'mobile.products.filter': 'تصفية',
+    'mobile.products.no_products': 'لم توجد منتجات',
+    'mobile.products.no_products_desc': 'حاول تعديل البحث أو معايير التصفية',
 
     // Mobile Services
     'mobile.services.small_vehicle': 'مركبة صغيرة',
@@ -2955,6 +2963,10 @@ const translations = {
     'mobile.products.premium_quality': 'איכות פרימיום',
     'mobile.products.professional_grade': 'רמה מקצועית',
     'mobile.products.ready_to_use': 'מוכן לשימוש',
+    'mobile.products.all_categories': 'כל הקטגוריות',
+    'mobile.products.filter': 'סינון',
+    'mobile.products.no_products': 'לא נמצאו מוצרים',
+    'mobile.products.no_products_desc': 'נסה לשנות את החיפוש או קריטריוני הסינון',
     
     // Products page banner - Hebrew
     'mobile.products.banner_title': 'מוצרי קוך-כימי מקצועיים',

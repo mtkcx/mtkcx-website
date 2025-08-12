@@ -28,7 +28,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [categories, setCategories] = useState<Array<{id: string, name: string, slug: string}>>([]);
+  const [categories, setCategories] = useState<Array<{id: string, name: string, name_ar?: string, name_he?: string, slug: string}>>([]);
   const [selectedVariants, setSelectedVariants] = useState<Record<string, { variantId: string; size: string; price: number }>>({});
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
@@ -111,6 +111,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             categories!product_categories_category_id_fkey (
               id,
               name,
+              name_ar,
+              name_he,
               slug
             )
           ),
@@ -139,7 +141,13 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           const productCategories = product.product_categories?.map(pc => pc.categories).filter(Boolean) || [];
           productCategories.forEach(cat => {
             if (cat && !categoryMap.has(cat.slug)) {
-              categoryMap.set(cat.slug, { id: cat.id, name: cat.name, slug: cat.slug });
+              categoryMap.set(cat.slug, { 
+                id: cat.id, 
+                name: cat.name, 
+                name_ar: cat.name_ar,
+                name_he: cat.name_he,
+                slug: cat.slug 
+              });
             }
           });
 
@@ -198,19 +206,23 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const getCurrentProductImage = (product: any) => {
     const selectedVariant = getSelectedVariant(product.id);
     
-    if (selectedVariant) {
+    if (selectedVariant && product.product_images?.length > 0) {
       // Find image for selected variant
       const variantImage = product.product_images?.find((img: any) => 
         img.variant_id === selectedVariant.variantId
       );
       if (variantImage) return variantImage.image_url;
+      
+      // If no variant-specific image, find primary image
+      const primaryImage = product.product_images?.find((img: any) => img.is_primary);
+      if (primaryImage) return primaryImage.image_url;
+      
+      // Fall back to first image
+      if (product.product_images?.[0]) return product.product_images[0].image_url;
     }
     
-    // Fall back to primary image or first image
-    const primaryImage = product.product_images?.find((img: any) => img.is_primary);
-    if (primaryImage) return primaryImage.image_url;
-    
-    return product.product_images?.[0]?.image_url || product.image_url;
+    // Final fallback to main product image or placeholder
+    return product.image_url || '/placeholder.svg';
   };
 
   const addToCart = (product: any) => {
@@ -337,16 +349,21 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             >
               {t('mobile.products.all_categories')}
             </Button>
-            {categories.map(category => (
-              <Button
-                key={category.slug}
-                variant={selectedCategory === category.slug ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory(category.slug)}
-              >
-                {category.name}
-              </Button>
-            ))}
+            {categories.map(category => {
+              const categoryName = currentLanguage === 'ar' ? (category.name_ar || category.name) :
+                                  currentLanguage === 'he' ? (category.name_he || category.name) :
+                                  category.name;
+              return (
+                <Button
+                  key={category.slug}
+                  variant={selectedCategory === category.slug ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category.slug)}
+                >
+                  {categoryName}
+                </Button>
+              );
+            })}
           </div>
         )}
       </div>

@@ -108,6 +108,11 @@ const MobileApp: React.FC = () => {
   };
 
   const handleTabSwitch = (tab: string) => {
+    // Clear filters when switching to products tab
+    if (tab === 'products') {
+      window.dispatchEvent(new CustomEvent('clear-product-filters'));
+    }
+    
     setActiveTab(tab);
     setIsMenuOpen(false);
     setShowAuth(false);
@@ -624,7 +629,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
                   <Home className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-xs truncate max-w-full">{t('nav.home')}</span>
+                  <span className="text-xs truncate max-w-full leading-tight">{t('nav.home')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
@@ -632,7 +637,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
                   <ShoppingBag className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-xs truncate max-w-full">{t('nav.products')}</span>
+                  <span className="text-xs truncate max-w-full leading-tight">{t('nav.products')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
@@ -640,7 +645,7 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
                   <BookOpen className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-xs truncate max-w-full">{t('nav.courses')}</span>
+                  <span className="text-xs truncate max-w-full leading-tight">{t('nav.courses')}</span>
                 </TabsTrigger>
                 
                 <Button
@@ -649,7 +654,7 @@ const MobileApp: React.FC = () => {
                   onClick={handleShowContact}
                 >
                   <MessageCircle className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-xs truncate max-w-full">{t('nav.contact')}</span>
+                  <span className="text-xs truncate max-w-full leading-tight">{t('nav.contact')}</span>
                 </Button>
                 
                 <TabsTrigger 
@@ -657,8 +662,8 @@ const MobileApp: React.FC = () => {
                   className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
                   <UserIcon className="h-5 w-5 flex-shrink-0" />
-                  <span className="text-xs truncate max-w-full px-1">
-                    {isAdmin ? 'Admin' : (profile?.full_name || user?.email?.split('@')[0] || t('nav.profile'))}
+                  <span className="text-xs truncate max-w-full px-1 leading-tight">
+                    {isAdmin ? t('mobile.nav.admin') : (profile?.full_name || user?.email?.split('@')[0] || t('nav.profile'))}
                   </span>
                 </TabsTrigger>
               </TabsList>
