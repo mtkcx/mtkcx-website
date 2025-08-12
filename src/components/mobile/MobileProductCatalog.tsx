@@ -222,7 +222,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
 
     toast({
       title: t('mobile.products.added_to_cart'),
-      description: `${product.name} (${variant.size}) ${t('mobile.products.added_description')}`
+      description: `${product.name} (${variant.size}) ${t('mobile.products.added_description')}`,
+      duration: 1000 // Auto-dismiss after 1 second
     });
   }, [addToCart, t, toast]);
 
