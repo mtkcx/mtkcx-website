@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -14,8 +14,7 @@ import {
   Sparkles,
   Zap,
   Heart,
-  Info,
-  X
+  Info
 } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -157,22 +156,14 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-sm mx-auto h-[90vh] flex flex-col p-0">
-          <div className="relative p-4 pb-2">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={onClose}
-              className="absolute top-2 right-2 z-10 bg-black/60 hover:bg-black/70 text-white h-8 w-8 p-0 rounded-full"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-            <h2 className="text-lg leading-tight pr-10 font-semibold">
+          <DialogHeader className="p-4 pb-2">
+            <DialogTitle className="text-lg leading-tight pr-8">
               {productName}
-            </h2>
-            <Badge variant="secondary" className="w-fit mt-1">
+            </DialogTitle>
+            <Badge variant="secondary" className="w-fit">
               {product.product_code}
             </Badge>
-          </div>
+          </DialogHeader>
 
           <div className="flex-1 overflow-y-auto px-4">
             {/* Product Image Gallery */}
@@ -352,26 +343,19 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
 
       {/* Image Zoom Dialog */}
       <Dialog open={showImageZoom} onOpenChange={setShowImageZoom}>
-        <DialogContent className="max-w-lg p-0">
-          <div className="relative">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => setShowImageZoom(false)}
-              className="absolute top-2 right-2 z-10 bg-black/60 hover:bg-black/70 text-white h-8 w-8 p-0 rounded-full"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-            <div className="p-4">
-              <img
-                src={productImages[activeImageIndex]}
-                alt={productName}
-                className="w-full h-auto rounded-lg"
-                onError={(e) => {
-                  e.currentTarget.src = '/placeholder.svg';
-                }}
-              />
-            </div>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{productName}</DialogTitle>
+          </DialogHeader>
+          <div className="p-4">
+            <img
+              src={productImages[activeImageIndex]}
+              alt={productName}
+              className="w-full h-auto rounded-lg"
+              onError={(e) => {
+                e.currentTarget.src = '/placeholder.svg';
+              }}
+            />
           </div>
         </DialogContent>
       </Dialog>
