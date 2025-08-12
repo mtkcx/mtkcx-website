@@ -48,10 +48,13 @@ const Header = () => {
   }, {
     key: 'nav.courses',
     href: '/courses'
-  }, {
-    key: 'nav.wrapping',
-    href: '/gallery'
-  }, {
+  }, 
+  // Temporarily hidden - will be used later
+  // {
+  //   key: 'nav.wrapping',
+  //   href: '/gallery'
+  // }, 
+  {
     key: 'nav.about',
     href: '/about'
   }, {

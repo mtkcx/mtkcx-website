@@ -59,15 +59,6 @@ const Courses = () => {
                     <Calendar className="w-5 h-5 mr-2" />
                     {t("courses.enroll_now")}
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="px-8 py-4 text-lg bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
-                    onClick={() => navigate('/contact')}
-                  >
-                    <Phone className="w-5 h-5 mr-2" />
-                    {t("courses.contact_details")}
-                  </Button>
                 </div>
               </div>
             </div>
@@ -285,10 +276,6 @@ const Courses = () => {
                   <Button size="lg" className="flex-1" onClick={handleEnrollment}>
                     <Calendar className="h-5 w-5 mr-2" />
                     {t('courses.enroll_now')}
-                  </Button>
-                  <Button variant="outline" size="lg" className="flex-1">
-                    <Phone className="h-5 w-5 mr-2" />
-                    {t('courses.contact_details')}
                   </Button>
                 </div>
               </div>

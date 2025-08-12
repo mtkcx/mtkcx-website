@@ -3119,6 +3119,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     // Set document direction and language attribute
     document.documentElement.setAttribute('dir', (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr');
     document.documentElement.setAttribute('lang', lang);
+    
+    // Scroll to top when language changes
+    window.scrollTo(0, 0);
   };
 
   const t = (key: string): string => {
