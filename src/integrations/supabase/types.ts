@@ -262,6 +262,51 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_notifications: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          message: string
+          message_ar: string | null
+          message_he: string | null
+          notification_type: string
+          title: string
+          title_ar: string | null
+          title_he: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          message: string
+          message_ar?: string | null
+          message_he?: string | null
+          notification_type?: string
+          title: string
+          title_ar?: string | null
+          title_he?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          message?: string
+          message_ar?: string | null
+          message_he?: string | null
+          notification_type?: string
+          title?: string
+          title_ar?: string | null
+          title_he?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_campaigns: {
         Row: {
           campaign_type: string
@@ -1168,6 +1213,63 @@ export type Database = {
         }
         Relationships: []
       }
+      sent_notifications: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          id: string
+          language: string
+          message: string
+          notification_id: string | null
+          order_id: string | null
+          sent_at: string | null
+          status: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          language?: string
+          message: string
+          notification_id?: string | null
+          order_id?: string | null
+          sent_at?: string | null
+          status?: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          language?: string
+          message?: string
+          notification_id?: string | null
+          order_id?: string | null
+          sent_at?: string | null
+          status?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sent_notifications_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "customer_notifications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sent_notifications_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_settings: {
         Row: {
           category: string
@@ -1198,6 +1300,42 @@ export type Database = {
           setting_type?: string
           setting_value?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          id: string
+          marketing_notifications_enabled: boolean
+          order_notifications_enabled: boolean
+          preferred_language: string
+          push_notifications_enabled: boolean
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          marketing_notifications_enabled?: boolean
+          order_notifications_enabled?: boolean
+          preferred_language?: string
+          push_notifications_enabled?: boolean
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          marketing_notifications_enabled?: boolean
+          order_notifications_enabled?: boolean
+          preferred_language?: string
+          push_notifications_enabled?: boolean
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }

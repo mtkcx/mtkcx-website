@@ -5,11 +5,13 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Search, ShoppingCart, Filter, CreditCard } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Search, ShoppingCart, Filter, CreditCard, Eye } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { ImageEnlargementDialog } from './ImageEnlargementDialog';
 
 interface MobileProductCatalogProps {
   compact?: boolean;
@@ -27,6 +29,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [showFilters, setShowFilters] = useState(false);
   const [categories, setCategories] = useState<Array<{id: string, name: string, slug: string}>>([]);
   const [selectedVariants, setSelectedVariants] = useState<Record<string, { variantId: string; size: string; price: number }>>({});
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
   
   // Initialize mobile features hook
   const mobileFeatures = {
@@ -211,6 +215,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     });
   };
 
+  const handleImageClick = useCallback((imageUrl: string) => {
+    setSelectedImageUrl(imageUrl);
+    setShowImageDialog(true);
+  }, []);
+
   // Early return for loading with optimized skeleton
   if (loading) {
     return (
@@ -315,32 +324,44 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         </Card>
       )}
 
-      {/* Product Grid */}
-      <div className="grid grid-cols-2 gap-3">
+      {/* Product Grid - List Style */}
+      <div className="space-y-3">
         {filteredProducts.map(product => (
           <Card key={product.id} className="overflow-hidden">
-            <div className="p-3">
-              {/* Product Image */}
-              <div className="aspect-square mb-3 bg-gray-100 rounded-lg overflow-hidden">
+            <div className="flex gap-3 p-3">
+              <div className="relative">
                 <img
                   src={getCurrentProductImage(product)}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="w-20 h-20 object-cover rounded flex-shrink-0"
                   loading="lazy"
                   onError={(e) => {
                     e.currentTarget.src = '/placeholder.svg';
                   }}
                 />
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="absolute inset-0 w-20 h-20 p-0 bg-black/60 hover:bg-black/70 opacity-0 hover:opacity-100 transition-opacity rounded"
+                  onClick={() => handleImageClick(getCurrentProductImage(product))}
+                >
+                  <Eye className="h-4 w-4 text-white" />
+                </Button>
               </div>
               
               {/* Product Info */}
-              <div className="space-y-2">
-                <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
+              <div className="flex-1 space-y-2">
+                <div className="flex items-start justify-between">
+                  <h3 className="font-medium text-sm line-clamp-2 flex-1">{product.name}</h3>
+                  <Badge variant="secondary" className="text-xs ml-2">
+                    {product.product_code}
+                  </Badge>
+                </div>
                 
                 {/* Variant Selection */}
                 {product.product_variants && product.product_variants.length > 0 && (
-                  <div className="mb-3">
-                    <Label className="text-sm mb-2 block">Select size</Label>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs whitespace-nowrap">Size:</Label>
                     <Select 
                       value={selectedVariants[product.id]?.variantId || ''} 
                       onValueChange={(variantId) => {
@@ -350,8 +371,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                         }
                       }}
                     >
-                      <SelectTrigger className="w-full h-8">
-                        <SelectValue placeholder="Choose size" />
+                      <SelectTrigger className="h-8 text-xs">
+                        <SelectValue placeholder="Choose" />
                       </SelectTrigger>
                       <SelectContent>
                         {product.product_variants.map((variant: any) => (
@@ -364,23 +385,19 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                   </div>
                 )}
                 
-                <div className="flex items-center justify-between mb-3">
-                  <div className="font-bold text-lg text-primary">
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-primary">
                     ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
                   </div>
-                  <Badge variant="secondary" className="text-xs">
-                    {product.product_code}
-                  </Badge>
+                  <Button
+                    onClick={() => addToCart(product)}
+                    size="sm"
+                    className="h-8 px-3"
+                  >
+                    <ShoppingCart className="h-3 w-3 mr-1" />
+                    Add
+                  </Button>
                 </div>
-                
-                <Button
-                  onClick={() => addToCart(product)}
-                  className="w-full h-8 text-sm"
-                  size="sm"
-                >
-                  <ShoppingCart className="h-3 w-3 mr-1" />
-                  Add to Cart
-                </Button>
               </div>
             </div>
           </Card>
@@ -393,6 +410,14 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           <p className="text-muted-foreground">No products found</p>
         </div>
       )}
+
+      {/* Image Enlargement Dialog */}
+      <ImageEnlargementDialog 
+        isOpen={showImageDialog}
+        onClose={() => setShowImageDialog(false)}
+        imageUrl={selectedImageUrl}
+        title="Product Image"
+      />
     </div>
   );
 };

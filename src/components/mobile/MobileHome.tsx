@@ -1,7 +1,8 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
   Star, 
   Award, 
@@ -11,14 +12,32 @@ import {
   ArrowRight,
   Zap,
   Shield,
-  Palette
+  Palette,
+  Eye
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { LanguagePreferenceDialog } from './LanguagePreferenceDialog';
 
 const MobileHome: React.FC = memo(() => {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const [showLanguageDialog, setShowLanguageDialog] = useState(false);
+  const [showImageDialog, setShowImageDialog] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('');
+
+  // Check if user has set language preference
+  useEffect(() => {
+    const hasSetLanguagePreference = localStorage.getItem('language-preference-set');
+    if (!hasSetLanguagePreference) {
+      setShowLanguageDialog(true);
+    }
+  }, []);
+
+  const handleImageClick = useCallback((imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setShowImageDialog(true);
+  }, []);
 
   // Navigation handlers for mobile app
   const handleCategoryNavigation = useCallback((category: string) => {
@@ -183,37 +202,69 @@ const MobileHome: React.FC = memo(() => {
         <h2 className="text-xl font-bold">{t('mobile.home.gallery_title')}</h2>
         
         <div className="grid grid-cols-2 gap-3">
-          <div className="aspect-square rounded-lg overflow-hidden">
+          <div className="aspect-square rounded-lg overflow-hidden relative group">
             <img
               src="/lovable-uploads/36a5b06f-591b-4391-afb4-afc8339e30d0.png"
               alt="Ferrari vehicle wrap project"
               className="w-full h-full object-cover"
               loading="lazy"
             />
+            <Button
+              variant="secondary"
+              size="sm"
+              className="absolute inset-0 w-full h-full p-0 bg-black/60 hover:bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"
+              onClick={() => handleImageClick("/lovable-uploads/36a5b06f-591b-4391-afb4-afc8339e30d0.png")}
+            >
+              <Eye className="h-6 w-6 text-white" />
+            </Button>
           </div>
-          <div className="aspect-square rounded-lg overflow-hidden">
+          <div className="aspect-square rounded-lg overflow-hidden relative group">
             <img
               src="/lovable-uploads/958f8b61-60b5-4d04-a76e-918b20e5f00e.png"
               alt="BMW M5 custom wrap design"
               className="w-full h-full object-cover"
               loading="lazy"
             />
+            <Button
+              variant="secondary"
+              size="sm"
+              className="absolute inset-0 w-full h-full p-0 bg-black/60 hover:bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"
+              onClick={() => handleImageClick("/lovable-uploads/958f8b61-60b5-4d04-a76e-918b20e5f00e.png")}
+            >
+              <Eye className="h-6 w-6 text-white" />
+            </Button>
           </div>
-          <div className="aspect-square rounded-lg overflow-hidden">
+          <div className="aspect-square rounded-lg overflow-hidden relative group">
             <img
               src="/lovable-uploads/21ac7e3a-0b5f-4f29-82e3-585d03ee269e.png"
               alt="Luxury boat interior detailing"
               className="w-full h-full object-cover"
               loading="lazy"
             />
+            <Button
+              variant="secondary"
+              size="sm"
+              className="absolute inset-0 w-full h-full p-0 bg-black/60 hover:bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"
+              onClick={() => handleImageClick("/lovable-uploads/21ac7e3a-0b5f-4f29-82e3-585d03ee269e.png")}
+            >
+              <Eye className="h-6 w-6 text-white" />
+            </Button>
           </div>
-          <div className="aspect-square rounded-lg overflow-hidden">
+          <div className="aspect-square rounded-lg overflow-hidden relative group">
             <img
               src="/lovable-uploads/22562b53-7b93-496f-9407-a2e6053a37b5.png"
               alt="Mercedes AMG with racing stripe wrap"
               className="w-full h-full object-cover"
               loading="lazy"
             />
+            <Button
+              variant="secondary"
+              size="sm"
+              className="absolute inset-0 w-full h-full p-0 bg-black/60 hover:bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"
+              onClick={() => handleImageClick("/lovable-uploads/22562b53-7b93-496f-9407-a2e6053a37b5.png")}
+            >
+              <Eye className="h-6 w-6 text-white" />
+            </Button>
           </div>
         </div>
       </Card>
@@ -285,6 +336,28 @@ const MobileHome: React.FC = memo(() => {
           </div>
         </Card>
       )}
+      {/* Language Preference Dialog */}
+      <LanguagePreferenceDialog 
+        isOpen={showLanguageDialog} 
+        onClose={() => setShowLanguageDialog(false)} 
+      />
+
+      {/* Image Enlargement Dialog */}
+      <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Gallery Image</DialogTitle>
+          </DialogHeader>
+          <div className="p-4">
+            <img
+              src={selectedImage}
+              alt="Gallery"
+              className="w-full h-auto rounded-lg"
+              loading="lazy"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 });

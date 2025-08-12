@@ -85,6 +85,30 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
         throw new Error('Failed to create order');
       }
 
+      // Send order confirmation notification
+      try {
+        const userLanguage = localStorage.getItem('preferred-language') || 'en';
+        
+        const { error: notificationError } = await supabase.functions.invoke('send-order-notification', {
+          body: {
+            orderId: orderData.id,
+            customerEmail: formData.email,
+            customerName: formData.fullName,
+            customerPhone: formData.phone,
+            language: userLanguage,
+            totalAmount: totalPrice,
+            orderItems: items
+          }
+        });
+
+        if (notificationError) {
+          console.error('Error sending notification:', notificationError);
+        }
+      } catch (notificationError) {
+        console.error('Failed to send order notification:', notificationError);
+        // Don't fail the order creation if notification fails
+      }
+
       toast({
         title: t('checkout.order_success'),
         description: t('checkout.order_success_desc').replace('{total}', `₪${totalPrice.toLocaleString()}`),
