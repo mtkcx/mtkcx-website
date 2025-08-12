@@ -395,7 +395,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                 </p>
                 
                 <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-primary">
+                  <div className="text-xs font-medium text-primary leading-tight">
                     {formatPriceRange(product.variants)}
                   </div>
                   {product.variants.length === 1 ? (
