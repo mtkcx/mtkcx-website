@@ -12,6 +12,7 @@ import Footer from '@/components/Footer';
 import AdminProtectedRoute from '@/components/AdminProtectedRoute';
 import { Package, Users, GraduationCap, TrendingUp, Crown, UserCheck } from 'lucide-react';
 import { toast } from 'sonner';
+import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
 
 interface Order {
   id: string;
@@ -344,13 +345,18 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Data Tables */}
-        <Tabs defaultValue="orders" className="space-y-4">
+        <Tabs defaultValue="customers" className="space-y-4">
           <TabsList>
+            <TabsTrigger value="customers">Customer Search</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="quotes">Quotes</TabsTrigger>
             <TabsTrigger value="enrollments">Enrollments</TabsTrigger>
             <TabsTrigger value="users">User Management</TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="customers" className="space-y-4">
+            <AdminCustomerSearch />
+          </TabsContent>
           
           <TabsContent value="orders" className="space-y-4">
             <Card>

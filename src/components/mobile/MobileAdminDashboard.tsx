@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
 
 interface Order {
   id: string;
@@ -349,13 +350,18 @@ export const MobileAdminDashboard: React.FC = () => {
       </div>
 
       {/* Data Tables */}
-      <Tabs defaultValue="orders" className="space-y-3">
-        <TabsList className="grid w-full grid-cols-4">
+      <Tabs defaultValue="customers" className="space-y-3">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="customers" className="text-xs">Customers</TabsTrigger>
           <TabsTrigger value="orders" className="text-xs">Orders</TabsTrigger>
           <TabsTrigger value="quotes" className="text-xs">Quotes</TabsTrigger>
           <TabsTrigger value="enrollments" className="text-xs">Enrollments</TabsTrigger>
           <TabsTrigger value="users" className="text-xs">Users</TabsTrigger>
         </TabsList>
+        
+        <TabsContent value="customers" className="space-y-3">
+          <AdminCustomerSearch isMobile={true} />
+        </TabsContent>
         
         <TabsContent value="orders" className="space-y-3">
           <Card>
