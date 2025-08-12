@@ -133,20 +133,26 @@ const MobileApp: React.FC = () => {
     setLanguage(lang as 'en' | 'ar' | 'he');
   };
 
-  // Redirect desktop users
-  if (!isMobile) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="text-center space-y-4">
-          <h1 className="text-2xl font-bold">Mobile App View</h1>
-          <p className="text-muted-foreground">
-            This is a preview of the mobile app interface. 
-            For the best experience, visit this page on a mobile device or use your browser's mobile view.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // Temporarily disabled for mobile app testing - REMOVE FOR PRODUCTION
+  // The mobile app should work for testing purposes on desktop
+  // if (!isMobile) {
+  //   return (
+  //     <div className="min-h-screen bg-background flex items-center justify-center p-4">
+  //       <div className="text-center space-y-4 max-w-md">
+  //         <h1 className="text-2xl font-bold">Mobile App Preview</h1>
+  //         <p className="text-muted-foreground">
+  //           Testing on desktop. For production, use browser mobile view or actual mobile device.
+  //         </p>
+  //         <Button onClick={() => window.location.reload()} className="mt-4">
+  //           Continue to Mobile App (Desktop Preview)
+  //         </Button>
+  //         <div className="mt-8">
+  //           {/* Show mobile app anyway for testing */}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const menuItems = [
     { 
