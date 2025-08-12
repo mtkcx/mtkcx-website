@@ -93,6 +93,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   // Optimized data fetching
   const fetchProducts = useCallback(async () => {
     try {
+      console.log('Fetching products...');
       const { data: productsData, error: productsError } = await supabase
         .from('products')
         .select(`
@@ -132,11 +133,17 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         .eq('status', 'active')
         .order('name');
 
+      console.log('Raw products data:', productsData);
+      console.log('Products error:', productsError);
+
       if (productsError) throw productsError;
 
       const categoryMap = new Map();
       const transformedProducts = productsData
-        ?.filter(product => product.product_variants?.length > 0)
+        ?.filter(product => {
+          console.log('Product before filter:', product.name, 'has variants:', product.product_variants?.length || 0);
+          return product.product_variants?.length > 0;
+        })
         .map(product => {
           const productCategories = product.product_categories?.map(pc => pc.categories).filter(Boolean) || [];
           productCategories.forEach(cat => {
@@ -160,6 +167,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         }) || [];
 
       setCategories(Array.from(categoryMap.values()));
+      console.log('Final transformed products count:', transformedProducts.length);
+      console.log('Setting products:', transformedProducts);
       setProducts(transformedProducts);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -281,6 +290,9 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   }, []);
 
   const handleProductClick = useCallback((product: any) => {
+    console.log('Product clicked:', product);
+    console.log('Product has variants:', product?.product_variants?.length || 0);
+    console.log('Product has images:', product?.product_images?.length || 0);
     setSelectedProduct(product);
     setShowProductDetail(true);
   }, []);
