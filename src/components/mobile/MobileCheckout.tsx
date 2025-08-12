@@ -290,7 +290,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
             </div>
             <div className="flex justify-between text-sm">
               <span>{t('checkout.shipping')}</span>
-              <span>{shippingCost > 0 ? formatPrice(shippingCost) : t('checkout.calculated_at_location')}</span>
+              <span>{formData.location ? formatPrice(shippingCost) : "₪0"}</span>
             </div>
             <div className="flex justify-between font-medium text-lg border-t pt-2 mt-2">
               <span>{t('checkout.total')}</span>
