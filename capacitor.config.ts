@@ -1,12 +1,12 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.2b082f57ea56422697925934ae718ea9',
-  appName: 'mtkcx-website',
+  appId: 'com.mtkcx.mobile',
+  appName: 'MTKCx',
   webDir: 'dist',
   server: {
-    url: 'https://2b082f57-ea56-4226-9792-5934ae718ea9.lovableproject.com?forceHideBadge=true',
-    cleartext: true
+    // Remove this section for production build
+    // For development, add back the url property
   },
   plugins: {
     Camera: {
@@ -14,7 +14,22 @@ const config: CapacitorConfig = {
     },
     PushNotifications: {
       presentationOptions: ['badge', 'sound', 'alert']
+    },
+    StatusBar: {
+      style: 'dark',
+      backgroundColor: '#000000'
+    },
+    SplashScreen: {
+      launchShowDuration: 2000,
+      backgroundColor: '#000000',
+      showSpinner: false
     }
+  },
+  ios: {
+    scheme: 'MTKCx'
+  },
+  android: {
+    allowMixedContent: true
   }
 };
 
