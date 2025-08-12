@@ -185,8 +185,8 @@ export const MobileAbout: React.FC<MobileAboutProps> = ({
         <Card className="overflow-hidden">
           <div className="relative h-48">
             <img
-              src="/lovable-uploads/3df6143b-1e24-4063-ac21-1f8d68e1c558.png"
-              alt="MTKCx company building and professional facility"
+              src="/lovable-uploads/409047d3-4e0e-421a-a478-96987ccd7f9b.png"
+              alt="MT KCx professional logo and branding"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

@@ -431,7 +431,7 @@ export const MobileContact: React.FC<MobileContactProps> = ({
         <Card className="bg-primary/5">
           <CardHeader>
             <CardTitle className="text-lg text-primary">
-              {t('common.why_choose_mt')}
+              Why Choose MTKCx
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
