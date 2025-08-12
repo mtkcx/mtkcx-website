@@ -37,10 +37,65 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
     paymentMethod: 'cash_on_delivery',
     orderNotes: ''
   });
+  const [shippingCost, setShippingCost] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Calculate shipping when location changes
+    if (field === 'location') {
+      calculateShipping(value);
+    }
+  };
+
+  const calculateShipping = (location: string) => {
+    const totalWeight = getTotalWeight();
+    let baseShipping = 0;
+    
+    switch (location) {
+      case 'west_bank':
+        baseShipping = 30;
+        break;
+      case 'north':
+      case 'south': 
+      case 'center':
+        baseShipping = 60;
+        break;
+      case 'jerusalem':
+        baseShipping = 25;
+        break;
+      default:
+        baseShipping = 0;
+    }
+    
+    // Calculate weight multiplier (every 20kg doubles the cost)
+    const weightMultiplier = Math.max(1, Math.ceil(totalWeight / 20));
+    const finalShipping = baseShipping * weightMultiplier;
+    
+    setShippingCost(finalShipping);
+  };
+  
+  const getTotalWeight = () => {
+    // Calculate total weight from cart items
+    // Assuming each product has weight data, for now we'll estimate based on size
+    return items.reduce((total, item) => {
+      let itemWeight = 1; // Default 1kg
+      
+      // Estimate weight based on variant size
+      if (item.variantSize) {
+        const size = item.variantSize.toLowerCase();
+        if (size.includes('20l') || size.includes('20kg')) itemWeight = 20;
+        else if (size.includes('10l') || size.includes('10kg')) itemWeight = 10;
+        else if (size.includes('5l') || size.includes('5kg')) itemWeight = 5;
+        else if (size.includes('1l') || size.includes('1kg')) itemWeight = 1;
+        else if (size.includes('750ml')) itemWeight = 0.75;
+        else if (size.includes('500ml')) itemWeight = 0.5;
+        else if (size.includes('250ml')) itemWeight = 0.25;
+      }
+      
+      return total + (itemWeight * item.quantity);
+    }, 0);
   };
 
   const handleSubmitOrder = async () => {
@@ -66,9 +121,10 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
           customer_phone: formData.phone,
           customer_city: formData.city,
           customer_address: formData.address,
+          shipping_location: formData.location,
           payment_gateway: formData.paymentMethod,
           notes: formData.orderNotes,
-          amount: totalPrice,
+          amount: totalPrice + shippingCost,
           order_type: 'mobile_app',
           items: items.map(item => ({
             product_id: item.productId,
@@ -101,7 +157,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
             customerName: formData.fullName,
             customerPhone: formData.phone,
             language: userLanguage,
-            totalAmount: totalPrice,
+            totalAmount: totalPrice + shippingCost,
             orderItems: items
           }
         });
@@ -116,7 +172,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
 
       toast({
         title: t('checkout.order_success'),
-        description: t('checkout.order_success_desc').replace('{total}', `₪${totalPrice.toLocaleString()}`),
+        description: t('checkout.order_success_desc').replace('{total}', `₪${(totalPrice + shippingCost).toLocaleString()}`),
       });
 
       // Clear cart and reset form
@@ -176,6 +232,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
 
   const formatPrice = (price: number) => `₪${price.toLocaleString()}`;
   const totalPrice = getTotalPrice();
+  const finalTotal = totalPrice + shippingCost;
 
   return (
     <div className="max-w-md mx-auto p-4 space-y-6">
@@ -233,11 +290,11 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
             </div>
             <div className="flex justify-between text-sm">
               <span>{t('checkout.shipping')}</span>
-              <span>{t('checkout.shipping_free')}</span>
+              <span>{shippingCost > 0 ? formatPrice(shippingCost) : t('checkout.calculated_at_location')}</span>
             </div>
             <div className="flex justify-between font-medium text-lg border-t pt-2 mt-2">
               <span>{t('checkout.total')}</span>
-              <span>{formatPrice(totalPrice)}</span>
+              <span>{formatPrice(finalTotal)}</span>
             </div>
           </div>
         </div>
@@ -393,7 +450,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
           ) : formData.paymentMethod === 'credit_card_call' ? (
             t('checkout.complete_order_credit_card')
           ) : (
-            t('checkout.complete_order').replace('{total}', formatPrice(totalPrice))
+            t('checkout.complete_order').replace('{total}', formatPrice(finalTotal))
           )}
         </Button>
         
