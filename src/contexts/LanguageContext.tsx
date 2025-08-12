@@ -321,6 +321,8 @@ const translations = {
     'mobile.products.description': 'Description',
     'mobile.products.safety_info': 'Safety Information',
     'mobile.products.features': 'Features',
+    'mobile.products.show_more': 'Show more',
+    'mobile.products.show_less': 'Show less',
     'mobile.products.category': 'Category',
     'mobile.products.choose_size': 'Choose size',
     'mobile.products.size': 'Size',
