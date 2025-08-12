@@ -5,7 +5,17 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
-import { ShoppingCart, Eye, Star, Package, Shield, Sparkles, Zap, Info } from 'lucide-react';
+import { 
+  ShoppingCart, 
+  Eye, 
+  Star, 
+  Package, 
+  Shield,
+  Sparkles,
+  Zap,
+  Heart,
+  Info
+} from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
@@ -32,10 +42,8 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   const { toast } = useToast();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showImageZoom, setShowImageZoom] = useState(false);
-  
-  if (!product) {
-    return null;
-  }
+
+  if (!product) return null;
 
   // Get localized content
   const getLocalizedContent = (field: string) => {
@@ -316,16 +324,16 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
             <div className="flex gap-2">
               <Button
                 variant="outline"
-                className="flex-1"
+                className="flex-1 h-10 whitespace-nowrap"
                 onClick={onClose}
               >
                 {t('common.close')}
               </Button>
               <Button
                 onClick={addToCart}
-                className="flex-1"
+                className="flex-1 h-10 whitespace-nowrap"
               >
-                <ShoppingCart className="h-4 w-4 mr-2" />
+                <ShoppingCart className="h-4 w-4 mr-1" />
                 {t('mobile.products.add_to_cart')}
               </Button>
             </div>

@@ -623,46 +623,46 @@ const MobileApp: React.FC = () => {
             </div>
 
             <div className={`fixed bottom-0 left-0 right-0 bg-background border-t ${isRTL ? 'rtl' : 'ltr'}`} style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-              <TabsList className="grid w-full grid-cols-5 bg-transparent h-20 rounded-none" dir={isRTL ? 'rtl' : 'ltr'}>
+              <TabsList className="grid w-full grid-cols-5 bg-transparent h-16 rounded-none" dir={isRTL ? 'rtl' : 'ltr'}>
                 <TabsTrigger 
                   value="home" 
-                  className="flex-col gap-0.5 data-[state=active]:bg-primary/10 min-h-[80px] px-1"
+                  className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
-                  <Home className="h-4 w-4 flex-shrink-0 mb-0.5" />
-                  <span className="text-[10px] leading-none text-center break-words whitespace-normal max-w-full line-clamp-2">{t('nav.home')}</span>
+                  <Home className="h-5 w-5 flex-shrink-0" />
+                  <span className="text-[10px] leading-tight px-1">{t('nav.home')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
                   value="products" 
-                  className="flex-col gap-0.5 data-[state=active]:bg-primary/10 min-h-[80px] px-1"
+                  className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
-                  <ShoppingBag className="h-4 w-4 flex-shrink-0 mb-0.5" />
-                  <span className="text-[10px] leading-none text-center break-words whitespace-normal max-w-full line-clamp-2">{t('nav.products')}</span>
+                  <ShoppingBag className="h-5 w-5 flex-shrink-0" />
+                  <span className="text-[10px] leading-tight px-1">{t('nav.products')}</span>
                 </TabsTrigger>
                 
                 <TabsTrigger 
                   value="courses" 
-                  className="flex-col gap-0.5 data-[state=active]:bg-primary/10 min-h-[80px] px-1"
+                  className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
-                  <BookOpen className="h-4 w-4 flex-shrink-0 mb-0.5" />
-                  <span className="text-[10px] leading-none text-center break-words whitespace-normal max-w-full line-clamp-2">{t('nav.courses')}</span>
+                  <BookOpen className="h-5 w-5 flex-shrink-0" />
+                  <span className="text-[10px] leading-tight px-1">{t('nav.courses')}</span>
                 </TabsTrigger>
                 
                 <Button
                   variant="ghost"
-                  className="flex-col gap-0.5 h-20 rounded-none min-h-[80px] px-1"
+                  className="flex-col gap-1 h-16 rounded-none min-h-[64px]"
                   onClick={handleShowContact}
                 >
-                  <MessageCircle className="h-4 w-4 flex-shrink-0 mb-0.5" />
-                  <span className="text-[10px] leading-none text-center break-words whitespace-normal max-w-full line-clamp-2">{t('nav.contact')}</span>
+                  <MessageCircle className="h-5 w-5 flex-shrink-0" />
+                  <span className="text-[10px] leading-tight px-1">{t('nav.contact')}</span>
                 </Button>
                 
                 <TabsTrigger 
                   value="dashboard" 
-                  className="flex-col gap-0.5 data-[state=active]:bg-primary/10 min-h-[80px] px-1"
+                  className="flex-col gap-1 data-[state=active]:bg-primary/10 min-h-[64px]"
                 >
-                  <UserIcon className="h-4 w-4 flex-shrink-0 mb-0.5" />
-                  <span className="text-[10px] leading-none text-center break-words whitespace-normal max-w-full line-clamp-2">
+                  <UserIcon className="h-5 w-5 flex-shrink-0" />
+                  <span className="text-xs truncate max-w-full px-1 leading-tight">
                     {isAdmin ? t('mobile.nav.admin') : (profile?.full_name || user?.email?.split('@')[0] || t('nav.profile'))}
                   </span>
                 </TabsTrigger>
