@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -108,8 +108,46 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
     const variant = product.product_variants?.find((v: any) => v.id === variantId);
     if (variant) {
       onVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
+      
+      // Update active image to show variant-specific image if available
+      if (product.product_images?.length > 0) {
+        const variantImageIndex = product.product_images.findIndex((img: any) => 
+          img.variant_id === variantId
+        );
+        if (variantImageIndex !== -1) {
+          setActiveImageIndex(variantImageIndex);
+        } else {
+          // If no variant-specific image, try to show primary image
+          const primaryImageIndex = product.product_images.findIndex((img: any) => img.is_primary);
+          if (primaryImageIndex !== -1) {
+            setActiveImageIndex(primaryImageIndex);
+          }
+        }
+      }
     }
   };
+
+  // Update images when variant changes or component mounts
+  useEffect(() => {
+    if (product.product_images?.length > 0) {
+      const selectedVariant = selectedVariants[product.id];
+      if (selectedVariant) {
+        const variantImageIndex = product.product_images.findIndex((img: any) => 
+          img.variant_id === selectedVariant.variantId
+        );
+        if (variantImageIndex !== -1) {
+          setActiveImageIndex(variantImageIndex);
+          return;
+        }
+      }
+      
+      // Default to primary image if no variant-specific image
+      const primaryImageIndex = product.product_images.findIndex((img: any) => img.is_primary);
+      if (primaryImageIndex !== -1) {
+        setActiveImageIndex(primaryImageIndex);
+      }
+    }
+  }, [product, selectedVariants]);
 
   // Get safety icons for display
   const safetyIcons = product.safety_icons || [];

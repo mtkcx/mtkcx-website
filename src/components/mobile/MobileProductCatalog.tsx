@@ -206,17 +206,18 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const getCurrentProductImage = (product: any) => {
     const selectedVariant = getSelectedVariant(product.id);
     
-    if (selectedVariant && product.product_images?.length > 0) {
-      // Find image for selected variant by matching variant ID
-      const variantImage = product.product_images?.find((img: any) => 
-        img.variant_id === selectedVariant.variantId
-      );
-      
-      if (variantImage) {
-        return variantImage.image_url;
+    if (product.product_images?.length > 0) {
+      // If we have a selected variant, try to find its specific image
+      if (selectedVariant) {
+        const variantImage = product.product_images?.find((img: any) => 
+          img.variant_id === selectedVariant.variantId
+        );
+        if (variantImage) {
+          return variantImage.image_url;
+        }
       }
       
-      // If no variant-specific image, find primary image
+      // If no selected variant or no variant-specific image, try primary image
       const primaryImage = product.product_images?.find((img: any) => img.is_primary);
       if (primaryImage) {
         return primaryImage.image_url;
