@@ -207,30 +207,36 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     const selectedVariant = getSelectedVariant(product.id);
     
     if (selectedVariant && product.product_images?.length > 0) {
+      // Debug log to check what we're working with
+      console.log('Product:', product.name, 'Selected variant:', selectedVariant);
+      console.log('Available images:', product.product_images);
+      
       // Find image for selected variant by matching variant ID
       const variantImage = product.product_images?.find((img: any) => 
         img.variant_id === selectedVariant.variantId
       );
-      if (variantImage) return variantImage.image_url;
       
-      // Also try to find by matching size name if variant_id doesn't match
-      const sizeBasedImage = product.product_images?.find((img: any) => {
-        if (!img.variant_id) return false;
-        // Find the variant that matches this image's variant_id
-        const imageVariant = product.product_variants?.find((v: any) => v.id === img.variant_id);
-        return imageVariant && imageVariant.size === selectedVariant.size;
-      });
-      if (sizeBasedImage) return sizeBasedImage.image_url;
+      if (variantImage) {
+        console.log('Found variant image:', variantImage.image_url);
+        return variantImage.image_url;
+      }
       
       // If no variant-specific image, find primary image
       const primaryImage = product.product_images?.find((img: any) => img.is_primary);
-      if (primaryImage) return primaryImage.image_url;
+      if (primaryImage) {
+        console.log('Using primary image:', primaryImage.image_url);
+        return primaryImage.image_url;
+      }
       
       // Fall back to first image
-      if (product.product_images?.[0]) return product.product_images[0].image_url;
+      if (product.product_images?.[0]) {
+        console.log('Using first image:', product.product_images[0].image_url);
+        return product.product_images[0].image_url;
+      }
     }
     
     // Final fallback to main product image or placeholder
+    console.log('Using fallback image');
     return product.image_url || '/placeholder.svg';
   };
 
