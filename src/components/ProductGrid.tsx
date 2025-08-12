@@ -26,6 +26,7 @@ interface Product {
     id: string;
     size: string;
     price: number;
+    is_primary?: boolean;
   }>;
 }
 
@@ -37,6 +38,24 @@ interface ProductGridProps {
 const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useLanguage();
+
+  const getProductImage = (product: Product) => {
+    // Try to get primary variant image, or fall back to product image
+    if (product.variants && product.variants.length > 0) {
+      const primaryVariant = product.variants.find(v => v.is_primary) || product.variants[0];
+      // In a full implementation, you'd fetch variant-specific images here
+      // For now, fall back to product image
+    }
+    return product.image_url || '/placeholder.svg';
+  };
+
+  const getDisplayPrice = (product: Product) => {
+    if (product.variants && product.variants.length > 0) {
+      const primaryVariant = product.variants.find(v => v.is_primary) || product.variants[0];
+      return primaryVariant.price;
+    }
+    return 0;
+  };
 
   if (loading) {
     return (

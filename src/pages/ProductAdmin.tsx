@@ -128,6 +128,7 @@ export default function ProductAdmin() {
             price: variant.price,
             stock_quantity: variant.stock_quantity,
             sku: variant.sku,
+            is_primary: variant.is_primary || false,
           })),
         };
       });
@@ -219,6 +220,7 @@ export default function ProductAdmin() {
           price: variant.price,
           stock_quantity: variant.stock_quantity,
           sku: variant.sku,
+          is_primary: variant.is_primary || false,
         }));
         
         const { error: variantsError } = await supabase
@@ -252,9 +254,12 @@ export default function ProductAdmin() {
         description: editingProduct ? "Product updated successfully" : "Product created successfully",
       });
 
-      setIsDialogOpen(false);
-      setEditingProduct(null);
-      resetForm();
+      // Don't close dialog or reset form to allow quick navigation to next product
+      if (!editingProduct) {
+        setIsDialogOpen(false);
+        setEditingProduct(null);
+        resetForm();
+      }
       loadProducts();
 
     } catch (error) {
@@ -266,6 +271,25 @@ export default function ProductAdmin() {
       });
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  // Navigation functions for product editing
+  const navigateToProduct = async (direction: 'prev' | 'next') => {
+    if (!editingProduct) return;
+    
+    const currentIndex = filteredProducts.findIndex(p => p.id === editingProduct.id);
+    let nextIndex;
+    
+    if (direction === 'prev') {
+      nextIndex = currentIndex > 0 ? currentIndex - 1 : filteredProducts.length - 1;
+    } else {
+      nextIndex = currentIndex < filteredProducts.length - 1 ? currentIndex + 1 : 0;
+    }
+    
+    const nextProduct = filteredProducts[nextIndex];
+    if (nextProduct) {
+      await handleEditProduct(nextProduct);
     }
   };
 
@@ -571,9 +595,34 @@ export default function ProductAdmin() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>
-                {editingProduct ? 'Edit Product' : 'Add New Product'}
-              </DialogTitle>
+              <div className="flex items-center justify-between">
+                <DialogTitle className="flex-1">
+                  {editingProduct ? 'Edit Product' : 'Add New Product'}
+                </DialogTitle>
+                {editingProduct && filteredProducts.length > 1 && (
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigateToProduct('prev')}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      {filteredProducts.findIndex(p => p.id === editingProduct.id) + 1} / {filteredProducts.length}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigateToProduct('next')}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
             </DialogHeader>
             
             <div className="space-y-6">

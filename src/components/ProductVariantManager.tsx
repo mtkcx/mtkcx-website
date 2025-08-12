@@ -11,6 +11,7 @@ export interface ProductVariant {
   price: number;
   stock_quantity: number;
   sku: string;
+  is_primary?: boolean;
 }
 
 interface ProductVariantManagerProps {
@@ -28,6 +29,7 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
       price: 0,
       stock_quantity: 0,
       sku: '',
+      is_primary: variants.length === 0, // First variant is primary by default
     };
     onVariantsChange([...variants, newVariant]);
   };
@@ -47,6 +49,14 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
     return variants.some((variant, index) => 
       index !== currentIndex && variant.size.toLowerCase() === size.toLowerCase()
     );
+  };
+
+  const setPrimaryVariant = (index: number) => {
+    const newVariants = variants.map((variant, i) => ({
+      ...variant,
+      is_primary: i === index
+    }));
+    onVariantsChange(newVariants);
   };
 
   const generateSKU = (index: number) => {
@@ -74,8 +84,29 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
       )}
 
       {variants.map((variant, index) => (
-        <Card key={index} className="p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+        <Card key={index} className={`p-4 ${variant.is_primary ? 'border-primary bg-primary/5' : ''}`}>
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="font-medium">Variant {index + 1}</h4>
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant={variant.is_primary ? "default" : "outline"}
+                size="sm"
+                onClick={() => setPrimaryVariant(index)}
+              >
+                {variant.is_primary ? "Primary" : "Set Primary"}
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                size="sm"
+                onClick={() => removeVariant(index)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
             <div>
               <Label htmlFor={`size-${index}`}>Size</Label>
               <Input
@@ -134,17 +165,6 @@ export const ProductVariantManager: React.FC<ProductVariantManagerProps> = ({
                   Generate
                 </Button>
               </div>
-            </div>
-
-            <div className="flex justify-end">
-              <Button
-                type="button"
-                variant="destructive"
-                size="sm"
-                onClick={() => removeVariant(index)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
             </div>
           </div>
         </Card>
