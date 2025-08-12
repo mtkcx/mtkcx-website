@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
-import { Globe, Menu, X, Search, User, LogOut } from 'lucide-react';
+import { Globe, Menu, X, Search, User, LogOut, Settings, ShoppingBag } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,6 +11,8 @@ const Header = () => {
   const navigate = useNavigate();
   const {
     user,
+    profile,
+    isAdmin,
     signOut
   } = useAuth();
   const {
@@ -85,14 +87,27 @@ const Header = () => {
                 <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-4 py-2">
                   <User className="h-5 w-5" />
                   <span className="hidden sm:inline">
-                    {user.email?.split('@')[0] || 'Account'}
+                    {profile?.full_name || user.email?.split('@')[0] || 'Account'}
                   </span>
                 </Button>
                 <div className="absolute right-0 top-full mt-2 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[180px] z-50">
-                  <Link to="/dashboard" className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg" onClick={() => window.scrollTo(0, 0)}>
-                    <User className="w-4 h-4 mr-3" />
-                    {t('auth.dashboard')}
-                  </Link>
+                  {isAdmin ? (
+                    <Link to="/dashboard" className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg" onClick={() => window.scrollTo(0, 0)}>
+                      <Settings className="w-4 h-4 mr-3" />
+                      {t('auth.admin_dashboard')}
+                    </Link>
+                  ) : (
+                    <Link to="/profile" className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg" onClick={() => window.scrollTo(0, 0)}>
+                      <User className="w-4 h-4 mr-3" />
+                      {t('auth.my_profile')}
+                    </Link>
+                  )}
+                  {!isAdmin && (
+                    <Link to="/my-orders" className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors" onClick={() => window.scrollTo(0, 0)}>
+                      <ShoppingBag className="w-4 h-4 mr-3" />
+                      My Orders
+                    </Link>
+                  )}
                   <button onClick={signOut} className="flex items-center w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors last:rounded-b-lg">
                     <LogOut className="w-4 h-4 mr-3" />
                     {t('auth.sign_out')}

@@ -43,6 +43,8 @@ import SecureOrderLookup from "./pages/SecureOrderLookup";
 import SecurityDashboard from "./pages/SecurityDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import MobileAdminDashboard from "./pages/MobileAdminDashboard";
+import CustomerProfile from "./pages/CustomerProfile";
+import MyOrders from "./pages/MyOrders";
 
 const queryClient = new QueryClient();
 
@@ -66,8 +68,10 @@ const App = () => (
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/profile" element={<CustomerProfile />} />
+                <Route path="/my-orders" element={<MyOrders />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/profile" element={<Profile />} />
+                
                 <Route path="/admin/quotes" element={<AdminProtectedRoute><QuoteAdmin /></AdminProtectedRoute>} />
                 <Route path="/admin/emails" element={<AdminProtectedRoute><EmailAdmin /></AdminProtectedRoute>} />
                 <Route path="/admin/orders" element={<AdminProtectedRoute><OrderAdmin /></AdminProtectedRoute>} />
