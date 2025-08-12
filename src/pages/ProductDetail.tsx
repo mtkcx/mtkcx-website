@@ -165,16 +165,17 @@ const ProductDetail = () => {
   // Update current image when variant changes
   useEffect(() => {
     if (product && selectedVariant) {
-      // Find variant-specific image or use general images
+      // Find variant-specific image first
       const variantImage = product.all_images.find(img => img.variant_id === selectedVariant.id);
-      const generalImage = product.all_images.find(img => !img.variant_id);
       
       if (variantImage) {
         setCurrentImage(variantImage.image_url);
-      } else if (generalImage) {
-        setCurrentImage(generalImage.image_url);
-      } else if (product.all_images.length > 0) {
-        setCurrentImage(product.all_images[0].image_url);
+      } else {
+        // If no variant-specific image, use primary image
+        const primaryImage = product.all_images.find(img => img.is_primary && !img.variant_id);
+        if (primaryImage) {
+          setCurrentImage(primaryImage.image_url);
+        }
       }
     }
   }, [selectedVariant, product]);

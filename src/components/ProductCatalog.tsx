@@ -119,9 +119,8 @@ const ProductCatalog = () => {
           .map(product => {
             console.log('Processing product:', product.name, 'Categories:', product.product_categories);
             
-            // Get the primary image or first image
-            const primaryImage = product.product_images?.find(img => img.is_primary) || 
-                               product.product_images?.[0];
+            // Get the primary image only
+            const primaryImage = product.product_images?.find(img => img.is_primary);
             
             // Get the primary category (excluding "All Products")
             let categoryData = null;
