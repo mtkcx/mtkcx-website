@@ -20,7 +20,7 @@ interface MobileProductCatalogProps {
 
 export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = false, onCheckout }) => {
   const { addToCart: addItemToCart, getTotalItems } = useCart();
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,6 +45,27 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  // Auto-select primary variant when products load
+  useEffect(() => {
+    if (products.length > 0) {
+      const newSelectedVariants: Record<string, { variantId: string; size: string; price: number }> = {};
+      products.forEach(product => {
+        if (product.product_variants?.length > 0) {
+          // Find primary variant or default to first variant
+          const primaryVariant = product.product_variants.find((v: any) => v.is_primary) || product.product_variants[0];
+          if (primaryVariant) {
+            newSelectedVariants[product.id] = {
+              variantId: primaryVariant.id,
+              size: primaryVariant.size,
+              price: parseFloat(primaryVariant.price)
+            };
+          }
+        }
+      });
+      setSelectedVariants(newSelectedVariants);
+    }
+  }, [products]);
 
   // Handle navigation events from home page and tab switching
   useEffect(() => {
@@ -137,8 +158,13 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   // Memoized filtered products
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
+      // Get localized product name
+      const localizedName = currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                           currentLanguage === 'he' ? (product.name_he || product.name) :
+                           product.name;
+      
       const matchesSearch = !searchTerm || 
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        localizedName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.product_code.toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesCategory = !selectedCategory || 
@@ -146,7 +172,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       
       return matchesSearch && matchesCategory;
     });
-  }, [products, searchTerm, selectedCategory]);
+  }, [products, searchTerm, selectedCategory, currentLanguage]);
 
   const handleVariantChange = (productId: string, variantId: string, size: string, price: number) => {
     setSelectedVariants(prev => ({
@@ -208,10 +234,14 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       mobileFeatures.hapticFeedback('light');
     }
     
+    const localizedName = currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                         currentLanguage === 'he' ? (product.name_he || product.name) :
+                         product.name;
+    
     toast({
-      title: 'Added to cart',
-      description: `${product.name} has been added to your cart`,
-      duration: 1000 // 1 second
+      title: t('mobile.products.added_to_cart'),
+      description: `${localizedName} ${t('mobile.products.added_description')}`,
+      duration: 2000
     });
   };
 
@@ -349,56 +379,69 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                 </Button>
               </div>
               
-              {/* Product Info */}
-              <div className="flex-1 space-y-2">
-                <div className="flex items-start justify-between">
-                  <h3 className="font-medium text-sm line-clamp-2 flex-1">{product.name}</h3>
-                  <Badge variant="secondary" className="text-xs ml-2">
-                    {product.product_code}
-                  </Badge>
-                </div>
-                
-                {/* Variant Selection */}
-                {product.product_variants && product.product_variants.length > 0 && (
-                  <div className="flex items-center gap-2">
-                    <Label className="text-xs whitespace-nowrap">Size:</Label>
-                    <Select 
-                      value={selectedVariants[product.id]?.variantId || ''} 
-                      onValueChange={(variantId) => {
-                        const variant = product.product_variants.find((v: any) => v.id === variantId);
-                        if (variant) {
-                          handleVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
-                        }
-                      }}
-                    >
-                      <SelectTrigger className="h-8 text-xs">
-                        <SelectValue placeholder="Choose" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {product.product_variants.map((variant: any) => (
-                          <SelectItem key={variant.id} value={variant.id}>
-                            {variant.size} - ₪{parseFloat(variant.price).toLocaleString()}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-                
-                <div className="flex items-center justify-between">
-                  <div className="font-bold text-primary">
-                    ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
-                  </div>
-                  <Button
-                    onClick={() => addToCart(product)}
-                    size="sm"
-                    className="h-8 px-3"
-                  >
-                    <ShoppingCart className="h-3 w-3 mr-1" />
-                    Add
-                  </Button>
-                </div>
-              </div>
+               {/* Product Info */}
+               <div className="flex-1 space-y-2">
+                 <div className="flex items-start justify-between">
+                   <h3 className="font-medium text-sm line-clamp-2 flex-1">
+                     {currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                      currentLanguage === 'he' ? (product.name_he || product.name) :
+                      product.name}
+                   </h3>
+                   <Badge variant="secondary" className="text-xs ml-2">
+                     {product.product_code}
+                   </Badge>
+                 </div>
+                 
+                 {/* Variant Selection */}
+                 {product.product_variants && product.product_variants.length > 0 && (
+                   <div className="flex items-center gap-2">
+                     <Label className="text-xs whitespace-nowrap">{t('mobile.services.size')}:</Label>
+                     <Select 
+                       value={selectedVariants[product.id]?.variantId || ''} 
+                       onValueChange={(variantId) => {
+                         const variant = product.product_variants.find((v: any) => v.id === variantId);
+                         if (variant) {
+                           handleVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
+                         }
+                       }}
+                     >
+                       <SelectTrigger className="h-8 text-xs">
+                         <SelectValue placeholder={selectedVariants[product.id]?.size || "Choose"} />
+                       </SelectTrigger>
+                       <SelectContent>
+                         {product.product_variants.map((variant: any) => (
+                           <SelectItem key={variant.id} value={variant.id}>
+                             {variant.size} - ₪{parseFloat(variant.price).toLocaleString()}
+                           </SelectItem>
+                         ))}
+                       </SelectContent>
+                     </Select>
+                   </div>
+                 )}
+                 
+                 {/* Product Description */}
+                 {(product.description || product.description_ar || product.description_he) && (
+                   <p className="text-xs text-muted-foreground line-clamp-2">
+                     {currentLanguage === 'ar' ? (product.description_ar || product.description) :
+                      currentLanguage === 'he' ? (product.description_he || product.description) :
+                      product.description}
+                   </p>
+                 )}
+                 
+                 <div className="flex items-center justify-between">
+                   <div className="font-bold text-primary">
+                     ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
+                   </div>
+                   <Button
+                     onClick={() => addToCart(product)}
+                     size="sm"
+                     className="h-8 px-3"
+                   >
+                     <ShoppingCart className="h-3 w-3 mr-1" />
+                     {t('mobile.products.add_to_cart')}
+                   </Button>
+                 </div>
+               </div>
             </div>
           </Card>
         ))}

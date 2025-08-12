@@ -423,6 +423,7 @@ const translations = {
     'mobile.services.vehicle_size': 'Select Vehicle Size',
     'mobile.services.get_quote': 'Get Quote',
     'mobile.services.total_estimate': 'Total Estimate',
+    'mobile.services.size': 'Size',
     
     // Mobile Home translations
     'mobile.home.welcome_title': 'Welcome to MTKCx',
@@ -2034,6 +2035,7 @@ const translations = {
     'mobile.services.vehicle_size': 'اختر حجم السيارة',
     'mobile.services.get_quote': 'احصل على عرض سعر',
     'mobile.services.total_estimate': 'التقدير الإجمالي',
+    'mobile.services.size': 'الحجم',
     
     // Quote Dialog additional translations
     'quote.missing_information': 'معلومات مفقودة',
@@ -2993,6 +2995,7 @@ const translations = {
     'mobile.services.vehicle_size': 'בחר גודל רכב',
     'mobile.services.get_quote': 'קבל הצעת מחיר',
     'mobile.services.total_estimate': 'הערכה כוללת',
+    'mobile.services.size': 'גודל',
     
     // Quote Dialog additional translations
     'quote.missing_information': 'חסר מידע',
