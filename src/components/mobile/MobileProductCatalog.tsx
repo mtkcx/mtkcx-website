@@ -192,7 +192,14 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     });
   }, [products, searchTerm, selectedCategory, currentLanguage]);
 
-  const handleVariantChange = (productId: string, variantId: string) => {
+  const handleVariantChange = (productId: string, variantId: string, size: string, price: number) => {
+    setSelectedVariants(prev => ({
+      ...prev,
+      [productId]: { variantId, size, price }
+    }));
+  };
+
+  const handleVariantChangeFromDropdown = (productId: string, variantId: string) => {
     const product = products.find(p => p.id === productId);
     if (product && product.product_variants) {
       const variant = product.product_variants.find((v: any) => v.id === variantId);
@@ -469,7 +476,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                         <div className="flex-1 max-w-[100px] ml-2">
                           <Select 
                             value={selectedVariants[product.id]?.variantId || ''} 
-                            onValueChange={(variantId) => handleVariantChange(product.id, variantId)}
+                            onValueChange={(variantId) => handleVariantChangeFromDropdown(product.id, variantId)}
                           >
                             <SelectTrigger className="h-6 text-xs bg-background border border-muted">
                               <SelectValue placeholder="Size" />
