@@ -354,12 +354,13 @@ export const MobileAdminDashboard: React.FC = () => {
 
       {/* Data Tables */}
       <Tabs defaultValue="customers" className="space-y-3">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="customers" className="text-xs">Customers</TabsTrigger>
           <TabsTrigger value="orders" className="text-xs">Orders</TabsTrigger>
           <TabsTrigger value="quotes" className="text-xs">Quotes</TabsTrigger>
           <TabsTrigger value="enrollments" className="text-xs">Enrollments</TabsTrigger>
           <TabsTrigger value="messages" className="text-xs">Messages</TabsTrigger>
+          <TabsTrigger value="notifications" className="text-xs">Notifications</TabsTrigger>
           <TabsTrigger value="users" className="text-xs">Users</TabsTrigger>
         </TabsList>
         
@@ -455,6 +456,10 @@ export const MobileAdminDashboard: React.FC = () => {
 
         <TabsContent value="messages" className="space-y-3">
           <ContactMessagesManager isMobile={true} />
+        </TabsContent>
+
+        <TabsContent value="notifications" className="space-y-3">
+          <MobileNotificationManager />
         </TabsContent>
 
         <TabsContent value="users" className="space-y-3">
