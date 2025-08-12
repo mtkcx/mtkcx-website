@@ -50,15 +50,21 @@ export const LazyLoad: React.FC<LazyLoadProps> = ({
   return (
     <div
       ref={elementRef}
-      className={className}
-      style={{ minHeight: typeof height === 'number' ? `${height}px` : height }}
+      className={`${className} ${isIntersecting ? 'opacity-100' : 'opacity-90'}`}
+      style={{ 
+        minHeight: typeof height === 'number' ? `${height}px` : height,
+        contain: 'layout style paint'
+      }}
+      data-lazy-load="true"
     >
       {isIntersecting ? (
-        children
+        <div className="gpu-accelerated">
+          {children}
+        </div>
       ) : (
         placeholder || (
           <Skeleton 
-            className="w-full h-full" 
+            className="w-full h-full gpu-accelerated" 
             style={{ height: typeof height === 'number' ? `${height}px` : height }}
           />
         )

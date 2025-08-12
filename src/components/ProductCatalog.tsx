@@ -183,7 +183,7 @@ const ProductCatalog = () => {
     setSelectedCategory(categoryFromUrl);
   }, [searchParams]);
 
-  // Optimized filtering with multilingual support
+  // Optimized filtering with multilingual support and stable key
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
       // Get localized product name and description

@@ -113,6 +113,14 @@ All colors MUST be HSL.
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
+    /* Improve image loading performance */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Optimize lazy loading intersection observer */
+  [data-lazy-load] {
+    contain: layout style paint;
   }
   
   /* Smooth scrolling with reduced motion support */
@@ -174,6 +182,38 @@ All colors MUST be HSL.
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
+  }
+  
+  /* Product grid performance optimizations */
+  .product-grid-container {
+    contain: layout;
+  }
+  
+  .product-card {
+    contain: layout style paint;
+  }
+  
+  /* Prevent layout shift during image loading */
+  .image-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .image-container::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%; /* 4:3 aspect ratio */
+  }
+  
+  /* Optimize transitions for language changes */
+  .language-transition {
+    transition: opacity 0.15s ease-in-out;
+  }
+  
+  .language-transition.changing {
+    opacity: 0.8;
   }
   
   /* Responsive grid utilities */
