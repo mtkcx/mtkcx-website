@@ -1,6 +1,7 @@
+
 import React from 'react';
 import Header from '@/components/Header';
-import ProductCatalog from '@/components/ProductCatalog';
+import OptimizedProductCatalog from '@/components/OptimizedProductCatalog';
 import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -17,7 +18,7 @@ const Products = () => {
       />
       <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
         <Header />
-        <ProductCatalog />
+        <OptimizedProductCatalog />
         <Footer />
       </div>
     </>
