@@ -12,6 +12,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { ImageEnlargementDialog } from './ImageEnlargementDialog';
+import { useImagePreloader } from '@/hooks/useImagePreloader';
+import ResponsiveImage from '@/components/ResponsiveImage';
+import LazyLoad from '@/components/LazyLoad';
 
 interface MobileProductCatalogProps {
   compact?: boolean;
@@ -32,6 +35,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
   const [expandedDescriptions, setExpandedDescriptions] = useState<Record<string, boolean>>({});
+  const { batchPreload, preloadNextPage } = useImagePreloader();
   
   // Initialize mobile features hook
   const mobileFeatures = {
@@ -405,30 +409,31 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         {filteredProducts.map(product => (
            <Card key={product.id} className="overflow-hidden">
             <div className="flex gap-3 p-3">
-              <div className="relative">
-                <img
-                  src={getCurrentProductImage(product)}
-                  alt={currentLanguage === 'ar' ? (product.name_ar || product.name) :
-                       currentLanguage === 'he' ? (product.name_he || product.name) :
-                       product.name}
-                  className="w-20 h-20 object-cover rounded flex-shrink-0"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.src = '/placeholder.svg';
-                  }}
-                />
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="absolute inset-0 w-20 h-20 p-0 bg-black/60 hover:bg-black/70 opacity-0 hover:opacity-100 transition-opacity rounded"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleImageClick(getCurrentProductImage(product));
-                  }}
-                >
-                  <Eye className="h-4 w-4 text-white" />
-                </Button>
-              </div>
+              <LazyLoad height={80} className="relative">
+                <div className="w-20 h-20 rounded overflow-hidden">
+                  <ResponsiveImage
+                    src={getCurrentProductImage(product)}
+                    alt={currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                         currentLanguage === 'he' ? (product.name_he || product.name) :
+                         product.name}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    aspectRatio="square"
+                    loading="lazy"
+                    priority={false}
+                  />
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="absolute inset-0 w-20 h-20 p-0 bg-black/60 hover:bg-black/70 opacity-0 hover:opacity-100 transition-opacity rounded"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleImageClick(getCurrentProductImage(product));
+                    }}
+                  >
+                    <Eye className="h-4 w-4 text-white" />
+                  </Button>
+                </div>
+              </LazyLoad>
               
                {/* Product Info */}
                <div className="flex-1 space-y-2">
