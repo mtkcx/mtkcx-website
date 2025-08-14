@@ -37,7 +37,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   return (
     <Helmet>
       {/* Favicon */}
-      <link rel="icon" href="/lovable-uploads/c9035b98-872b-42aa-ba81-c7d2d01c27ef.png" type="image/png" />
+      <link rel="icon" href="/lovable-uploads/c9035b98-872b-42aa-ba81-c7d2d01c27ef.png?v=3" type="image/png" />
       
       {/* Basic Meta Tags */}
       <title>{finalTitle}</title>
