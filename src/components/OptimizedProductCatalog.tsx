@@ -69,8 +69,8 @@ const OptimizedProductCatalog = () => {
     setSearchTerm(e.target.value);
   }, []);
 
-  const handleCategoryChange = useCallback((category: string) => {
-    setSelectedCategory(category);
+  const handleCategorySelect = useCallback((categorySlug: string | null) => {
+    setSelectedCategory(categorySlug || '');
   }, []);
 
   const handleSortChange = useCallback((value: string) => {
@@ -126,8 +126,9 @@ const OptimizedProductCatalog = () => {
         </div>
 
         <CategoryFilter
-          selectedCategory={selectedCategory}
-          onCategoryChange={handleCategoryChange}
+          categories={[]}
+          selectedCategory={selectedCategory || null}
+          onCategorySelect={handleCategorySelect}
         />
       </div>
 
