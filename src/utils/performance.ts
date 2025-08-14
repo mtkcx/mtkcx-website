@@ -126,7 +126,7 @@ export const preloadCriticalResources = () => {
   // Preload hero images
   const heroImages = [
     '/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png',
-    '/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png'
+    '/lovable-uploads/c9035b98-872b-42aa-ba81-c7d2d01c27ef.png'
   ];
   
   preloadImages(heroImages);
