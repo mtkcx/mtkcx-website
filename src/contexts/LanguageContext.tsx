@@ -1832,6 +1832,18 @@ const translations = {
     'common.professional_training_programs': 'برامج التدريب المهني',
     'common.expert_wrapping_services': 'خدمات التغليف الخبيرة',
     'common.fast_response_time': 'وقت استجابة سريع',
+    
+    // Newsletter translations
+    'newsletter.title': 'ابق على اطلاع!',
+    'newsletter.description': 'اشترك في نشرتنا الإخبارية واحصل على آخر التحديثات والعروض الحصرية ورؤى الصناعة المرسلة إلى صندوق الوارد الخاص بك.',
+    'newsletter.name': 'الاسم (اختياري)',
+    'newsletter.name_placeholder': 'أدخل اسمك',
+    'newsletter.email': 'عنوان البريد الإلكتروني *',
+    'newsletter.email_placeholder': 'أدخل بريدك الإلكتروني',
+    'newsletter.subscribe': 'اشترك الآن',
+    'newsletter.subscribing': 'جاري الاشتراك...',
+    'newsletter.maybe_later': 'ربما لاحقاً',
+    'newsletter.privacy': 'نحن نحترم خصوصيتك. ألغِ الاشتراك في أي وقت.',
     'common.beyond_products': 'ما وراء المنتجات - التعليم والتميز',
     'common.our_work_gallery': 'معرض أعمالنا',
     'common.explore_portfolio': 'استكشف مجموعة أعمالنا لتحويلات السيارات والمشاريع المخصصة',
@@ -2766,6 +2778,18 @@ const translations = {
     'common.professional_training_programs': 'תוכניות הכשרה מקצועיות',
     'common.expert_wrapping_services': 'שירותי עיטוף מומחים',
     'common.fast_response_time': 'זמן תגובה מהיר',
+    
+    // Newsletter translations
+    'newsletter.title': 'הישאר מעודכן!',
+    'newsletter.description': 'הירשם לניוזלטר שלנו וקבל את העדכונים האחרונים, הצעות בלעדיות ותובנות התעשייה ישירות לתיבת הדואר הנכנס שלך.',
+    'newsletter.name': 'שם (אופציונלי)',
+    'newsletter.name_placeholder': 'הכנס את שמך',
+    'newsletter.email': 'כתובת אימייל *',
+    'newsletter.email_placeholder': 'הכנס את האימייל שלך',
+    'newsletter.subscribe': 'הירשם עכשיו',
+    'newsletter.subscribing': 'נרשם...',
+    'newsletter.maybe_later': 'אולי מאוחר יותר',
+    'newsletter.privacy': 'אנו מכבדים את הפרטיות שלך. בטל מנוי בכל עת.',
     'common.beyond_products': 'מעבר למוצרים - חינוך ומצוינות',
     'common.our_work_gallery': 'גלריית העבודות שלנו',
     'common.explore_portfolio': 'חקור את תיק העבודות שלנו של שינויי רכבים ופרויקטים מותאמים אישית',
@@ -3229,16 +3253,6 @@ const translations = {
     'common.featured': 'מומלץ',
 
     // Newsletter translations
-    'newsletter.title': 'הישאר מעודכן!',
-    'newsletter.description': 'הירשם לניוזלטר שלנו וקבל את העדכונים האחרונים, הצעות בלעדיות ותובנות התעשייה ישירות לתיבת הדואר הנכנס שלך.',
-    'newsletter.name': 'שם (אופציונלי)',
-    'newsletter.name_placeholder': 'הכנס את שמך',
-    'newsletter.email': 'כתובת אימייל *',
-    'newsletter.email_placeholder': 'הכנס את האימייל שלך',
-    'newsletter.subscribe': 'הירשם עכשיו',
-    'newsletter.subscribing': 'נרשם...',
-    'newsletter.maybe_later': 'אולי מאוחר יותר',
-    'newsletter.privacy': 'אנו מכבדים את הפרטיות שלך. בטל מנוי בכל עת.',
 
   }
 };
