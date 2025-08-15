@@ -453,123 +453,128 @@ const MobileApp: React.FC = () => {
                 <MobileProductCatalog onCheckout={() => setShowCheckout(true)} />
               </TabsContent>
 
-              <TabsContent value="courses" className="m-0 p-4">
-                <div className="space-y-6">
-                  <div className="text-center space-y-2">
-                    <BookOpen className="h-12 w-12 text-primary mx-auto" />
-                    <h2 className="text-2xl font-bold">{t('courses.title')}</h2>
-                    <p className="text-muted-foreground">
+              <TabsContent value="courses" className="m-0 p-4 pb-24">
+                <div className="space-y-8">
+                  <div className="text-center space-y-4">
+                    <BookOpen className="h-16 w-16 text-primary mx-auto" />
+                    <h2 className="text-3xl font-bold">{t('courses.title')}</h2>
+                    <p className="text-muted-foreground text-lg leading-relaxed">
                       {t('courses.subtitle')}
                     </p>
                   </div>
 
-                  <div className="space-y-4">
-                    <Card className="overflow-hidden">
-                      <div className="relative h-48">
+                  <div className="space-y-6">
+                    <Card className="overflow-hidden shadow-lg">
+                      <div className="relative h-56">
                         <img
                           src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png"
                           alt="Professional car detailing training session"
                           className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                        <div className="absolute bottom-3 left-3 right-3 text-white">
-                          <h3 className="font-bold text-xl">{t('courses.course_title')}</h3>
-                          <p className="text-white/90 text-sm">{t('courses.four_days')} {t('courses.interactive_format')}</p>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                        <div className="absolute bottom-4 left-4 right-4 text-white">
+                          <h3 className="font-bold text-2xl mb-2">{t('courses.course_title')}</h3>
+                          <p className="text-white/90 text-base">{t('courses.four_days')} • {t('courses.interactive_format')}</p>
                         </div>
                       </div>
                       
-                      <div className="p-4 space-y-4">
-                        <div className="space-y-2">
-                          <h4 className="font-semibold">{t('courses.what_learn')}</h4>
-                          <div className="grid grid-cols-1 gap-2 text-sm">
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('courses.professional_techniques')}</span>
+                      <div className="p-6 space-y-6">
+                        <div className="space-y-4">
+                          <h4 className="font-bold text-lg text-primary">{t('courses.what_learn')}</h4>
+                          <div className="grid grid-cols-1 gap-3">
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('courses.professional_techniques')}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('courses.advanced_polishing')}</span>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('courses.advanced_polishing')}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('courses.product_knowledge')}</span>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('courses.product_knowledge')}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('courses.surface_assessment')}</span>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('courses.surface_assessment')}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('courses.machine_polishing')}</span>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('courses.machine_polishing')}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('courses.business_practices')}</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4 text-sm bg-muted/30 p-3 rounded-lg">
-                          <div>
-                            <span className="font-medium">{t('courses.course_duration')}:</span>
-                            <div className="font-semibold">{t('courses.four_days')}</div>
-                          </div>
-                          <div>
-                            <span className="font-medium">{t('courses.training_format')}:</span>
-                            <div className="font-semibold">{t('courses.interactive_format')}</div>
-                          </div>
-                          <div>
-                            <span className="font-medium">{t('courses.class_size')}:</span>
-                            <div className="font-semibold">{t('courses.small_groups')}</div>
-                          </div>
-                          <div>
-                            <span className="font-medium">{t('courses.location')}:</span>
-                            <div className="font-semibold">{t('courses.atarot_location')}</div>
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <h4 className="font-semibold">{t('courses.course_includes')}:</h4>
-                          <div className="grid grid-cols-1 gap-1 text-sm">
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('mobile.courses.product_kit')}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('mobile.courses.equipment_access')}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('mobile.courses.training_materials')}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('mobile.courses.official_certification')}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('mobile.courses.lunch_included')}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                              <span>{t('mobile.courses.ongoing_support')}</span>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('courses.business_practices')}</span>
                             </div>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between pt-2">
-                          <div>
-                            <span className="text-sm text-muted-foreground">{t('courses.contact_pricing')}</span>
-                            <div className="font-bold text-primary text-lg">{t('courses.professional_certification')}</div>
+                        <div className="bg-muted/50 p-4 rounded-lg">
+                          <h4 className="font-bold text-lg mb-4 text-primary">{t('courses.course_details')}</h4>
+                          <div className="space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="font-medium text-base">{t('courses.course_duration')}:</span>
+                              <span className="font-semibold text-primary">{t('courses.four_days')}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="font-medium text-base">{t('courses.training_format')}:</span>
+                              <span className="font-semibold text-primary">{t('courses.interactive_format')}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="font-medium text-base">{t('courses.class_size')}:</span>
+                              <span className="font-semibold text-primary">{t('courses.small_groups')}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span className="font-medium text-base">{t('courses.location')}:</span>
+                              <span className="font-semibold text-primary">{t('courses.atarot_location')}</span>
+                            </div>
                           </div>
-                          <Button 
-                            className="bg-primary text-primary-foreground"
-                            onClick={() => setIsEnrollmentDialogOpen(true)}
-                          >
-                            {t('courses.enroll_now')}
-                          </Button>
                         </div>
+
+                        <div className="space-y-4">
+                          <h4 className="font-bold text-lg text-primary">{t('courses.course_includes')}:</h4>
+                          <div className="grid grid-cols-1 gap-3">
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('mobile.courses.product_kit')}</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('mobile.courses.equipment_access')}</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('mobile.courses.training_materials')}</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('mobile.courses.official_certification')}</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('mobile.courses.lunch_included')}</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span className="text-base">{t('mobile.courses.ongoing_support')}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-primary/10 p-4 rounded-lg border border-primary/20">
+                          <div className="text-center space-y-2">
+                            <div className="text-sm text-muted-foreground">{t('courses.contact_pricing')}</div>
+                            <div className="font-bold text-primary text-xl">{t('courses.professional_certification')}</div>
+                          </div>
+                        </div>
+
+                        <Button 
+                          className="w-full h-14 text-lg bg-primary hover:bg-primary/90 text-primary-foreground"
+                          onClick={() => setIsEnrollmentDialogOpen(true)}
+                        >
+                          <BookOpen className="h-5 w-5 mr-2" />
+                          {t('courses.enroll_now')}
+                        </Button>
                       </div>
                     </Card>
                   </div>
