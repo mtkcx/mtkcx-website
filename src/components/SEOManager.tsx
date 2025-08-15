@@ -7,7 +7,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Settings, Upload, Image } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import { supabase } from '@/integrations/supabase/client';
 
 interface SEOSettings {
   site_title: string;
