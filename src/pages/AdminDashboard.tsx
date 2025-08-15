@@ -16,6 +16,7 @@ import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
 import ContactMessagesManager from '@/components/ContactMessagesManager';
 import { AdminUserManager } from '@/components/AdminUserManager';
 import SEOManager from '@/components/SEOManager';
+import SiteSettingsManager from '@/components/SiteSettingsManager';
 
 interface Order {
   id: string;
@@ -356,7 +357,8 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="enrollments">Enrollments</TabsTrigger>
             <TabsTrigger value="messages">Contact Messages</TabsTrigger>
             <TabsTrigger value="users">User Management</TabsTrigger>
-            <TabsTrigger value="seo">SEO Settings</TabsTrigger>
+            <TabsTrigger value="site">Site Settings</TabsTrigger>
+            <TabsTrigger value="seo">Advanced SEO</TabsTrigger>
           </TabsList>
           
           <TabsContent value="customers" className="space-y-4">
@@ -455,6 +457,10 @@ const AdminDashboard: React.FC = () => {
 
           <TabsContent value="users" className="space-y-6">
             <AdminUserManager />
+          </TabsContent>
+
+          <TabsContent value="site" className="space-y-4">
+            <SiteSettingsManager />
           </TabsContent>
 
           <TabsContent value="seo" className="space-y-4">

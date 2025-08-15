@@ -58,12 +58,23 @@ export const SEOProvider: React.FC<SEOProviderProps> = ({ children }) => {
         setSEOSettings(seoData);
         
         // Update document title immediately
-        document.title = seoData.site_title || defaultSEOSettings.site_title;
+        if (seoData.site_title) {
+          document.title = seoData.site_title;
+        }
         
         // Update favicon if needed
-        const faviconLink = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
-        if (faviconLink && seoData.favicon_url) {
-          faviconLink.href = seoData.favicon_url;
+        if (seoData.favicon_url) {
+          const faviconLink = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
+          if (faviconLink) {
+            faviconLink.href = seoData.favicon_url;
+          } else {
+            // Create favicon link if it doesn't exist
+            const newFaviconLink = document.createElement('link');
+            newFaviconLink.rel = 'icon';
+            newFaviconLink.type = 'image/png';
+            newFaviconLink.href = seoData.favicon_url;
+            document.head.appendChild(newFaviconLink);
+          }
         }
       }
     } catch (error) {

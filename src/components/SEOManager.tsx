@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Settings, Upload, Image } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useSEO } from '@/contexts/SEOContext';
 
@@ -47,10 +47,10 @@ const SEOManager: React.FC = () => {
       // Refresh the SEO context to update all components
       await refreshSEOSettings();
       
-      toast.success('SEO settings saved successfully! Changes have been applied.');
+      toast({ title: "Success", description: "SEO settings saved successfully! Changes have been applied." });
     } catch (error) {
       console.error('Error saving SEO settings:', error);
-      toast.error('Failed to save SEO settings');
+      toast({ title: "Error", description: "Failed to save SEO settings", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -75,10 +75,10 @@ const SEOManager: React.FC = () => {
 
       const newFaviconUrl = data.publicUrl;
       setSettings(prev => ({ ...prev, favicon_url: newFaviconUrl }));
-      toast.success('Favicon uploaded successfully!');
+      toast({ title: "Success", description: "Favicon uploaded successfully!" });
     } catch (error) {
       console.error('Error uploading favicon:', error);
-      toast.error('Failed to upload favicon');
+      toast({ title: "Error", description: "Failed to upload favicon", variant: "destructive" });
     } finally {
       setIsUploading(false);
     }
@@ -103,10 +103,10 @@ const SEOManager: React.FC = () => {
 
       const newOGImageUrl = data.publicUrl;
       setSettings(prev => ({ ...prev, og_image_url: newOGImageUrl }));
-      toast.success('OpenGraph image uploaded successfully!');
+      toast({ title: "Success", description: "OG image uploaded successfully!" });
     } catch (error) {
       console.error('Error uploading OG image:', error);
-      toast.error('Failed to upload OpenGraph image');
+      toast({ title: "Error", description: "Failed to upload OG image", variant: "destructive" });
     } finally {
       setIsUploading(false);
     }
