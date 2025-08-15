@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useSEO } from '@/contexts/SEOContext';
 
 interface SEOHeadProps {
   title?: string;
@@ -22,16 +23,13 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   structuredData
 }) => {
   const { currentLanguage } = useLanguage();
-  const defaultTitle = 'Koch-Chemie Professional Car Care Products | MTKCx - Official Distributor';
-  const defaultDescription = 'Official Koch-Chemie distributor offering premium German car detailing products, professional training courses, and expert car wrapping services. Shop authentic Koch-Chemie products online.';
-  const defaultKeywords = 'koch chemie, car detailing, automotive cleaning, professional car care, german car products, car wrapping, detailing training, MTKCx';
-  const defaultImage = 'https://kochchemie-east-hub.lovable.app/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png';
+  const { seoSettings } = useSEO();
   const baseUrl = 'https://kochchemie-east-hub.lovable.app';
 
-  const finalTitle = title || defaultTitle;
-  const finalDescription = description || defaultDescription;
-  const finalKeywords = keywords || defaultKeywords;
-  const finalImage = image || defaultImage;
+  const finalTitle = title || seoSettings.site_title;
+  const finalDescription = description || seoSettings.site_description;
+  const finalKeywords = keywords || seoSettings.site_keywords;
+  const finalImage = image || seoSettings.og_image_url;
   const finalUrl = url || baseUrl;
 
   return (

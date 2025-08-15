@@ -6,6 +6,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { SEOProvider } from "@/contexts/SEOContext";
 import SecurityMiddleware from "@/components/SecurityMiddleware";
 import CartDrawer from '@/components/CartDrawer';
 import Checkout from './pages/Checkout';
@@ -53,11 +54,12 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <HelmetProvider>
       <LanguageProvider>
-        <LanguagePreferenceWrapper>
-          <AuthProvider>
-            <CartProvider>
-              <SecurityMiddleware>
-                <TooltipProvider>
+        <SEOProvider>
+          <LanguagePreferenceWrapper>
+            <AuthProvider>
+              <CartProvider>
+                <SecurityMiddleware>
+                  <TooltipProvider>
               <Toaster />
               <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <ScrollToTop />
@@ -106,7 +108,8 @@ const App = () => (
               </CartProvider>
             </AuthProvider>
           </LanguagePreferenceWrapper>
-        </LanguageProvider>
+        </SEOProvider>
+      </LanguageProvider>
      </HelmetProvider>
    </QueryClientProvider>
 );

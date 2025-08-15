@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Settings, Upload, Image } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { useSEO } from '@/contexts/SEOContext';
 
 interface SEOSettings {
   site_title: string;
@@ -17,41 +18,15 @@ interface SEOSettings {
 }
 
 const SEOManager: React.FC = () => {
-  const [settings, setSettings] = useState<SEOSettings>({
-    site_title: 'MTKCx | Koch-Chemie Distribution Partner',
-    site_description: 'Official Koch-Chemie distributor offering premium German car detailing products, professional training courses, and expert car wrapping services. Shop authentic Koch-Chemie products online.',
-    site_keywords: 'koch chemie, car detailing, automotive cleaning, professional car care, german car products, car wrapping, detailing training, MT Wraps',
-    favicon_url: '/favicon.png',
-    og_image_url: 'https://kochchemie-east-hub.lovable.app/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png'
-  });
-  
+  const { seoSettings, refreshSEOSettings } = useSEO();
+  const [settings, setSettings] = useState<SEOSettings>(seoSettings);
   const [loading, setLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
-    fetchSEOSettings();
-  }, []);
+    setSettings(seoSettings);
+  }, [seoSettings]);
 
-  const fetchSEOSettings = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('site_settings')
-        .select('*')
-        .eq('setting_key', 'seo_settings')
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        throw error;
-      }
-
-      if (data && data.setting_value) {
-        const seoData = JSON.parse(data.setting_value as string);
-        setSettings(seoData);
-      }
-    } catch (error) {
-      console.error('Error fetching SEO settings:', error);
-    }
-  };
 
   const handleSave = async () => {
     setLoading(true);
@@ -69,7 +44,10 @@ const SEOManager: React.FC = () => {
 
       if (error) throw error;
 
-      toast.success('SEO settings saved successfully! Note: Changes to title and favicon require a page refresh to take effect.');
+      // Refresh the SEO context to update all components
+      await refreshSEOSettings();
+      
+      toast.success('SEO settings saved successfully! Changes have been applied.');
     } catch (error) {
       console.error('Error saving SEO settings:', error);
       toast.error('Failed to save SEO settings');
