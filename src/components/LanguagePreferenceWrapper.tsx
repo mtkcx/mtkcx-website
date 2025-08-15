@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 const LanguagePreferenceWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [languageSet, setLanguageSet] = useState(false);
   const { setLanguage } = useLanguage();
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const LanguagePreferenceWrapper: React.FC<{ children: React.ReactNode }> = ({ ch
               setLanguage(data.preferred_language as 'en' | 'ar' | 'he');
               localStorage.setItem('preferred-language', data.preferred_language);
               localStorage.setItem('language-preference-set', 'true');
+              setLanguageSet(true);
               return;
             }
           } catch (error) {
@@ -44,6 +46,7 @@ const LanguagePreferenceWrapper: React.FC<{ children: React.ReactNode }> = ({ ch
         if (savedLanguage && ['en', 'ar', 'he'].includes(savedLanguage)) {
           setLanguage(savedLanguage as 'en' | 'ar' | 'he');
         }
+        setLanguageSet(true);
       }
     };
 
@@ -52,11 +55,15 @@ const LanguagePreferenceWrapper: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const handleLanguageModalClose = () => {
     setShowLanguageModal(false);
+    setLanguageSet(true);
+    // Set a flag that language has been chosen to trigger newsletter
+    localStorage.setItem('language-just-chosen', 'true');
   };
 
   return (
     <>
-      {children}
+      {/* Only render children after language is set to avoid content flash */}
+      {languageSet && children}
       <LanguagePreferenceModal 
         isOpen={showLanguageModal} 
         onClose={handleLanguageModalClose} 

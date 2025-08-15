@@ -29,12 +29,18 @@ const NewsletterPopup = () => {
   useEffect(() => {
     // Check if user has dismissed the popup in this session
     const hasSeenPopup = sessionStorage.getItem('newsletter-popup-dismissed');
+    const languageSet = localStorage.getItem('language-preference-set');
+    const languageJustChosen = localStorage.getItem('language-just-chosen');
     
-    if (!hasSeenPopup) {
-      // Show popup after 2 seconds delay
+    if (!hasSeenPopup && languageSet) {
+      // Show popup after language is set
+      const delay = languageJustChosen ? 1000 : 2000; // Shorter delay if language was just chosen
+      
       const timer = setTimeout(() => {
         setIsOpen(true);
-      }, 2000);
+        // Clear the flag after showing newsletter
+        localStorage.removeItem('language-just-chosen');
+      }, delay);
       
       return () => clearTimeout(timer);
     }
