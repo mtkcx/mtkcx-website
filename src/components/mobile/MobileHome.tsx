@@ -17,22 +17,12 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { LanguagePreferenceDialog } from './LanguagePreferenceDialog';
 
 const MobileHome: React.FC = memo(() => {
   const { user } = useAuth();
   const { t } = useLanguage();
-  const [showLanguageDialog, setShowLanguageDialog] = useState(false);
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>('');
-
-  // Check if user has set language preference
-  useEffect(() => {
-    const hasSetLanguagePreference = localStorage.getItem('language-preference-set');
-    if (!hasSetLanguagePreference) {
-      setShowLanguageDialog(true);
-    }
-  }, []);
 
   const handleImageClick = useCallback((imageUrl: string) => {
     setSelectedImage(imageUrl);
@@ -336,11 +326,6 @@ const MobileHome: React.FC = memo(() => {
           </div>
         </Card>
       )}
-      {/* Language Preference Dialog */}
-      <LanguagePreferenceDialog 
-        isOpen={showLanguageDialog} 
-        onClose={() => setShowLanguageDialog(false)} 
-      />
 
       {/* Image Enlargement Dialog */}
       <Dialog open={showImageDialog} onOpenChange={setShowImageDialog}>
