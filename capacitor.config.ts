@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'MTKCx',
   webDir: 'dist',
   server: {
-    url: "https://2b082f57-ea56-4226-9792-5934ae718ea9.lovableproject.com?forceHideBadge=true",
+    url: "https://2b082f57-ea56-4226-9792-5934ae718ea9.lovableproject.com/mobile?forceHideBadge=true",
     cleartext: true
   },
   plugins: {
