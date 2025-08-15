@@ -509,24 +509,24 @@ const MobileApp: React.FC = () => {
                           </div>
                         </div>
 
-                        <div className="bg-muted/50 p-4 rounded-lg">
+                        <div className="bg-muted/50 p-5 rounded-lg">
                           <h4 className="font-bold text-lg mb-4 text-primary">{t('courses.course_details')}</h4>
-                          <div className="space-y-3">
-                            <div className="flex justify-between items-center">
+                          <div className="space-y-4">
+                            <div className="flex flex-col space-y-1">
                               <span className="font-medium text-base">{t('courses.course_duration')}:</span>
-                              <span className="font-semibold text-primary">{t('courses.four_days')}</span>
+                              <span className="font-semibold text-primary text-lg">{t('courses.four_days')}</span>
                             </div>
-                            <div className="flex justify-between items-center">
+                            <div className="flex flex-col space-y-1">
                               <span className="font-medium text-base">{t('courses.training_format')}:</span>
-                              <span className="font-semibold text-primary">{t('courses.interactive_format')}</span>
+                              <span className="font-semibold text-primary text-lg">{t('courses.interactive_format')}</span>
                             </div>
-                            <div className="flex justify-between items-center">
+                            <div className="flex flex-col space-y-1">
                               <span className="font-medium text-base">{t('courses.class_size')}:</span>
-                              <span className="font-semibold text-primary">{t('courses.small_groups')}</span>
+                              <span className="font-semibold text-primary text-lg">{t('courses.small_groups')}</span>
                             </div>
-                            <div className="flex justify-between items-center">
+                            <div className="flex flex-col space-y-1">
                               <span className="font-medium text-base">{t('courses.location')}:</span>
-                              <span className="font-semibold text-primary">{t('courses.atarot_location')}</span>
+                              <span className="font-semibold text-primary text-lg leading-relaxed">{t('courses.atarot_location')}</span>
                             </div>
                           </div>
                         </div>
@@ -561,10 +561,15 @@ const MobileApp: React.FC = () => {
                           </div>
                         </div>
 
-                        <div className="bg-primary/10 p-4 rounded-lg border border-primary/20">
-                          <div className="text-center space-y-2">
-                            <div className="text-sm text-muted-foreground">{t('courses.contact_pricing')}</div>
-                            <div className="font-bold text-primary text-xl">{t('courses.professional_certification')}</div>
+                        <div className="bg-primary/10 p-6 rounded-lg border border-primary/20">
+                          <div className="text-center space-y-3">
+                            <div className="text-base text-muted-foreground">{t('courses.contact_pricing')}</div>
+                            <div className="font-bold text-primary text-2xl leading-relaxed">
+                              {t('courses.professional_certification')}
+                            </div>
+                            <div className="text-base text-muted-foreground leading-relaxed">
+                              {t('courses.interactive_hands_on')}
+                            </div>
                           </div>
                         </div>
 

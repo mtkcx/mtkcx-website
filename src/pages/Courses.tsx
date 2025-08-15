@@ -66,42 +66,6 @@ const Courses = () => {
         </div>
       </section>
 
-      {/* Course Introduction Video */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-primary mb-4">{t('courses.intro_title')}</h2>
-              <p className="text-muted-foreground">{t('courses.intro_subtitle')}</p>
-            </div>
-            
-            {/* Video Container - Replace src with your actual video URL */}
-            <div className="relative w-full aspect-video bg-muted rounded-lg overflow-hidden shadow-lg">
-              <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                  </div>
-                  <p className="text-muted-foreground">{t('courses.course_intro_video')}</p>
-                  <p className="text-sm text-muted-foreground mt-2">{t('courses.video_placeholder')}</p>
-                </div>
-              </div>
-              {/* Uncomment and add your video URL when ready */}
-              {/* <iframe 
-                width="100%" 
-                height="100%" 
-                src="YOUR_VIDEO_URL_HERE" 
-                title="Course Introduction" 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen
-              ></iframe> */}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Main Course Section */}
       <section className="py-20 bg-background">
