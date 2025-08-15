@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
@@ -1379,8 +1379,8 @@ export type Database = {
       }
       check_rate_limit: {
         Args: {
-          p_identifier: string
           p_action_type: string
+          p_identifier: string
           p_max_attempts?: number
           p_window_minutes?: number
         }
@@ -1388,8 +1388,8 @@ export type Database = {
       }
       check_sensitive_operation_rate_limit: {
         Args: {
-          p_operation: string
           p_max_attempts?: number
+          p_operation: string
           p_window_minutes?: number
         }
         Returns: boolean
@@ -1412,9 +1412,9 @@ export type Database = {
       }
       emergency_validate_guest_order: {
         Args: {
+          p_email: string
           p_order_id: string
           p_order_number: string
-          p_email: string
           p_session_id: string
         }
         Returns: boolean
@@ -1434,19 +1434,19 @@ export type Database = {
       get_admin_users: {
         Args: Record<PropertyKey, never>
         Returns: {
-          user_id: string
-          email: string
           created_at: string
+          email: string
           full_name: string
+          user_id: string
         }[]
       }
       get_security_stats: {
         Args: Record<PropertyKey, never>
         Returns: {
+          records_1h: number
+          records_24h: number
           table_name: string
           total_records: number
-          records_24h: number
-          records_1h: number
         }[]
       }
       is_admin: {
@@ -1460,33 +1460,33 @@ export type Database = {
       log_audit_event: {
         Args: {
           p_action: string
-          p_table_name?: string
-          p_record_id?: string
-          p_old_values?: Json
           p_new_values?: Json
+          p_old_values?: Json
+          p_record_id?: string
+          p_table_name?: string
         }
         Returns: undefined
       }
       log_enrollment_attempt: {
-        Args: { p_email: string; p_success: boolean; p_failure_reason?: string }
+        Args: { p_email: string; p_failure_reason?: string; p_success: boolean }
         Returns: undefined
       }
       log_order_access: {
-        Args: { p_order_id: string; p_action: string; p_success: boolean }
+        Args: { p_action: string; p_order_id: string; p_success: boolean }
         Returns: undefined
       }
       log_sensitive_access: {
-        Args: { p_action: string; p_table_name: string; p_record_id?: string }
+        Args: { p_action: string; p_record_id?: string; p_table_name: string }
         Returns: undefined
       }
       log_sensitive_data_access: {
-        Args: { p_table_name: string; p_action: string; p_record_id?: string }
+        Args: { p_action: string; p_record_id?: string; p_table_name: string }
         Returns: undefined
       }
       log_unauthorized_access_attempt: {
         Args: {
-          table_name: string
           attempted_action: string
+          table_name: string
           user_context?: string
         }
         Returns: undefined
@@ -1496,7 +1496,7 @@ export type Database = {
         Returns: boolean
       }
       mask_sensitive_data: {
-        Args: { data_value: string; data_type?: string }
+        Args: { data_type?: string; data_value: string }
         Returns: string
       }
       migrate_email_conversations_to_users: {
@@ -1517,9 +1517,9 @@ export type Database = {
       }
       set_config: {
         Args: {
+          is_local?: boolean
           setting_name: string
           setting_value: string
-          is_local?: boolean
         }
         Returns: string
       }
@@ -1537,14 +1537,14 @@ export type Database = {
       }
       validate_edge_function_security: {
         Args: {
-          operation_type: string
           client_ip?: unknown
+          operation_type: string
           user_agent?: string
         }
         Returns: boolean
       }
       validate_guest_order_access: {
-        Args: { p_order_number: string; p_email: string }
+        Args: { p_email: string; p_order_number: string }
         Returns: string
       }
       validate_order_access: {
@@ -1553,8 +1553,8 @@ export type Database = {
       }
       validate_secure_guest_order_access: {
         Args: {
-          p_order_id: string
           p_email: string
+          p_order_id: string
           p_order_number: string
           p_session_token?: string
         }
