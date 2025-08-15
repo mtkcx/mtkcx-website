@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Settings, Upload, Image } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import ImageUpload from '@/components/ImageUpload';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SEOSettings {
   site_title: string;
@@ -38,15 +38,16 @@ const SEOManager: React.FC = () => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('key', 'seo_settings')
+        .eq('setting_key', 'seo_settings')
         .single();
 
       if (error && error.code !== 'PGRST116') {
         throw error;
       }
 
-      if (data && data.value) {
-        setSettings(data.value as SEOSettings);
+      if (data && data.setting_value) {
+        const seoData = JSON.parse(data.setting_value as string);
+        setSettings(seoData);
       }
     } catch (error) {
       console.error('Error fetching SEO settings:', error);
@@ -59,8 +60,11 @@ const SEOManager: React.FC = () => {
       const { error } = await supabase
         .from('site_settings')
         .upsert({
-          key: 'seo_settings',
-          value: settings,
+          setting_key: 'seo_settings',
+          setting_value: JSON.stringify(settings),
+          category: 'seo',
+          description: 'SEO configuration including title, description, keywords, favicon and og image',
+          setting_type: 'json',
           updated_at: new Date().toISOString()
         });
 
