@@ -487,6 +487,21 @@ const translations = {
     'mobile.nav.dashboard': 'Dashboard',
     'mobile.nav.admin': 'Admin',
     
+    // Mobile PWA translations
+    'mobile.pwa.install_app': 'Install App',
+    'mobile.pwa.install_app_desc': 'Add to home screen for quick access',
+    'mobile.pwa.install': 'Install',
+    'mobile.pwa.install_success': 'App Installed',
+    'mobile.pwa.install_success_desc': 'App has been added to your home screen',
+    'mobile.pwa.notifications_not_supported': 'Notifications Not Supported',
+    'mobile.pwa.notifications_enabled': 'Notifications Enabled',
+    'mobile.pwa.notifications_enabled_desc': 'You will receive updates and offers',
+    'mobile.pwa.enable_notifications': 'Enable Notifications',
+    'mobile.pwa.enable_notifications_desc': 'Get notified about new products and offers',
+    'mobile.pwa.enable': 'Enable',
+    'mobile.pwa.online': 'Online',
+    'mobile.pwa.offline': 'Offline',
+    
     // Mobile Courses translations
     'mobile.courses.title': 'Training Courses',
     'mobile.courses.enroll_now': 'Enroll Now',
@@ -2182,6 +2197,21 @@ const translations = {
     'mobile.nav.dashboard': 'لوحة التحكم',
     'mobile.nav.admin': 'المدير',
     
+    // Mobile PWA translations
+    'mobile.pwa.install_app': 'تثبيت التطبيق',
+    'mobile.pwa.install_app_desc': 'أضف إلى الشاشة الرئيسية للوصول السريع',
+    'mobile.pwa.install': 'تثبيت',
+    'mobile.pwa.install_success': 'تم تثبيت التطبيق',
+    'mobile.pwa.install_success_desc': 'تم إضافة التطبيق إلى شاشتك الرئيسية',
+    'mobile.pwa.notifications_not_supported': 'الإشعارات غير مدعومة',
+    'mobile.pwa.notifications_enabled': 'تم تمكين الإشعارات',
+    'mobile.pwa.notifications_enabled_desc': 'ستتلقى التحديثات والعروض',
+    'mobile.pwa.enable_notifications': 'تمكين الإشعارات',
+    'mobile.pwa.enable_notifications_desc': 'احصل على إشعارات حول المنتجات والعروض الجديدة',
+    'mobile.pwa.enable': 'تمكين',
+    'mobile.pwa.online': 'متصل',
+    'mobile.pwa.offline': 'غير متصل',
+    
     // Mobile Courses translations
     'mobile.courses.title': 'دورات التدريب',
     'mobile.courses.enroll_now': 'سجل الآن',
@@ -3200,6 +3230,21 @@ const translations = {
     'mobile.nav.quote': 'הצעת מחיר',
     'mobile.nav.dashboard': 'לוח מחוונים',
     'mobile.nav.admin': 'מנהל',
+    
+    // Mobile PWA translations
+    'mobile.pwa.install_app': 'התקן אפליקציה',
+    'mobile.pwa.install_app_desc': 'הוסף למסך הבית לגישה מהירה',
+    'mobile.pwa.install': 'התקן',
+    'mobile.pwa.install_success': 'האפליקציה הותקנה',
+    'mobile.pwa.install_success_desc': 'האפליקציה נוספה למסך הבית שלך',
+    'mobile.pwa.notifications_not_supported': 'התראות לא נתמכות',
+    'mobile.pwa.notifications_enabled': 'התראות מופעלות',
+    'mobile.pwa.notifications_enabled_desc': 'תקבל עדכונים והצעות',
+    'mobile.pwa.enable_notifications': 'הפעל התראות',
+    'mobile.pwa.enable_notifications_desc': 'קבל התראות על מוצרים והצעות חדשות',
+    'mobile.pwa.enable': 'הפעל',
+    'mobile.pwa.online': 'מקוון',
+    'mobile.pwa.offline': 'לא מקוון',
     
     // Mobile Courses translations
     'mobile.courses.title': 'קורסי הכשרה',

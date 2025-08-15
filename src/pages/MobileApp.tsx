@@ -14,6 +14,7 @@ import { MobileEnrollmentDialog } from '@/components/mobile/MobileEnrollmentDial
 import { MobileAuth } from '@/components/mobile/MobileAuth';
 import { MobileContact } from '@/components/mobile/MobileContact';
 import { MobileAbout } from '@/components/mobile/MobileAbout';
+import { MobilePWAFeatures } from '@/components/mobile/MobilePWAFeatures';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -304,26 +305,29 @@ const MobileApp: React.FC = () => {
                   </SheetTitle>
                 </SheetHeader>
                 
-                <div className="space-y-4 mt-6">
-                  {/* Language Selector */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 px-3">
-                      <Globe className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm font-medium">{t('common.language')}</span>
-                    </div>
-                    <Select value={currentLanguage} onValueChange={handleLanguageChange}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="ar">العربية</SelectItem>
-                        <SelectItem value="he">עברית</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+            <div className="space-y-4 mt-6">
+              {/* PWA Features */}
+              <MobilePWAFeatures />
 
-                  <Separator />
+              {/* Language Selector */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 px-3">
+                  <Globe className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">{t('common.language')}</span>
+                </div>
+                <Select value={currentLanguage} onValueChange={handleLanguageChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="ar">العربية</SelectItem>
+                    <SelectItem value="he">עברית</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Separator />
 
                   {/* User Section */}
                   {user ? (

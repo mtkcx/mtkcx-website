@@ -5,8 +5,8 @@ const config: CapacitorConfig = {
   appName: 'MTKCx',
   webDir: 'dist',
   server: {
-    // Remove this section for production build
-    // For development, add back the url property
+    url: "https://2b082f57-ea56-4226-9792-5934ae718ea9.lovableproject.com?forceHideBadge=true",
+    cleartext: true
   },
   plugins: {
     Camera: {
