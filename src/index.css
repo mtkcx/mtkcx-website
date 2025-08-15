@@ -2,64 +2,232 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Koch-Chemie Brand Colors */
+    --background: 0 0% 96.1%; /* #f5f5f5 */
+    --foreground: 0 0% 0%; /* #000000 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+
+    --primary: 0 0% 0%; /* #000000 - Main brand black */
+    --primary-foreground: 0 0% 96.1%; /* #f5f5f5 - Light grey */
+
+    --secondary: 0 0% 96.1%; /* #f5f5f5 - Light grey */
+    --secondary-foreground: 0 0% 0%; /* #000000 */
+
+    --muted: 0 0% 93.3%; /* Slightly darker than background */
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 0 0% 90%; /* Subtle accent */
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 96.1%;
+
+    --border: 0 0% 88.2%;
+    --input: 0 0% 100%;
+    --ring: 0 0% 0%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 6.7%; /* Dark background */
+    --foreground: 0 0% 96.1%;
+
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 96.1%;
+
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 96.1%;
+
+    --primary: 0 0% 96.1%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 13.3%;
+    --secondary-foreground: 0 0% 96.1%;
+
+    --muted: 0 0% 13.3%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 96.1%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 96.1%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 13.3%;
+    --ring: 0 0% 96.1%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
 @layer base {
   * {
-    @apply antialiased;
+    @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+    @apply bg-background text-foreground font-alexandria;
+    /* Enable font display swap for better performance */
+    font-display: swap;
+  }
+  
+  /* Performance optimizations */
+  img {
+    @apply object-cover;
+    /* Enable hardware acceleration for images */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    /* Improve image loading performance */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Optimize lazy loading intersection observer */
+  [data-lazy-load] {
+    contain: layout style paint;
+  }
+  
+  /* Smooth scrolling with reduced motion support */
+  html {
+    scroll-behavior: smooth;
+    transition: none !important;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* Ensure RTL direction is maintained */
+  html[dir="rtl"] {
+    direction: rtl !important;
+  }
+  
+  html[dir="ltr"] {
+    direction: ltr !important;
+  }
+  
+  /* Responsive text sizing */
+  .text-responsive {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  
+  .text-responsive-lg {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+  }
+  
+  /* Enhanced mobile touch targets */
+  @media (max-width: 767px) {
+    button, [role="button"], a[href] {
+      min-height: 44px;
+      min-width: 44px;
+    }
   }
 }
 
-/* Performance optimizations for product loading */
-.gpu-accelerated {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-/* Optimized image loading */
-img {
-  image-rendering: optimizeQuality;
-  image-rendering: -webkit-optimize-contrast;
-}
-
-/* Smooth scrolling for better UX */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Reduce layout shifts */
-.aspect-square {
-  contain: layout style paint;
-}
-
-/* Optimize hover effects */
-.hover\:scale-\[1\.02\]:hover {
-  will-change: transform;
-}
-
-/* Skeleton loading optimization */
-@keyframes skeleton-loading {
-  0% {
-    background-position: -200px 0;
+@layer utilities {
+  /* Performance utilities */
+  .will-change-transform {
+    will-change: transform;
   }
-  100% {
-    background-position: calc(200px + 100%) 0;
+  
+  .will-change-opacity {
+    will-change: opacity;
   }
-}
-
-.animate-pulse {
-  background-image: linear-gradient(
-    90deg,
-    hsl(var(--muted)) 0px,
-    hsl(var(--muted) / 0.8) 40px,
-    hsl(var(--muted) / 0.5) 80px,
-    hsl(var(--muted)) 120px
-  );
-  background-size: 200px 100%;
-  animation: skeleton-loading 1.2s ease-in-out infinite;
+  
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Product grid performance optimizations */
+  .product-grid-container {
+    contain: layout;
+  }
+  
+  .product-card {
+    contain: layout style paint;
+  }
+  
+  /* Prevent layout shift during image loading */
+  .image-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .image-container::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%; /* 4:3 aspect ratio */
+  }
+  
+  /* Optimize transitions for language changes */
+  .language-transition {
+    transition: opacity 0.15s ease-in-out;
+  }
+  
+  .language-transition.changing {
+    opacity: 0.8;
+  }
+  
+  /* Responsive grid utilities */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
+  }
+  
+  /* Container utilities for consistent spacing */
+  .container-fluid {
+    @apply w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16;
+  }
+  
+  /* Aspect ratio utilities */
+  .aspect-video-responsive {
+    @apply aspect-video sm:aspect-[4/3] lg:aspect-video;
+  }
 }

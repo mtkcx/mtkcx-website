@@ -1,5 +1,5 @@
 // Enhanced Service Worker for offline capabilities and performance
-const CACHE_VERSION = 'v2.2';
+const CACHE_VERSION = 'v2.0';
 const CACHE_NAME = `mtkcx-${CACHE_VERSION}`;
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
@@ -11,7 +11,7 @@ const STATIC_ASSETS = [
   '/',
   '/mobile',
   '/manifest.json',
-  '/lovable-uploads/c9035b98-872b-42aa-ba81-c7d2d01c27ef.png', // Updated MTKCx Logo
+  '/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png', // Logo
   '/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png', // Hero banner
 ];
 
@@ -103,8 +103,8 @@ self.addEventListener('push', (event) => {
     const data = event.data.json();
     const options = {
       body: data.body,
-      icon: '/lovable-uploads/c9035b98-872b-42aa-ba81-c7d2d01c27ef.png',
-      badge: '/lovable-uploads/c9035b98-872b-42aa-ba81-c7d2d01c27ef.png',
+      icon: '/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png',
+      badge: '/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png',
       vibrate: [100, 50, 100],
       data: data.data,
       actions: [

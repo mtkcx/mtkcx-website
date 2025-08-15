@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useImagePreloader } from '@/hooks/useImagePreloader';
 
 interface ResponsiveImageProps {
   src: string;
@@ -29,7 +28,6 @@ export const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const { createOptimizedImageUrl, isPreloaded } = useImagePreloader();
 
   // Preload critical images
   const preloadImage = useCallback((src: string) => {
@@ -46,16 +44,8 @@ export const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
     };
   }, [preload]);
 
-  // Memoize optimized image source
-  const memoizedSrc = useMemo(() => 
-    createOptimizedImageUrl(src, { 
-      priority: priority ? 'high' : 'low',
-      quality: priority ? 90 : 80,
-      format: 'auto'
-    }), [src, priority, createOptimizedImageUrl]);
-
-  // Check if image is already preloaded
-  const isAlreadyPreloaded = useMemo(() => isPreloaded(src), [src, isPreloaded]);
+  // Memoize image source to prevent unnecessary re-renders
+  const memoizedSrc = useMemo(() => src, [src]);
 
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
@@ -90,8 +80,8 @@ export const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
 
   return (
     <div className={`relative overflow-hidden ${getAspectRatioClass()} ${className}`}>
-      {isLoading && !hasError && !isAlreadyPreloaded && (
-        <Skeleton className="absolute inset-0 w-full h-full bg-muted/20" />
+      {isLoading && !hasError && (
+        <Skeleton className="absolute inset-0 w-full h-full" />
       )}
       
       {hasError ? (
@@ -99,32 +89,19 @@ export const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
           <div className="text-muted-foreground text-sm">Image unavailable</div>
         </div>
       ) : (
-        <picture>
-          {/* WebP format for better compression */}
-          <source 
-            srcSet={memoizedSrc.replace(/\.(jpg|jpeg|png)/, '.webp')} 
-            type="image/webp"
-            sizes={sizes}
-          />
-          <img
-            src={memoizedSrc}
-            alt={alt}
-            sizes={sizes}
-            loading={priority ? 'eager' : loading}
-            decoding="async"
-            fetchPriority={priority ? 'high' : 'auto'}
-            className={`w-full h-full object-cover transition-all duration-300 ease-out will-change-transform ${
-              isLoading && !isAlreadyPreloaded ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
-            }`}
-            style={{
-              transform: isAlreadyPreloaded ? 'translateZ(0)' : undefined,
-              backfaceVisibility: 'hidden',
-              perspective: 1000
-            }}
-            onLoad={handleLoad}
-            onError={handleError}
-          />
-        </picture>
+        <img
+          src={memoizedSrc}
+          alt={alt}
+          sizes={sizes}
+          loading={priority ? 'eager' : loading}
+          decoding="async"
+          fetchPriority={priority ? 'high' : 'auto'}
+          className={`w-full h-full object-cover gpu-accelerated transition-opacity duration-200 will-change-opacity ${
+            isLoading ? 'opacity-0' : 'opacity-100'
+          }`}
+          onLoad={handleLoad}
+          onError={handleError}
+        />
       )}
     </div>
   );

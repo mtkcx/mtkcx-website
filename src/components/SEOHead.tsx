@@ -22,10 +22,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   structuredData
 }) => {
   const { currentLanguage } = useLanguage();
-  const defaultTitle = 'MTKCx | Koch-Chemie Distribution Partner';
-  const defaultDescription = 'MTKCx - Official Koch-Chemie distribution partner offering premium German car detailing products, professional training courses, and expert automotive care services.';
-  const defaultKeywords = 'MTKCx, koch chemie, car detailing, automotive cleaning, professional car care, german car products, distribution partner, detailing training';
-  const defaultImage = 'https://kochchemie-east-hub.lovable.app/lovable-uploads/7aeda162-d142-4d3d-83a9-a5aa8e613e41.png';
+  const defaultTitle = 'Koch-Chemie Professional Car Care Products | MTKCx - Official Distributor';
+  const defaultDescription = 'Official Koch-Chemie distributor offering premium German car detailing products, professional training courses, and expert car wrapping services. Shop authentic Koch-Chemie products online.';
+  const defaultKeywords = 'koch chemie, car detailing, automotive cleaning, professional car care, german car products, car wrapping, detailing training, MTKCx';
+  const defaultImage = 'https://kochchemie-east-hub.lovable.app/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png';
   const baseUrl = 'https://kochchemie-east-hub.lovable.app';
 
   const finalTitle = title || defaultTitle;

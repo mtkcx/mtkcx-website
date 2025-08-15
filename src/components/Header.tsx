@@ -68,7 +68,7 @@ const Header = () => {
           <div className="flex items-center">
             <Link to="/">
               <img 
-                src="/lovable-uploads/c9035b98-872b-42aa-ba81-c7d2d01c27ef.png" 
+                src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" 
                 alt="MT KCx Logo" 
                 className="h-24 sm:h-32 md:h-36 lg:h-40 w-auto gpu-accelerated"
                 loading="eager"
