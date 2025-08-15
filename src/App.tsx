@@ -39,6 +39,7 @@ import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ChatBot from "@/components/ChatBot";
 import SecurityMonitor from "@/components/SecurityMonitor";
 import ScrollToTop from "@/components/ScrollToTop";
+import LanguagePreferenceWrapper from "@/components/LanguagePreferenceWrapper";
 import SecureOrderLookup from "./pages/SecureOrderLookup";
 import SecurityDashboard from "./pages/SecurityDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -52,10 +53,11 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <HelmetProvider>
       <LanguageProvider>
-        <AuthProvider>
-          <CartProvider>
-            <SecurityMiddleware>
-              <TooltipProvider>
+        <LanguagePreferenceWrapper>
+          <AuthProvider>
+            <CartProvider>
+              <SecurityMiddleware>
+                <TooltipProvider>
               <Toaster />
               <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <ScrollToTop />
@@ -100,10 +102,11 @@ const App = () => (
                    <SecurityMonitor />
                </BrowserRouter>
              </TooltipProvider>
-            </SecurityMiddleware>
-           </CartProvider>
-         </AuthProvider>
-       </LanguageProvider>
+               </SecurityMiddleware>
+              </CartProvider>
+            </AuthProvider>
+          </LanguagePreferenceWrapper>
+        </LanguageProvider>
      </HelmetProvider>
    </QueryClientProvider>
 );

@@ -165,22 +165,22 @@ const NewsletterPopup = () => {
             />
           </div>
           <DialogTitle className="text-2xl font-bold text-foreground">
-            Stay Updated!
+            {t('newsletter.title')}
           </DialogTitle>
           <p className="text-muted-foreground">
-            Subscribe to our newsletter and get the latest updates, exclusive offers, and industry insights delivered to your inbox.
+            {t('newsletter.description')}
           </p>
         </DialogHeader>
 
         <div className="space-y-4 pt-4">
           <div>
             <Label htmlFor="popup-name" className="text-sm font-medium">
-              Name (Optional)
+              {t('newsletter.name')}
             </Label>
             <Input
               id="popup-name"
               type="text"
-              placeholder="Enter your name"
+              placeholder={t('newsletter.name_placeholder')}
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="mt-1"
@@ -189,12 +189,12 @@ const NewsletterPopup = () => {
           
           <div>
             <Label htmlFor="popup-email" className="text-sm font-medium">
-              Email Address *
+              {t('newsletter.email')}
             </Label>
             <Input
               id="popup-email"
               type="email"
-              placeholder="Enter your email"
+              placeholder={t('newsletter.email_placeholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1"
@@ -208,7 +208,7 @@ const NewsletterPopup = () => {
               disabled={isLoading}
               className="w-full bg-primary hover:bg-primary/90"
             >
-              {isLoading ? 'Subscribing...' : 'Subscribe Now'}
+              {isLoading ? t('newsletter.subscribing') : t('newsletter.subscribe')}
             </Button>
             
             <Button
@@ -216,12 +216,12 @@ const NewsletterPopup = () => {
               onClick={handleClose}
               className="w-full text-muted-foreground hover:text-foreground"
             >
-              Maybe Later
+              {t('newsletter.maybe_later')}
             </Button>
           </div>
 
           <p className="text-xs text-muted-foreground text-center">
-            We respect your privacy. Unsubscribe at any time.
+            {t('newsletter.privacy')}
           </p>
         </div>
       </DialogContent>

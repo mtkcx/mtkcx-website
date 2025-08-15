@@ -898,6 +898,18 @@ const translations = {
     'common.professional_training_programs': 'Professional Training Programs',
     'common.expert_wrapping_services': 'Expert Wrapping Services',
     'common.fast_response_time': 'Fast Response Time',
+
+    // Newsletter translations
+    'newsletter.title': 'Stay Updated!',
+    'newsletter.description': 'Subscribe to our newsletter and get the latest updates, exclusive offers, and industry insights delivered to your inbox.',
+    'newsletter.name': 'Name (Optional)',
+    'newsletter.name_placeholder': 'Enter your name',
+    'newsletter.email': 'Email Address *',
+    'newsletter.email_placeholder': 'Enter your email',
+    'newsletter.subscribe': 'Subscribe Now',
+    'newsletter.subscribing': 'Subscribing...',
+    'newsletter.maybe_later': 'Maybe Later',
+    'newsletter.privacy': 'We respect your privacy. Unsubscribe at any time.',
     'common.beyond_products': 'Beyond Products - Education and Excellence',
     'common.our_work_gallery': 'Our Work Gallery',
     'common.explore_portfolio': 'Explore our portfolio of vehicle transformations and custom projects',
@@ -3215,6 +3227,18 @@ const translations = {
     'common.new': 'חדש',
     'common.popular': 'פופולרי',
     'common.featured': 'מומלץ',
+
+    // Newsletter translations
+    'newsletter.title': 'הישאר מעודכן!',
+    'newsletter.description': 'הירשם לניוזלטר שלנו וקבל את העדכונים האחרונים, הצעות בלעדיות ותובנות התעשייה ישירות לתיבת הדואר הנכנס שלך.',
+    'newsletter.name': 'שם (אופציונלי)',
+    'newsletter.name_placeholder': 'הכנס את שמך',
+    'newsletter.email': 'כתובת אימייל *',
+    'newsletter.email_placeholder': 'הכנס את האימייל שלך',
+    'newsletter.subscribe': 'הירשם עכשיו',
+    'newsletter.subscribing': 'נרשם...',
+    'newsletter.maybe_later': 'אולי מאוחר יותר',
+    'newsletter.privacy': 'אנו מכבדים את הפרטיות שלך. בטל מנוי בכל עת.',
 
   }
 };
