@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
 import ContactMessagesManager from '@/components/ContactMessagesManager';
 import { AdminUserManager } from '@/components/AdminUserManager';
+import SEOManager from '@/components/SEOManager';
 
 interface Order {
   id: string;
@@ -355,6 +356,7 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="enrollments">Enrollments</TabsTrigger>
             <TabsTrigger value="messages">Contact Messages</TabsTrigger>
             <TabsTrigger value="users">User Management</TabsTrigger>
+            <TabsTrigger value="seo">SEO Settings</TabsTrigger>
           </TabsList>
           
           <TabsContent value="customers" className="space-y-4">
@@ -453,6 +455,10 @@ const AdminDashboard: React.FC = () => {
 
           <TabsContent value="users" className="space-y-6">
             <AdminUserManager />
+          </TabsContent>
+
+          <TabsContent value="seo" className="space-y-4">
+            <SEOManager />
           </TabsContent>
         </Tabs>
       </div>
