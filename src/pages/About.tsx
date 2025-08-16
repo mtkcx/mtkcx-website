@@ -138,16 +138,16 @@ const About = () => {
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Training Services */}
-              <Card className="p-6">
-                <CardContent className="p-0">
+              <Card className="p-6 flex flex-col h-full">
+                <CardContent className="p-0 flex flex-col flex-grow">
                   <div className="flex items-center mb-4">
                     <GraduationCap className="w-6 h-6 text-primary mr-3" />
                     <h3 className="text-xl font-semibold">{t('common.professional_training')}</h3>
                   </div>
-                  <p className="text-muted-foreground mb-4">
+                  <p className="text-muted-foreground mb-4 flex-grow">
                     {t('about.beyond_sales')}
                   </p>
-                  <div className="space-y-2">
+                  <div className="space-y-2 mb-4">
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                       <span>{t('about.hands_on_training')}</span>
@@ -157,23 +157,23 @@ const About = () => {
                       <span>{t('about.certification_programs')}</span>
                     </div>
                   </div>
-                  <Button className="mt-4 w-full" onClick={() => navigate('/courses')}>
+                  <Button className="w-full mt-auto" onClick={() => navigate('/courses')}>
                     {t('nav.courses')}
                   </Button>
                 </CardContent>
               </Card>
 
               {/* Wrapping Services */}
-              <Card className="p-6">
-                <CardContent className="p-0">
+              <Card className="p-6 flex flex-col h-full">
+                <CardContent className="p-0 flex flex-col flex-grow">
                   <div className="flex items-center mb-4">
                     <Car className="w-6 h-6 text-primary mr-3" />
                     <h3 className="text-xl font-semibold">{t('about.mt_wraps_service')}</h3>
                   </div>
-                  <p className="text-muted-foreground mb-4">
+                  <p className="text-muted-foreground mb-4 flex-grow">
                     {t('about.wraps_excellence')}
                   </p>
-                  <div className="space-y-2">
+                  <div className="space-y-2 mb-4">
                     <div className="flex items-center text-sm">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                       <span>{t('about.paint_protection_films')}</span>
@@ -183,7 +183,7 @@ const About = () => {
                       <span>{t('about.custom_designs')}</span>
                     </div>
                   </div>
-                  <Button className="mt-4 w-full" onClick={() => navigate('/gallery')}>
+                  <Button className="w-full mt-auto" onClick={() => navigate('/gallery')}>
                     {t('nav.wrapping')}
                   </Button>
                 </CardContent>
