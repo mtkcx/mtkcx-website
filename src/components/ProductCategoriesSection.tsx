@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -100,33 +102,31 @@ const ProductCategoriesSection = () => {
         </div>
 
         <div className="max-w-md mx-auto">
-          <div className="relative">
-            <select 
-              onChange={(e) => {
-                if (e.target.value) {
-                  handleCategoryClick(e.target.value);
-                }
-              }}
-              className="w-full p-4 text-lg font-semibold bg-background border-2 border-primary/20 rounded-lg cursor-pointer hover:border-primary/40 focus:border-primary focus:outline-none transition-colors appearance-none"
-              defaultValue=""
-            >
-              <option value="" disabled>
-                {loading ? 'Loading categories...' : t('categories.select_category')}
-              </option>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                className="w-full justify-between text-lg py-6 px-6 bg-background border-2 border-primary/20 hover:border-primary/40"
+                disabled={loading}
+              >
+                {loading ? 'Loading categories...' : 'Select Category'}
+                <ChevronDown className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full min-w-[300px] bg-background border-2 border-primary/20">
               {categories.map((category) => (
-                <option key={category.id} value={category.slug}>
+                <DropdownMenuItem 
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category.slug)}
+                  className="text-lg py-3 px-4 cursor-pointer hover:bg-primary/10"
+                >
                   {currentLanguage === 'ar' ? (category.name_ar || category.name) :
                    currentLanguage === 'he' ? (category.name_he || category.name) :
                    category.name}
-                </option>
+                </DropdownMenuItem>
               ))}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </section>
