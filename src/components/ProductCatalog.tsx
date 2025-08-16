@@ -62,15 +62,12 @@ const ProductCatalog = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      console.log('Starting to fetch data...');
       
       // Fetch categories first
       const { data: categoriesData, error: catError } = await supabase
         .from('categories')
         .select('*')
         .order('display_order');
-
-      console.log('Categories result:', categoriesData, catError);
       
       if (categoriesData && !catError) {
         setCategories(categoriesData);
@@ -104,21 +101,16 @@ const ProductCatalog = () => {
         `)
         .eq('status', 'active')
         .order('name', { ascending: true });
-
-      console.log('Products result:', productsData, prodError);
       
       if (prodError) {
         console.error('Products fetch error:', prodError);
       }
 
       if (productsData && !prodError) {
-        console.log('Raw products data sample:', productsData[0]);
-        
-          // Transform products to match the interface
+        // Transform products to match the interface
         const transformedProducts = productsData
           .filter(product => product.product_variants && product.product_variants.length > 0)
           .map(product => {
-            console.log('Processing product:', product.name, 'Categories:', product.product_categories);
             
             // Get the primary image only
             const primaryImage = product.product_images?.find(img => img.is_primary);
@@ -132,8 +124,6 @@ const ProductCatalog = () => {
               );
               categoryData = specificCategory ? specificCategory.categories : product.product_categories[0].categories;
             }
-              
-            console.log('Category data for', product.name, ':', categoryData);
 
             return {
               id: product.id,
@@ -164,7 +154,6 @@ const ProductCatalog = () => {
             };
           });
 
-        console.log('Transformed products:', transformedProducts.length, 'Sample:', transformedProducts[0]);
         setProducts(transformedProducts);
       }
     } catch (error) {
@@ -177,6 +166,7 @@ const ProductCatalog = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
 
   // Update selectedCategory when URL changes
   useEffect(() => {
@@ -214,15 +204,12 @@ const ProductCatalog = () => {
   const productCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     
-    console.log('Calculating product counts for', products.length, 'products');
-    
     products.forEach(product => {
       const categorySlug = product.category.slug;
       counts[categorySlug] = (counts[categorySlug] || 0) + 1;
     });
     
     counts.total = products.length;
-    console.log('Final product counts:', counts);
     return counts;
   }, [products]);
 
