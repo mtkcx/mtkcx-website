@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import ProductGrid from '@/components/ProductGrid';
 import CategoryFilter from '@/components/CategoryFilter';
-import { Search } from 'lucide-react';
+import { Search, ChevronDown } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -272,7 +274,7 @@ const ProductCatalog = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar Filters */}
         <div className="lg:col-span-1">
-          <div className="bg-card p-6 rounded-lg border">
+          <div className="bg-card p-6 rounded-lg border space-y-6">
             <CategoryFilter
               categories={categories}
               selectedCategory={selectedCategory}
@@ -289,6 +291,34 @@ const ProductCatalog = () => {
               }}
               productCounts={productCounts}
             />
+            
+            {/* Category Management Dropdown */}
+            <div className="border-t pt-6">
+              <h3 className="font-semibold text-lg mb-4">{t('categories.manage_categories')}</h3>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-between bg-background border-2 border-primary/20 hover:border-primary/40"
+                  >
+                    Edit Categories
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-full min-w-[250px] bg-background border-2 border-primary/20 z-50" align="start">
+                  {categories.map((category) => (
+                    <DropdownMenuItem 
+                      key={category.id}
+                      className="py-3 px-4 cursor-pointer hover:bg-primary/10"
+                    >
+                      {currentLanguage === 'ar' ? (category.name_ar || category.name) :
+                       currentLanguage === 'he' ? (category.name_he || category.name) :
+                       category.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </div>
 

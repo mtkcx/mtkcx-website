@@ -101,32 +101,42 @@ const ProductCategoriesSection = () => {
           </p>
         </div>
 
-        <div className="max-w-md mx-auto">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="outline" 
-                className="w-full justify-between text-lg py-6 px-6 bg-background border-2 border-primary/20 hover:border-primary/40"
-                disabled={loading}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {loading ? (
+            // Loading skeleton
+            Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="bg-card rounded-xl p-8 shadow-lg border animate-pulse">
+                <div className="w-full h-48 bg-muted rounded-lg mb-6" />
+                <div className="h-6 bg-muted rounded w-3/4 mx-auto" />
+              </div>
+            ))
+          ) : (
+            categories.map((category) => (
+              <div
+                key={category.id}
+                onClick={() => handleCategoryClick(category.slug)}
+                className="group bg-card rounded-xl p-8 shadow-lg border hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
               >
-                {loading ? 'Loading categories...' : 'Select Category'}
-                <ChevronDown className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-full min-w-[300px] bg-background border-2 border-primary/20">
-              {categories.map((category) => (
-                <DropdownMenuItem 
-                  key={category.id}
-                  onClick={() => handleCategoryClick(category.slug)}
-                  className="text-lg py-3 px-4 cursor-pointer hover:bg-primary/10"
-                >
-                  {currentLanguage === 'ar' ? (category.name_ar || category.name) :
-                   currentLanguage === 'he' ? (category.name_he || category.name) :
-                   category.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <div className="text-center">
+                  <div className="mb-6 overflow-hidden rounded-lg">
+                    <img
+                      src={category.image}
+                      alt={currentLanguage === 'ar' ? (category.name_ar || category.name) :
+                           currentLanguage === 'he' ? (category.name_he || category.name) :
+                           category.name}
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {currentLanguage === 'ar' ? (category.name_ar || category.name) :
+                     currentLanguage === 'he' ? (category.name_he || category.name) :
+                     category.name}
+                  </h3>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </section>
