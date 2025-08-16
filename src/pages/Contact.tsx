@@ -179,7 +179,7 @@ const Contact = () => {
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="pb-6">{/* Reduced bottom padding */}
+            <CardContent className="pb-0">{/* Removed all bottom padding */}
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Personal Information */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
