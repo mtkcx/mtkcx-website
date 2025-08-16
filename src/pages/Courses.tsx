@@ -80,7 +80,7 @@ const Courses = () => {
 
             <div className="bg-card rounded-lg shadow-lg overflow-hidden">
               <div className="p-8">
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center space-x-4">
                     <div className="bg-primary/10 p-3 rounded-lg">
                       <Award className="h-8 w-8 text-primary" />
@@ -92,13 +92,14 @@ const Courses = () => {
                   </div>
                 </div>
 
+                {/* Course Overview - Simplified */}
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
                   <div>
                     <h4 className="font-semibold mb-4 flex items-center">
                       <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
                       {t('courses.what_learn')}
                     </h4>
-                    <ul className="space-y-2 text-muted-foreground">
+                    <ul className="space-y-3 text-muted-foreground">
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
                         {t('courses.professional_techniques')}
@@ -109,23 +110,7 @@ const Courses = () => {
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        {t('courses.product_knowledge')}
-                      </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
                         {t('courses.paint_correction')}
-                      </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        {t('courses.surface_assessment')}
-                      </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        {t('courses.machine_polishing')}
-                      </li>
-                      <li className="flex items-start">
-                        <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        {t('courses.quality_control')}
                       </li>
                       <li className="flex items-start">
                         <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
@@ -139,101 +124,45 @@ const Courses = () => {
                       <Calendar className="h-5 w-5 text-blue-500 mr-2" />
                       {t('courses.course_structure')}
                     </h4>
-                    <div className="space-y-4">
-                      <div className="border-l-4 border-primary pl-4">
-                        <h5 className="font-medium">{t('courses.day_1')}</h5>
-                        <p className="text-sm text-muted-foreground">{t('courses.day_1_desc')}</p>
-                      </div>
-                      <div className="border-l-4 border-primary pl-4">
-                        <h5 className="font-medium">{t('courses.day_2')}</h5>
-                        <p className="text-sm text-muted-foreground">{t('courses.day_2_desc')}</p>
-                      </div>
-                      <div className="border-l-4 border-primary pl-4">
-                        <h5 className="font-medium">{t('courses.day_3')}</h5>
-                        <p className="text-sm text-muted-foreground">{t('courses.day_3_desc')}</p>
-                      </div>
-                      <div className="border-l-4 border-primary pl-4">
-                        <h5 className="font-medium">{t('courses.day_4')}</h5>
-                        <p className="text-sm text-muted-foreground">{t('courses.day_4_desc')}</p>
+                    <div className="bg-muted/30 rounded-lg p-4">
+                      <div className="text-center">
+                        <div className="text-3xl font-bold text-primary mb-2">4</div>
+                        <div className="font-medium mb-1">{t('courses.four_days')}</div>
+                        <div className="text-sm text-muted-foreground">{t('courses.interactive_format')}</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-muted/50 rounded-lg p-6 mb-8">
-                  <h4 className="font-semibold mb-4 flex items-center">
-                    <Star className="h-5 w-5 text-yellow-500 mr-2" />
-                    {t('courses.why_choose')}
-                  </h4>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <div className="text-center">
-                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
+                {/* Key Benefits - Simplified */}
+                <div className="bg-primary/5 rounded-lg p-6 mb-8">
+                  <div className="grid md:grid-cols-3 gap-6 text-center">
+                    <div>
+                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-3">
                         <Award className="h-6 w-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">{t('courses.official_certification')}</h5>
+                      <h5 className="font-medium mb-2">{t('courses.official_certification')}</h5>
                       <p className="text-sm text-muted-foreground">{t('courses.recognized_cert')}</p>
                     </div>
-                    <div className="text-center">
-                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
+                    <div>
+                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-3">
                         <Users className="h-6 w-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">{t('courses.expert_instructors')}</h5>
-                      <p className="text-sm text-muted-foreground">{t('courses.certified_professionals')}</p>
+                      <h5 className="font-medium mb-2">{t('courses.expert_instructors')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('courses.small_groups')}</p>
                     </div>
-                    <div className="text-center">
-                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-2">
+                    <div>
+                      <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-3">
                         <BookOpen className="h-6 w-6 text-primary" />
                       </div>
-                      <h5 className="font-medium mb-1">{t('courses.interactive_hands_on')}</h5>
-                      <p className="text-sm text-muted-foreground">{t('courses.practical_training')}</p>
+                      <h5 className="font-medium mb-2">{t('courses.product_kit')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('courses.certification_included')}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-primary/5 rounded-lg p-6 mb-8">
-                  <h4 className="font-semibold mb-4">{t('courses.course_includes')}</h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <ul className="space-y-2">
-                      <li className="flex items-center text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        {t('courses.product_kit')}
-                      </li>
-                      <li className="flex items-center text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        {t('courses.equipment_access')}
-                      </li>
-                      <li className="flex items-center text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        {t('courses.training_materials')}
-                      </li>
-                      <li className="flex items-center text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        {t('courses.practice_vehicles')}
-                      </li>
-                    </ul>
-                    <ul className="space-y-2">
-                      <li className="flex items-center text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        {t('courses.certification_included')}
-                      </li>
-                      <li className="flex items-center text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        {t('courses.lunch_refreshments')}
-                      </li>
-                      <li className="flex items-center text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        {t('courses.digital_materials')}
-                      </li>
-                      <li className="flex items-center text-sm">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                        {t('courses.post_support')}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="flex-1" onClick={handleEnrollment}>
+                <div className="text-center">
+                  <Button size="lg" className="px-8 py-3" onClick={handleEnrollment}>
                     <Calendar className="h-5 w-5 mr-2" />
                     {t('courses.enroll_now')}
                   </Button>
@@ -244,111 +173,72 @@ const Courses = () => {
         </div>
       </section>
 
-      {/* Training Information */}
+      {/* Quick Facts & Contact */}
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             
-            {/* Training Schedule */}
-            <Card className="p-6">
-              <CardHeader className="px-0 pt-0">
-                <CardTitle className="text-2xl font-bold text-primary flex items-center">
-                  <Calendar className="w-6 h-6 mr-3" />
-                  {t('courses.training_schedule')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-0 space-y-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">{t('courses.course_duration')}</span>
-                    <span className="text-primary font-semibold">{t('courses.four_days')}</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">{t('courses.training_format')}</span>
-                    <span className="text-primary font-semibold">{t('courses.interactive_format')}</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">{t('courses.class_size')}</span>
-                    <span className="text-primary font-semibold">{t('courses.small_groups')}</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">{t('courses.location')}</span>
-                    <span className="text-primary font-semibold">{t('courses.atarot_location')}</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-background rounded-lg border">
-                    <span className="font-medium">{t('courses.training_hours')}</span>
-                    <span className="text-primary font-semibold">{t('courses.tba')}</span>
-                  </div>
-                </div>
-                
-                <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
-                  <h4 className="font-semibold text-primary mb-2 flex items-center">
-                    <Clock className="h-4 w-4 mr-2" />
-                    {t('courses.next_dates')}
-                  </h4>
-                  <p className="text-sm text-muted-foreground">
-                    {t('courses.contact_schedule')}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Essential Course Info */}
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6">{t('courses.ready_certified')}</h2>
+              <p className="text-muted-foreground">
+                {t('courses.contact_training')}
+              </p>
+            </div>
 
-            {/* Contact Information */}
-            <Card className="p-6">
-              <CardHeader className="px-0 pt-0">
-                <CardTitle className="text-2xl font-bold text-primary">
-                  {t('courses.ready_certified')}
-                </CardTitle>
-                <p className="text-muted-foreground">
-                  {t('courses.contact_training')}
-                </p>
-              </CardHeader>
-              <CardContent className="px-0 space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-4 p-3 bg-background rounded-lg border">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Phone className="w-5 h-5 text-primary" />
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Quick Facts */}
+              <Card className="p-6">
+                <CardContent className="p-0">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center p-3 bg-background rounded-lg">
+                      <span className="font-medium">{t('courses.course_duration')}</span>
+                      <span className="text-primary font-semibold">{t('courses.four_days')}</span>
                     </div>
+                    <div className="flex justify-between items-center p-3 bg-background rounded-lg">
+                      <span className="font-medium">{t('courses.location')}</span>
+                      <span className="text-primary font-semibold">{t('courses.atarot_location')}</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-background rounded-lg">
+                      <span className="font-medium">{t('courses.class_size')}</span>
+                      <span className="text-primary font-semibold">{t('courses.small_groups')}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Contact */}
+              <Card className="p-6">
+                <CardContent className="p-0 space-y-4">
+                  <div className="flex items-center space-x-3 p-3 bg-background rounded-lg">
+                    <Phone className="w-5 h-5 text-primary" />
                     <div>
-                      <p className="font-medium">{t('courses.call_us')}</p>
-                      <p className="text-sm text-muted-foreground">0527738586</p>
+                      <p className="font-medium">0527738586</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-4 p-3 bg-background rounded-lg border">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Mail className="w-5 h-5 text-primary" />
-                    </div>
+                  <div className="flex items-center space-x-3 p-3 bg-background rounded-lg">
+                    <Mail className="w-5 h-5 text-primary" />
                     <div>
-                      <p className="font-medium">{t('courses.email_us')}</p>
-                      <p className="text-sm text-muted-foreground">info@mtkcx.com</p>
+                      <p className="font-medium">info@mtkcx.com</p>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center space-x-4 p-3 bg-background rounded-lg border">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <MapPin className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{t('common.visit_us')}</p>
-                      <p className="text-sm text-muted-foreground">{t('courses.atarot_location')}</p>
-                    </div>
+
+                  <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 text-center">
+                    <p className="text-sm font-medium text-primary">
+                      {t('common.koch_official_training')}
+                    </p>
                   </div>
-                </div>
+                </CardContent>
+              </Card>
+            </div>
 
-                <div className="bg-primary text-primary-foreground p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">{t('common.koch_official_training')}</h4>
-                  <p className="text-sm text-primary-foreground/90">
-                    {t('common.only_official_course')}
-                  </p>
-                </div>
-
-                <Button className="w-full" size="lg" onClick={handleEnrollment}>
-                  <Mail className="w-5 h-5 mr-2" />
-                  {t('common.get_course_info')}
-                </Button>
-              </CardContent>
-            </Card>
+            <div className="text-center mt-8">
+              <Button size="lg" className="px-8 py-3" onClick={handleEnrollment}>
+                <Mail className="w-5 h-5 mr-2" />
+                {t('common.get_course_info')}
+              </Button>
+            </div>
           </div>
         </div>
       </section>
