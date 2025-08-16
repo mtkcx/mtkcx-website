@@ -92,7 +92,6 @@ const Courses = () => {
                   </div>
                   <div className="text-right">
                     <div className="text-3xl font-bold text-primary">{t('courses.contact_pricing')}</div>
-                    <div className="text-sm text-muted-foreground">{t('courses.includes_certification')}</div>
                   </div>
                 </div>
 
