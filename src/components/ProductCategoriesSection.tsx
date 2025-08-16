@@ -87,7 +87,8 @@ const ProductCategoriesSection = () => {
     navigate(`/products?category=${slug}`);
     window.scrollTo(0, 0);
   };
-  return <section className="py-20 bg-muted/30">
+  return (
+    <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-primary mb-6 md:text-5xl">
@@ -98,51 +99,37 @@ const ProductCategoriesSection = () => {
           </p>
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="animate-pulse">
-                <CardContent className="p-8 text-center">
-                  <div className="w-48 h-48 mx-auto rounded-full bg-muted mb-6"></div>
-                  <div className="h-6 bg-muted rounded mx-auto mb-3 w-32"></div>
-                  <div className="h-4 bg-muted rounded mx-auto w-24"></div>
-                </CardContent>
-              </Card>
-            ))}
+        <div className="max-w-md mx-auto">
+          <div className="relative">
+            <select 
+              onChange={(e) => {
+                if (e.target.value) {
+                  handleCategoryClick(e.target.value);
+                }
+              }}
+              className="w-full p-4 text-lg font-semibold bg-background border-2 border-primary/20 rounded-lg cursor-pointer hover:border-primary/40 focus:border-primary focus:outline-none transition-colors appearance-none"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                {loading ? 'Loading categories...' : t('categories.select_category')}
+              </option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.slug}>
+                  {currentLanguage === 'ar' ? (category.name_ar || category.name) :
+                   currentLanguage === 'he' ? (category.name_he || category.name) :
+                   category.name}
+                </option>
+              ))}
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {categories.map((category) => (
-              <Card key={category.id} className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-2 hover:border-primary/20 bg-background" onClick={() => handleCategoryClick(category.slug)}>
-                <CardContent className="p-8 text-center px-0">
-                  <div className="mb-6 relative">
-                    <div className="w-48 h-48 mx-auto rounded-full bg-muted/50 border-4 border-primary/10 group-hover:border-primary/30 transition-colors overflow-hidden relative">
-                      <img 
-                        src={category.image} 
-                        alt={currentLanguage === 'ar' ? (category.name_ar || category.name) :
-                             currentLanguage === 'he' ? (category.name_he || category.name) :
-                             category.name}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-full"></div>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-2xl font-bold text-primary mb-3 group-hover:text-primary/90 transition-colors">
-                    {currentLanguage === 'ar' ? (category.name_ar || category.name) :
-                     currentLanguage === 'he' ? (category.name_he || category.name) :
-                     category.name}
-                  </h3>
-                  
-                  <p className="text-muted-foreground text-sm">
-                    {t('categories.click_to_browse')}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+        </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 export default ProductCategoriesSection;
