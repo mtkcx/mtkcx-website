@@ -15,8 +15,8 @@ const SecurityMiddleware: React.FC<SecurityMiddlewareProps> = ({ children }) => 
           cspMeta.setAttribute('http-equiv', 'Content-Security-Policy');
           cspMeta.setAttribute('content', 
             "default-src 'self'; " +
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com https://api.supabase.com https://js.stripe.com; " +
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+            "script-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://api.supabase.com https://js.stripe.com; " +
+            "style-src 'self' https://fonts.googleapis.com; " +
             "img-src 'self' data: https: blob:; " +
             "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
             "connect-src 'self' https://*.supabase.co https://*.supabase.com https://api.stripe.com; " +

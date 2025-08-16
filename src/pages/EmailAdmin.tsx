@@ -28,6 +28,7 @@ import {
   Clock
 } from 'lucide-react';
 import Header from '@/components/Header';
+import SafeHTMLRenderer from '@/components/SafeHTMLRenderer';
 import Footer from '@/components/Footer';
 
 interface EmailCampaign {
@@ -914,9 +915,9 @@ const EmailAdmin = () => {
                                 <p><strong>Type:</strong> {template.template_type.replace('_', ' ')}</p>
                                 <p><strong>Status:</strong> {template.is_system ? 'System Template' : 'Custom Template'}</p>
                               </div>
-                              <div 
+                              <SafeHTMLRenderer 
+                                html={getSystemTemplatePreview(template)}
                                 className="prose prose-sm max-w-none p-4 bg-white border rounded"
-                                dangerouslySetInnerHTML={{ __html: getSystemTemplatePreview(template) }}
                               />
                             </div>
                           </DialogContent>
@@ -1130,9 +1131,9 @@ const EmailAdmin = () => {
                               <p><strong>Subject:</strong> {campaign.subject}</p>
                               <p><strong>Type:</strong> {campaign.campaign_type}</p>
                             </div>
-                            <div 
+                            <SafeHTMLRenderer 
+                              html={getEmailTemplatePreview(campaign)}
                               className="prose prose-sm max-w-none p-4 bg-white border rounded"
-                              dangerouslySetInnerHTML={{ __html: getEmailTemplatePreview(campaign) }}
                             />
                           </div>
                         </DialogContent>
