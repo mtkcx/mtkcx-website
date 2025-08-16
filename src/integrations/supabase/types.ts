@@ -1402,6 +1402,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      debug_table_access: {
+        Args: { table_name: string }
+        Returns: Json
+      }
       demote_admin_to_user: {
         Args: { target_user_id: string }
         Returns: boolean
@@ -1526,6 +1530,10 @@ export type Database = {
           setting_value: string
         }
         Returns: string
+      }
+      set_mobile_order_context: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       set_newsletter_context: {
         Args: Record<PropertyKey, never>
