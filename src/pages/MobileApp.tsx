@@ -514,7 +514,7 @@ const MobileApp: React.FC = () => {
                         </div>
 
                         <div className="bg-muted/50 p-5 rounded-lg">
-                          <h4 className="font-bold text-lg mb-4 text-primary">{t('courses.course_details')}</h4>
+                          <h4 className="font-bold text-lg mb-4 text-primary">{t('mobile.courses.course_details')}</h4>
                           <div className="space-y-4">
                             <div className="flex flex-col space-y-1">
                               <span className="font-medium text-base">{t('courses.course_duration')}:</span>
