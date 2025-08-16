@@ -24,12 +24,14 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import contactBanner from '@/assets/contact-banner-professional.jpg';
+import contactBanner from '@/assets/contact-banner-realistic.jpg';
 
 const Contact = () => {
   const { toast } = useToast();
   const { t, isRTL } = useLanguage();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -125,12 +127,14 @@ const Contact = () => {
    ];
 
   const services = [
-    { value: "products", label: t('contact.koch_products'), icon: Package },
-    { value: "training", label: t('contact.detailing_training'), icon: GraduationCap },
-    { value: "wrapping", label: t('contact.vehicle_wrapping'), icon: Car },
-    { value: "consultation", label: t('contact.professional_consultation'), icon: MessageSquare },
-    { value: "other", label: t('contact.other_services'), icon: Building }
+    { value: "products", label: t('contact.koch_products'), icon: Package, route: '/products' },
+    { value: "training", label: t('contact.detailing_training'), icon: GraduationCap, route: '/courses' },
+    { value: "wrapping", label: t('contact.vehicle_wrapping'), icon: Car, route: '/gallery' }
   ];
+
+  const handleServiceClick = (route: string) => {
+    navigate(route);
+  };
 
   return (
     <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -350,10 +354,14 @@ const Contact = () => {
                   {services.map((service, index) => {
                     const IconComponent = service.icon;
                     return (
-                      <div key={index} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                        <IconComponent className="w-4 h-4 text-primary" />
-                        <span className="text-sm">{service.label}</span>
-                      </div>
+                      <button
+                        key={index}
+                        onClick={() => handleServiceClick(service.route)}
+                        className="w-full flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/70 transition-colors cursor-pointer border border-transparent hover:border-primary/20"
+                      >
+                        <IconComponent className="w-5 h-5 text-primary" />
+                        <span className="text-sm font-medium">{service.label}</span>
+                      </button>
                     );
                   })}
                 </CardContent>
