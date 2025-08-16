@@ -283,14 +283,37 @@ const ProductCatalog = () => {
                     variant="outline" 
                     className="w-full justify-between bg-background border-2 border-primary/20 hover:border-primary/40"
                   >
-                    Categories
+                    {selectedCategory ? 
+                      categories.find(cat => cat.slug === selectedCategory)?.[
+                        currentLanguage === 'ar' ? 'name_ar' : 
+                        currentLanguage === 'he' ? 'name_he' : 'name'
+                      ] || categories.find(cat => cat.slug === selectedCategory)?.name || 'Categories'
+                      : 'All Categories'
+                    }
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full min-w-[250px] bg-background border-2 border-primary/20 z-50" align="start">
+                <DropdownMenuContent className="w-full min-w-[250px] max-h-[300px] overflow-y-auto bg-background border-2 border-primary/20 z-50" align="start">
+                  <DropdownMenuItem 
+                    onClick={() => {
+                      setSelectedCategory(null);
+                      const newParams = new URLSearchParams(searchParams);
+                      newParams.delete('category');
+                      setSearchParams(newParams);
+                    }}
+                    className="py-3 px-4 cursor-pointer hover:bg-primary/10"
+                  >
+                    All Categories
+                  </DropdownMenuItem>
                   {categories.map((category) => (
                     <DropdownMenuItem 
                       key={category.id}
+                      onClick={() => {
+                        setSelectedCategory(category.slug);
+                        const newParams = new URLSearchParams(searchParams);
+                        newParams.set('category', category.slug);
+                        setSearchParams(newParams);
+                      }}
                       className="py-3 px-4 cursor-pointer hover:bg-primary/10"
                     >
                       {currentLanguage === 'ar' ? (category.name_ar || category.name) :
