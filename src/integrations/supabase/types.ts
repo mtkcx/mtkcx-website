@@ -1475,6 +1475,10 @@ export type Database = {
         Args: { p_action: string; p_order_id: string; p_success: boolean }
         Returns: undefined
       }
+      log_security_violation: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       log_sensitive_access: {
         Args: { p_action: string; p_record_id?: string; p_table_name: string }
         Returns: undefined
