@@ -95,7 +95,7 @@ const Courses = () => {
                     <h4 className="font-semibold text-lg">{t('courses.information')}</h4>
                     <div className="space-y-2 text-muted-foreground">
                       <p><strong>{t('courses.course_duration')}:</strong> {t('courses.four_days')}</p>
-                      <p><strong>{t('courses.class_size')}:</strong> {t('courses.small_groups')}</p>
+                      <p><strong>{t('courses.class_size')}:</strong> {t('courses.small_groups_5')}</p>
                       <p><strong>{t('courses.location')}:</strong> {t('courses.atarot_location')}</p>
                     </div>
                   </div>
