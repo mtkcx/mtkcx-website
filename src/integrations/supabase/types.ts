@@ -1444,6 +1444,10 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_public_setting: {
+        Args: { setting_name: string }
+        Returns: string
+      }
       get_security_stats: {
         Args: Record<PropertyKey, never>
         Returns: {
