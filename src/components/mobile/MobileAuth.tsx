@@ -22,6 +22,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
+import { PasswordSecurityManager } from '@/utils/enhanced-security';
+import PasswordStrengthIndicator from '@/components/PasswordStrengthIndicator';
 
 interface MobileAuthProps {
   onBack: () => void;
@@ -134,10 +136,11 @@ export const MobileAuth: React.FC<MobileAuthProps> = ({ onBack }) => {
       return;
     }
 
-    if (signUpData.password.length < 6) {
+    const passwordValidation = PasswordSecurityManager.validatePasswordStrength(signUpData.password);
+    if (!passwordValidation.valid) {
       toast({
         title: t('auth.error_title'),
-        description: t('auth.password_too_short'),
+        description: passwordValidation.feedback.join('. '),
         variant: "destructive",
       });
       return;
@@ -453,6 +456,9 @@ export const MobileAuth: React.FC<MobileAuthProps> = ({ onBack }) => {
                         )}
                       </Button>
                     </div>
+                    {signUpData.password && (
+                      <PasswordStrengthIndicator password={signUpData.password} showDetails={true} />
+                    )}
                   </div>
 
                   <div className="space-y-2">
