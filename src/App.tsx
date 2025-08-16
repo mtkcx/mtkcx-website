@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -48,70 +49,111 @@ import MobileAdminDashboard from "./pages/MobileAdminDashboard";
 import CustomerProfile from "./pages/CustomerProfile";
 import MyOrders from "./pages/MyOrders";
 
+// Error Boundary Component
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('App Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="text-center p-8">
+            <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-primary text-primary-foreground rounded"
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <HelmetProvider>
-      <LanguageProvider>
-        <SEOProvider>
-          <LanguagePreferenceWrapper>
-            <AuthProvider>
-              <CartProvider>
-                <SecurityMiddleware>
-                  <TooltipProvider>
-              <Toaster />
-              <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-              <ScrollToTop />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:productId" element={<ProductDetail />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/courses" element={<Courses />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/profile" element={<CustomerProfile />} />
-                <Route path="/my-orders" element={<MyOrders />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                
-                <Route path="/admin/quotes" element={<AdminProtectedRoute><QuoteAdmin /></AdminProtectedRoute>} />
-                <Route path="/admin/emails" element={<AdminProtectedRoute><EmailAdmin /></AdminProtectedRoute>} />
-                <Route path="/admin/orders" element={<AdminProtectedRoute><OrderAdmin /></AdminProtectedRoute>} />
-                <Route path="/admin/products" element={<AdminProtectedRoute><ProductAdmin /></AdminProtectedRoute>} />
-                <Route path="/admin/enrollments" element={<AdminProtectedRoute><EnrollmentAdmin /></AdminProtectedRoute>} />
-                <Route path="/admin/chat" element={<AdminProtectedRoute><ChatAdmin /></AdminProtectedRoute>} />
-                <Route path="/payment-success" element={<PaymentSuccess />} />
-                <Route path="/payment-cancelled" element={<PaymentCancelled />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/terms-of-service" element={<TermsOfService />} />
-                <Route path="/shipping-policy" element={<ShippingPolicy />} />
-                <Route path="/return-policy" element={<ReturnPolicy />} />
-                <Route path="/refund-policy" element={<RefundPolicy />} />
-                 <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
-                 <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
-                 <Route path="/admin/security" element={<AdminProtectedRoute><SecurityDashboard /></AdminProtectedRoute>} />
-                 <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
-                 <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
-                 <Route path="/admin/dashboard/mobile" element={<MobileAdminDashboard />} />
-                 <Route path="/mobile" element={<MobileApp />} />
-                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                 <Route path="*" element={<NotFound />} />
-               </Routes>
-                   <CartDrawer />
-                   <SecurityMonitor />
-               </BrowserRouter>
-             </TooltipProvider>
-               </SecurityMiddleware>
-              </CartProvider>
-            </AuthProvider>
-          </LanguagePreferenceWrapper>
-        </SEOProvider>
-      </LanguageProvider>
-     </HelmetProvider>
-   </QueryClientProvider>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <HelmetProvider>
+        <LanguageProvider>
+          <SEOProvider>
+            <LanguagePreferenceWrapper>
+              <AuthProvider>
+                <CartProvider>
+                  <SecurityMiddleware>
+                    <TooltipProvider>
+                      <Toaster />
+                      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                        <ScrollToTop />
+                        <Routes>
+                          <Route path="/" element={<Index />} />
+                          <Route path="/products" element={<Products />} />
+                          <Route path="/products/:productId" element={<ProductDetail />} />
+                          <Route path="/about" element={<About />} />
+                          <Route path="/contact" element={<Contact />} />
+                          <Route path="/courses" element={<Courses />} />
+                          <Route path="/gallery" element={<Gallery />} />
+                          <Route path="/auth" element={<Auth />} />
+                          <Route path="/profile" element={<CustomerProfile />} />
+                          <Route path="/my-orders" element={<MyOrders />} />
+                          <Route path="/dashboard" element={<Dashboard />} />
+                          
+                          <Route path="/admin/quotes" element={<AdminProtectedRoute><QuoteAdmin /></AdminProtectedRoute>} />
+                          <Route path="/admin/emails" element={<AdminProtectedRoute><EmailAdmin /></AdminProtectedRoute>} />
+                          <Route path="/admin/orders" element={<AdminProtectedRoute><OrderAdmin /></AdminProtectedRoute>} />
+                          <Route path="/admin/products" element={<AdminProtectedRoute><ProductAdmin /></AdminProtectedRoute>} />
+                          <Route path="/admin/enrollments" element={<AdminProtectedRoute><EnrollmentAdmin /></AdminProtectedRoute>} />
+                          <Route path="/admin/chat" element={<AdminProtectedRoute><ChatAdmin /></AdminProtectedRoute>} />
+                          <Route path="/payment-success" element={<PaymentSuccess />} />
+                          <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+                          <Route path="/checkout" element={<Checkout />} />
+                          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                          <Route path="/terms-of-service" element={<TermsOfService />} />
+                          <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                          <Route path="/return-policy" element={<ReturnPolicy />} />
+                          <Route path="/refund-policy" element={<RefundPolicy />} />
+                          <Route path="/verify-newsletter" element={<SecureNewsletterVerification />} />
+                          <Route path="/secure-order-lookup" element={<SecureOrderLookup />} />
+                          <Route path="/admin/security" element={<AdminProtectedRoute><SecurityDashboard /></AdminProtectedRoute>} />
+                          <Route path="/admin" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+                          <Route path="/admin/dashboard" element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} />
+                          <Route path="/admin/dashboard/mobile" element={<MobileAdminDashboard />} />
+                          <Route path="/mobile" element={<MobileApp />} />
+                          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                          <Route path="*" element={<NotFound />} />
+                        </Routes>
+                        <CartDrawer />
+                        <SecurityMonitor />
+                      </BrowserRouter>
+                    </TooltipProvider>
+                  </SecurityMiddleware>
+                </CartProvider>
+              </AuthProvider>
+            </LanguagePreferenceWrapper>
+          </SEOProvider>
+        </LanguageProvider>
+      </HelmetProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;
