@@ -90,6 +90,10 @@ const Courses = () => {
                       <p className="text-muted-foreground">{t('courses.interactive_training')}</p>
                     </div>
                   </div>
+                  <div className="text-right">
+                    <div className="text-3xl font-bold text-primary">{t('courses.contact_pricing')}</div>
+                    <div className="text-sm text-muted-foreground">{t('courses.includes_certification')}</div>
+                  </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8 mb-8">

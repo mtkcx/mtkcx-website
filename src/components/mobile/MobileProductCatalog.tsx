@@ -354,7 +354,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
           )}
         </div>
 
-        {showFilters && (
+        {(showFilters || compact) && (
           <div className="flex flex-wrap gap-2">
             <Button
               variant={selectedCategory === null ? "default" : "outline"}
