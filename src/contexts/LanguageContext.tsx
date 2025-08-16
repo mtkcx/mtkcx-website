@@ -3326,25 +3326,30 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   const t = (key: string): string => {
-    return translations[currentLanguage][key as keyof typeof translations[typeof currentLanguage]] || key;
+    const translation = translations[currentLanguage]?.[key as keyof typeof translations[typeof currentLanguage]];
+    if (translation) {
+      return translation as string;
+    }
+    // Fallback to English if translation missing
+    const englishTranslation = translations.en?.[key as keyof typeof translations.en];
+    return englishTranslation as string || key;
   };
 
   const isRTL = currentLanguage === 'ar' || currentLanguage === 'he';
 
-  // Initialize language on mount and maintain direction
+  // Initialize language on mount - prevent white flashes
   React.useEffect(() => {
     const savedLanguage = localStorage.getItem('preferred-language') as Language;
     if (savedLanguage && ['en', 'ar', 'he'].includes(savedLanguage)) {
-      setCurrentLanguage(savedLanguage);
-      // Set document direction and language on initial load
-      document.documentElement.setAttribute('dir', (savedLanguage === 'ar' || savedLanguage === 'he') ? 'rtl' : 'ltr');
-      document.documentElement.setAttribute('lang', savedLanguage);
-    } else {
-      // Set default direction for English
-      document.documentElement.setAttribute('dir', 'ltr');
-      document.documentElement.setAttribute('lang', 'en');
+      if (currentLanguage !== savedLanguage) {
+        setCurrentLanguage(savedLanguage);
+      }
     }
-  }, []);
+    // Always set direction attributes to prevent layout shift
+    const direction = (currentLanguage === 'ar' || currentLanguage === 'he') ? 'rtl' : 'ltr';
+    document.documentElement.setAttribute('dir', direction);
+    document.documentElement.setAttribute('lang', currentLanguage);
+  }, []); // Only run once on mount
 
   // Ensure direction is maintained on every render
   React.useEffect(() => {
