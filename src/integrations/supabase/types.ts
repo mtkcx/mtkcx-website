@@ -1427,6 +1427,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      ensure_user_data_security: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       generate_order_session_id: {
         Args: Record<PropertyKey, never>
         Returns: string
