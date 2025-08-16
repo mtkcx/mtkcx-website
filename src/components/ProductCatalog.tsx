@@ -274,27 +274,10 @@ const ProductCatalog = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar Filters */}
         <div className="lg:col-span-1">
-          <div className="bg-card p-6 rounded-lg border space-y-6">
-            <CategoryFilter
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onCategorySelect={(category) => {
-                setSelectedCategory(category);
-                // Update URL when category changes
-                const newParams = new URLSearchParams(searchParams);
-                if (category) {
-                  newParams.set('category', category);
-                } else {
-                  newParams.delete('category');
-                }
-                setSearchParams(newParams);
-              }}
-              productCounts={productCounts}
-            />
-            
+          <div className="bg-card p-6 rounded-lg border">
             {/* Category Management Dropdown */}
-            <div className="border-t pt-6">
-              <h3 className="font-semibold text-lg mb-4">{t('categories.manage_categories')}</h3>
+            <div>
+              <h3 className="font-semibold text-lg mb-4">Manage Categories</h3>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 
