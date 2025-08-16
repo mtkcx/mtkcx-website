@@ -62,8 +62,8 @@ const LanguagePreferenceWrapper: React.FC<{ children: React.ReactNode }> = ({ ch
 
   return (
     <>
-      {/* Only render children after language is set to avoid content flash */}
-      {languageSet && children}
+      {/* Always render children - no conditional hiding */}
+      {children}
       <LanguagePreferenceModal 
         isOpen={showLanguageModal} 
         onClose={handleLanguageModalClose} 
