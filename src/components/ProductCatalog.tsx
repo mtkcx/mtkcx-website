@@ -6,7 +6,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import ProductGrid from '@/components/ProductGrid';
-import CategoryFilter from '@/components/CategoryFilter';
 import { Search, ChevronDown } from 'lucide-react';
 
 interface Product {
@@ -277,14 +276,14 @@ const ProductCatalog = () => {
           <div className="bg-card p-6 rounded-lg border">
             {/* Category Management Dropdown */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Manage Categories</h3>
+              <h3 className="font-semibold text-lg mb-4">Categories</h3>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 
                     variant="outline" 
                     className="w-full justify-between bg-background border-2 border-primary/20 hover:border-primary/40"
                   >
-                    Edit Categories
+                    Categories
                     <ChevronDown className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
