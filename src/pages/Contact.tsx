@@ -26,7 +26,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import contactBanner from '@/assets/contact-banner-realistic.jpg';
+import contactBanner from '@/assets/contact-banner-welcoming.jpg';
 
 const Contact = () => {
   const { toast } = useToast();
