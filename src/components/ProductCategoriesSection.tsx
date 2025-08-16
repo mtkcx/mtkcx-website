@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import CategoryDropdown from '@/components/CategoryDropdown';
 import interiorCleaningImage from '/lovable-uploads/3df6143b-1e24-4063-ac21-1f8d68e1c558.png';
 import exteriorCleaningImage from '/lovable-uploads/5888e030-a950-4019-a5ea-9d9287fbdcc7.png';
 import polishingCoatingsImage from '/lovable-uploads/baa55ddc-7737-4bef-b3ae-c2f59f4cf3d9.png';
@@ -93,9 +94,10 @@ const ProductCategoriesSection = () => {
           <h2 className="text-4xl font-bold text-primary mb-6 md:text-5xl">
             {t('categories.shop_by_category')}
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg mb-8">
             {t('categories.shop_by_category_subtitle')}
           </p>
+          <CategoryDropdown />
         </div>
 
         {loading ? (
