@@ -92,13 +92,22 @@ const Courses = () => {
                   </div>
 
                   <div className="space-y-4">
-                    <h4 className="font-semibold text-lg">{t('courses.course_details')}</h4>
+                    <h4 className="font-semibold text-lg">{t('courses.information')}</h4>
                     <div className="space-y-2 text-muted-foreground">
                       <p><strong>{t('courses.course_duration')}:</strong> {t('courses.four_days')}</p>
                       <p><strong>{t('courses.class_size')}:</strong> {t('courses.small_groups')}</p>
                       <p><strong>{t('courses.location')}:</strong> {t('courses.atarot_location')}</p>
                     </div>
                   </div>
+                </div>
+
+                {/* Koch Chemie Certification Notice */}
+                <div className="bg-primary/10 border border-primary/20 rounded-lg p-6 mb-8">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Award className="w-5 h-5 text-primary" />
+                    <h4 className="font-semibold text-lg">{t('courses.certification_included')}</h4>
+                  </div>
+                  <p className="text-muted-foreground">{t('courses.koch_certification_desc')}</p>
                 </div>
 
                 {/* Single CTA */}
@@ -134,10 +143,6 @@ const Courses = () => {
               </div>
             </div>
 
-            <Button size="lg" className="px-8 py-3" onClick={handleEnrollment}>
-              <Mail className="w-5 h-5 mr-2" />
-              {t('common.get_course_info')}
-            </Button>
           </div>
         </div>
       </section>
