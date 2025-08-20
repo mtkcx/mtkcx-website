@@ -147,12 +147,13 @@ const Header = () => {
               <div className={`absolute right-0 top-full mt-2 bg-background border border-border rounded-lg shadow-lg transition-all duration-200 min-w-[160px] z-50 ${
                 isLanguageDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
               }`}>
-                {languages.map(lang => 
+                 {languages.map(lang => 
                   <button 
                     key={lang.code} 
                     onClick={() => {
                       setLanguage(lang.code);
                       setIsLanguageDropdownOpen(false);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
                     }} 
                     className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg last:rounded-b-lg flex items-center space-x-3 ${
                       currentLanguage === lang.code ? 'bg-accent text-accent-foreground' : ''
@@ -205,6 +206,32 @@ const Header = () => {
                     <Search className="h-5 w-5 mr-3" />
                     {t('common.search')}
                   </Button>
+                  
+                  {/* Mobile Language Selector */}
+                  <div className="py-3 px-2 border-b border-border">
+                    <div className="text-sm font-medium text-foreground mb-3 flex items-center">
+                      <Globe className="h-5 w-5 mr-3" />
+                      {t('common.language')}
+                    </div>
+                    <div className="space-y-2">
+                      {languages.map(lang => (
+                        <button 
+                          key={lang.code} 
+                          onClick={() => {
+                            setLanguage(lang.code);
+                            setIsMenuOpen(false);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }} 
+                          className={`w-full text-left px-3 py-2 text-sm transition-colors rounded-md flex items-center space-x-3 ${
+                            currentLanguage === lang.code ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50'
+                          }`}
+                        >
+                          <span className="text-lg">{lang.flag}</span>
+                          <span className="font-medium">{lang.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>
