@@ -2212,7 +2212,7 @@ const translations = {
     'services.courses_features.2': 'אונליין ובנוכחות',
     'services.courses_features.3': 'הסמכה כלולה',
     'services.courses_cta': 'הירשם היום',
-    'services.wrapping_title': 'שירותי MTKCx',
+    'services.wrapping_title': 'שירותי MT Wraps',
     'services.wrapping_description': 'שירותי עיטוף רכבים מעולים והתקנת ויניל לגימור מדהים.',
     'services.wrapping_features.1': 'עיצובים מותאמים',
     'services.wrapping_features.2': 'חומרים מעולים',
