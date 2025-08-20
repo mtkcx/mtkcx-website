@@ -1884,7 +1884,7 @@ const translations = {
     'notfound.return_home': 'العودة للرئيسية',
     
     // Courses Page
-    'courses.title': 'شهادة معتمدة في مجال تلميع/بولش السيارات (Polishing) والتفصيل/ديتيلنج (Car Detailing)',
+    'courses.title': 'شهادة معتمدة في مجال بولش السيارات والديتيلنج',
     'courses.subtitle': 'انضم إلى دورة متخصصة تمنحك المعرفة النظرية والخبرة العملية في مجال العناية المتكاملة بالسيارات، بشهادة رسمية معتمدة من Koch Chemie – الشركة الرائدة عالميًا في هذا المجال.',
     'courses.course_title': 'دورة Koch Chemie المهنية للتفصيل',
     'courses.course_description': 'برنامج تدريبي شامل يجمع بين النظرية والممارسة العملية لإتقان تقنيات تلميع وتفصيل السيارات.',
@@ -2796,7 +2796,7 @@ const translations = {
     'notfound.return_home': 'חזור לעמוד הבית',
     
     // Courses Page
-    'courses.title': 'הסמכה מקצועית בפירוט ופוליש',
+    'courses.title': 'תעודה מוסמכת בתחום פוליש רכבים ודיטיילינג',
     'courses.subtitle': 'שלוט באמנות הפירוט המקצועי של רכבים עם תוכנית ההסמכה הרשמית של Koch Chemie. הקורס המקיף שלנו בן 4 ימים משלב תיאוריה עם תרגול מעשי.',
     'courses.course_title': 'קורס פירוט מקצועי של Koch Chemie',
     'courses.course_description': 'הפוך את כישורי הפירוט שלך עם תוכנית ההסמכה האינטנסיבית בת 4 ימים שלנו.',
