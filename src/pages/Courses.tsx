@@ -40,23 +40,23 @@ const Courses = () => {
                 </Badge>
                 
                 <div className="bg-black/80 backdrop-blur-sm rounded-lg p-8 max-w-4xl mx-auto">
-                  <h1 className={`text-2xl md:text-3xl lg:text-4xl font-bold mb-8 text-white ${isRTL ? 'leading-[1.8] tracking-wide' : 'leading-tight tracking-tight'}`} style={isRTL ? { lineHeight: '1.8em' } : {}}>
+                  <h1 className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-white ${isRTL ? 'leading-[1.8] tracking-wide' : 'leading-tight tracking-tight'}`} style={isRTL ? { lineHeight: '1.8em' } : {}}>
                     {t("courses.title")}
                   </h1>
                   
-                  <p className={`text-lg md:text-xl lg:text-2xl text-white/95 font-light ${isRTL ? 'leading-[1.9] tracking-wide' : 'leading-relaxed'}`}>
+                  <p className={`text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 font-light ${isRTL ? 'leading-[1.9] tracking-wide' : 'leading-relaxed'}`}>
                     {t("courses.subtitle")}
                   </p>
                 </div>
                 
-                {/* Call to Action */}
-                <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                 {/* Call to Action */}
+                <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                   <Button 
                     size="lg" 
-                    className="px-8 py-4 text-lg bg-primary hover:bg-primary/90 text-white shadow-lg"
+                    className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg"
                     onClick={handleEnrollment}
                   >
-                    <Calendar className="w-5 h-5 mr-2" />
+                    <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     {t("courses.enroll_now")}
                   </Button>
                 </div>

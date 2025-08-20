@@ -62,19 +62,18 @@ const Hero = () => {
 
           </div>
 
-          {/* Stats Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 pt-16 border-t border-white/20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mt-16 sm:mt-20 pt-12 sm:pt-16 border-t border-white/20">
             <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">250+</div>
-              <div className="text-white/80">{t('stats.products')}</div>
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">250+</div>
+              <div className="text-sm sm:text-base text-white/80">{t('stats.products')}</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">1000+</div>
-              <div className="text-white/80">{t('stats.customers')}</div>
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">1000+</div>
+              <div className="text-sm sm:text-base text-white/80">{t('stats.customers')}</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">4+</div>
-              <div className="text-white/80">{t('stats.experience')}</div>
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">4+</div>
+              <div className="text-sm sm:text-base text-white/80">{t('stats.experience')}</div>
             </div>
           </div>
         </div>
