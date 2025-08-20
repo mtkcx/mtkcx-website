@@ -155,7 +155,7 @@ const Courses = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-center space-x-3">
                   <Phone className="w-5 h-5 text-primary" />
-                  <span className="font-medium">0527738586</span>
+                  <span className="font-medium">052-5701073</span>
                 </div>
                 
                 <div className="flex items-center justify-center space-x-3">
