@@ -39,12 +39,12 @@ const Courses = () => {
                   {t("common.professional_training")}
                 </Badge>
                 
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight tracking-tight">
+                <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-8 ${isRTL ? 'leading-relaxed tracking-wide' : 'leading-tight tracking-tight'}`}>
                   {t("courses.title")}
                 </h1>
                 
                 <div className="max-w-4xl mx-auto">
-                  <p className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-95 font-light">
+                  <p className={`text-lg md:text-xl lg:text-2xl opacity-95 font-light ${isRTL ? 'leading-loose' : 'leading-relaxed'}`}>
                     {t("courses.subtitle")}
                   </p>
                 </div>
