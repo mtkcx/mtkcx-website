@@ -40,11 +40,11 @@ const Courses = () => {
                 </Badge>
                 
                 <div className="bg-black/80 backdrop-blur-sm rounded-lg p-8 max-w-4xl mx-auto">
-                  <h1 className={`text-2xl md:text-3xl lg:text-4xl font-bold mb-6 text-white ${isRTL ? 'leading-loose tracking-wider' : 'leading-tight tracking-tight'}`}>
+                  <h1 className={`text-2xl md:text-3xl lg:text-4xl font-bold mb-8 text-white ${isRTL ? 'leading-[1.8] tracking-wide' : 'leading-tight tracking-tight'}`}>
                     {t("courses.title")}
                   </h1>
                   
-                  <p className={`text-lg md:text-xl lg:text-2xl text-white/95 font-light ${isRTL ? 'leading-loose' : 'leading-relaxed'}`}>
+                  <p className={`text-lg md:text-xl lg:text-2xl text-white/95 font-light ${isRTL ? 'leading-[1.9] tracking-wide' : 'leading-relaxed'}`}>
                     {t("courses.subtitle")}
                   </p>
                 </div>
