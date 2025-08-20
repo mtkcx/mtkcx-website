@@ -83,21 +83,43 @@ const Courses = () => {
                 {/* Simple Course Info */}
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
                   <div className="space-y-4">
-                    <h4 className="font-semibold text-lg">{t('courses.what_learn')}</h4>
+                    <h4 className="font-semibold text-lg">{t('courses.theoretical_aspect')}</h4>
                     <ul className="space-y-2 text-muted-foreground">
-                      <li>• {t('courses.professional_techniques')}</li>
-                      <li>• {t('courses.advanced_polishing')}</li>
-                      <li>• {t('courses.business_practices')}</li>
+                      <li>• {t('courses.car_paint_understanding')}</li>
+                      <li>• {t('courses.chemical_compositions')}</li>
+                      <li>• {t('courses.practical_solutions')}</li>
                     </ul>
                   </div>
 
                   <div className="space-y-4">
-                    <h4 className="font-semibold text-lg">{t('courses.information')}</h4>
-                    <div className="space-y-2 text-muted-foreground">
-                      <p><strong>{t('courses.course_duration')}:</strong> {t('courses.four_days')}</p>
-                      <p><strong>{t('courses.class_size')}:</strong> {t('courses.small_groups_5')}</p>
-                      <p><strong>{t('courses.location')}:</strong> {t('courses.atarot_location')}</p>
-                    </div>
+                    <h4 className="font-semibold text-lg">{t('courses.practical_aspect')}</h4>
+                    <ul className="space-y-2 text-muted-foreground">
+                      <li>• {t('courses.professional_cleaning')}</li>
+                      <li>• {t('courses.different_materials')}</li>
+                      <li>• {t('courses.rupes_training')}</li>
+                      <li>• {t('courses.restoration_steps')}</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-muted/30 rounded-lg p-6 mb-8">
+                  <p className="text-muted-foreground leading-relaxed">
+                    {t('courses.course_goal')}
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                  <div className="text-center">
+                    <h4 className="font-semibold text-lg mb-2">{t('courses.course_duration')}</h4>
+                    <p className="text-muted-foreground">{t('courses.four_days')}</p>
+                  </div>
+                  <div className="text-center">
+                    <h4 className="font-semibold text-lg mb-2">{t('courses.class_size')}</h4>
+                    <p className="text-muted-foreground">{t('courses.small_groups_5')}</p>
+                  </div>
+                  <div className="text-center">
+                    <h4 className="font-semibold text-lg mb-2">{t('courses.location')}</h4>
+                    <p className="text-muted-foreground">{t('courses.atarot_location')}</p>
                   </div>
                 </div>
 
