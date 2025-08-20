@@ -22,6 +22,7 @@ const Header = () => {
     isRTL
   } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const languages: {
     code: Language;
     name: string;
@@ -134,7 +135,9 @@ const Header = () => {
             </Button>
 
             {/* Language Dropdown */}
-            <div className="relative group">
+            <div className="relative" 
+                 onMouseEnter={() => setIsLanguageDropdownOpen(true)}
+                 onMouseLeave={() => setIsLanguageDropdownOpen(false)}>
               <Button variant="ghost" size="lg" className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-4 py-2 min-w-[100px] sm:min-w-[120px]">
                 <Globe className="h-5 w-5" />
                 <span className="flex items-center space-x-2">
@@ -146,11 +149,24 @@ const Header = () => {
                   </span>
                 </span>
               </Button>
-              <div className="absolute right-0 top-full mt-2 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[160px] z-50">
-                {languages.map(lang => <button key={lang.code} onClick={() => setLanguage(lang.code)} className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg last:rounded-b-lg flex items-center space-x-3 ${currentLanguage === lang.code ? 'bg-accent text-accent-foreground' : ''}`}>
+              <div className={`absolute right-0 top-full mt-2 bg-background border border-border rounded-lg shadow-lg transition-all duration-200 min-w-[160px] z-50 ${
+                isLanguageDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+              }`}>
+                {languages.map(lang => 
+                  <button 
+                    key={lang.code} 
+                    onClick={() => {
+                      setLanguage(lang.code);
+                      setIsLanguageDropdownOpen(false);
+                    }} 
+                    className={`w-full text-left px-4 py-3 text-sm hover:bg-accent transition-colors first:rounded-t-lg last:rounded-b-lg flex items-center space-x-3 ${
+                      currentLanguage === lang.code ? 'bg-accent text-accent-foreground' : ''
+                    }`}
+                  >
                     <span className="text-lg">{lang.flag}</span>
                     <span className="font-medium">{lang.name}</span>
-                  </button>)}
+                  </button>
+                )}
               </div>
             </div>
 
