@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
 import { Globe, Menu, X, Search, User, LogOut, Settings, ShoppingBag } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import CartButton from '@/components/CartButton';
@@ -23,11 +22,7 @@ const Header = () => {
   } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
-  const languages: {
-    code: Language;
-    name: string;
-    flag: string;
-  }[] = [{
+  const languages = [{
     code: 'en',
     name: 'English',
     flag: '🇺🇸'
@@ -39,7 +34,7 @@ const Header = () => {
     code: 'he',
     name: 'עברית',
     flag: '🇮🇱'
-  }];
+  }] as const;
   const navigationItems = [{
     key: 'nav.home',
     href: '/'
