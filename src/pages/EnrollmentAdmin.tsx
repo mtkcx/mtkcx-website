@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { format } from 'date-fns';
-import { Phone, Mail, Calendar, User } from 'lucide-react';
+import { Phone, Mail, Calendar, User, Trash2 } from 'lucide-react';
 
 interface EnrollmentRequest {
   id: string;
@@ -118,6 +118,35 @@ const EnrollmentAdmin: React.FC = () => {
     }
   };
 
+  const deleteEnrollment = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete the enrollment request from ${name}? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('enrollment_requests')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setEnrollments(prev => prev.filter(enrollment => enrollment.id !== id));
+
+      toast({
+        title: 'Enrollment Deleted',
+        description: `Enrollment request from ${name} has been deleted`,
+      });
+    } catch (error) {
+      console.error('Error deleting enrollment:', error);
+      toast({
+        title: t('common.error'),
+        description: 'Failed to delete enrollment request',
+        variant: "destructive"
+      });
+    }
+  };
+
   const getStatusVariant = (status: string) => {
     switch (status) {
       case 'pending':
@@ -172,13 +201,23 @@ const EnrollmentAdmin: React.FC = () => {
                       <User className="h-5 w-5" />
                       {enrollment.name}
                     </CardTitle>
-                    <div className="flex gap-2">
-                      <Badge variant={getStatusVariant(enrollment.status)}>
-                        {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
-                      </Badge>
-                      <Badge variant="outline">
-                        {enrollment.course_type.replace('_', ' ')}
-                      </Badge>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-2">
+                        <Badge variant={getStatusVariant(enrollment.status)}>
+                          {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                        </Badge>
+                        <Badge variant="outline">
+                          {enrollment.course_type.replace('_', ' ')}
+                        </Badge>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => deleteEnrollment(enrollment.id, enrollment.name)}
+                        className="ml-2"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 </CardHeader>
