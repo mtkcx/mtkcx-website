@@ -459,10 +459,11 @@ const MobileApp: React.FC = () => {
 
               <TabsContent value="courses" className="m-0 p-4 pb-24">
                 <div className="space-y-8">
-                  <div className="text-center space-y-4">
-                    <BookOpen className="h-16 w-16 text-primary mx-auto" />
-                    <h2 className="text-3xl font-bold">{t('courses.title')}</h2>
-                    <p className="text-muted-foreground text-lg leading-relaxed">
+                  <div className="text-center space-y-6">
+                    <h2 className={`text-2xl sm:text-3xl font-bold px-4 ${isRTL ? 'leading-[1.6] tracking-wide' : 'leading-tight'} max-w-sm mx-auto`}>
+                      {t('courses.title')}
+                    </h2>
+                    <p className={`text-muted-foreground text-base sm:text-lg ${isRTL ? 'leading-[1.8] tracking-wide px-2' : 'leading-relaxed'} max-w-md mx-auto`}>
                       {t('courses.subtitle')}
                     </p>
                   </div>
