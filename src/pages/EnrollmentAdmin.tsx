@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -31,11 +32,7 @@ const EnrollmentAdmin: React.FC = () => {
   const [editingNotes, setEditingNotes] = useState<string | null>(null);
   const [notesValue, setNotesValue] = useState('');
 
-  useEffect(() => {
-    fetchEnrollments();
-  }, []);
-
-  const fetchEnrollments = async () => {
+  const fetchEnrollments = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('enrollment_requests')
@@ -54,7 +51,11 @@ const EnrollmentAdmin: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [toast, t]);
+
+  useEffect(() => {
+    fetchEnrollments();
+  }, [fetchEnrollments]);
 
   const updateStatus = async (id: string, status: string) => {
     try {
@@ -117,18 +118,18 @@ const EnrollmentAdmin: React.FC = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusVariant = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'secondary';
       case 'contacted':
-        return 'bg-blue-100 text-blue-800';
+        return 'default';
       case 'enrolled':
-        return 'bg-green-100 text-green-800';
+        return 'default';
       case 'declined':
-        return 'bg-red-100 text-red-800';
+        return 'destructive';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'outline';
     }
   };
 
@@ -172,7 +173,7 @@ const EnrollmentAdmin: React.FC = () => {
                       {enrollment.name}
                     </CardTitle>
                     <div className="flex gap-2">
-                      <Badge className={getStatusColor(enrollment.status)}>
+                      <Badge variant={getStatusVariant(enrollment.status)}>
                         {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
                       </Badge>
                       <Badge variant="outline">
@@ -201,35 +202,22 @@ const EnrollmentAdmin: React.FC = () => {
                   </div>
 
                   <div className="border-t pt-4">
-                    <div className="flex gap-2 mb-3">
-                      <Button
-                        size="sm"
-                        variant={enrollment.status === 'pending' ? 'default' : 'outline'}
-                        onClick={() => updateStatus(enrollment.id, 'pending')}
+                    <div className="flex items-center gap-4 mb-3">
+                      <label className="text-sm font-medium">Status:</label>
+                      <Select
+                        value={enrollment.status}
+                        onValueChange={(value) => updateStatus(enrollment.id, value)}
                       >
-                        Pending
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant={enrollment.status === 'contacted' ? 'default' : 'outline'}
-                        onClick={() => updateStatus(enrollment.id, 'contacted')}
-                      >
-                        Contacted
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant={enrollment.status === 'enrolled' ? 'default' : 'outline'}
-                        onClick={() => updateStatus(enrollment.id, 'enrolled')}
-                      >
-                        Enrolled
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant={enrollment.status === 'declined' ? 'default' : 'outline'}
-                        onClick={() => updateStatus(enrollment.id, 'declined')}
-                      >
-                        Declined
-                      </Button>
+                        <SelectTrigger className="w-40">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="contacted">Contacted</SelectItem>
+                          <SelectItem value="enrolled">Enrolled</SelectItem>
+                          <SelectItem value="declined">Declined</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div className="space-y-2">
