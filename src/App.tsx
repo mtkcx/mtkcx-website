@@ -27,6 +27,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import SmartDashboardRedirect from "./components/SmartDashboardRedirect";
 import CustomerProfile from "./pages/CustomerProfile";
 import Profile from "./pages/Profile";
 import MyOrders from "./pages/MyOrders";
@@ -79,7 +80,7 @@ function App() {
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/payment-success" element={<PaymentSuccess />} />
                         <Route path="/payment-cancelled" element={<PaymentCancelled />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/dashboard" element={<SmartDashboardRedirect />} />
                         <Route path="/admin" element={<AdminDashboard />} />
                         <Route path="/admin/orders" element={<OrderAdmin />} />
                         <Route path="/admin/quotes" element={<QuoteAdmin />} />
