@@ -24,7 +24,8 @@ import {
   Package,
   MessageCircle,
   GraduationCap,
-  ArrowLeft
+  ArrowLeft,
+  Trash2
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -236,6 +237,35 @@ const Dashboard = () => {
     }
   };
 
+  const deleteEnrollment = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete the enrollment request from ${name}? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('enrollment_requests')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setEnrollments(prev => prev.filter(enrollment => enrollment.id !== id));
+
+      toast({
+        title: 'Enrollment Deleted',
+        description: `Enrollment request from ${name} has been deleted`,
+      });
+    } catch (error) {
+      console.error('Error deleting enrollment:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete enrollment request',
+        variant: "destructive"
+      });
+    }
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
@@ -249,22 +279,18 @@ const Dashboard = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string): "default" | "destructive" | "secondary" | "outline" => {
     switch (status.toLowerCase()) {
-      case 'completed':
-      case 'confirmed':
       case 'enrolled':
-        return 'bg-green-100 text-green-800';
+        return 'default';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'cancelled':
-      case 'rejected':
+        return 'secondary';
       case 'declined':
-        return 'bg-red-100 text-red-800';
+        return 'destructive';
       case 'contacted':
-        return 'bg-blue-100 text-blue-800';
+        return 'default';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'outline';
     }
   };
 
@@ -545,23 +571,33 @@ const Dashboard = () => {
                       {enrollments.map((enrollment) => (
                         <Card key={enrollment.id} className="border">
                           <CardHeader className="pb-4">
-                            <div className="flex items-center justify-between">
-                              <CardTitle className="flex items-center gap-2">
-                                <User className="h-5 w-5" />
-                                {enrollment.name}
-                              </CardTitle>
-                              <div className="flex gap-2">
-                                <Badge className={getStatusColor(enrollment.status)}>
-                                  {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
-                                </Badge>
-                                <Badge variant="outline">
-                                  Professional Detailing
-                                </Badge>
-                                <Badge variant="secondary" className="text-xs">
-                                  {format(new Date(enrollment.created_at), 'MMM dd, HH:mm')}
-                                </Badge>
+                              <div className="flex items-center justify-between">
+                                <CardTitle className="flex items-center gap-2">
+                                  <User className="h-5 w-5" />
+                                  {enrollment.name}
+                                </CardTitle>
+                                <div className="flex items-center gap-2">
+                                  <div className="flex gap-2">
+                                    <Badge variant={getStatusColor(enrollment.status)}>
+                                      {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                                    </Badge>
+                                    <Badge variant="outline">
+                                      Professional Detailing
+                                    </Badge>
+                                    <Badge variant="secondary" className="text-xs">
+                                      {format(new Date(enrollment.created_at), 'MMM dd, HH:mm')}
+                                    </Badge>
+                                  </div>
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    onClick={() => deleteEnrollment(enrollment.id, enrollment.name)}
+                                    className="ml-2"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
                               </div>
-                            </div>
                           </CardHeader>
                           
                           <CardContent className="space-y-4">
