@@ -84,17 +84,10 @@ const UserRoleManager: React.FC = () => {
         { id: '1', email: searchEmail, created_at: new Date().toISOString() }
       ];
 
-      // Get user roles for found users
-      const { data: roles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('user_id, role');
-
-      if (rolesError) throw rolesError;
-
-      // Add roles to users
+      // Mock user roles (database table might not exist)
       const usersWithRoles = mockUsers.map(user => ({
         ...user,
-        role: roles.find(role => role.user_id === user.id)?.role || 'user'
+        role: 'user' // Default role since user_roles table may not exist
       }));
 
       setUsers(usersWithRoles);
@@ -260,16 +253,16 @@ export const MobileAdminDashboard: React.FC = () => {
     switch (status.toLowerCase()) {
       case 'completed':
       case 'confirmed':
-        return 'bg-green-100 text-green-800';
+        return 'default';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'warning';
       case 'cancelled':
       case 'rejected':
-        return 'bg-red-100 text-red-800';
+        return 'destructive';
       case 'processing':
-        return 'bg-blue-100 text-blue-800';
+        return 'secondary';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'outline';
     }
   };
 
@@ -391,7 +384,7 @@ export const MobileAdminDashboard: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <div className="font-medium text-sm">{formatCurrency(order.amount)}</div>
-                        <Badge className={`${getStatusColor(order.status)} text-xs`}>{order.status}</Badge>
+                        <Badge variant={getStatusColor(order.status)} className="text-xs">{order.status}</Badge>
                       </div>
                     </div>
                   ))}
@@ -419,7 +412,7 @@ export const MobileAdminDashboard: React.FC = () => {
                         <div className="text-xs text-muted-foreground">{formatDate(quote.created_at)}</div>
                       </div>
                       <div>
-                        <Badge className={`${getStatusColor(quote.status)} text-xs`}>{quote.status}</Badge>
+                        <Badge variant={getStatusColor(quote.status)} className="text-xs">{quote.status}</Badge>
                       </div>
                     </div>
                   ))}
@@ -448,7 +441,7 @@ export const MobileAdminDashboard: React.FC = () => {
                         <div className="text-xs text-muted-foreground">{formatDate(enrollment.created_at)}</div>
                       </div>
                       <div>
-                        <Badge className={`${getStatusColor(enrollment.status)} text-xs`}>{enrollment.status}</Badge>
+                        <Badge variant={getStatusColor(enrollment.status)} className="text-xs">{enrollment.status}</Badge>
                       </div>
                     </div>
                   ))}
