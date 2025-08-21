@@ -31,11 +31,10 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.phone) {
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
       toast({
-        title: t('mobile.enrollment.missing_info'),
-        description: t('mobile.enrollment.fill_required'),
-        variant: "destructive",
+        title: 'Please Complete All Fields',
+        description: 'Please fill in your name, email, and phone number to continue.',
       });
       return;
     }

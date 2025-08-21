@@ -13,31 +13,13 @@ interface EnrollmentRequest {
   course_type?: string;
 }
 
-// Input validation functions
+// Simple input sanitization to prevent XSS
 const sanitizeInput = (input: string): string => {
   return input
     .trim()
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<[^>]*>/g, '')
-    .replace(/javascript:/gi, '')
-    .replace(/on\w+\s*=/gi, '')
-    .replace(/expression\s*\(/gi, '')
-    .replace(/vbscript:/gi, '')
     .slice(0, 1000);
-};
-
-const validateEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email) && email.length <= 254;
-};
-
-const validatePhone = (phone: string): boolean => {
-  const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-  return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''));
-};
-
-const validateName = (name: string): boolean => {
-  return name.length >= 2 && name.length <= 100 && /^[a-zA-Z\s\u00C0-\u017F]+$/.test(name);
 };
 
 serve(async (req) => {
@@ -56,12 +38,13 @@ serve(async (req) => {
     const requestBody: EnrollmentRequest = await req.json();
     const { name, email, phone, course_type = 'professional_detailing' } = requestBody;
 
-    // Validate required fields
-    if (!name || !email || !phone) {
+    // Basic validation - just check if fields have content
+    if (!name?.trim() || !email?.trim() || !phone?.trim()) {
       return new Response(
         JSON.stringify({ 
-          error: 'All fields are required',
-          details: 'Name, email, and phone are mandatory fields'
+          success: false,
+          error: 'Please Complete All Fields',
+          details: 'Name, email, and phone are required'
         }),
         { 
           status: 400, 
@@ -70,106 +53,10 @@ serve(async (req) => {
       );
     }
 
-    // Sanitize inputs
+    // Simple sanitization only
     const sanitizedName = sanitizeInput(name);
     const sanitizedEmail = sanitizeInput(email.toLowerCase());
     const sanitizedPhone = sanitizeInput(phone);
-
-    // Validate inputs
-    if (!validateName(sanitizedName)) {
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Invalid name format');
-      return new Response(
-        JSON.stringify({ 
-          error: 'Invalid name',
-          details: 'Name must be 2-100 characters and contain only letters and spaces'
-        }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    if (!validateEmail(sanitizedEmail)) {
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Invalid email format');
-      return new Response(
-        JSON.stringify({ 
-          error: 'Invalid email',
-          details: 'Please provide a valid email address'
-        }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    if (!validatePhone(sanitizedPhone)) {
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Invalid phone format');
-      return new Response(
-        JSON.stringify({ 
-          error: 'Invalid phone',
-          details: 'Please provide a valid phone number'
-        }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    // Enhanced security validation using new database function
-    const { data: securityCheck, error: securityError } = await supabase
-      .rpc('validate_edge_function_security', {
-        operation_type: 'enrollment'
-      });
-
-    if (securityError || !securityCheck) {
-      console.log('Security validation failed for enrollment request');
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Security validation failed');
-      return new Response(
-        JSON.stringify({ 
-          error: 'Security validation failed',
-          details: 'Request blocked for security reasons'
-        }),
-        { 
-          status: 429, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    // Check for duplicate enrollment
-    const { data: existingEnrollment } = await supabase
-      .from('enrollment_requests')
-      .select('id')
-      .eq('email', sanitizedEmail)
-      .eq('status', 'pending')
-      .single();
-
-    if (existingEnrollment) {
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Duplicate enrollment attempt');
-      return new Response(
-        JSON.stringify({ 
-          error: 'Enrollment already exists',
-          details: 'An enrollment request with this email is already pending'
-        }),
-        { 
-          status: 409, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    // Set enhanced security context for RLS policy validation
-    await supabase.rpc('set_config', {
-      setting_name: 'app.enrollment_context',
-      setting_value: 'secure_enrollment_creation',
-      is_local: true
-    });
-
-    // Set security validation context for RLS policies
-    await supabase.rpc('set_security_validation_context');
 
     // Insert enrollment request
     const { data: enrollment, error: insertError } = await supabase
@@ -185,11 +72,11 @@ serve(async (req) => {
 
     if (insertError) {
       console.error('Database insert error:', insertError);
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, `Database error: ${insertError.message}`);
       return new Response(
         JSON.stringify({ 
-          error: 'Failed to create enrollment',
-          details: 'Please try again later'
+          success: false,
+          error: 'Unable to process enrollment',
+          details: 'Please try again in a moment'
         }),
         { 
           status: 500, 
@@ -197,9 +84,6 @@ serve(async (req) => {
         }
       );
     }
-
-    // Log successful enrollment
-    await logEnrollmentAttempt(supabase, sanitizedEmail, true);
 
     // Send enrollment confirmation email
     try {
