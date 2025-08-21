@@ -9,7 +9,6 @@ import { MobileProductCatalog } from '@/components/mobile/MobileProductCatalog';
 import { MobileHome } from '@/components/mobile/MobileHome';
 import { MobileCheckout } from '@/components/mobile/MobileCheckout';
 import { MobileDashboard } from '@/components/mobile/MobileDashboard';
-import { MobileAdminDashboard } from '@/components/mobile/MobileAdminDashboard';
 import { MobileEnrollmentDialog } from '@/components/mobile/MobileEnrollmentDialog';
 import { MobileAuth } from '@/components/mobile/MobileAuth';
 import { MobileContact } from '@/components/mobile/MobileContact';
@@ -18,6 +17,7 @@ import { MobilePWAFeatures } from '@/components/mobile/MobilePWAFeatures';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate } from 'react-router-dom';
 import { 
   Calculator, 
   ShoppingBag, 
@@ -42,7 +42,6 @@ import {
 import { Card } from '@/components/ui/card';
 import SEOHead from '@/components/SEOHead';
 import CartButton from '@/components/CartButton';
-import { useNavigate } from 'react-router-dom';
 
 const MobileApp: React.FC = () => {
   const { user, profile, isAdmin, signOut } = useAuth();
@@ -134,26 +133,12 @@ const MobileApp: React.FC = () => {
     setLanguage(lang as 'en' | 'ar' | 'he');
   };
 
-  // Temporarily disabled for mobile app testing - REMOVE FOR PRODUCTION
-  // The mobile app should work for testing purposes on desktop
-  // if (!isMobile) {
-  //   return (
-  //     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-  //       <div className="text-center space-y-4 max-w-md">
-  //         <h1 className="text-2xl font-bold">Mobile App Preview</h1>
-  //         <p className="text-muted-foreground">
-  //           Testing on desktop. For production, use browser mobile view or actual mobile device.
-  //         </p>
-  //         <Button onClick={() => window.location.reload()} className="mt-4">
-  //           Continue to Mobile App (Desktop Preview)
-  //         </Button>
-  //         <div className="mt-8">
-  //           {/* Show mobile app anyway for testing */}
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  // Handle admin dashboard navigation
+  const handleAdminDashboard = () => {
+    // Navigate to mobile admin route
+    navigate('/mobile-admin');
+    setIsMenuOpen(false);
+  };
 
   const menuItems = [
     { 
@@ -169,32 +154,6 @@ const MobileApp: React.FC = () => {
         window.scrollTo(0, 0);
       }
     },
-    // { 
-    //   icon: Calculator, 
-    //   label: t('mobile.nav.packages'), 
-    //   action: () => {
-    //     setActiveTab('calculator');
-    //     setShowAuth(false);
-    //     setShowContact(false);
-    //     setShowAbout(false);
-    //     setShowCheckout(false);
-    //     setIsMenuOpen(false);
-    //     window.scrollTo(0, 0);
-    //   }
-    // },
-    // { 
-    //   icon: Camera, 
-    //   label: t('mobile.nav.quote'), 
-    //   action: () => {
-    //     setActiveTab('photo');
-    //     setShowAuth(false);
-    //     setShowContact(false);
-    //     setShowAbout(false);
-    //     setShowCheckout(false);
-    //     setIsMenuOpen(false);
-    //     window.scrollTo(0, 0);
-    //   }
-    // },
     { 
       icon: ShoppingBag, 
       label: t('nav.products'), 
@@ -237,7 +196,7 @@ const MobileApp: React.FC = () => {
     },
     ...(user ? [
       { icon: Shield, label: t('mobile.nav.dashboard'), action: () => handleTabSwitch('dashboard') },
-      ...(isAdmin ? [{ icon: Shield, label: t('mobile.nav.admin'), action: () => handleTabSwitch('admin') }] : [])
+      ...(isAdmin ? [{ icon: Shield, label: t('mobile.nav.admin'), action: handleAdminDashboard }] : [])
     ] : []),
   ];
 
@@ -593,19 +552,7 @@ const MobileApp: React.FC = () => {
 
               {user && (
                 <TabsContent value="dashboard" className="m-0">
-                  {isAdmin ? (
-                    <div className="min-h-screen bg-background">
-                      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b p-4">
-                        <div className="text-center">
-                          <h1 className="text-lg font-semibold text-primary">{t('mobile.nav.admin')}</h1>
-                          <p className="text-sm text-muted-foreground">Full administrative controls</p>
-                        </div>
-                      </div>
-                      <MobileAdminDashboard />
-                    </div>
-                  ) : (
-                    <MobileDashboard />
-                  )}
+                  <MobileDashboard />
                 </TabsContent>
               )}
 
@@ -686,7 +633,7 @@ const MobileApp: React.FC = () => {
                 >
                   <UserIcon className="h-5 w-5 flex-shrink-0" />
                   <span className="text-xs truncate max-w-full px-1 leading-tight">
-                    {isAdmin ? t('mobile.nav.admin') : (profile?.full_name || user?.email?.split('@')[0] || t('nav.profile'))}
+                    {profile?.full_name || user?.email?.split('@')[0] || t('nav.profile')}
                   </span>
                 </TabsTrigger>
               </TabsList>
