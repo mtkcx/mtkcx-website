@@ -27,23 +27,23 @@ const Hero = () => {
       </div>
       
       <div className="container relative z-10 px-4 sm:px-6 mx-auto py-12 sm:py-16 lg:py-20 w-full">
-        <div className="max-w-4xl mx-auto text-center w-full animate-fade-in">
+        <div className="max-w-5xl mx-auto text-center w-full animate-fade-in">
           <div className="mb-6 sm:mb-8">
             <div className="inline-flex items-center px-3 sm:px-4 py-2 rounded-full bg-white/10 text-white text-xs sm:text-sm font-medium mb-4 sm:mb-6 backdrop-blur-sm">
               <Sparkles className="w-3 sm:w-4 h-3 sm:h-4 mr-2" />
               {t('common.official_partner')}
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 sm:mb-8 ${isRTL ? 'leading-[1.4] sm:leading-[1.3]' : 'leading-tight'} px-2 sm:px-4`}>
               {t('hero.title')}
             </h1>
             
-            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
+            <p className={`text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-8 sm:mb-10 max-w-2xl lg:max-w-3xl mx-auto ${isRTL ? 'leading-[1.8] sm:leading-[1.7]' : 'leading-relaxed'} px-4 sm:px-6`}>
               {t('hero.subtitle')}
             </p>
           </div>
 
-          <div className={`flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+          <div className={`flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mt-2 sm:mt-0 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
             <Button size="lg" className="px-6 sm:px-8 py-4 sm:py-6 h-auto min-w-[180px] sm:min-w-[200px] border-2 text-sm will-change-transform hover:scale-105 transition-transform" onClick={() => {
               navigate('/products');
               window.scrollTo(0, 0);
