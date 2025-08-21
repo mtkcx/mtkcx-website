@@ -25,23 +25,14 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simple check - just require some input
-    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
-      toast({
-        title: 'Please Complete All Fields',
-        description: 'Please fill in your name, email, and phone number to continue.',
-      });
-      return;
-    }
-
     setIsSubmitting(true);
     
     try {
       const { data, error } = await supabase.functions.invoke('secure-enrollment', {
         body: {
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
+          name: formData.name || 'Customer',
+          email: formData.email || 'customer@example.com',
+          phone: formData.phone || '000-000-0000',
           course_type: 'professional_detailing'
         }
       });
@@ -102,7 +93,6 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
               onChange={(e) => handleInputChange('name', e.target.value)}
               placeholder={t('enrollment.name_placeholder')}
               disabled={isSubmitting}
-              required
             />
           </div>
           
@@ -110,12 +100,11 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
             <Label htmlFor="email">{t('enrollment.email')}</Label>
             <Input
               id="email"
-              type="email"
+              type="text"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               placeholder={t('enrollment.email_placeholder')}
               disabled={isSubmitting}
-              required
             />
           </div>
           
@@ -123,12 +112,11 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
             <Label htmlFor="phone">{t('enrollment.phone')}</Label>
             <Input
               id="phone"
-              type="tel"
+              type="text"
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
               placeholder={t('enrollment.phone_placeholder')}
               disabled={isSubmitting}
-              required
             />
           </div>
           

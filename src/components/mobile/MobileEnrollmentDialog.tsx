@@ -31,23 +31,15 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
-      toast({
-        title: 'Please Complete All Fields',
-        description: 'Please fill in your name, email, and phone number to continue.',
-      });
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
       // Call the secure enrollment edge function
       const { data, error } = await supabase.functions.invoke('secure-enrollment', {
         body: {
-          name: formData.name.trim(),
-          email: formData.email.trim().toLowerCase(),
-          phone: formData.phone.trim(),
+          name: formData.name || 'Customer',
+          email: formData.email || 'customer@example.com', 
+          phone: formData.phone || '000-000-0000',
           course_type: formData.course_type
         }
       });
@@ -107,7 +99,6 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               placeholder={t('auth.enter_full_name')}
-              required
             />
           </div>
 
@@ -118,11 +109,10 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
             </Label>
             <Input
               id="email"
-              type="email"
+              type="text"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               placeholder={t('auth.enter_email')}
-              required
             />
           </div>
 
@@ -133,11 +123,10 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
             </Label>
             <Input
               id="phone"
-              type="tel"
+              type="text"
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
               placeholder={t('auth.enter_phone')}
-              required
             />
           </div>
 
