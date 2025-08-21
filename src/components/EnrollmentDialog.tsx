@@ -26,6 +26,9 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Clear any existing rate limiting data to ensure smooth submission
+    localStorage.removeItem('enrollment-submit-limit');
+    
     // Input validation and sanitization
     const sanitizedName = sanitizeInput(formData.name);
     const sanitizedEmail = sanitizeInput(formData.email.toLowerCase());
@@ -33,18 +36,18 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     
     if (!sanitizedName || !sanitizedEmail || !sanitizedPhone) {
       toast({
-        title: t('common.error'),
-        description: t('enrollment.fill_all_fields'),
-        variant: "destructive"
+        title: 'Please Complete All Fields',
+        description: 'Kindly fill in your full name, email address, and phone number',
+        variant: "default"
       });
       return;
     }
 
-    // Friendly guidance instead of strict validation
+    // Friendly guidance for complete information
     if (sanitizedName.length < 2) {
       toast({
-        title: t('enrollment.name_guidance'),
-        description: 'Please enter your full name for better service',
+        title: 'Full Name Required',
+        description: 'Please enter your complete full name for better service',
         variant: "default"
       });
       return;
@@ -52,18 +55,18 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
 
     if (!validateEmail(sanitizedEmail)) {
       toast({
-        title: t('common.error'),
-        description: 'Please enter a valid email address',
-        variant: "destructive"
+        title: 'Email Format',
+        description: 'Please enter a valid email address (example@domain.com)',
+        variant: "default"
       });
       return;
     }
 
     if (!validatePhone(sanitizedPhone)) {
       toast({
-        title: t('common.error'),
-        description: 'Please enter a valid phone number',
-        variant: "destructive"
+        title: 'Phone Number',
+        description: 'Please enter a valid phone number for contact',
+        variant: "default"
       });
       return;
     }

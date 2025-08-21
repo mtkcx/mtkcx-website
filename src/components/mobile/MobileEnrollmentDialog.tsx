@@ -31,20 +31,23 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Clear any existing rate limiting data to ensure smooth submission
+    localStorage.removeItem('enrollment-submit-limit');
+    
     if (!formData.name || !formData.email || !formData.phone) {
       toast({
-        title: t('mobile.enrollment.missing_info'),
-        description: t('mobile.enrollment.fill_required'),
-        variant: "destructive",
+        title: 'Please Complete All Fields',
+        description: 'Kindly fill in your full name, email address, and phone number',
+        variant: "default",
       });
       return;
     }
 
-    // Friendly guidance for name length
+    // Friendly guidance for complete information
     if (formData.name.trim().length < 2) {
       toast({
-        title: t('enrollment.name_guidance'),
-        description: 'Please enter your full name for better service',
+        title: 'Full Name Required',
+        description: 'Please enter your complete full name for better service',
         variant: "default",
       });
       return;
