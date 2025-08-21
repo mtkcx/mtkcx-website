@@ -10,18 +10,7 @@ import {
   Users, 
   BookOpen, 
   TrendingUp, 
-  Calendar,
-  Mail,
-  Phone,
-  MapPin,
-  DollarSign,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  Eye,
-  Crown,
-  UserCheck,
-  Bell
+  Crown
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';

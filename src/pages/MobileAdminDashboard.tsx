@@ -6,7 +6,7 @@ import SEOHead from '@/components/SEOHead';
 import { useAuth } from '@/contexts/AuthContext';
 
 const MobileAdminDashboardPage: React.FC = () => {
-  const { user, isAdmin, loading } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
     return (
