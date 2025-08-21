@@ -26,8 +26,6 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
-import { MobileNotificationManager } from './MobileNotificationManager';
-
 interface Order {
   id: string;
   order_number: string;
@@ -59,145 +57,42 @@ interface Enrollment {
   created_at: string;
 }
 
-interface User {
-  id: string;
-  email: string;
-  created_at: string;
-  role?: string;
-}
+// Simple SMS Manager Component without database dependencies
+const SimpleSMSManager: React.FC = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-sm">
+          <Bell className="h-4 w-4" />
+          SMS Management
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-center py-6 text-muted-foreground">
+          <Bell className="h-8 w-8 mx-auto mb-2 opacity-50" />
+          <p className="text-sm">SMS management system is being configured</p>
+          <p className="text-xs">Contact your developer to set up the SMS database tables</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
-const UserRoleManager: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [searchEmail, setSearchEmail] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const searchUsers = async () => {
-    if (!searchEmail.trim()) {
-      toast.error('Please enter an email to search');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // Mock user data (in real implementation, you'd need a way to get auth.users data)
-      const mockUsers = [
-        { id: '1', email: searchEmail, created_at: new Date().toISOString() }
-      ];
-
-      // Get user roles for found users
-      const { data: roles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('user_id, role');
-
-      if (rolesError) throw rolesError;
-
-      // Add roles to users
-      const usersWithRoles = mockUsers.map(user => ({
-        ...user,
-        role: roles.find(role => role.user_id === user.id)?.role || 'user'
-      }));
-
-      setUsers(usersWithRoles);
-    } catch (error) {
-      console.error('Error searching users:', error);
-      toast.error('Failed to search users');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const promoteToAdmin = async (userId: string) => {
-    try {
-      const { error } = await supabase.rpc('promote_user_to_admin', {
-        target_user_id: userId
-      });
-
-      if (error) throw error;
-
-      toast.success('User promoted to admin successfully');
-      searchUsers(); // Refresh the list
-    } catch (error) {
-      console.error('Error promoting user:', error);
-      toast.error('Failed to promote user to admin');
-    }
-  };
-
-  const demoteAdmin = async (userId: string) => {
-    try {
-      const { error } = await supabase.rpc('demote_admin_to_user', {
-        target_user_id: userId
-      });
-
-      if (error) throw error;
-
-      toast.success('Admin demoted to user successfully');
-      searchUsers(); // Refresh the list
-    } catch (error) {
-      console.error('Error demoting admin:', error);
-      toast.error('Failed to demote admin');
-    }
-  };
-
+// Simple User Manager Component without database dependencies
+const SimpleUserManager: React.FC = () => {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm">
           <Crown className="h-4 w-4" />
-          User Role Management
+          User Management
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-3">
-          <div className="flex gap-2">
-            <Input
-              placeholder="Enter user email"
-              value={searchEmail}
-              onChange={(e) => setSearchEmail(e.target.value)}
-              className="text-sm"
-            />
-            <Button onClick={searchUsers} disabled={loading} size="sm">
-              {loading ? 'Searching...' : 'Search'}
-            </Button>
-          </div>
-
-          {users.length > 0 && (
-            <div className="space-y-2">
-              <h4 className="font-medium text-sm">Search Results:</h4>
-              {users.map((user) => (
-                <div key={user.id} className="flex items-center justify-between p-2 border rounded-lg">
-                  <div>
-                    <div className="font-medium text-sm">{user.email}</div>
-                    <div className="text-xs text-muted-foreground">
-                      Role: <Badge variant={user.role === 'admin' ? 'default' : 'secondary'} className="text-xs">
-                        {user.role}
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="flex gap-1">
-                    {user.role === 'admin' ? (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => demoteAdmin(user.id)}
-                        className="text-xs"
-                      >
-                        Demote
-                      </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        onClick={() => promoteToAdmin(user.id)}
-                        className="text-xs"
-                      >
-                        <Crown className="h-3 w-3 mr-1" />
-                        Promote
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        <div className="text-center py-6 text-muted-foreground">
+          <Crown className="h-8 w-8 mx-auto mb-2 opacity-50" />
+          <p className="text-sm">User role management system is being configured</p>
+          <p className="text-xs">Contact your developer to set up the user roles database</p>
         </div>
       </CardContent>
     </Card>
@@ -256,20 +151,20 @@ export const MobileAdminDashboard: React.FC = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string): "default" | "secondary" | "destructive" | "outline" => {
     switch (status.toLowerCase()) {
       case 'completed':
       case 'confirmed':
-        return 'bg-green-100 text-green-800';
+        return 'default';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'secondary';
       case 'cancelled':
       case 'rejected':
-        return 'bg-red-100 text-red-800';
+        return 'destructive';
       case 'processing':
-        return 'bg-blue-100 text-blue-800';
+        return 'outline';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'secondary';
     }
   };
 
@@ -391,7 +286,7 @@ export const MobileAdminDashboard: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <div className="font-medium text-sm">{formatCurrency(order.amount)}</div>
-                        <Badge className={`${getStatusColor(order.status)} text-xs`}>{order.status}</Badge>
+                        <Badge variant={getStatusColor(order.status)} className="text-xs">{order.status}</Badge>
                       </div>
                     </div>
                   ))}
@@ -419,7 +314,7 @@ export const MobileAdminDashboard: React.FC = () => {
                         <div className="text-xs text-muted-foreground">{formatDate(quote.created_at)}</div>
                       </div>
                       <div>
-                        <Badge className={`${getStatusColor(quote.status)} text-xs`}>{quote.status}</Badge>
+                        <Badge variant={getStatusColor(quote.status)} className="text-xs">{quote.status}</Badge>
                       </div>
                     </div>
                   ))}
@@ -448,7 +343,7 @@ export const MobileAdminDashboard: React.FC = () => {
                         <div className="text-xs text-muted-foreground">{formatDate(enrollment.created_at)}</div>
                       </div>
                       <div>
-                        <Badge className={`${getStatusColor(enrollment.status)} text-xs`}>{enrollment.status}</Badge>
+                        <Badge variant={getStatusColor(enrollment.status)} className="text-xs">{enrollment.status}</Badge>
                       </div>
                     </div>
                   ))}
@@ -463,20 +358,11 @@ export const MobileAdminDashboard: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="notifications" className="space-y-3">
-          <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">SMS System</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <MobileNotificationManager />
-              </CardContent>
-            </Card>
-          </div>
+          <SimpleSMSManager />
         </TabsContent>
 
         <TabsContent value="users" className="space-y-3">
-          <UserRoleManager />
+          <SimpleUserManager />
         </TabsContent>
       </Tabs>
     </div>
