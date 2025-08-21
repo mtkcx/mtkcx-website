@@ -60,52 +60,51 @@ function App() {
           <AuthProvider>
             <CartProvider>
               <TooltipProvider>
-                <SecurityMonitor>
-                  <LanguagePreferenceWrapper>
-                    <Toaster />
-                    <Sonner />
-                    <BrowserRouter>
-                      <SecurityMiddleware>
-                        <ScrollToTop />
-                        <Routes>
-                          <Route path="/" element={<Index />} />
-                          <Route path="/about" element={<About />} />
-                          <Route path="/auth" element={<Auth />} />
-                          <Route path="/products" element={<Products />} />
-                          <Route path="/products/:id" element={<ProductDetail />} />
-                          <Route path="/contact" element={<Contact />} />
-                          <Route path="/courses" element={<Courses />} />
-                          <Route path="/gallery" element={<Gallery />} />
-                          <Route path="/checkout" element={<Checkout />} />
-                          <Route path="/payment-success" element={<PaymentSuccess />} />
-                          <Route path="/payment-cancelled" element={<PaymentCancelled />} />
-                          <Route path="/dashboard" element={<Dashboard />} />
-                          <Route path="/admin" element={<AdminDashboard />} />
-                          <Route path="/admin/orders" element={<OrderAdmin />} />
-                          <Route path="/admin/quotes" element={<QuoteAdmin />} />
-                          <Route path="/admin/products" element={<ProductAdmin />} />
-                          <Route path="/admin/enrollments" element={<EnrollmentAdmin />} />
-                          <Route path="/admin/emails" element={<EmailAdmin />} />
-                          <Route path="/admin/chat" element={<ChatAdmin />} />
-                          <Route path="/admin/security" element={<SecurityDashboard />} />
-                          <Route path="/customer-profile" element={<CustomerProfile />} />
-                          <Route path="/profile" element={<Profile />} />
-                          <Route path="/my-orders" element={<MyOrders />} />
-                          <Route path="/order-lookup" element={<SecureOrderLookup />} />
-                          <Route path="/verify-newsletter" element={<VerifyNewsletter />} />
-                          <Route path="/mobile" element={<MobileApp />} />
-                          <Route path="/mobile-admin" element={<MobileAdminDashboard />} />
-                          <Route path="/privacy" element={<PrivacyPolicy />} />
-                          <Route path="/terms" element={<TermsOfService />} />
-                          <Route path="/refund-policy" element={<RefundPolicy />} />
-                          <Route path="/return-policy" element={<ReturnPolicy />} />
-                          <Route path="/shipping-policy" element={<ShippingPolicy />} />
-                          <Route path="*" element={<NotFound />} />
-                        </Routes>
-                      </SecurityMiddleware>
-                    </BrowserRouter>
-                  </LanguagePreferenceWrapper>
-                </SecurityMonitor>
+                <LanguagePreferenceWrapper>
+                  <Toaster />
+                  <Sonner />
+                  <SecurityMonitor />
+                  <BrowserRouter>
+                    <SecurityMiddleware>
+                      <ScrollToTop />
+                      <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/auth" element={<Auth />} />
+                        <Route path="/products" element={<Products />} />
+                        <Route path="/products/:id" element={<ProductDetail />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/courses" element={<Courses />} />
+                        <Route path="/gallery" element={<Gallery />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/payment-success" element={<PaymentSuccess />} />
+                        <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/admin/orders" element={<OrderAdmin />} />
+                        <Route path="/admin/quotes" element={<QuoteAdmin />} />
+                        <Route path="/admin/products" element={<ProductAdmin />} />
+                        <Route path="/admin/enrollments" element={<EnrollmentAdmin />} />
+                        <Route path="/admin/emails" element={<EmailAdmin />} />
+                        <Route path="/admin/chat" element={<ChatAdmin />} />
+                        <Route path="/admin/security" element={<SecurityDashboard />} />
+                        <Route path="/customer-profile" element={<CustomerProfile />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/my-orders" element={<MyOrders />} />
+                        <Route path="/order-lookup" element={<SecureOrderLookup />} />
+                        <Route path="/verify-newsletter" element={<VerifyNewsletter />} />
+                        <Route path="/mobile" element={<MobileApp />} />
+                        <Route path="/mobile-admin" element={<MobileAdminDashboard />} />
+                        <Route path="/privacy" element={<PrivacyPolicy />} />
+                        <Route path="/terms" element={<TermsOfService />} />
+                        <Route path="/refund-policy" element={<RefundPolicy />} />
+                        <Route path="/return-policy" element={<ReturnPolicy />} />
+                        <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </SecurityMiddleware>
+                  </BrowserRouter>
+                </LanguagePreferenceWrapper>
               </TooltipProvider>
             </CartProvider>
           </AuthProvider>
