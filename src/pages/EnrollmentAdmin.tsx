@@ -43,7 +43,7 @@ const EnrollmentAdmin: React.FC = () => {
 
       if (error) throw error;
       setEnrollments(data || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching enrollments:', error);
       toast({
         title: t('common.error'),
@@ -78,7 +78,7 @@ const EnrollmentAdmin: React.FC = () => {
         title: 'Status Updated',
         description: `Enrollment status updated to ${status}`,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating status:', error);
       toast({
         title: t('common.error'),
@@ -110,7 +110,7 @@ const EnrollmentAdmin: React.FC = () => {
         title: 'Notes Saved',
         description: 'Admin notes updated successfully',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving notes:', error);
       toast({
         title: t('common.error'),
@@ -139,7 +139,7 @@ const EnrollmentAdmin: React.FC = () => {
         title: 'Enrollment Deleted',
         description: `Enrollment request from ${name} has been deleted`,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting enrollment:', error);
       toast({
         title: t('common.error'),
