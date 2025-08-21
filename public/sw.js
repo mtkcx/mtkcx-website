@@ -1,6 +1,6 @@
 // Enhanced Service Worker for offline capabilities and performance
 const CACHE_VERSION = 'v3.1'; // Incremented version to clear old caches
-const CACHE_NAME = `mtkcx-${CACHE_VERSION}`;
+const CACHE_NAME = `MTKCx-${CACHE_VERSION}`;
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
 const PRODUCTS_CACHE = `products-${CACHE_VERSION}`;
@@ -227,7 +227,7 @@ async function handlePageRequest(request) {
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Offline - MTKCX</title>
+          <title>Offline - MTKCx</title>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <style>
             body { 

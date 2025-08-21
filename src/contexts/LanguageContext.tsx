@@ -673,7 +673,7 @@ const translations = {
     'products.price_tba_label': 'To be announced',
     
     // Footer
-    'footer.company_name': 'MTKcx',
+    'footer.company_name': 'MTKCx',
     'footer.company_desc': 'Official Koch-Chemie distributor providing premium car care products, professional training, and expert wrapping services.',
     'footer.quick_links': 'Quick Links',
     'footer.services': 'Services',
@@ -1494,7 +1494,7 @@ const translations = {
     'gallery.professional_grade': 'درجة مهنية',
     
     // Footer
-    'footer.company_name': 'MTKcx',
+    'footer.company_name': 'MTKCx',
     'footer.company_desc': 'موزع رسمي لشركة Koch-Chemie يقدم منتجات رعاية السيارات المتميزة والتدريب المهني وخدمات التغليف الخبيرة.',
     'footer.quick_links': 'روابط سريعة',
     'footer.services': 'الخدمات',
@@ -2521,7 +2521,7 @@ const translations = {
     'gallery.professional_grade': 'דרגה מקצועית',
     
     // Footer
-    'footer.company_name': 'MTKcx',
+    'footer.company_name': 'MTKCx',
     'footer.company_desc': 'מפיץ רשמי של Koch-Chemie המספק מוצרי טיפוח רכב מעולים, הכשרה מקצועית ושירותי עיטוף מומחים.',
     'footer.quick_links': 'קישורים מהירים',
     'footer.services': 'שירותים',
