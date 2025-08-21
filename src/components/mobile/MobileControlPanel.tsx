@@ -188,7 +188,7 @@ export const MobileControlPanel: React.FC<MobileControlPanelProps> = ({
     const event = {
       title: 'Auto Detailing Appointment',
       description: 'Professional vehicle detailing service',
-      location: 'MTKCX Auto Detailing Center',
+      location: 'MTKCx Auto Detailing Center',
       startDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
       endDate: new Date(Date.now() + 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000), // 2 hours later
       url: window.location.href
@@ -210,7 +210,7 @@ export const MobileControlPanel: React.FC<MobileControlPanelProps> = ({
     
     toast({
       title: 'Contact Saved',
-      description: 'MTKCX contact information saved',
+      description: 'MTKCx contact information saved',
       duration: 2000
     });
   };
@@ -218,7 +218,7 @@ export const MobileControlPanel: React.FC<MobileControlPanelProps> = ({
   const handleShareApp = async () => {
     try {
       const shared = await shareProduct({
-        name: 'MTKCX Auto Detailing',
+        name: 'MTKCx Auto Detailing',
         description: 'Professional automotive detailing services and products',
         url: window.location.href
       });

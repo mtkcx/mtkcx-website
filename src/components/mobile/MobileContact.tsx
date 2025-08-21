@@ -142,7 +142,7 @@ export const MobileContact: React.FC<MobileContactProps> = ({
     {
       icon: Mail,
       title: t('contact.email_title'),
-      details: "info@mtkcx.com",
+      details: "info@MTKCx.com",
       description: t('contact.email_desc')
     },
     {
