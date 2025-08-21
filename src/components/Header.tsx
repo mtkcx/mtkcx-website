@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
 import { Globe, Menu, X, Search, User, LogOut, Settings, ShoppingBag } from 'lucide-react';
@@ -22,6 +22,39 @@ const Header = () => {
   } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect if device is mobile
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024 || 'ontouchstart' in window);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('[data-language-dropdown]')) {
+        setIsLanguageDropdownOpen(false);
+      }
+    };
+
+    if (isLanguageDropdownOpen) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [isLanguageDropdownOpen]);
+
+  const handleLanguageDropdownToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
+  };
   const languages = [{
     code: 'en',
     name: 'English',
@@ -130,10 +163,22 @@ const Header = () => {
             </Button>
 
             {/* Language Dropdown */}
-            <div className="relative" 
-                 onMouseEnter={() => setIsLanguageDropdownOpen(true)}
-                 onMouseLeave={() => setIsLanguageDropdownOpen(false)}>
-              <Button variant="ghost" size="lg" className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-4 py-2 min-w-[100px] sm:min-w-[120px]">
+            <div 
+              className="relative" 
+              data-language-dropdown
+              {...(isMobile ? {
+                onClick: handleLanguageDropdownToggle
+              } : {
+                onMouseEnter: () => setIsLanguageDropdownOpen(true),
+                onMouseLeave: () => setIsLanguageDropdownOpen(false)
+              })}
+            >
+              <Button 
+                variant="ghost" 
+                size="lg" 
+                className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-4 py-2 min-w-[100px] sm:min-w-[120px]"
+                {...(isMobile ? { onClick: handleLanguageDropdownToggle } : {})}
+              >
                 <Globe className="h-5 w-5" />
                 <span className="flex items-center space-x-2">
                   <span className="text-lg">
