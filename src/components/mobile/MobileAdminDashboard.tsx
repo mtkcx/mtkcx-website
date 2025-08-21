@@ -213,9 +213,13 @@ export const MobileAdminDashboard: React.FC = () => {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  console.log('MobileAdminDashboard render - loading:', loading, 'isAdmin:', isAdmin, 'user:', !!user);
 
   // Show loading if auth is still loading
   if (loading) {
+    console.log('Showing loading state');
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center">
@@ -226,8 +230,25 @@ export const MobileAdminDashboard: React.FC = () => {
     );
   }
 
+  // Show access denied if not logged in
+  if (!user) {
+    console.log('No user found, showing login required');
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="p-6 max-w-md">
+          <div className="text-center">
+            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-red-600 mb-2">Login Required</h2>
+            <p className="text-muted-foreground">Please log in to access the admin dashboard</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   // Show access denied if not admin
   if (!isAdmin) {
+    console.log('User is not admin, showing access denied');
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="p-6 max-w-md">
@@ -247,7 +268,9 @@ export const MobileAdminDashboard: React.FC = () => {
 
   const fetchData = async () => {
     try {
+      setError(null);
       setDataLoading(true);
+      console.log('Fetching dashboard data...');
       
       // Fetch orders
       const { data: ordersData, error: ordersError } = await supabase
@@ -497,17 +520,28 @@ export const MobileAdminDashboard: React.FC = () => {
           <div className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">SMS System</CardTitle>
+                <CardTitle className="text-lg">Notification System</CardTitle>
               </CardHeader>
               <CardContent>
-                <MobileNotificationManager />
+                <p className="text-muted-foreground text-sm">
+                  Notification management features will be available soon.
+                </p>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
         <TabsContent value="users" className="space-y-3">
-          <UserRoleManager />
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">User Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground text-sm">
+                User role management features will be available soon.
+              </p>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
