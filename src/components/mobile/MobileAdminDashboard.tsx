@@ -5,8 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/AuthContext';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   Package, 
   Users, 
@@ -207,60 +205,10 @@ const UserRoleManager: React.FC = () => {
 };
 
 export const MobileAdminDashboard: React.FC = () => {
-  const { user, isAdmin, loading } = useAuth();
-  const { t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
-  const [dataLoading, setDataLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  console.log('MobileAdminDashboard render - loading:', loading, 'isAdmin:', isAdmin, 'user:', !!user);
-
-  // Show loading if auth is still loading
-  if (loading) {
-    console.log('Showing loading state');
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-          <p className="text-muted-foreground">Loading dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Show access denied if not logged in
-  if (!user) {
-    console.log('No user found, showing login required');
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="p-6 max-w-md">
-          <div className="text-center">
-            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-red-600 mb-2">Login Required</h2>
-            <p className="text-muted-foreground">Please log in to access the admin dashboard</p>
-          </div>
-        </Card>
-      </div>
-    );
-  }
-
-  // Show access denied if not admin
-  if (!isAdmin) {
-    console.log('User is not admin, showing access denied');
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="p-6 max-w-md">
-          <div className="text-center">
-            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-red-600 mb-2">Access Denied</h2>
-            <p className="text-muted-foreground">Admin privileges required</p>
-          </div>
-        </Card>
-      </div>
-    );
-  }
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -268,9 +216,7 @@ export const MobileAdminDashboard: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      setError(null);
-      setDataLoading(true);
-      console.log('Fetching dashboard data...');
+      setLoading(true);
       
       // Fetch orders
       const { data: ordersData, error: ordersError } = await supabase
@@ -306,7 +252,7 @@ export const MobileAdminDashboard: React.FC = () => {
       console.error('Error fetching data:', error);
       toast.error('Failed to fetch dashboard data');
     } finally {
-      setDataLoading(false);
+      setLoading(false);
     }
   };
 
@@ -340,7 +286,7 @@ export const MobileAdminDashboard: React.FC = () => {
     return `₪${amount.toFixed(2)}`;
   };
 
-  if (dataLoading) {
+  if (loading) {
     return (
       <div className="container mx-auto p-4">
         <div className="text-center">Loading admin dashboard...</div>
@@ -520,28 +466,17 @@ export const MobileAdminDashboard: React.FC = () => {
           <div className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Notification System</CardTitle>
+                <CardTitle className="text-lg">SMS System</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground text-sm">
-                  Notification management features will be available soon.
-                </p>
+                <MobileNotificationManager />
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
         <TabsContent value="users" className="space-y-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">User Management</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground text-sm">
-                User role management features will be available soon.
-              </p>
-            </CardContent>
-          </Card>
+          <UserRoleManager />
         </TabsContent>
       </Tabs>
     </div>
