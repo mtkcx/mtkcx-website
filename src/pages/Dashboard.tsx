@@ -131,6 +131,51 @@ const Dashboard = () => {
     }
   };
 
+  // Set up real-time subscription for enrollments
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const channel = supabase
+      .channel('enrollment-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+          schema: 'public',
+          table: 'enrollment_requests'
+        },
+        (payload) => {
+          console.log('Enrollment change detected:', payload);
+          
+          if (payload.eventType === 'INSERT') {
+            // Add new enrollment to the beginning of the list
+            setEnrollments(prev => [payload.new as Enrollment, ...prev.slice(0, 9)]);
+            toast({
+              title: 'New Enrollment Request',
+              description: `${payload.new.name} has submitted an enrollment request`,
+            });
+          } else if (payload.eventType === 'UPDATE') {
+            // Update existing enrollment
+            setEnrollments(prev => 
+              prev.map(enrollment => 
+                enrollment.id === payload.new.id ? payload.new as Enrollment : enrollment
+              )
+            );
+          } else if (payload.eventType === 'DELETE') {
+            // Remove deleted enrollment
+            setEnrollments(prev => 
+              prev.filter(enrollment => enrollment.id !== payload.old.id)
+            );
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAdmin, toast]);
+
   const updateEnrollmentStatus = async (id: string, status: string) => {
     try {
       const { error } = await supabase
@@ -447,9 +492,14 @@ const Dashboard = () => {
             <div className="mt-8">
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <GraduationCap className="h-5 w-5" />
-                    Course Enrollment Management
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="h-5 w-5" />
+                      Course Enrollment Management
+                    </div>
+                    <Badge variant="secondary" className="ml-2">
+                      {enrollments.length} Total
+                    </Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -461,10 +511,27 @@ const Dashboard = () => {
                   ) : enrollments.length === 0 ? (
                     <div className="text-center py-12">
                       <GraduationCap className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                      <p className="text-muted-foreground">No enrollment requests found</p>
+                      <h3 className="text-lg font-semibold mb-2">No Enrollment Requests</h3>
+                      <p className="text-muted-foreground">
+                        New enrollment requests will appear here automatically
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm text-muted-foreground">
+                          Latest enrollment requests (updates in real-time)
+                        </p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={fetchEnrollments}
+                          disabled={enrollmentsLoading}
+                        >
+                          Refresh
+                        </Button>
+                      </div>
+                      
                       {enrollments.map((enrollment) => (
                         <Card key={enrollment.id} className="border">
                           <CardHeader className="pb-4">
@@ -479,6 +546,9 @@ const Dashboard = () => {
                                 </Badge>
                                 <Badge variant="outline">
                                   Professional Detailing
+                                </Badge>
+                                <Badge variant="secondary" className="text-xs">
+                                  {format(new Date(enrollment.created_at), 'MMM dd, HH:mm')}
                                 </Badge>
                               </div>
                             </div>
