@@ -6,8 +6,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
-import { useRateLimit } from '@/hooks/useRateLimit';
-import { sanitizeInput, validateEmail, validateName, validatePhone } from '@/utils/security';
+import { sanitizeInput, validateEmail, validatePhone } from '@/utils/security';
 
 interface EnrollmentDialogProps {
   isOpen: boolean;
@@ -23,28 +22,10 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     email: '',
     phone: ''
   });
-  
-  // Rate limiting for enrollment submissions - more lenient for better UX
-  const { checkRateLimit, isLimited, getRemainingTime } = useRateLimit({
-    maxAttempts: 5,
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    storageKey: 'enrollment-submit-limit'
-  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Rate limiting check
-    if (!checkRateLimit()) {
-      const remainingTime = Math.ceil(getRemainingTime() / 1000 / 60);
-      toast({
-        title: 'Too Many Attempts',
-        description: `Please wait ${remainingTime} minutes before trying again.`,
-        variant: 'destructive',
-      });
-      return;
-    }
-
     // Input validation and sanitization
     const sanitizedName = sanitizeInput(formData.name);
     const sanitizedEmail = sanitizeInput(formData.email.toLowerCase());

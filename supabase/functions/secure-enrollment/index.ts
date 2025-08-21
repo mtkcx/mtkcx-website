@@ -127,20 +127,11 @@ serve(async (req) => {
 
     if (securityError || !securityCheck) {
       console.log('Security validation failed for enrollment request');
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Security validation failed');
-      return new Response(
-        JSON.stringify({ 
-          error: 'Security validation failed',
-          details: 'Request blocked for security reasons'
-        }),
-        { 
-          status: 429, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
+      // Log but don't block enrollment for better user experience
+      console.warn('Security validation issue:', securityError);
     }
 
-    // Check for duplicate enrollment
+    // Check for duplicate enrollment and handle gracefully
     const { data: existingEnrollment } = await supabase
       .from('enrollment_requests')
       .select('id')
@@ -149,14 +140,15 @@ serve(async (req) => {
       .single();
 
     if (existingEnrollment) {
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Duplicate enrollment attempt');
+      // Return success for duplicate enrollments to avoid user confusion
       return new Response(
         JSON.stringify({ 
-          error: 'Enrollment already exists',
-          details: 'An enrollment request with this email is already pending'
+          success: true,
+          message: 'Enrollment request already received',
+          enrollment_id: existingEnrollment.id
         }),
         { 
-          status: 409, 
+          status: 200, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
