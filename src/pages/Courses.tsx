@@ -131,7 +131,7 @@ const Courses = () => {
                   </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+                <div className="grid md:grid-cols-3 gap-6 mb-8">
                   <div className="text-center">
                     <div className="flex justify-center mb-2">
                       <Clock className="w-6 h-6 text-primary" />
@@ -154,22 +154,6 @@ const Courses = () => {
                     </div>
                     <h4 className="font-semibold text-lg mb-2">{t('courses.location')}</h4>
                     <p className="text-muted-foreground">{t('courses.atarot_location')}</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="flex justify-center mb-2">
-                      <Calendar className="w-6 h-6 text-primary" />
-                    </div>
-                    <h4 className="font-semibold text-lg mb-2">{t('courses.course_date')}</h4>
-                    <p className="text-muted-foreground font-semibold">{t('courses.september_date')}</p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <div className="flex justify-center mb-2">
-                      <Star className="w-6 h-6 text-primary" />
-                    </div>
-                    <h4 className="font-semibold text-lg mb-2">{t('courses.investment')}</h4>
-                    <p className="text-primary font-bold text-xl">{t('courses.price_amount')}</p>
                   </div>
                 </div>
 
