@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +29,6 @@ import {
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CustomerDashboard } from '@/components/CustomerDashboard';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { format } from 'date-fns';
 
@@ -67,22 +66,7 @@ const Dashboard = () => {
   const [notesValue, setNotesValue] = useState('');
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/auth');
-    }
-  }, [user, loading, navigate]);
-
-  useEffect(() => {
-    if (user) {
-      fetchUserQuotes();
-      if (isAdmin) {
-        fetchEnrollments();
-      }
-    }
-  }, [user, isAdmin]);
-
-  const fetchUserQuotes = async () => {
+  const fetchUserQuotes = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('quotes')
@@ -106,9 +90,9 @@ const Dashboard = () => {
     } finally {
       setQuotesLoading(false);
     }
-  };
+  }, [user?.id, toast, t]);
 
-  const fetchEnrollments = async () => {
+  const fetchEnrollments = useCallback(async () => {
     try {
       setEnrollmentsLoading(true);
       const { data, error } = await supabase
@@ -129,7 +113,22 @@ const Dashboard = () => {
     } finally {
       setEnrollmentsLoading(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
+
+  useEffect(() => {
+    if (user) {
+      fetchUserQuotes();
+      if (isAdmin) {
+        fetchEnrollments();
+      }
+    }
+  }, [user, isAdmin, fetchUserQuotes, fetchEnrollments]);
 
   // Set up real-time subscription for enrollments
   useEffect(() => {
@@ -145,7 +144,7 @@ const Dashboard = () => {
           table: 'enrollment_requests'
         },
         (payload) => {
-          console.log('Enrollment change detected:', payload);
+          // Real-time enrollment update detected
           
           if (payload.eventType === 'INSERT') {
             // Add new enrollment to the beginning of the list
@@ -270,6 +269,9 @@ const Dashboard = () => {
   };
 
   const handleQuickActionClick = (path: string, tabName?: string) => {
+    // Scroll to top immediately
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     if (tabName) {
       setActiveTab(tabName);
     }
@@ -277,7 +279,15 @@ const Dashboard = () => {
   };
 
   const handleBackToOverview = () => {
+    // Scroll to top when going back to overview
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setActiveTab(null);
+  };
+
+  const handleEnrollmentAdminClick = () => {
+    // Scroll to top when opening enrollment admin
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setActiveTab('enrollments');
   };
 
   const getStatusText = (status: string) => {
@@ -699,7 +709,7 @@ const Dashboard = () => {
                         <Button
                           variant="outline"
                           className="h-auto p-6 flex-col space-y-2"
-                          onClick={() => setActiveTab('enrollments')}
+                          onClick={handleEnrollmentAdminClick}
                         >
                           <GraduationCap className="w-8 h-8" />
                           <span>Enrollment Admin</span>
