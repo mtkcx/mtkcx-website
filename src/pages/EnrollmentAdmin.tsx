@@ -10,13 +10,14 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { format } from 'date-fns';
-import { Phone, Mail, Calendar, User, Trash2 } from 'lucide-react';
+import { Phone, Mail, Calendar, User, Trash2, MapPin } from 'lucide-react';
 
 interface EnrollmentRequest {
   id: string;
   name: string;
   email: string;
   phone: string;
+  city?: string;
   course_type: string;
   status: string;
   admin_notes?: string;
@@ -226,7 +227,7 @@ const EnrollmentAdmin: React.FC = () => {
                 </CardHeader>
                 
                 <CardContent className="space-y-4">
-                  <div className="grid md:grid-cols-3 gap-4">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{enrollment.email}</span>
@@ -235,6 +236,12 @@ const EnrollmentAdmin: React.FC = () => {
                       <Phone className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{enrollment.phone}</span>
                     </div>
+                    {enrollment.city && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{enrollment.city}</span>
+                      </div>
+                    )}
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">
