@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   Package, 
   Users, 
@@ -205,10 +207,39 @@ const UserRoleManager: React.FC = () => {
 };
 
 export const MobileAdminDashboard: React.FC = () => {
+  const { user, isAdmin, loading } = useAuth();
+  const { t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
+
+  // Show loading if auth is still loading
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+          <p className="text-muted-foreground">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show access denied if not admin
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="p-6 max-w-md">
+          <div className="text-center">
+            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-red-600 mb-2">Access Denied</h2>
+            <p className="text-muted-foreground">Admin privileges required</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   useEffect(() => {
     fetchData();
@@ -216,7 +247,7 @@ export const MobileAdminDashboard: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      setLoading(true);
+      setDataLoading(true);
       
       // Fetch orders
       const { data: ordersData, error: ordersError } = await supabase
@@ -252,7 +283,7 @@ export const MobileAdminDashboard: React.FC = () => {
       console.error('Error fetching data:', error);
       toast.error('Failed to fetch dashboard data');
     } finally {
-      setLoading(false);
+      setDataLoading(false);
     }
   };
 
@@ -286,7 +317,7 @@ export const MobileAdminDashboard: React.FC = () => {
     return `₪${amount.toFixed(2)}`;
   };
 
-  if (loading) {
+  if (dataLoading) {
     return (
       <div className="container mx-auto p-4">
         <div className="text-center">Loading admin dashboard...</div>

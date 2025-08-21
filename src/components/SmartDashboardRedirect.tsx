@@ -10,7 +10,8 @@ const SmartDashboardRedirect: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loading) return;
+    // Wait for all states to be determined
+    if (loading || isMobile === undefined) return;
     
     if (isMobile && isAdmin) {
       // Redirect mobile admin users to mobile admin dashboard
@@ -22,8 +23,8 @@ const SmartDashboardRedirect: React.FC = () => {
     // Desktop users stay on this component and see the regular Dashboard
   }, [isMobile, isAdmin, loading, navigate]);
 
-  // Show loading while determining redirect
-  if (loading) {
+  // Show loading while determining redirect or mobile detection
+  if (loading || isMobile === undefined) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -31,11 +32,14 @@ const SmartDashboardRedirect: React.FC = () => {
     );
   }
 
-  // If mobile, the redirect will happen in useEffect, but show loading state
+  // If mobile, show minimal loading while redirect happens
   if (isMobile) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+          <p className="text-sm text-muted-foreground">Redirecting to mobile interface...</p>
+        </div>
       </div>
     );
   }
