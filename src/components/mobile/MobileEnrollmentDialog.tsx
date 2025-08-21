@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { useMobileKeyboard } from '@/hooks/useMobileKeyboard';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { BookOpen, User, Mail, Phone } from 'lucide-react';
@@ -28,6 +29,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
+  const isKeyboardOpen = useMobileKeyboard();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,9 +82,26 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  // Auto-scroll to focused input when keyboard opens
+  useEffect(() => {
+    if (!isKeyboardOpen) return;
+
+    const activeElement = document.activeElement as HTMLInputElement;
+    if (activeElement && activeElement.tagName === 'INPUT') {
+      setTimeout(() => {
+        activeElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center'
+        });
+      }, 300);
+    }
+  }, [isKeyboardOpen]);
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={`sm:max-w-md w-[95vw] p-4 ${
+        isKeyboardOpen ? 'max-h-[50vh]' : 'max-h-[85vh]'
+      } overflow-y-auto`}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-primary" />
@@ -90,7 +109,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 pb-4">
           <div className="space-y-2">
             <Label htmlFor="name" className="flex items-center gap-2">
               <User className="h-4 w-4" />
@@ -161,7 +180,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
             </p>
           </div>
 
-          <DialogFooter className="flex-col space-y-2">
+          <DialogFooter className="flex-col space-y-2 pt-4 sticky bottom-0 bg-background border-t mt-4">
             <Button
               type="submit"
               className="w-full"
