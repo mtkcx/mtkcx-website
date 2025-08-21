@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Award, CheckCircle, Star, Calendar, MapPin, Phone, Mail, BookOpen, Users, Clock } from 'lucide-react';
+import { Award, Star, Calendar, MapPin, Phone, Mail, Users, Clock } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useNavigate } from 'react-router-dom';
 import EnrollmentDialog from '@/components/EnrollmentDialog';
 const Courses = () => {
-  const { toast } = useToast();
   const { t, isRTL } = useLanguage();
-  const navigate = useNavigate();
   const [isEnrollmentDialogOpen, setIsEnrollmentDialogOpen] = useState(false);
   
   const handleEnrollment = () => {
