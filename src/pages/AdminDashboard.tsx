@@ -10,13 +10,15 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AdminProtectedRoute from '@/components/AdminProtectedRoute';
-import { Package, Users, GraduationCap, TrendingUp, Crown, UserCheck } from 'lucide-react';
+import { Package, Users, GraduationCap, TrendingUp, Crown, UserCheck, Mail, Phone, Calendar, User, Edit3 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AdminCustomerSearch } from '@/components/AdminCustomerSearch';
 import ContactMessagesManager from '@/components/ContactMessagesManager';
 import { AdminUserManager } from '@/components/AdminUserManager';
 import SEOManager from '@/components/SEOManager';
 import SiteSettingsManager from '@/components/SiteSettingsManager';
+import { Textarea } from '@/components/ui/textarea';
+import { format } from 'date-fns';
 
 interface Order {
   id: string;
@@ -42,6 +44,7 @@ interface Enrollment {
   name: string;
   email: string;
   phone: string;
+  admin_notes?: string;
 }
 
 interface User {
@@ -199,6 +202,8 @@ const AdminDashboard: React.FC = () => {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingNotes, setEditingNotes] = useState<string | null>(null);
+  const [notesValue, setNotesValue] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -273,6 +278,53 @@ const AdminDashboard: React.FC = () => {
 
   const formatCurrency = (amount: number) => {
     return `₪${amount.toFixed(2)}`;
+  };
+
+  const updateEnrollmentStatus = async (id: string, status: string) => {
+    try {
+      const { error } = await supabase
+        .from('enrollment_requests')
+        .update({ status })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setEnrollments(prev => 
+        prev.map(enrollment => 
+          enrollment.id === id ? { ...enrollment, status } : enrollment
+        )
+      );
+
+      toast.success(`Enrollment status updated to ${status}`);
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast.error('Failed to update status');
+    }
+  };
+
+  const saveEnrollmentNotes = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('enrollment_requests')
+        .update({ admin_notes: notesValue })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setEnrollments(prev => 
+        prev.map(enrollment => 
+          enrollment.id === id ? { ...enrollment, admin_notes: notesValue } : enrollment
+        )
+      );
+
+      setEditingNotes(null);
+      setNotesValue('');
+
+      toast.success('Admin notes updated successfully');
+    } catch (error) {
+      console.error('Error saving notes:', error);
+      toast.error('Failed to save notes');
+    }
   };
 
   if (loading) {
@@ -425,25 +477,139 @@ const AdminDashboard: React.FC = () => {
           <TabsContent value="enrollments" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Recent Enrollments</CardTitle>
+                <CardTitle>Course Enrollment Management</CardTitle>
               </CardHeader>
               <CardContent>
                 {enrollments.length === 0 ? (
-                  <p className="text-muted-foreground text-center py-4">No enrollments found.</p>
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">No enrollment requests found</p>
+                  </div>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {enrollments.map((enrollment) => (
-                      <div key={enrollment.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div>
-                          <div className="font-medium">{enrollment.name}</div>
-                          <div className="text-sm text-muted-foreground">{enrollment.email}</div>
-                          <div className="text-sm text-muted-foreground">{enrollment.phone}</div>
-                          <div className="text-xs text-muted-foreground">{formatDate(enrollment.created_at)}</div>
-                        </div>
-                        <div>
-                          <Badge className={getStatusColor(enrollment.status)}>{enrollment.status}</Badge>
-                        </div>
-                      </div>
+                      <Card key={enrollment.id} className="border">
+                        <CardHeader className="pb-4">
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="flex items-center gap-2">
+                              <User className="h-5 w-5" />
+                              {enrollment.name}
+                            </CardTitle>
+                            <div className="flex gap-2">
+                              <Badge className={getStatusColor(enrollment.status)}>
+                                {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                              </Badge>
+                              <Badge variant="outline">
+                                Professional Detailing
+                              </Badge>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        
+                        <CardContent className="space-y-4">
+                          <div className="grid md:grid-cols-3 gap-4">
+                            <div className="flex items-center gap-2">
+                              <Mail className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm">{enrollment.email}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Phone className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm">{enrollment.phone}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4 text-muted-foreground" />
+                              <span className="text-sm">
+                                {format(new Date(enrollment.created_at), 'MMM dd, yyyy HH:mm')}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="border-t pt-4">
+                            <div className="flex gap-2 mb-3 flex-wrap">
+                              <Button
+                                size="sm"
+                                variant={enrollment.status === 'pending' ? 'default' : 'outline'}
+                                onClick={() => updateEnrollmentStatus(enrollment.id, 'pending')}
+                              >
+                                Pending
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant={enrollment.status === 'contacted' ? 'default' : 'outline'}
+                                onClick={() => updateEnrollmentStatus(enrollment.id, 'contacted')}
+                              >
+                                Contacted
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant={enrollment.status === 'enrolled' ? 'default' : 'outline'}
+                                onClick={() => updateEnrollmentStatus(enrollment.id, 'enrolled')}
+                              >
+                                Enrolled
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant={enrollment.status === 'declined' ? 'default' : 'outline'}
+                                onClick={() => updateEnrollmentStatus(enrollment.id, 'declined')}
+                              >
+                                Declined
+                              </Button>
+                            </div>
+
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <label className="text-sm font-medium">Admin Notes:</label>
+                                {editingNotes === enrollment.id ? (
+                                  <div className="flex gap-2">
+                                    <Button
+                                      size="sm"
+                                      onClick={() => saveEnrollmentNotes(enrollment.id)}
+                                    >
+                                      Save
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => {
+                                        setEditingNotes(null);
+                                        setNotesValue('');
+                                      }}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </div>
+                                ) : (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setEditingNotes(enrollment.id);
+                                      setNotesValue(enrollment.admin_notes || '');
+                                    }}
+                                  >
+                                    <Edit3 className="h-3 w-3 mr-1" />
+                                    Edit Notes
+                                  </Button>
+                                )}
+                              </div>
+                              
+                              {editingNotes === enrollment.id ? (
+                                <Textarea
+                                  value={notesValue}
+                                  onChange={(e) => setNotesValue(e.target.value)}
+                                  placeholder="Add admin notes..."
+                                  rows={3}
+                                />
+                              ) : (
+                                <div className="bg-muted p-3 rounded-md min-h-[60px]">
+                                  <p className="text-sm text-muted-foreground">
+                                    {enrollment.admin_notes || 'No notes added yet'}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
                 )}
