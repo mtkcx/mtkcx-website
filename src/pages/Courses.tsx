@@ -49,6 +49,29 @@ const Courses = () => {
                   </p>
                 </div>
                 
+                 {/* Course Info Highlights */}
+                <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                    <div className="flex items-center justify-center gap-2 text-white">
+                      <Calendar className="w-5 h-5" />
+                      <div className="text-center">
+                        <p className="text-sm font-medium">Course Date</p>
+                        <p className="text-lg font-bold">September 5th, 2025</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                    <div className="flex items-center justify-center gap-2 text-white">
+                      <Star className="w-5 h-5" />
+                      <div className="text-center">
+                        <p className="text-sm font-medium">Course Price</p>
+                        <p className="text-lg font-bold">₪7,500 NIS</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                  {/* Call to Action */}
                 <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                   <Button 
@@ -108,18 +131,45 @@ const Courses = () => {
                   </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
                   <div className="text-center">
+                    <div className="flex justify-center mb-2">
+                      <Clock className="w-6 h-6 text-primary" />
+                    </div>
                     <h4 className="font-semibold text-lg mb-2">{t('courses.course_duration')}</h4>
                     <p className="text-muted-foreground">{t('courses.four_days')}</p>
                   </div>
+                  
                   <div className="text-center">
+                    <div className="flex justify-center mb-2">
+                      <Users className="w-6 h-6 text-primary" />
+                    </div>
                     <h4 className="font-semibold text-lg mb-2">{t('courses.class_size')}</h4>
                     <p className="text-muted-foreground">{t('courses.small_groups_5')}</p>
                   </div>
+                  
                   <div className="text-center">
+                    <div className="flex justify-center mb-2">
+                      <MapPin className="w-6 h-6 text-primary" />
+                    </div>
                     <h4 className="font-semibold text-lg mb-2">{t('courses.location')}</h4>
                     <p className="text-muted-foreground">{t('courses.atarot_location')}</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="flex justify-center mb-2">
+                      <Calendar className="w-6 h-6 text-primary" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Course Date</h4>
+                    <p className="text-muted-foreground font-semibold">September 5th, 2025</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="flex justify-center mb-2">
+                      <Star className="w-6 h-6 text-primary" />
+                    </div>
+                    <h4 className="font-semibold text-lg mb-2">Investment</h4>
+                    <p className="text-primary font-bold text-xl">₪7,500</p>
                   </div>
                 </div>
 
