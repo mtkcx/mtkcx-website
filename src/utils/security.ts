@@ -23,7 +23,8 @@ export const validatePhone = (phone: string): boolean => {
 };
 
 export const validateName = (name: string): boolean => {
-  return name.length >= 2 && name.length <= 100 && /^[a-zA-Z\s\u00C0-\u017F]+$/.test(name);
+  // More lenient validation - allow more characters and focus on basic safety
+  return name.length >= 2 && name.length <= 100;
 };
 
 export const generateVerificationToken = (): string => {

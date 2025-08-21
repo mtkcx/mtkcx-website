@@ -37,7 +37,8 @@ const validatePhone = (phone: string): boolean => {
 };
 
 const validateName = (name: string): boolean => {
-  return name.length >= 2 && name.length <= 100 && /^[a-zA-Z\s\u00C0-\u017F]+$/.test(name);
+  // More lenient validation - just check length and basic character safety
+  return name.length >= 2 && name.length <= 100;
 };
 
 serve(async (req) => {
@@ -75,13 +76,13 @@ serve(async (req) => {
     const sanitizedEmail = sanitizeInput(email.toLowerCase());
     const sanitizedPhone = sanitizeInput(phone);
 
-    // Validate inputs
+    // Validate inputs with friendly guidance
     if (!validateName(sanitizedName)) {
-      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Invalid name format');
       return new Response(
         JSON.stringify({ 
-          error: 'Invalid name',
-          details: 'Name must be 2-100 characters and contain only letters and spaces'
+          success: false,
+          error: 'Please provide your full name',
+          details: 'Enter your complete name (2-100 characters) for better service'
         }),
         { 
           status: 400, 

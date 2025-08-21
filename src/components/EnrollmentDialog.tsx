@@ -24,10 +24,10 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     phone: ''
   });
   
-  // Rate limiting for enrollment submissions
+  // Rate limiting for enrollment submissions - more lenient for better UX
   const { checkRateLimit, isLimited, getRemainingTime } = useRateLimit({
-    maxAttempts: 2,
-    windowMs: 10 * 60 * 1000, // 10 minutes
+    maxAttempts: 5,
+    windowMs: 5 * 60 * 1000, // 5 minutes
     storageKey: 'enrollment-submit-limit'
   });
 
@@ -59,11 +59,12 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       return;
     }
 
-    if (!validateName(sanitizedName)) {
+    // Friendly guidance instead of strict validation
+    if (sanitizedName.length < 2) {
       toast({
-        title: t('common.error'),
-        description: 'Please enter a valid name (letters and spaces only)',
-        variant: "destructive"
+        title: t('enrollment.name_guidance'),
+        description: 'Please enter your full name for better service',
+        variant: "default"
       });
       return;
     }

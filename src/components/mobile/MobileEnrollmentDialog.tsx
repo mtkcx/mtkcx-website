@@ -40,6 +40,16 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
       return;
     }
 
+    // Friendly guidance for name length
+    if (formData.name.trim().length < 2) {
+      toast({
+        title: t('enrollment.name_guidance'),
+        description: 'Please enter your full name for better service',
+        variant: "default",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
