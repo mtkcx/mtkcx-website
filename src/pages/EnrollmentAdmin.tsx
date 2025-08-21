@@ -34,6 +34,7 @@ const EnrollmentAdmin: React.FC = () => {
 
   const fetchEnrollments = useCallback(async () => {
     try {
+      setIsLoading(true);
       const { data, error } = await supabase
         .from('enrollment_requests')
         .select('*')
@@ -119,7 +120,7 @@ const EnrollmentAdmin: React.FC = () => {
   };
 
   const deleteEnrollment = async (id: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete the enrollment request from ${name}? This action cannot be undone.`)) {
+    if (!window.confirm(`Are you sure you want to delete the enrollment request from ${name}? This action cannot be undone.`)) {
       return;
     }
 
