@@ -1,20 +1,11 @@
 
 import React from 'react';
-import { MobileAdminDashboard } from '@/components/mobile/MobileAdminDashboard';
+import { SimpleMobileAdminDashboard } from '@/components/mobile/SimpleMobileAdminDashboard';
 import MobileAdminProtectedRoute from '@/components/mobile/MobileAdminProtectedRoute';
 import SEOHead from '@/components/SEOHead';
-import { useAuth } from '@/contexts/AuthContext';
 
 const MobileAdminDashboardPage: React.FC = () => {
-  const { user, isAdmin, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse">Loading...</div>
-      </div>
-    );
-  }
+  console.log('MobileAdminDashboardPage rendering');
 
   return (
     <MobileAdminProtectedRoute>
@@ -23,7 +14,7 @@ const MobileAdminDashboardPage: React.FC = () => {
         description="Mobile admin dashboard for managing MTKCx operations"
       />
       <div className="min-h-screen bg-background">
-        <MobileAdminDashboard />
+        <SimpleMobileAdminDashboard />
       </div>
     </MobileAdminProtectedRoute>
   );
