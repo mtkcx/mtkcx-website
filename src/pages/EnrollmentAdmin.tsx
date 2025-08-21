@@ -214,9 +214,11 @@ const EnrollmentAdmin: React.FC = () => {
                         size="sm"
                         variant="destructive"
                         onClick={() => deleteEnrollment(enrollment.id, enrollment.name)}
-                        className="ml-2"
+                        className="ml-2 min-w-[40px]"
+                        title="Delete enrollment request"
                       >
                         <Trash2 className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
                       </Button>
                     </div>
                   </div>
