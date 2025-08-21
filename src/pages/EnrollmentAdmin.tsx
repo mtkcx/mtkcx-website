@@ -25,7 +25,7 @@ interface EnrollmentRequest {
 }
 
 const EnrollmentAdmin: React.FC = () => {
-  const { t, isRTL } = useLanguage();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [enrollments, setEnrollments] = useState<EnrollmentRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -176,7 +176,7 @@ const EnrollmentAdmin: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-background">
       <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">

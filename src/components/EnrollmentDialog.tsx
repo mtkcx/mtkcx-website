@@ -37,8 +37,7 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
         }
       });
 
-      // Always show success unless there's a network error
-      console.log('Enrollment response:', { data, error });
+      // Enrollment submitted successfully
       
       toast({
         title: t('enrollment.success_title'),
@@ -50,7 +49,6 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       setFormData({ name: '', email: '', phone: '' });
       onClose();
     } catch (error) {
-      console.error('Error submitting enrollment:', error);
       toast({
         title: t('common.error'),
         description: t('enrollment.error_message'),
