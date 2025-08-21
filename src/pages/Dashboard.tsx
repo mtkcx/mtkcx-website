@@ -22,11 +22,16 @@ import {
   Edit3,
   Settings,
   Package,
-  MessageCircle
+  MessageCircle,
+  GraduationCap,
+  ArrowLeft
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CustomerDashboard } from '@/components/CustomerDashboard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { format } from 'date-fns';
 
 interface Quote {
   id: string;
@@ -39,13 +44,28 @@ interface Quote {
   updated_at: string;
 }
 
+interface Enrollment {
+  id: string;
+  created_at: string;
+  status: string;
+  name: string;
+  email: string;
+  phone: string;
+  admin_notes?: string;
+}
+
 const Dashboard = () => {
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading, isAdmin } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [quotesLoading, setQuotesLoading] = useState(true);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [enrollmentsLoading, setEnrollmentsLoading] = useState(true);
+  const [editingNotes, setEditingNotes] = useState<string | null>(null);
+  const [notesValue, setNotesValue] = useState('');
+  const [activeTab, setActiveTab] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -56,8 +76,11 @@ const Dashboard = () => {
   useEffect(() => {
     if (user) {
       fetchUserQuotes();
+      if (isAdmin) {
+        fetchEnrollments();
+      }
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   const fetchUserQuotes = async () => {
     try {
@@ -85,6 +108,90 @@ const Dashboard = () => {
     }
   };
 
+  const fetchEnrollments = async () => {
+    try {
+      setEnrollmentsLoading(true);
+      const { data, error } = await supabase
+        .from('enrollment_requests')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+      setEnrollments(data || []);
+    } catch (error) {
+      console.error('Error fetching enrollments:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load enrollment requests',
+        variant: 'destructive',
+      });
+    } finally {
+      setEnrollmentsLoading(false);
+    }
+  };
+
+  const updateEnrollmentStatus = async (id: string, status: string) => {
+    try {
+      const { error } = await supabase
+        .from('enrollment_requests')
+        .update({ status })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setEnrollments(prev => 
+        prev.map(enrollment => 
+          enrollment.id === id ? { ...enrollment, status } : enrollment
+        )
+      );
+
+      toast({
+        title: 'Success',
+        description: `Enrollment status updated to ${status}`,
+      });
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update status',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const saveEnrollmentNotes = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('enrollment_requests')
+        .update({ admin_notes: notesValue })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setEnrollments(prev => 
+        prev.map(enrollment => 
+          enrollment.id === id ? { ...enrollment, admin_notes: notesValue } : enrollment
+        )
+      );
+
+      setEditingNotes(null);
+      setNotesValue('');
+
+      toast({
+        title: 'Success',
+        description: 'Admin notes updated successfully',
+      });
+    } catch (error) {
+      console.error('Error saving notes:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to save notes',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
@@ -96,6 +203,36 @@ const Dashboard = () => {
       default:
         return <Clock className="w-4 h-4 text-gray-500" />;
     }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'completed':
+      case 'confirmed':
+      case 'enrolled':
+        return 'bg-green-100 text-green-800';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'cancelled':
+      case 'rejected':
+      case 'declined':
+        return 'bg-red-100 text-red-800';
+      case 'contacted':
+        return 'bg-blue-100 text-blue-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const handleQuickActionClick = (path: string, tabName?: string) => {
+    if (tabName) {
+      setActiveTab(tabName);
+    }
+    navigate(path);
+  };
+
+  const handleBackToOverview = () => {
+    setActiveTab(null);
   };
 
   const getStatusText = (status: string) => {
@@ -146,14 +283,22 @@ const Dashboard = () => {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
+            {activeTab && (
+              <div className="flex items-center justify-center mb-4">
+                <Button variant="outline" onClick={handleBackToOverview} className="gap-2">
+                  <ArrowLeft className="w-4 h-4" />
+                  Back to Dashboard Overview
+                </Button>
+              </div>
+            )}
             <Badge className="mb-4 px-4 py-2">
-              {t('dashboard.customer_portal')}
+              {isAdmin ? 'Admin Dashboard' : t('dashboard.customer_portal')}
             </Badge>
             <h1 className="text-4xl font-bold text-primary mb-4">
               {t('dashboard.welcome')}, {profile?.full_name || user?.email}!
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {t('dashboard.welcome_description')}
+              {isAdmin ? 'Manage your business and view customer activity' : t('dashboard.welcome_description')}
             </p>
           </div>
 
@@ -291,75 +436,247 @@ const Dashboard = () => {
           </div>
 
           {/* Customer Dashboard - Order History & Stats */}
-          <div className="mt-8">
-            <CustomerDashboard />
-          </div>
+          {!activeTab && (
+            <div className="mt-8">
+              <CustomerDashboard />
+            </div>
+          )}
+
+          {/* Admin Enrollment Management */}
+          {isAdmin && activeTab === 'enrollments' && (
+            <div className="mt-8">
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <GraduationCap className="h-5 w-5" />
+                    Course Enrollment Management
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {enrollmentsLoading ? (
+                    <div className="text-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                      <p className="mt-2 text-muted-foreground">Loading enrollments...</p>
+                    </div>
+                  ) : enrollments.length === 0 ? (
+                    <div className="text-center py-12">
+                      <GraduationCap className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground">No enrollment requests found</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      {enrollments.map((enrollment) => (
+                        <Card key={enrollment.id} className="border">
+                          <CardHeader className="pb-4">
+                            <div className="flex items-center justify-between">
+                              <CardTitle className="flex items-center gap-2">
+                                <User className="h-5 w-5" />
+                                {enrollment.name}
+                              </CardTitle>
+                              <div className="flex gap-2">
+                                <Badge className={getStatusColor(enrollment.status)}>
+                                  {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                                </Badge>
+                                <Badge variant="outline">
+                                  Professional Detailing
+                                </Badge>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          
+                          <CardContent className="space-y-4">
+                            <div className="grid md:grid-cols-3 gap-4">
+                              <div className="flex items-center gap-2">
+                                <Mail className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm">{enrollment.email}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Phone className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm">{enrollment.phone}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4 text-muted-foreground" />
+                                <span className="text-sm">
+                                  {format(new Date(enrollment.created_at), 'MMM dd, yyyy HH:mm')}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="border-t pt-4">
+                              <div className="flex gap-2 mb-3 flex-wrap">
+                                <Button
+                                  size="sm"
+                                  variant={enrollment.status === 'pending' ? 'default' : 'outline'}
+                                  onClick={() => updateEnrollmentStatus(enrollment.id, 'pending')}
+                                >
+                                  Pending
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant={enrollment.status === 'contacted' ? 'default' : 'outline'}
+                                  onClick={() => updateEnrollmentStatus(enrollment.id, 'contacted')}
+                                >
+                                  Contacted
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant={enrollment.status === 'enrolled' ? 'default' : 'outline'}
+                                  onClick={() => updateEnrollmentStatus(enrollment.id, 'enrolled')}
+                                >
+                                  Enrolled
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant={enrollment.status === 'declined' ? 'default' : 'outline'}
+                                  onClick={() => updateEnrollmentStatus(enrollment.id, 'declined')}
+                                >
+                                  Declined
+                                </Button>
+                              </div>
+
+                              <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <label className="text-sm font-medium">Admin Notes:</label>
+                                  {editingNotes === enrollment.id ? (
+                                    <div className="flex gap-2">
+                                      <Button
+                                        size="sm"
+                                        onClick={() => saveEnrollmentNotes(enrollment.id)}
+                                      >
+                                        Save
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => {
+                                          setEditingNotes(null);
+                                          setNotesValue('');
+                                        }}
+                                      >
+                                        Cancel
+                                      </Button>
+                                    </div>
+                                  ) : (
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => {
+                                        setEditingNotes(enrollment.id);
+                                        setNotesValue(enrollment.admin_notes || '');
+                                      }}
+                                    >
+                                      <Edit3 className="h-3 w-3 mr-1" />
+                                      Edit Notes
+                                    </Button>
+                                  )}
+                                </div>
+                                
+                                {editingNotes === enrollment.id ? (
+                                  <Textarea
+                                    value={notesValue}
+                                    onChange={(e) => setNotesValue(e.target.value)}
+                                    placeholder="Add admin notes..."
+                                    rows={3}
+                                  />
+                                ) : (
+                                  <div className="bg-muted p-3 rounded-md min-h-[60px]">
+                                    <p className="text-sm text-muted-foreground">
+                                      {enrollment.admin_notes || 'No notes added yet'}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
           {/* Quick Actions */}
-          <div className="mt-8">
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle>{t('dashboard.quick_actions')}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <Button
-                    variant="outline"
-                    className="h-auto p-6 flex-col space-y-2"
-                    onClick={() => navigate('/gallery')}
-                  >
-                    <FileText className="w-8 h-8" />
-                    <span>{t('dashboard.new_quote')}</span>
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    className="h-auto p-6 flex-col space-y-2"
-                    onClick={() => navigate('/products')}
-                  >
-                    <Building className="w-8 h-8" />
-                    <span>{t('dashboard.browse_products')}</span>
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    className="h-auto p-6 flex-col space-y-2"
-                    onClick={() => navigate('/admin/orders')}
-                  >
-                    <Package className="w-8 h-8" />
-                    <span>Orders Admin</span>
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    className="h-auto p-6 flex-col space-y-2"
-                    onClick={() => navigate('/admin/products')}
-                  >
-                    <Settings className="w-8 h-8" />
-                    <span>Product Admin</span>
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    className="h-auto p-6 flex-col space-y-2"
-                    onClick={() => navigate('/admin/chat')}
-                  >
-                    <MessageCircle className="w-8 h-8" />
-                    <span>Chat Admin</span>
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    className="h-auto p-6 flex-col space-y-2"
-                    onClick={() => navigate('/contact')}
-                  >
-                    <Mail className="w-8 h-8" />
-                    <span>{t('dashboard.contact_us')}</span>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          {!activeTab && (
+            <div className="mt-8">
+              <Card className="shadow-lg">
+                <CardHeader>
+                  <CardTitle>{t('dashboard.quick_actions')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <Button
+                      variant="outline"
+                      className="h-auto p-6 flex-col space-y-2"
+                      onClick={() => handleQuickActionClick('/gallery', 'quotes')}
+                    >
+                      <FileText className="w-8 h-8" />
+                      <span>{t('dashboard.new_quote')}</span>
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      className="h-auto p-6 flex-col space-y-2"
+                      onClick={() => handleQuickActionClick('/products', 'products')}
+                    >
+                      <Building className="w-8 h-8" />
+                      <span>{t('dashboard.browse_products')}</span>
+                    </Button>
+                    
+                    {isAdmin && (
+                      <>
+                        <Button
+                          variant="outline"
+                          className="h-auto p-6 flex-col space-y-2"
+                          onClick={() => setActiveTab('enrollments')}
+                        >
+                          <GraduationCap className="w-8 h-8" />
+                          <span>Enrollment Admin</span>
+                        </Button>
+                        
+                        <Button
+                          variant="outline"
+                          className="h-auto p-6 flex-col space-y-2"
+                          onClick={() => handleQuickActionClick('/admin/orders', 'orders')}
+                        >
+                          <Package className="w-8 h-8" />
+                          <span>Orders Admin</span>
+                        </Button>
+                        
+                        <Button
+                          variant="outline"
+                          className="h-auto p-6 flex-col space-y-2"
+                          onClick={() => handleQuickActionClick('/admin/products', 'products')}
+                        >
+                          <Settings className="w-8 h-8" />
+                          <span>Product Admin</span>
+                        </Button>
+                        
+                        <Button
+                          variant="outline"
+                          className="h-auto p-6 flex-col space-y-2"
+                          onClick={() => handleQuickActionClick('/admin/chat', 'chat')}
+                        >
+                          <MessageCircle className="w-8 h-8" />
+                          <span>Chat Admin</span>
+                        </Button>
+                      </>
+                    )}
+                    
+                    <Button
+                      variant="outline"
+                      className="h-auto p-6 flex-col space-y-2"
+                      onClick={() => handleQuickActionClick('/contact', 'contact')}
+                    >
+                      <Mail className="w-8 h-8" />
+                      <span>{t('dashboard.contact_us')}</span>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
 
