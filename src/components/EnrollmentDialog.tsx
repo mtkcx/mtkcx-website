@@ -6,7 +6,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
-import { sanitizeInput, validateEmail, validatePhone } from '@/utils/security';
+import { useRateLimit } from '@/hooks/useRateLimit';
+import { sanitizeInput, validateEmail, validateName, validatePhone } from '@/utils/security';
 
 interface EnrollmentDialogProps {
   isOpen: boolean;
@@ -22,13 +23,28 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     email: '',
     phone: ''
   });
+  
+  // Rate limiting for enrollment submissions
+  const { checkRateLimit, isLimited, getRemainingTime } = useRateLimit({
+    maxAttempts: 2,
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    storageKey: 'enrollment-submit-limit'
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Clear any existing rate limiting data to ensure smooth submission
-    localStorage.removeItem('enrollment-submit-limit');
-    
+    // Rate limiting check
+    if (!checkRateLimit()) {
+      const remainingTime = Math.ceil(getRemainingTime() / 1000 / 60);
+      toast({
+        title: 'Too Many Attempts',
+        description: `Please wait ${remainingTime} minutes before trying again.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
     // Input validation and sanitization
     const sanitizedName = sanitizeInput(formData.name);
     const sanitizedEmail = sanitizeInput(formData.email.toLowerCase());
@@ -36,37 +52,36 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
     
     if (!sanitizedName || !sanitizedEmail || !sanitizedPhone) {
       toast({
-        title: 'Please Complete All Fields',
-        description: 'Kindly fill in your full name, email address, and phone number',
-        variant: "default"
+        title: t('common.error'),
+        description: t('enrollment.fill_all_fields'),
+        variant: "destructive"
       });
       return;
     }
 
-    // Friendly guidance for complete information
-    if (sanitizedName.length < 2) {
+    if (!validateName(sanitizedName)) {
       toast({
-        title: 'Full Name Required',
-        description: 'Please enter your complete full name for better service',
-        variant: "default"
+        title: t('common.error'),
+        description: 'Please enter a valid name (letters and spaces only)',
+        variant: "destructive"
       });
       return;
     }
 
     if (!validateEmail(sanitizedEmail)) {
       toast({
-        title: 'Email Format',
-        description: 'Please enter a valid email address (example@domain.com)',
-        variant: "default"
+        title: t('common.error'),
+        description: 'Please enter a valid email address',
+        variant: "destructive"
       });
       return;
     }
 
     if (!validatePhone(sanitizedPhone)) {
       toast({
-        title: 'Phone Number',
-        description: 'Please enter a valid phone number for contact',
-        variant: "default"
+        title: t('common.error'),
+        description: 'Please enter a valid phone number',
+        variant: "destructive"
       });
       return;
     }

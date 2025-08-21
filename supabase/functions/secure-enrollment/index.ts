@@ -37,8 +37,7 @@ const validatePhone = (phone: string): boolean => {
 };
 
 const validateName = (name: string): boolean => {
-  // More lenient validation - just check length and basic character safety
-  return name.length >= 2 && name.length <= 100;
+  return name.length >= 2 && name.length <= 100 && /^[a-zA-Z\s\u00C0-\u017F]+$/.test(name);
 };
 
 serve(async (req) => {
@@ -76,13 +75,13 @@ serve(async (req) => {
     const sanitizedEmail = sanitizeInput(email.toLowerCase());
     const sanitizedPhone = sanitizeInput(phone);
 
-    // Validate inputs with friendly guidance
+    // Validate inputs
     if (!validateName(sanitizedName)) {
+      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Invalid name format');
       return new Response(
         JSON.stringify({ 
-          success: false,
-          error: 'Please provide your full name',
-          details: 'Enter your complete name (2-100 characters) for better service'
+          error: 'Invalid name',
+          details: 'Name must be 2-100 characters and contain only letters and spaces'
         }),
         { 
           status: 400, 
@@ -127,11 +126,20 @@ serve(async (req) => {
 
     if (securityError || !securityCheck) {
       console.log('Security validation failed for enrollment request');
-      // Log but don't block enrollment for better user experience
-      console.warn('Security validation issue:', securityError);
+      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Security validation failed');
+      return new Response(
+        JSON.stringify({ 
+          error: 'Security validation failed',
+          details: 'Request blocked for security reasons'
+        }),
+        { 
+          status: 429, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
     }
 
-    // Check for duplicate enrollment and handle gracefully
+    // Check for duplicate enrollment
     const { data: existingEnrollment } = await supabase
       .from('enrollment_requests')
       .select('id')
@@ -140,15 +148,14 @@ serve(async (req) => {
       .single();
 
     if (existingEnrollment) {
-      // Return success for duplicate enrollments to avoid user confusion
+      await logEnrollmentAttempt(supabase, sanitizedEmail, false, 'Duplicate enrollment attempt');
       return new Response(
         JSON.stringify({ 
-          success: true,
-          message: 'Enrollment request already received',
-          enrollment_id: existingEnrollment.id
+          error: 'Enrollment already exists',
+          details: 'An enrollment request with this email is already pending'
         }),
         { 
-          status: 200, 
+          status: 409, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
