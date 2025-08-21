@@ -83,7 +83,7 @@ const SecurityMonitor: React.FC = () => {
     setSecurityEvents(events.slice(-10)); // Show last 10 events
   };
 
-  const getSeverityColor = (severity: string) => {
+  const getSeverityColor = (severity: string): "default" | "secondary" | "destructive" | "warning" | "outline" => {
     switch (severity) {
       case 'critical': return 'destructive';
       case 'high': return 'destructive';
@@ -143,10 +143,10 @@ const SecurityMonitor: React.FC = () => {
 
       {/* Security Events Monitor (only show if there are recent high-severity events) */}
       {securityEvents.some(event => ['high', 'critical'].includes(event.severity)) && (
-        <Card className="bg-background/95 backdrop-blur-sm border-red-200">
+        <Card className="bg-background/95 backdrop-blur-sm border-destructive">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Shield className="w-4 h-4 text-red-600" />
+              <Shield className="w-4 h-4 text-destructive" />
               Security Monitor
             </CardTitle>
           </CardHeader>
