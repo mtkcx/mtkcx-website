@@ -22,6 +22,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
     name: '',
     email: '',
     phone: '',
+    city: '',
     course_type: 'professional_detailing'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,6 +41,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
           name: formData.name || 'Customer',
           email: formData.email || 'customer@example.com', 
           phone: formData.phone || '000-000-0000',
+          city: formData.city || 'Not specified',
           course_type: formData.course_type
         }
       });
@@ -57,6 +59,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
         name: '',
         email: '',
         phone: '',
+        city: '',
         course_type: 'professional_detailing'
       });
       onClose();
@@ -126,6 +129,17 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
               placeholder={t('auth.enter_phone')}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="city">{t('mobile.enrollment.city')}</Label>
+            <Input
+              id="city"
+              type="text"
+              value={formData.city}
+              onChange={(e) => handleInputChange('city', e.target.value)}
+              placeholder={t('mobile.enrollment.city_placeholder')}
             />
           </div>
 
