@@ -10,7 +10,6 @@ import { MobileHome } from '@/components/mobile/MobileHome';
 import { MobileCheckout } from '@/components/mobile/MobileCheckout';
 import { MobileDashboard } from '@/components/mobile/MobileDashboard';
 import { MobileAdminDashboard } from '@/components/mobile/MobileAdminDashboard';
-import MobileAdminProtectedRoute from '@/components/mobile/MobileAdminProtectedRoute';
 import { MobileEnrollmentDialog } from '@/components/mobile/MobileEnrollmentDialog';
 import { MobileAuth } from '@/components/mobile/MobileAuth';
 import { MobileContact } from '@/components/mobile/MobileContact';
@@ -595,17 +594,15 @@ const MobileApp: React.FC = () => {
               {user && (
                 <TabsContent value="dashboard" className="m-0">
                   {isAdmin ? (
-                    <MobileAdminProtectedRoute onShowAuth={handleShowAuth}>
-                      <div className="min-h-screen bg-background">
-                        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b p-4">
-                          <div className="text-center">
-                            <h1 className="text-lg font-semibold text-primary">{t('mobile.nav.admin')}</h1>
-                            <p className="text-sm text-muted-foreground">Full administrative controls</p>
-                          </div>
+                    <div className="min-h-screen bg-background">
+                      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b p-4">
+                        <div className="text-center">
+                          <h1 className="text-lg font-semibold text-primary">{t('mobile.nav.admin')}</h1>
+                          <p className="text-sm text-muted-foreground">Full administrative controls</p>
                         </div>
-                        <MobileAdminDashboard />
                       </div>
-                    </MobileAdminProtectedRoute>
+                      <MobileAdminDashboard />
+                    </div>
                   ) : (
                     <MobileDashboard />
                   )}
