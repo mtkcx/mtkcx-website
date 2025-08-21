@@ -1098,6 +1098,11 @@ const translations = {
     'courses.specialized_workshops': 'Specialized workshops and masterclasses',
     'courses.ongoing_education': 'Ongoing education and skill development',
     'courses.industry_updates': 'Latest industry trends and product updates',
+    'courses.course_date': 'Course Date',
+    'courses.course_price': 'Course Price', 
+    'courses.investment': 'Investment',
+    'courses.september_date': 'September 5th, 2025',
+    'courses.price_amount': '₪7,500 NIS',
     'courses.business_growth': 'Business growth and marketing strategies',
 
     // Admin
@@ -1719,6 +1724,11 @@ const translations = {
     'mobile.enrollment.error_desc': 'حدث خطأ أثناء إرسال تسجيلك. يرجى المحاولة مرة أخرى.',
     'mobile.enrollment.professional_detailing': 'التنظيف الاحترافي',
     'mobile.enrollment.single_course_note': 'متاح حالياً: شهادة كوخ كيمي المهنية للتنظيف والتلميع',
+    'courses.course_date': 'تاريخ الدورة',
+    'courses.course_price': 'سعر الدورة',
+    'courses.investment': 'الاستثمار',
+    'courses.september_date': '5 سبتمبر 2025',
+    'courses.price_amount': '7,500 ₪ شيكل',
     'mobile.enrollment.paint_correction': 'تصحيح الطلاء',
     'mobile.enrollment.ppf_installation': 'تركيب فيلم حماية الطلاء',
     'mobile.enrollment.vehicle_wrapping': 'تغليف المركبات',
@@ -2895,6 +2905,11 @@ const translations = {
     'courses.ongoing_education': 'חינוך מתמשך ופיתוח כישורים',
     'courses.industry_updates': 'מגמות התעשייה העדכניות ועדכוני מוצרים',
     'courses.business_growth': 'צמיחת עסק ואסטרטגיות שיווק',
+    'courses.course_date': 'תאריך הקורס',
+    'courses.course_price': 'מחיר הקורס',
+    'courses.investment': 'השקעה',
+    'courses.september_date': '5 בספטמבר 2025',
+    'courses.price_amount': '7,500 ₪',
     
     // Add missing translation keys for all pages - Hebrew
     'about.location_jerusalem': 'אזור התעשייה עטרות, ירושלים',

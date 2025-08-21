@@ -55,8 +55,8 @@ const Courses = () => {
                     <div className="flex items-center justify-center gap-2 text-white">
                       <Calendar className="w-5 h-5" />
                       <div className="text-center">
-                        <p className="text-sm font-medium">Course Date</p>
-                        <p className="text-lg font-bold">September 5th, 2025</p>
+                        <p className="text-sm font-medium">{t('courses.course_date')}</p>
+                        <p className="text-lg font-bold">{t('courses.september_date')}</p>
                       </div>
                     </div>
                   </div>
@@ -65,8 +65,8 @@ const Courses = () => {
                     <div className="flex items-center justify-center gap-2 text-white">
                       <Star className="w-5 h-5" />
                       <div className="text-center">
-                        <p className="text-sm font-medium">Course Price</p>
-                        <p className="text-lg font-bold">₪7,500 NIS</p>
+                        <p className="text-sm font-medium">{t('courses.course_price')}</p>
+                        <p className="text-lg font-bold">{t('courses.price_amount')}</p>
                       </div>
                     </div>
                   </div>
@@ -160,16 +160,16 @@ const Courses = () => {
                     <div className="flex justify-center mb-2">
                       <Calendar className="w-6 h-6 text-primary" />
                     </div>
-                    <h4 className="font-semibold text-lg mb-2">Course Date</h4>
-                    <p className="text-muted-foreground font-semibold">September 5th, 2025</p>
+                    <h4 className="font-semibold text-lg mb-2">{t('courses.course_date')}</h4>
+                    <p className="text-muted-foreground font-semibold">{t('courses.september_date')}</p>
                   </div>
                   
                   <div className="text-center">
                     <div className="flex justify-center mb-2">
                       <Star className="w-6 h-6 text-primary" />
                     </div>
-                    <h4 className="font-semibold text-lg mb-2">Investment</h4>
-                    <p className="text-primary font-bold text-xl">₪7,500</p>
+                    <h4 className="font-semibold text-lg mb-2">{t('courses.investment')}</h4>
+                    <p className="text-primary font-bold text-xl">{t('courses.price_amount')}</p>
                   </div>
                 </div>
 
