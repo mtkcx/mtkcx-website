@@ -87,7 +87,7 @@ const SecurityMonitor: React.FC = () => {
     switch (severity) {
       case 'critical': return 'destructive';
       case 'high': return 'destructive';
-      case 'medium': return 'secondary';
+      case 'medium': return 'warning';
       case 'low': return 'outline';
       default: return 'outline';
     }
@@ -113,10 +113,10 @@ const SecurityMonitor: React.FC = () => {
     <div className="fixed bottom-4 right-4 z-50 max-w-sm">
       {/* Session Warning Alert */}
       {showSessionWarning && (
-        <Alert className="mb-4 border-orange-500 bg-orange-50">
-          <AlertTriangle className="h-4 w-4 text-orange-600" />
+        <Alert className="mb-4 border-warning bg-warning/10">
+          <AlertTriangle className="h-4 w-4 text-warning-foreground" />
           <AlertDescription className="flex items-center justify-between">
-            <span className="text-orange-800">Session expiring soon!</span>
+            <span className="text-warning-foreground">Session expiring soon!</span>
             <div className="flex gap-2">
               <Button
                 size="sm"
@@ -157,7 +157,7 @@ const SecurityMonitor: React.FC = () => {
               .map((event, index) => (
                 <div key={index} className="flex items-center gap-2 text-xs">
                   {getSeverityIcon(event.severity)}
-                  <Badge variant={getSeverityColor(event.severity) as any} className="text-xs">
+                  <Badge variant={getSeverityColor(event.severity)} className="text-xs">
                     {event.severity}
                   </Badge>
                   <span className="flex-1 truncate">{event.event}</span>
