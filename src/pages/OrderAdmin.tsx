@@ -195,6 +195,25 @@ const OrderAdmin = () => {
         )
       );
 
+      // Send status update notification email to customer
+      try {
+        const { error: notificationError } = await supabase.functions.invoke('send-order-notification', {
+          body: {
+            orderId: orderId,
+            newStatus: newStatus,
+            orderNumber: orders.find(o => o.id === orderId)?.order_number || '',
+            customerEmail: orders.find(o => o.id === orderId)?.email || ''
+          }
+        });
+
+        if (notificationError) {
+          console.error('Failed to send status notification:', notificationError);
+          // Don't show error to admin, as this is supplementary
+        }
+      } catch (notificationError) {
+        console.error('Error sending notification:', notificationError);
+      }
+
       // Also refresh from database to ensure sync
       setTimeout(() => fetchOrders(), 500);
       
