@@ -226,14 +226,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setProfile(null);
       setIsAdmin(false);
       
-      // Clear all user-specific cart data from localStorage
-      const userId = user?.id;
-      if (userId) {
-        localStorage.removeItem(`shopping-cart-${userId}`);
-      }
-      // Also clean up any old cart data
-      localStorage.removeItem('shopping-cart');
-      
       // Sign out from Supabase
       await supabase.auth.signOut({ scope: 'global' });
       

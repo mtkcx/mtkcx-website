@@ -1306,6 +1306,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_carts: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          price: number
+          product_id: string
+          product_name: string
+          quantity: number
+          updated_at: string
+          user_id: string
+          variant_size: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          price: number
+          product_id: string
+          product_name: string
+          quantity?: number
+          updated_at?: string
+          user_id: string
+          variant_size?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          price?: number
+          product_id?: string
+          product_name?: string
+          quantity?: number
+          updated_at?: string
+          user_id?: string
+          variant_size?: string | null
+        }
+        Relationships: []
+      }
       user_preferences: {
         Row: {
           created_at: string

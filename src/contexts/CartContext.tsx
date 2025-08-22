@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface CartItem {
   id: string;
@@ -25,6 +26,8 @@ interface CartContextType {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  saveCartToDatabase: () => Promise<void>;
+  loadCartFromDatabase: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -42,45 +45,171 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isOpen, setIsOpen] = useState(false);
   const { user, loading } = useAuth();
 
+  // Save cart items to database for authenticated users
+  const saveCartToDatabase = async () => {
+    if (!user || items.length === 0) return;
+
+    try {
+      // Clear existing cart items for this user
+      await supabase
+        .from('user_carts')
+        .delete()
+        .eq('user_id', user.id);
+
+      // Insert current cart items
+      const cartData = items.map(item => ({
+        user_id: user.id,
+        product_id: item.productId,
+        product_name: item.productName,
+        price: item.price,
+        quantity: item.quantity,
+        variant_size: item.variantSize,
+        image_url: item.imageUrl,
+      }));
+
+      const { error } = await supabase
+        .from('user_carts')
+        .insert(cartData);
+
+      if (error) {
+        console.error('Error saving cart to database:', error);
+      }
+    } catch (error) {
+      console.error('Error saving cart to database:', error);
+    }
+  };
+
+  // Load cart items from database for authenticated users
+  const loadCartFromDatabase = async () => {
+    if (!user) return;
+
+    try {
+      const { data: cartData, error } = await supabase
+        .from('user_carts')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Error loading cart from database:', error);
+        return;
+      }
+
+      if (cartData && cartData.length > 0) {
+        const cartItems: CartItem[] = cartData.map(item => ({
+          id: `${item.product_id}-${item.variant_size}-${Date.now()}`,
+          productId: item.product_id,
+          productName: item.product_name,
+          productCode: '', // Will be populated from product data if needed
+          variantId: `${item.product_id}-${item.variant_size}`,
+          variantSize: item.variant_size,
+          price: Number(item.price),
+          quantity: item.quantity,
+          imageUrl: item.image_url,
+          categoryName: '', // Will be populated from product data if needed
+        }));
+
+        setItems(cartItems);
+        
+        // Also save to localStorage for backup
+        const cartKey = getCartKey();
+        if (cartKey) {
+          localStorage.setItem(cartKey, JSON.stringify(cartItems));
+        }
+      }
+    } catch (error) {
+      console.error('Error loading cart from database:', error);
+    }
+  };
+
   // Get user-specific cart key
   const getCartKey = () => {
     return user ? `shopping-cart-${user.id}` : null;
   };
 
-  // Load cart from localStorage when user changes or component mounts
+  // Load cart when user changes or component mounts
   useEffect(() => {
     if (loading) return; // Wait for auth to initialize
 
-    const cartKey = getCartKey();
-    
-    if (user && cartKey) {
-      // User is logged in - load their specific cart
-      const savedCart = localStorage.getItem(cartKey);
-      if (savedCart) {
-        try {
-          setItems(JSON.parse(savedCart));
-        } catch (error) {
-          console.error('Error loading cart from localStorage:', error);
-          setItems([]);
+    const loadUserCart = async () => {
+      if (user) {
+        // User is logged in - load from database first
+        const { data: cartData, error } = await supabase
+          .from('user_carts')
+          .select('*')
+          .eq('user_id', user.id);
+
+        let databaseItems: CartItem[] = [];
+        if (!error && cartData && cartData.length > 0) {
+          databaseItems = cartData.map(item => ({
+            id: `${item.product_id}-${item.variant_size}-${Date.now()}`,
+            productId: item.product_id,
+            productName: item.product_name,
+            productCode: '',
+            variantId: `${item.product_id}-${item.variant_size}`,
+            variantSize: item.variant_size,
+            price: Number(item.price),
+            quantity: item.quantity,
+            imageUrl: item.image_url,
+            categoryName: '',
+          }));
+        }
+
+        // Check localStorage for any additional items
+        const cartKey = getCartKey();
+        let localItems: CartItem[] = [];
+        if (cartKey) {
+          const savedCart = localStorage.getItem(cartKey);
+          if (savedCart) {
+            try {
+              localItems = JSON.parse(savedCart);
+            } catch (error) {
+              console.error('Error loading cart from localStorage:', error);
+            }
+          }
+        }
+
+        // Use database items if they exist, otherwise use localStorage items
+        const finalItems = databaseItems.length > 0 ? databaseItems : localItems;
+        setItems(finalItems);
+
+        // Save final items to both localStorage and database
+        if (cartKey && finalItems.length > 0) {
+          localStorage.setItem(cartKey, JSON.stringify(finalItems));
+          // Save to database if we used localStorage items (different from database)
+          if (finalItems === localItems && databaseItems.length === 0) {
+            setTimeout(() => saveCartToDatabase(), 100);
+          }
         }
       } else {
+        // User is logged out - clear cart completely
         setItems([]);
+        // Clear any existing cart data
+        localStorage.removeItem('shopping-cart');
+        // Clear user-specific carts if any exist
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('shopping-cart-')) {
+            localStorage.removeItem(key);
+          }
+        });
       }
-    } else {
-      // User is logged out - clear cart completely
-      setItems([]);
-      // Also clear any existing cart data
-      localStorage.removeItem('shopping-cart'); // Remove old non-user-specific cart
-    }
+    };
+
+    loadUserCart();
   }, [user, loading]);
 
-  // Save cart to localStorage whenever items change (only if user is logged in)
+  // Save cart to localStorage and database whenever items change
   useEffect(() => {
-    if (loading) return;
+    if (loading || !user || items.length === 0) return;
     
     const cartKey = getCartKey();
-    if (user && cartKey) {
+    if (cartKey) {
       localStorage.setItem(cartKey, JSON.stringify(items));
+      // Debounce database saves to avoid too many requests
+      const timeoutId = setTimeout(() => {
+        saveCartToDatabase();
+      }, 500);
+      
+      return () => clearTimeout(timeoutId);
     }
   }, [items, user, loading]);
 
@@ -158,6 +287,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (cartKey) {
       localStorage.removeItem(cartKey);
     }
+
+    // Clear from database if user is logged in
+    if (user) {
+      supabase
+        .from('user_carts')
+        .delete()
+        .eq('user_id', user.id)
+        .then(({ error }) => {
+          if (error) {
+            console.error('Error clearing cart from database:', error);
+          }
+        });
+    }
     
     toast({
       title: "Cart Cleared",
@@ -185,6 +327,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         clearCart,
         getTotalItems,
         getTotalPrice,
+        saveCartToDatabase,
+        loadCartFromDatabase,
       }}
     >
       {children}
