@@ -74,6 +74,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log('📝 Creating order for:', customerInfo.email);
     console.log('💰 Total amount:', totalAmount);
     console.log('👤 User ID:', userId || 'Guest order');
+    console.log('💳 Payment method:', customerInfo.paymentMethod);
 
     // Generate secure session ID for guest orders
     let orderSessionId = null;
