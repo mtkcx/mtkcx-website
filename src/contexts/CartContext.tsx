@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 export interface CartItem {
   id: string;
@@ -39,25 +40,61 @@ export const useCart = () => {
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { user, loading } = useAuth();
 
-  // Load cart from localStorage on mount
+  // Get user-specific cart key
+  const getCartKey = () => {
+    return user ? `shopping-cart-${user.id}` : null;
+  };
+
+  // Load cart from localStorage when user changes or component mounts
   useEffect(() => {
-    const savedCart = localStorage.getItem('shopping-cart');
-    if (savedCart) {
-      try {
-        setItems(JSON.parse(savedCart));
-      } catch (error) {
-        console.error('Error loading cart from localStorage:', error);
+    if (loading) return; // Wait for auth to initialize
+
+    const cartKey = getCartKey();
+    
+    if (user && cartKey) {
+      // User is logged in - load their specific cart
+      const savedCart = localStorage.getItem(cartKey);
+      if (savedCart) {
+        try {
+          setItems(JSON.parse(savedCart));
+        } catch (error) {
+          console.error('Error loading cart from localStorage:', error);
+          setItems([]);
+        }
+      } else {
+        setItems([]);
       }
+    } else {
+      // User is logged out - clear cart completely
+      setItems([]);
+      // Also clear any existing cart data
+      localStorage.removeItem('shopping-cart'); // Remove old non-user-specific cart
     }
-  }, []);
+  }, [user, loading]);
 
-  // Save cart to localStorage whenever items change
+  // Save cart to localStorage whenever items change (only if user is logged in)
   useEffect(() => {
-    localStorage.setItem('shopping-cart', JSON.stringify(items));
-  }, [items]);
+    if (loading) return;
+    
+    const cartKey = getCartKey();
+    if (user && cartKey) {
+      localStorage.setItem(cartKey, JSON.stringify(items));
+    }
+  }, [items, user, loading]);
 
   const addToCart = (newItem: Omit<CartItem, 'id' | 'quantity'>) => {
+    // Only allow adding to cart if user is logged in
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please log in to add items to your cart.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setItems(prevItems => {
       // Check if item with same product and variant already exists
       const existingItem = prevItems.find(
@@ -115,6 +152,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearCart = () => {
     setItems([]);
+    
+    // Clear from localStorage if user is logged in
+    const cartKey = getCartKey();
+    if (cartKey) {
+      localStorage.removeItem(cartKey);
+    }
+    
     toast({
       title: "Cart Cleared",
       description: "All items have been removed from your cart.",
