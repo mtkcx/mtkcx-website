@@ -136,6 +136,11 @@ const Auth = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Scroll to top when switching to sign up
+    if (isSignUp) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -307,6 +312,7 @@ const Auth = () => {
                         value={formData.fullName}
                         onChange={handleInputChange}
                         className="pl-10"
+                        autoComplete="name"
                       />
                     </div>
                   </div>
@@ -324,6 +330,7 @@ const Auth = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       className="pl-10"
+                      autoComplete="email"
                       required
                     />
                   </div>
@@ -395,6 +402,7 @@ const Auth = () => {
                           value={formData.phone}
                           onChange={handleInputChange}
                           className="pl-10"
+                          autoComplete="tel"
                         />
                       </div>
                     </div>
@@ -411,6 +419,7 @@ const Auth = () => {
                           value={formData.company}
                           onChange={handleInputChange}
                           className="pl-10"
+                          autoComplete="organization"
                         />
                       </div>
                     </div>
@@ -439,6 +448,7 @@ const Auth = () => {
                   variant="link"
                   onClick={() => {
                     setIsSignUp(!isSignUp);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     setFormData({
                       email: '',
                       password: '',
