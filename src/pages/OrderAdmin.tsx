@@ -663,14 +663,15 @@ const OrderAdmin = () => {
                                    <Send className="w-4 h-4" />
                                  </Button>
                                )}
-                               <Button
-                                 variant="outline"
-                                 size="sm"
-                                 onClick={() => handleDeleteOrder(order.id, order.order_number)}
-                                 className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
-                               >
-                                 <Trash2 className="w-4 h-4" />
-                               </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleDeleteOrder(order.id, order.order_number)}
+                                  className="text-destructive hover:text-destructive-foreground hover:bg-destructive border-destructive"
+                                  title="Delete Order"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
                              </div>
                            </TableCell>
                         </TableRow>
