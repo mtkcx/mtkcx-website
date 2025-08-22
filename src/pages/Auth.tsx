@@ -109,7 +109,9 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`
+          redirectTo: window.location.hostname === 'localhost' 
+            ? 'https://lovely-salamander-a3df8b.netlify.app/' 
+            : `${window.location.origin}/`
         }
       });
       

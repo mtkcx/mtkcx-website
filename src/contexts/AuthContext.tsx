@@ -126,7 +126,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signUp = async (email: string, password: string, fullName?: string) => {
-    const redirectUrl = `${window.location.origin}/`;
+    // Use production URL for email redirect to ensure it works across all environments
+    const redirectUrl = window.location.hostname === 'localhost' 
+      ? 'https://lovely-salamander-a3df8b.netlify.app/' 
+      : `${window.location.origin}/`;
     
     const { error } = await supabase.auth.signUp({
       email,
