@@ -351,6 +351,7 @@ const Auth = () => {
                       value={formData.password}
                       onChange={handleInputChange}
                       className="pl-10 pr-10"
+                      autoComplete={isSignUp ? "new-password" : "current-password"}
                       required
                     />
                     <Button
@@ -385,6 +386,7 @@ const Auth = () => {
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
                         className="pl-10"
+                        autoComplete="new-password"
                         required
                       />
                     </div>

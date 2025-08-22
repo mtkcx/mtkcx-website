@@ -1550,6 +1550,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      set_order_context: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       set_security_validation_context: {
         Args: Record<PropertyKey, never>
         Returns: undefined

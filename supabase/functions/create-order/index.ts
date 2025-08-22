@@ -48,10 +48,8 @@ const handler = async (req: Request): Promise<Response> => {
       { auth: { persistSession: false } }
     );
 
-    // Parse request body
+     // Parse request body
     const { items, customerInfo, shippingCost, totalAmount }: CreateOrderRequest = await req.json();
-
-    console.log('📝 Creating order for:', customerInfo.email);
 
     // Generate order number
     const orderNumber = `ORD-${Date.now()}`;
@@ -73,6 +71,10 @@ const handler = async (req: Request): Promise<Response> => {
       console.log('No authenticated user, proceeding as guest order');
     }
 
+    console.log('📝 Creating order for:', customerInfo.email);
+    console.log('💰 Total amount:', totalAmount);
+    console.log('👤 User ID:', userId || 'Guest order');
+
     // Generate secure session ID for guest orders
     let orderSessionId = null;
     if (!userId) {
@@ -87,11 +89,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Set secure context for RLS policy
-    await supabaseService.rpc('set_config', {
-      setting_name: 'app.order_context',
-      setting_value: 'secure_order_creation',
-      is_local: true
-    });
+    await supabaseService.rpc('set_order_context');
 
     // Create order in database with enhanced security
     const { data: order, error: orderError } = await supabaseService
@@ -125,6 +123,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     if (orderError) {
       console.error('❌ Order creation error:', orderError);
+      console.error('❌ Error details:', JSON.stringify(orderError, null, 2));
       throw new Error(`Failed to create order: ${orderError.message}`);
     }
 
