@@ -4,7 +4,6 @@ import ServiceSection from '@/components/ServiceSection';
 import ProductCategoriesSection from '@/components/ProductCategoriesSection';
 import Footer from '@/components/Footer';
 import NewsletterPopup from '@/components/NewsletterPopup';
-import ChatBot from '@/components/ChatBot';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 

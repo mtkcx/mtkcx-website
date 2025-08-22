@@ -2,13 +2,9 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, GraduationCap, Sparkles, User } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { ShoppingCart, GraduationCap, Sparkles } from 'lucide-react';
 const Hero = () => {
   const navigate = useNavigate();
-  const {
-    user
-  } = useAuth();
   const {
     t,
     isRTL
