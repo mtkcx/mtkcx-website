@@ -151,15 +151,31 @@ const OrderAdmin = () => {
 
   const handleStatusUpdate = async (orderId: string, newStatus: string) => {
     try {
+      // First, make sure we have a valid session
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast({
+          title: t('admin.error'),
+          description: 'Please log in to update order status',
+          variant: 'destructive',
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from('orders')
-        .update({ status: newStatus, updated_at: new Date().toISOString() })
+        .update({ 
+          status: newStatus, 
+          updated_at: new Date().toISOString() 
+        })
         .eq('id', orderId);
 
       if (error) {
+        console.error('Status update error:', error);
         toast({
           title: t('admin.error'),
-          description: t('admin.orders.status_update_error'),
+          description: `Error updating status: ${error.message}`,
           variant: 'destructive',
         });
         return;
@@ -170,9 +186,25 @@ const OrderAdmin = () => {
         description: t('admin.orders.status_updated'),
       });
 
-      fetchOrders();
+      // Update the local state immediately for better UX
+      setOrders(prevOrders => 
+        prevOrders.map(order => 
+          order.id === orderId 
+            ? { ...order, status: newStatus, updated_at: new Date().toISOString() }
+            : order
+        )
+      );
+
+      // Also refresh from database to ensure sync
+      setTimeout(() => fetchOrders(), 500);
+      
     } catch (error) {
       console.error('Error updating order status:', error);
+      toast({
+        title: t('admin.error'),
+        description: 'Failed to update order status',
+        variant: 'destructive',
+      });
     }
   };
 
