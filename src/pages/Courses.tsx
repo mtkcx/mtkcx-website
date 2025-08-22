@@ -69,13 +69,13 @@ const Courses = () => {
                 </div>
                 
                  {/* Call to Action */}
-                <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
+                <div className="mt-6 sm:mt-8 md:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
                   <Button 
                     size="lg" 
-                    className="w-full sm:w-auto min-w-[200px] px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105"
+                    className="w-full sm:w-auto min-w-[200px] px-6 sm:px-8 py-4 sm:py-4 text-base sm:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105 z-10 relative"
                     onClick={handleEnrollment}
                   >
-                    <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    <Calendar className="w-5 h-5 mr-2" />
                     {t("courses.enroll_now")}
                   </Button>
                 </div>
