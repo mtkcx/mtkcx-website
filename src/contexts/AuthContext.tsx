@@ -173,9 +173,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { error };
     }
     
-    // If signup is successful, send welcome email
+    // If signup is successful, create user profile and send welcome email
     if (data.user) {
       try {
+        // Create user profile
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            user_id: data.user.id,
+            full_name: fullName || '',
+          });
+
+        if (profileError) {
+          console.error('Failed to create user profile:', profileError);
+        }
+
         await supabase.functions.invoke('send-welcome-email', {
           body: {
             email: email,
