@@ -59,6 +59,8 @@ const ProductCatalog = () => {
     searchParams.get('category') || null
   );
 
+  console.log('ProductCatalog component rendering...');
+
   const fetchData = async () => {
     try {
       setLoading(true);
