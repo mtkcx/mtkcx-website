@@ -1,38 +1,44 @@
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import SEOHead from '@/components/SEOHead';
-import { useLanguage } from '@/contexts/LanguageContext';
 
-const Products = () => {
-  const { isRTL } = useLanguage();
+function Products() {
+  console.log('Products function component rendering');
   
-  console.log('Products page is rendering...');
-  
-  return (
-    <>
-      <SEOHead 
-        title="Koch-Chemie Professional Car Care Products | MT Wraps"
-        description="Shop premium Koch-Chemie car detailing products. Official distributor offering professional automotive cleaning, polishing, and protection products with fast shipping."
-        keywords="koch chemie products, car detailing products, automotive cleaning supplies, professional car care, german car products, car polishing, paint protection"
-      />
-      <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
-        <Header />
-        <main className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-6">Products Page</h1>
-            <p className="text-lg text-muted-foreground mb-8">
-              Our professional Koch-Chemie car care products
-            </p>
-            <div className="bg-card p-6 rounded-lg border">
-              <p>Products page is loading correctly. The component issue has been resolved.</p>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    </>
-  );
-};
+  return React.createElement('div', {
+    style: { 
+      padding: '40px', 
+      backgroundColor: '#ffffff', 
+      minHeight: '100vh',
+      color: '#000000',
+      fontFamily: 'Arial, sans-serif'
+    }
+  }, [
+    React.createElement('h1', { 
+      key: 'title',
+      style: { 
+        fontSize: '32px', 
+        marginBottom: '20px',
+        color: '#000000'
+      }
+    }, 'PRODUCTS PAGE WORKING'),
+    React.createElement('p', { 
+      key: 'text',
+      style: { 
+        fontSize: '18px', 
+        marginBottom: '20px',
+        color: '#333333'
+      }
+    }, 'This page is now loading successfully!'),
+    React.createElement('div', {
+      key: 'box',
+      style: {
+        backgroundColor: '#e3f2fd',
+        padding: '20px',
+        border: '2px solid #2196f3',
+        borderRadius: '8px',
+        marginTop: '20px'
+      }
+    }, 'If you see this blue box, the routing and component are working correctly.')
+  ]);
+}
 
 export default Products;
