@@ -19,7 +19,6 @@ interface MobileProductCatalogProps {
 }
 
 const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = false, onCheckout }) => {
-  console.log('MobileProductCatalog rendering');
   const { addToCart: addItemToCart, getTotalItems } = useCart();
   const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();

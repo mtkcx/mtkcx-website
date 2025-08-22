@@ -11,8 +11,6 @@ const Products = () => {
   const { isRTL } = useLanguage();
   const isMobile = useIsMobile();
   
-  console.log('Products page rendering - isMobile:', isMobile);
-  
   return (
     <>
       <SEOHead 
