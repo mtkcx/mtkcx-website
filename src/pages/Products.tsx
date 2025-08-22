@@ -11,6 +11,8 @@ const Products = () => {
   const { isRTL } = useLanguage();
   const isMobile = useIsMobile();
   
+  console.log('Products page rendering - isMobile:', isMobile);
+  
   return (
     <>
       <SEOHead 
@@ -19,14 +21,15 @@ const Products = () => {
         keywords="koch chemie products, car detailing products, automotive cleaning supplies, professional car care, german car products, car polishing, paint protection"
       />
       <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
-        <Header />
-        <div className="block md:hidden pt-4 pb-20">
-          <MobileProductCatalog />
-        </div>
-        <div className="hidden md:block">
+        {!isMobile && <Header />}
+        {isMobile ? (
+          <div className="pt-4 pb-20">
+            <MobileProductCatalog />
+          </div>
+        ) : (
           <ProductCatalog />
-        </div>
-        <Footer />
+        )}
+        {!isMobile && <Footer />}
       </div>
     </>
   );

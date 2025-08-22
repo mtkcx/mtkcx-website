@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MobileServiceCalculator } from '@/components/mobile/MobileServiceCalculator';
-import { MobileProductCatalog } from '@/components/mobile/MobileProductCatalog';
+import MobileProductCatalog from '@/components/mobile/MobileProductCatalog';
 import { MobileHome } from '@/components/mobile/MobileHome';
 import { MobileCheckout } from '@/components/mobile/MobileCheckout';
 import { MobileDashboard } from '@/components/mobile/MobileDashboard';
