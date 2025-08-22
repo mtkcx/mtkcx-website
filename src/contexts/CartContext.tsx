@@ -172,25 +172,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const finalItems = databaseItems.length > 0 ? databaseItems : localItems;
         setItems(finalItems);
 
-        // Save final items to both localStorage and database
+        // Save final items to localStorage
         if (cartKey && finalItems.length > 0) {
           localStorage.setItem(cartKey, JSON.stringify(finalItems));
-          // Save to database if we used localStorage items (different from database)
+          // Save to database if we used localStorage items (sync up)
           if (finalItems === localItems && databaseItems.length === 0) {
             setTimeout(() => saveCartToDatabase(), 100);
           }
         }
       } else {
-        // User is logged out - clear cart completely
+        // User is logged out - clear local state only (database cart persists)
         setItems([]);
-        // Clear any existing cart data
+        // Clear localStorage for guest cart only
         localStorage.removeItem('shopping-cart');
-        // Clear user-specific carts if any exist
-        Object.keys(localStorage).forEach(key => {
-          if (key.startsWith('shopping-cart-')) {
-            localStorage.removeItem(key);
-          }
-        });
       }
     };
 
