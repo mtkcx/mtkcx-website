@@ -20,7 +20,7 @@ interface MobileProductCatalogProps {
 
 const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = false, onCheckout }) => {
   const { addToCart: addItemToCart, getTotalItems } = useCart();
-  const { t, currentLanguage } = useLanguage();
+  const { currentLanguage } = useLanguage();
   const { toast } = useToast();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,6 +32,8 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
   const [showImageDialog, setShowImageDialog] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string>('');
   const [expandedDescriptions, setExpandedDescriptions] = useState<Record<string, boolean>>({});
+  
+  console.log('MobileProductCatalog rendering...');
   
   // Initialize mobile features hook
   const mobileFeatures = {
@@ -162,14 +164,14 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
     } catch (error) {
       console.error('Error fetching data:', error);
       toast({
-        title: t('common.error'),
+        title: 'Error',
         description: 'Failed to load products',
         variant: 'destructive'
       });
     } finally {
       setLoading(false);
     }
-  }, [t, toast]);
+  }, [toast]);
 
   // Memoized filtered products
   const filteredProducts = useMemo(() => {
@@ -267,8 +269,8 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
                          product.name;
     
     toast({
-      title: t('mobile.products.added_to_cart'),
-      description: `${localizedName} ${t('mobile.products.added_description')}`,
+      title: 'Added to Cart',
+      description: `${localizedName} has been added to your cart`,
       duration: 2000
     });
   };
@@ -322,9 +324,9 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center p-4">
-            <h1 className="text-2xl font-bold text-white mb-2">{t('mobile.products.banner_title')}</h1>
+            <h1 className="text-2xl font-bold text-white mb-2">Our Products</h1>
             <p className="text-white/90 text-sm max-w-xs leading-relaxed">
-              {t('mobile.products.banner_subtitle')}
+              Professional Koch-Chemie car care products
             </p>
           </div>
         </div>
@@ -336,7 +338,7 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder={t('mobile.products.search_placeholder')}
+              placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -361,7 +363,7 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
               size="sm"
               onClick={() => handleCategorySelect(null)}
             >
-              {t('mobile.products.all_categories')}
+              All Categories
             </Button>
             {categories.map(category => {
               const categoryName = currentLanguage === 'ar' ? (category.name_ar || category.name) :
@@ -387,14 +389,14 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
         <Card className="p-4 bg-primary/5 border-primary/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-semibold">{t('mobile.products.cart_ready')}</p>
+              <p className="font-semibold">Cart Ready</p>
               <p className="text-sm text-muted-foreground">
-                {getTotalItems()} {t('mobile.products.items_text')}
+                {getTotalItems()} items
               </p>
             </div>
             <Button onClick={onCheckout} className="flex items-center gap-2">
               <CreditCard className="h-4 w-4" />
-              {t('mobile.products.checkout')}
+              Checkout
             </Button>
           </div>
         </Card>
@@ -463,12 +465,12 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
                          >
                            {expandedDescriptions[product.id] ? (
                              <>
-                               <span>{t('mobile.products.show_less')}</span>
+                               <span>Show less</span>
                                <ChevronUp className="h-3 w-3" />
                              </>
                            ) : (
                              <>
-                               <span>{t('mobile.products.show_more')}</span>
+                               <span>Show more</span>
                                <ChevronDown className="h-3 w-3" />
                              </>
                            )}
@@ -535,7 +537,7 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
                         className="h-8 px-3 text-xs whitespace-nowrap"
                       >
                         <ShoppingCart className="h-3 w-3 mr-1" />
-                        {t('mobile.products.add')}
+                        Add
                       </Button>
                     </div>
                   </div>
@@ -548,8 +550,8 @@ const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ compact = f
       {/* Empty State */}
       {filteredProducts.length === 0 && !loading && (
         <div className="text-center py-8">
-          <div className="text-muted-foreground mb-2">{t('mobile.products.no_products')}</div>
-          <div className="text-sm text-muted-foreground">{t('mobile.products.no_products_desc')}</div>
+          <div className="text-muted-foreground mb-2">No products found</div>
+          <div className="text-sm text-muted-foreground">Try adjusting your search or filters</div>
         </div>
       )}
 

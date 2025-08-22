@@ -235,10 +235,10 @@ const ProductCatalog = () => {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white px-6 max-w-4xl">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight tracking-tight">
-                {t('products.title')}
+                Professional Koch-Chemie Products
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-95 font-light max-w-3xl mx-auto">
-                {t('products.subtitle')}
+                Premium German automotive detailing products for professional results
               </p>
             </div>
           </div>
@@ -250,7 +250,7 @@ const ProductCatalog = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder={t('products.search_placeholder')}
+              placeholder="Search products by name, description, or product code..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
