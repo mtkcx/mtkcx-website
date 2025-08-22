@@ -146,7 +146,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Handle specific error cases for duplicate emails
       if (error.message.includes('already registered') || 
           error.message.includes('User already registered') ||
-          error.message.includes('email already exists')) {
+          error.message.includes('email already exists') ||
+          error.message.includes('duplicate') ||
+          error.status === 422) {
         return { error: new Error('An account with this email already exists. Please sign in instead.') };
       }
       return { error };

@@ -160,10 +160,13 @@ const Auth = () => {
             error: error.message
           });
 
-          if (error.message.includes('already registered')) {
+          if (error.message.includes('already registered') || 
+              error.message.includes('already exists') ||
+              error.message.includes('duplicate') ||
+              error.message.includes('User already registered')) {
             toast({
               title: t('auth.error_title'),
-              description: t('auth.email_already_exists'),
+              description: 'An account with this email already exists. Please sign in instead.',
               variant: 'destructive',
             });
           } else {
@@ -180,7 +183,7 @@ const Auth = () => {
 
           toast({
             title: t('auth.success_title'),
-            description: 'Account created successfully! Check your email for a welcome message from MTKCx. You can start using your account immediately.',
+            description: 'Account created successfully! You can now sign in to your account.',
           });
           // Switch to sign in mode after successful signup
           setIsSignUp(false);
