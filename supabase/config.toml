@@ -41,16 +41,18 @@ public_url = "http://127.0.0.1:54321/storage/v1"
 
 [auth]
 enabled = true
-site_url = "http://127.0.0.1:3000"
-additional_redirect_urls = ["https://localhost:3000"]
+site_url = "https://lovely-salamander-a3df8b.netlify.app/"
+additional_redirect_urls = ["https://localhost:3000", "http://localhost:3000"]
 jwt_expiry = 3600
 enable_signup = true
 enable_anonymous_users = false
+minimum_password_length = 6
 
 [auth.email]
 enable_signup = true
 double_confirm_changes = true
-enable_confirmations = true
+enable_confirmations = false
+secure_email_change_enabled = true
 
 # Payment processing edge functions
 [functions.create-stripe-payment]
@@ -79,3 +81,6 @@ verify_jwt = false
 
 [functions.send-welcome-email]
 verify_jwt = false
+
+[functions.delete-account]
+verify_jwt = true

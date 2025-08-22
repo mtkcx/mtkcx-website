@@ -4,10 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { 
   User, 
   Mail, 
@@ -15,7 +18,8 @@ import {
   Building, 
   MapPin, 
   ArrowLeft,
-  Save
+  Save,
+  Trash2
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -26,6 +30,8 @@ const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteEmail, setDeleteEmail] = useState('');
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -90,6 +96,49 @@ const Profile = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteEmail !== user?.email) {
+      toast({
+        title: "Email Mismatch",
+        description: "Please enter your correct email address to confirm deletion.",
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsDeleting(true);
+
+    try {
+      const { error } = await supabase.functions.invoke('delete-account', {
+        body: {
+          confirmEmail: deleteEmail
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      toast({
+        title: "Account Deleted",
+        description: "Your account has been permanently deleted.",
+      });
+
+      // Clear local storage and redirect
+      localStorage.clear();
+      window.location.href = '/';
+
+    } catch (error: any) {
+      toast({
+        title: "Deletion Failed",
+        description: error.message || "Failed to delete account. Please try again.",
+        variant: 'destructive',
+      });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -281,6 +330,64 @@ const Profile = () => {
                   {isSubmitting ? t('profile.updating_profile') : t('profile.save_changes')}
                 </Button>
               </form>
+            </CardContent>
+          </Card>
+
+          {/* Danger Zone */}
+          <Card className="shadow-lg border-destructive/20">
+            <CardHeader>
+              <CardTitle className="flex items-center text-destructive">
+                <Trash2 className="w-5 h-5 mr-2" />
+                Danger Zone
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium">Delete Account</h4>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Permanently delete your account and all associated data. This action cannot be undone.
+                  </p>
+                </div>
+                
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" className="w-full">
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete My Account
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription className="space-y-3">
+                        <p>This action cannot be undone. This will permanently delete your account and remove all your data from our servers.</p>
+                        <p>All your orders, quotes, messages, and profile information will be permanently deleted.</p>
+                        <div className="space-y-2">
+                          <Label htmlFor="deleteEmail">Type your email address to confirm:</Label>
+                          <Input
+                            id="deleteEmail"
+                            type="email"
+                            placeholder={user?.email}
+                            value={deleteEmail}
+                            onChange={(e) => setDeleteEmail(e.target.value)}
+                          />
+                        </div>
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel onClick={() => setDeleteEmail('')}>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleDeleteAccount}
+                        disabled={isDeleting || deleteEmail !== user?.email}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        {isDeleting ? "Deleting..." : "Delete Account"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </CardContent>
           </Card>
         </div>
