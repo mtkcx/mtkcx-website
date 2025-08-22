@@ -1095,6 +1095,10 @@ const translations = {
     'courses.ongoing_education': 'Ongoing education and skill development',
     'courses.industry_updates': 'Latest industry trends and product updates',
     'courses.business_growth': 'Business growth and marketing strategies',
+    'courses.course_date': 'Course Date',
+    'courses.course_price': 'Course Price',
+    'courses.september_5_2025': 'September 5th, 2025',
+    'courses.price_7500_nis': '7,500 NIS',
 
     // Admin
     'admin.error': 'Error',
@@ -1913,6 +1917,10 @@ const translations = {
     'courses.advanced_polishing': 'أساليب التلميع المتقدمة وتصحيح الطلاء',
     'courses.business_practices': 'الممارسات التجارية والتطوير المهني',
     'courses.ready_certified': 'مستعد للحصول على الشهادة؟',
+    'courses.course_date': 'تاريخ الدورة',
+    'courses.course_price': 'سعر الدورة',
+    'courses.september_5_2025': '5 سبتمبر 2025',
+    'courses.price_7500_nis': '7,500 شيكل',
     
     // Common
     'common.locale': 'ar-SA',
@@ -2885,6 +2893,10 @@ const translations = {
     'courses.ongoing_education': 'חינוך מתמשך ופיתוח כישורים',
     'courses.industry_updates': 'מגמות התעשייה העדכניות ועדכוני מוצרים',
     'courses.business_growth': 'צמיחת עסק ואסטרטגיות שיווק',
+    'courses.course_date': 'תאריך הקורס',
+    'courses.course_price': 'מחיר הקורס',
+    'courses.september_5_2025': '5 בספטמבר 2025',
+    'courses.price_7500_nis': '7,500 ₪',
     
     // Add missing translation keys for all pages - Hebrew
     'about.location_jerusalem': 'אזור התעשייה עטרות, ירושלים',

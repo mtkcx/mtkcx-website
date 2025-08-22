@@ -53,17 +53,17 @@ const Courses = () => {
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-white/20">
                       <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
                         <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-                        <span className="text-sm sm:text-base font-semibold text-white">Course Date</span>
+                        <span className="text-sm sm:text-base font-semibold text-white">{t("courses.course_date")}</span>
                       </div>
-                      <p className="text-center text-lg sm:text-xl font-bold text-white">September 5th, 2025</p>
+                      <p className="text-center text-lg sm:text-xl font-bold text-white">{t("courses.september_5_2025")}</p>
                     </div>
                     
                     <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-white/20">
                       <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
                         <span className="text-lg sm:text-xl font-bold text-primary">₪</span>
-                        <span className="text-sm sm:text-base font-semibold text-white">Course Price</span>
+                        <span className="text-sm sm:text-base font-semibold text-white">{t("courses.course_price")}</span>
                       </div>
-                      <p className="text-center text-lg sm:text-xl font-bold text-white">7,500 NIS</p>
+                      <p className="text-center text-lg sm:text-xl font-bold text-white">{t("courses.price_7500_nis")}</p>
                     </div>
                   </div>
                 </div>
