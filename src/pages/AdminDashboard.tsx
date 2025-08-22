@@ -673,10 +673,17 @@ const AdminDashboard: React.FC = () => {
 
         {/* Quick Actions Section - Only for Admins */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+          <h2 className="text-xl font-semibold mb-4 text-primary">📊 Quick Actions</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <EnrollmentQuickActions />
-            {/* You can add more quick action components here */}
+            <Card className="border-dashed border-2 border-muted-foreground/20">
+              <CardContent className="flex items-center justify-center h-32 text-muted-foreground">
+                <div className="text-center">
+                  <Package className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p>More quick actions coming soon</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
