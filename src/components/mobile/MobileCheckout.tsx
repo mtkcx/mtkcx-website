@@ -112,91 +112,73 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
     setIsProcessing(true);
 
     try {
-      // Create order in database using the orders table
-      const { data: orderData, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          email: formData.email,
-          customer_name: formData.fullName,
-          customer_phone: formData.phone,
-          customer_city: formData.city,
-          customer_address: formData.address,
-          shipping_location: formData.location,
-          payment_gateway: formData.paymentMethod,
-          notes: formData.orderNotes,
-          amount: totalPrice + shippingCost,
-          order_type: 'mobile_app',
+      const totalAmount = totalPrice + shippingCost;
+      
+      // Create order using the same edge function as desktop checkout
+      const { data, error } = await supabase.functions.invoke('create-order', {
+        body: {
           items: items.map(item => ({
-            product_id: item.productId,
-            product_name: item.productName,
-            product_code: item.productCode,
-            variant_id: item.variantId,
-            variant_size: item.variantSize,
+            id: item.productId || item.id,
+            productName: item.productName,
             price: item.price,
             quantity: item.quantity,
-            image_url: item.imageUrl,
-            category_name: item.categoryName
-          }))
-        })
-        .select()
-        .single();
+            variantSize: item.variantSize,
+            imageUrl: item.imageUrl
+          })),
+          customerInfo: {
+            email: formData.email,
+            name: formData.fullName,
+            phone: formData.phone,
+            address: formData.address,
+            city: formData.city,
+            location: formData.location,
+            notes: formData.orderNotes,
+            paymentMethod: formData.paymentMethod
+          },
+          shippingCost,
+          totalAmount
+        }
+      });
 
-      if (orderError) {
-        console.error('Order creation error:', orderError);
+      if (error) {
+        console.error('❌ Order creation error:', error);
+        throw new Error(error.message);
+      }
+
+      if (data?.success && data?.order) {
+        console.log('✅ Order created successfully:', data.order);
+        
+        toast({
+          title: t('checkout.order_success'),
+          description: `${t('checkout.order_success_desc')} Order #${data.order.order_number} - ₪${totalAmount.toLocaleString()}`,
+        });
+
+        // Clear cart and reset form
+        clearCart();
+        setFormData({
+          email: '',
+          fullName: '',
+          phone: '',
+          city: '',
+          address: '',
+          location: '',
+          paymentMethod: 'cash_on_delivery',
+          orderNotes: ''
+        });
+
+        // Go back to previous screen after successful order
+        setTimeout(() => {
+          onBack();
+        }, 2000);
+      } else {
         throw new Error('Failed to create order');
       }
 
-      // Send order confirmation notification
-      try {
-        const userLanguage = localStorage.getItem('preferred-language') || 'en';
-        
-        const { error: notificationError } = await supabase.functions.invoke('send-order-notification', {
-          body: {
-            orderId: orderData.id,
-            customerEmail: formData.email,
-            customerName: formData.fullName,
-            customerPhone: formData.phone,
-            language: userLanguage,
-            totalAmount: totalPrice + shippingCost,
-            orderItems: items
-          }
-        });
-
-        if (notificationError) {
-          console.error('Error sending notification:', notificationError);
-        }
-      } catch (notificationError) {
-        console.error('Failed to send order notification:', notificationError);
-        // Don't fail the order creation if notification fails
-      }
-
-      toast({
-        title: t('checkout.order_success'),
-        description: t('checkout.order_success_desc').replace('{total}', `₪${(totalPrice + shippingCost).toLocaleString()}`),
-      });
-
-      // Clear cart and reset form
-      clearCart();
-      setFormData({
-        email: '',
-        fullName: '',
-        phone: '',
-        city: '',
-        address: '',
-        location: '',
-        paymentMethod: 'cash_on_delivery',
-        orderNotes: ''
-      });
-
-      // Go back to previous screen after successful order
-      setTimeout(() => {
-        onBack();
-      }, 2000);
-
     } catch (error) {
+      console.error('❌ Order placement error:', error);
       toast({
         title: t('checkout.order_failed'),
-        description: t('checkout.order_failed_desc'),
+        description: error.message || t('checkout.order_failed_desc'),
         variant: 'destructive'
       });
     } finally {
