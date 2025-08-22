@@ -131,6 +131,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ? 'https://lovely-salamander-a3df8b.netlify.app/' 
       : `${window.location.origin}/`;
     
+    // First check if user might already exist by trying to sign in with wrong password
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password: 'dummy-wrong-password'
+    });
+    
+    // If we get "Invalid login credentials", user exists; if "User not found", user doesn't exist
+    if (signInError && !signInError.message.includes('User not found') && 
+        !signInError.message.includes('Invalid login credentials')) {
+      // Some other error occurred
+      return { error: signInError };
+    }
+    
+    if (signInError && signInError.message.includes('Invalid login credentials')) {
+      // User exists, prevent signup
+      return { error: new Error('An account with this email already exists. Please sign in instead.') };
+    }
+    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -148,6 +166,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           error.message.includes('User already registered') ||
           error.message.includes('email already exists') ||
           error.message.includes('duplicate') ||
+          error.message.includes('already exists') ||
           error.status === 422) {
         return { error: new Error('An account with this email already exists. Please sign in instead.') };
       }

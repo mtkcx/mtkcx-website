@@ -54,6 +54,12 @@ enable_signup = true
 double_confirm_changes = false
 enable_confirmations = false
 secure_email_change_enabled = false
+secure_password_change_enabled = false
+
+# Prevent duplicate signups
+[auth.sessions]
+timebox = 24
+inactivity_timeout = 8
 
 # Payment processing edge functions
 [functions.create-stripe-payment]
