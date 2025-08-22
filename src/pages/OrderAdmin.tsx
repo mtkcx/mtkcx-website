@@ -590,7 +590,7 @@ const OrderAdmin = () => {
                         <TableHead>{t('admin.orders.table.amount')}</TableHead>
                         <TableHead>{t('admin.orders.table.status')}</TableHead>
                         <TableHead>{t('admin.orders.table.date')}</TableHead>
-                        <TableHead>{t('admin.orders.table.actions')}</TableHead>
+                         <TableHead>{t('admin.orders.table.actions')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -633,6 +633,7 @@ const OrderAdmin = () => {
                                    setSelectedOrder(order);
                                    setShowDetailsDialog(true);
                                  }}
+                                 title="View Details"
                                >
                                  <Eye className="w-4 h-4" />
                                </Button>
@@ -659,19 +660,21 @@ const OrderAdmin = () => {
                                      setSelectedOrder(order);
                                      setShowTrackingDialog(true);
                                    }}
+                                   title="Send Tracking"
                                  >
                                    <Send className="w-4 h-4" />
                                  </Button>
                                )}
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleDeleteOrder(order.id, order.order_number)}
-                                  className="text-destructive hover:text-destructive-foreground hover:bg-destructive border-destructive"
-                                  title="Delete Order"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
+                               {/* DELETE ORDER BUTTON */}
+                               <Button
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() => handleDeleteOrder(order.id, order.order_number)}
+                                 className="text-destructive hover:text-destructive-foreground hover:bg-destructive border-destructive"
+                                 title="Delete Order"
+                               >
+                                 <Trash2 className="w-4 h-4" />
+                               </Button>
                              </div>
                            </TableCell>
                         </TableRow>
