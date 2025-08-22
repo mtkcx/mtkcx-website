@@ -39,21 +39,40 @@ const Courses = () => {
                   {t("common.professional_training")}
                 </Badge>
                 
-                <div className="bg-black/80 backdrop-blur-sm rounded-lg p-8 max-w-4xl mx-auto">
-                  <h1 className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-white ${isRTL ? 'leading-[1.8] tracking-wide' : 'leading-tight tracking-tight'}`} style={isRTL ? { lineHeight: '1.8em' } : {}}>
+                <div className="bg-black/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 max-w-4xl mx-auto">
+                  <h1 className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-white ${isRTL ? 'leading-[1.8] tracking-wide' : 'leading-tight tracking-tight'}`} style={isRTL ? { lineHeight: '1.8em' } : {}}>
                     {t("courses.title")}
                   </h1>
                   
-                  <p className={`text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 font-light ${isRTL ? 'leading-[1.9] tracking-wide' : 'leading-relaxed'}`}>
+                  <p className={`text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 font-light mb-6 sm:mb-8 ${isRTL ? 'leading-[1.9] tracking-wide' : 'leading-relaxed'}`}>
                     {t("courses.subtitle")}
                   </p>
+
+                  {/* Course Details */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-white/20">
+                      <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+                        <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                        <span className="text-sm sm:text-base font-semibold text-white">Course Date</span>
+                      </div>
+                      <p className="text-center text-lg sm:text-xl font-bold text-white">September 5th, 2025</p>
+                    </div>
+                    
+                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 sm:p-6 border border-white/20">
+                      <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+                        <span className="text-lg sm:text-xl font-bold text-primary">₪</span>
+                        <span className="text-sm sm:text-base font-semibold text-white">Course Price</span>
+                      </div>
+                      <p className="text-center text-lg sm:text-xl font-bold text-white">7,500 NIS</p>
+                    </div>
+                  </div>
                 </div>
                 
                  {/* Call to Action */}
-                <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
                   <Button 
                     size="lg" 
-                    className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg"
+                    className="w-full sm:w-auto min-w-[200px] px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105"
                     onClick={handleEnrollment}
                   >
                     <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
