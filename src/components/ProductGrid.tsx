@@ -155,7 +155,6 @@ const ProductCard = memo<{ product: Product; index: number }>(({ product, index 
 ProductCard.displayName = 'ProductCard';
 
 const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
-  const { currentLanguage } = useLanguage();
 
   if (loading) {
     return (
@@ -178,7 +177,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading }) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {products.map((product, index) => (
         <ProductCard 
-          key={`${product.id}-${currentLanguage}`} 
+          key={product.id} 
           product={product} 
           index={index} 
         />
