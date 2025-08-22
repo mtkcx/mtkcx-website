@@ -130,10 +130,15 @@ const Header = () => {
             </Button>
 
             {/* Language Dropdown */}
-            <div className="relative" 
-                 onMouseEnter={() => setIsLanguageDropdownOpen(true)}
-                 onMouseLeave={() => setIsLanguageDropdownOpen(false)}>
-              <Button variant="ghost" size="lg" className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-4 py-2 min-w-[100px] sm:min-w-[120px]">
+            <div className="relative">
+              <Button 
+                variant="ghost" 
+                size="lg" 
+                onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+                onMouseEnter={() => setIsLanguageDropdownOpen(true)}
+                onMouseLeave={() => setIsLanguageDropdownOpen(false)}
+                className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-4 py-2 min-w-[100px] sm:min-w-[120px]"
+              >
                 <Globe className="h-5 w-5" />
                 <span className="flex items-center space-x-2">
                   <span className="text-lg">
@@ -146,7 +151,9 @@ const Header = () => {
               </Button>
               <div className={`absolute right-0 top-full mt-2 bg-background border border-border rounded-lg shadow-lg transition-all duration-200 min-w-[160px] z-50 ${
                 isLanguageDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-              }`}>
+              }`}
+              onMouseEnter={() => setIsLanguageDropdownOpen(true)}
+              onMouseLeave={() => setIsLanguageDropdownOpen(false)}>
                  {languages.map(lang => 
                   <button 
                     key={lang.code} 
