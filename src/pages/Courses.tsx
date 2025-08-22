@@ -27,57 +27,57 @@ const Courses = () => {
           <img 
             src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png" 
             alt="Professional car detailing training session with multiple students learning hands-on techniques on a luxury vehicle in our state-of-the-art facility"
-            className="w-full h-[70vh] md:h-[80vh] object-cover"
+            className="w-full h-[85vh] md:h-[80vh] object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
           
-          {/* Content Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="container mx-auto px-6">
+          {/* Content Overlay - Changed to allow scrolling on mobile */}
+          <div className="absolute inset-0 flex items-start md:items-center justify-center pt-4 md:pt-0 overflow-y-auto">
+            <div className="container mx-auto px-4 py-4">
               <div className="max-w-5xl mx-auto text-center text-white">
-                <Badge className="mb-8 px-6 py-3 bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-colors">
+                <Badge className="mb-4 md:mb-8 px-4 md:px-6 py-2 md:py-3 text-sm md:text-base bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-colors">
                   {t("common.professional_training")}
                 </Badge>
                 
-                <div className="bg-black/80 backdrop-blur-sm rounded-lg p-6 sm:p-8 max-w-4xl mx-auto">
-                  <h1 className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-white ${isRTL ? 'leading-[1.8] tracking-wide' : 'leading-tight tracking-tight'}`} style={isRTL ? { lineHeight: '1.8em' } : {}}>
+                <div className="bg-black/80 backdrop-blur-sm rounded-lg p-4 md:p-8 max-w-4xl mx-auto mb-4 md:mb-0">
+                  <h1 className={`text-lg md:text-2xl lg:text-4xl font-bold mb-3 md:mb-6 text-white ${isRTL ? 'leading-[1.8] tracking-wide' : 'leading-tight tracking-tight'}`} style={isRTL ? { lineHeight: '1.8em' } : {}}>
                     {t("courses.title")}
                   </h1>
                   
-                  <p className={`text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 font-light mb-6 sm:mb-8 ${isRTL ? 'leading-[1.9] tracking-wide' : 'leading-relaxed'}`}>
+                  <p className={`text-sm md:text-lg lg:text-2xl text-white/95 font-light mb-4 md:mb-8 ${isRTL ? 'leading-[1.9] tracking-wide' : 'leading-relaxed'}`}>
                     {t("courses.subtitle")}
                   </p>
 
                   {/* Course Details */}
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:gap-6 mb-6 sm:mb-8 px-2 sm:px-0">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 md:p-6 border border-white/20">
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-6 mb-4 md:mb-8 px-1 md:px-0">
+                    <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 md:p-6 border border-white/30 shadow-lg">
                       <div className="flex items-center justify-center gap-2 mb-2">
-                        <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span className="text-xs sm:text-sm md:text-base font-semibold text-white text-center">{t("courses.course_date")}</span>
+                        <Calendar className="w-5 h-5 text-primary flex-shrink-0" />
+                        <span className="text-sm md:text-base font-semibold text-white text-center">{t("courses.course_date")}</span>
                       </div>
-                      <p className="text-center text-sm sm:text-lg md:text-xl font-bold text-white">{t("courses.september_5_2025")}</p>
+                      <p className="text-center text-lg md:text-xl font-bold text-white">{t("courses.september_5_2025")}</p>
                     </div>
                     
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 md:p-6 border border-white/20">
+                    <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 md:p-6 border border-white/30 shadow-lg">
                       <div className="flex items-center justify-center gap-2 mb-2">
-                        <span className="text-base sm:text-lg md:text-xl font-bold text-primary flex-shrink-0">₪</span>
-                        <span className="text-xs sm:text-sm md:text-base font-semibold text-white text-center">{t("courses.course_price")}</span>
+                        <span className="text-lg md:text-xl font-bold text-primary flex-shrink-0">₪</span>
+                        <span className="text-sm md:text-base font-semibold text-white text-center">{t("courses.course_price")}</span>
                       </div>
-                      <p className="text-center text-sm sm:text-lg md:text-xl font-bold text-white">{t("courses.price_7500_nis")}</p>
+                      <p className="text-center text-lg md:text-xl font-bold text-white">{t("courses.price_7500_nis")}</p>
                     </div>
                   </div>
-                </div>
-                
-                 {/* Call to Action */}
-                <div className="mt-6 sm:mt-8 md:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
-                  <Button 
-                    size="lg" 
-                    className="w-full sm:w-auto min-w-[200px] px-6 sm:px-8 py-4 sm:py-4 text-base sm:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105 z-10 relative"
-                    onClick={handleEnrollment}
-                  >
-                    <Calendar className="w-5 h-5 mr-2" />
-                    {t("courses.enroll_now")}
-                  </Button>
+                  
+                  {/* Call to Action - Moved inside the main container */}
+                  <div className="flex justify-center">
+                    <Button 
+                      size="lg" 
+                      className="w-full md:w-auto min-w-[200px] px-6 md:px-8 py-3 md:py-4 text-base md:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105"
+                      onClick={handleEnrollment}
+                    >
+                      <Calendar className="w-5 h-5 mr-2" />
+                      {t("courses.enroll_now")}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
