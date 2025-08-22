@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Award, Star, Calendar, MapPin, Phone, Mail, Users, Clock } from 'lucide-react';
+import { Award, CheckCircle, Star, Calendar, MapPin, Phone, Mail, BookOpen, Users, Clock } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useNavigate } from 'react-router-dom';
 import EnrollmentDialog from '@/components/EnrollmentDialog';
 const Courses = () => {
+  const { toast } = useToast();
   const { t, isRTL } = useLanguage();
+  const navigate = useNavigate();
   const [isEnrollmentDialogOpen, setIsEnrollmentDialogOpen] = useState(false);
   
   const handleEnrollment = () => {
@@ -22,56 +27,33 @@ const Courses = () => {
           <img 
             src="/lovable-uploads/30e3c614-7f57-4a20-ac67-247493252428.png" 
             alt="Professional car detailing training session with multiple students learning hands-on techniques on a luxury vehicle in our state-of-the-art facility"
-            className="w-full h-[100vh] sm:h-[70vh] md:h-[80vh] object-cover"
+            className="w-full h-[70vh] md:h-[80vh] object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
           
           {/* Content Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center px-4 py-8">
-            <div className="container mx-auto">
-              <div className="max-w-5xl mx-auto text-center text-white h-full flex flex-col justify-center">
-                <Badge className="mb-4 sm:mb-6 px-4 sm:px-6 py-2 sm:py-3 bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-colors mx-auto">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="container mx-auto px-6">
+              <div className="max-w-5xl mx-auto text-center text-white">
+                <Badge className="mb-8 px-6 py-3 bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 transition-colors">
                   {t("common.professional_training")}
                 </Badge>
                 
-                <div className="bg-black/80 backdrop-blur-sm rounded-lg p-4 sm:p-6 md:p-8 max-w-4xl mx-auto">
-                  <h1 className={`text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 sm:mb-6 md:mb-8 text-white ${isRTL ? 'leading-[1.6] tracking-wide px-2 sm:px-4' : 'leading-tight tracking-tight'} max-w-3xl mx-auto`}>
+                <div className="bg-black/80 backdrop-blur-sm rounded-lg p-8 max-w-4xl mx-auto">
+                  <h1 className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-white ${isRTL ? 'leading-[1.8] tracking-wide' : 'leading-tight tracking-tight'}`} style={isRTL ? { lineHeight: '1.8em' } : {}}>
                     {t("courses.title")}
                   </h1>
                   
-                  <p className={`text-xs sm:text-sm md:text-base lg:text-lg text-white/95 font-light ${isRTL ? 'leading-[1.8] tracking-wide px-1 sm:px-2' : 'leading-relaxed'} max-w-2xl mx-auto`}>
+                  <p className={`text-base sm:text-lg md:text-xl lg:text-2xl text-white/95 font-light ${isRTL ? 'leading-[1.9] tracking-wide' : 'leading-relaxed'}`}>
                     {t("courses.subtitle")}
                   </p>
                 </div>
                 
-                 {/* Course Info Highlights */}
-                <div className="mt-4 sm:mt-6 md:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-2xl mx-auto">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20">
-                    <div className="flex items-center justify-center gap-2 text-white">
-                      <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <div className="text-center">
-                        <p className="text-xs sm:text-sm font-medium">{t('courses.course_date')}</p>
-                        <p className="text-sm sm:text-lg font-bold">{t('courses.september_date')}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20">
-                    <div className="flex items-center justify-center gap-2 text-white">
-                      <Star className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <div className="text-center">
-                        <p className="text-xs sm:text-sm font-medium">{t('courses.course_price')}</p>
-                        <p className="text-sm sm:text-lg font-bold">{t('courses.price_amount')}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                  {/* Call to Action */}
-                <div className="mt-6 sm:mt-8 md:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                   <Button 
                     size="lg" 
-                    className="px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg w-full sm:w-auto"
+                    className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg bg-primary hover:bg-primary/90 text-white shadow-lg"
                     onClick={handleEnrollment}
                   >
                     <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -128,25 +110,14 @@ const Courses = () => {
 
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
                   <div className="text-center">
-                    <div className="flex justify-center mb-2">
-                      <Clock className="w-6 h-6 text-primary" />
-                    </div>
                     <h4 className="font-semibold text-lg mb-2">{t('courses.course_duration')}</h4>
                     <p className="text-muted-foreground">{t('courses.four_days')}</p>
                   </div>
-                  
                   <div className="text-center">
-                    <div className="flex justify-center mb-2">
-                      <Users className="w-6 h-6 text-primary" />
-                    </div>
                     <h4 className="font-semibold text-lg mb-2">{t('courses.class_size')}</h4>
                     <p className="text-muted-foreground">{t('courses.small_groups_5')}</p>
                   </div>
-                  
                   <div className="text-center">
-                    <div className="flex justify-center mb-2">
-                      <MapPin className="w-6 h-6 text-primary" />
-                    </div>
                     <h4 className="font-semibold text-lg mb-2">{t('courses.location')}</h4>
                     <p className="text-muted-foreground">{t('courses.atarot_location')}</p>
                   </div>

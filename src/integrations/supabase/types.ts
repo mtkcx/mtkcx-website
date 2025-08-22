@@ -436,7 +436,6 @@ export type Database = {
       enrollment_requests: {
         Row: {
           admin_notes: string | null
-          city: string | null
           course_type: string
           created_at: string
           email: string
@@ -448,7 +447,6 @@ export type Database = {
         }
         Insert: {
           admin_notes?: string | null
-          city?: string | null
           course_type?: string
           created_at?: string
           email: string
@@ -460,7 +458,6 @@ export type Database = {
         }
         Update: {
           admin_notes?: string | null
-          city?: string | null
           course_type?: string
           created_at?: string
           email?: string

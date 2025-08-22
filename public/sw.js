@@ -1,13 +1,15 @@
 // Enhanced Service Worker for offline capabilities and performance
-const CACHE_VERSION = 'v3.1'; // Incremented version to clear old caches
-const CACHE_NAME = `MTKCx-${CACHE_VERSION}`;
+const CACHE_VERSION = 'v2.0';
+const CACHE_NAME = `mtkcx-${CACHE_VERSION}`;
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
 const PRODUCTS_CACHE = `products-${CACHE_VERSION}`;
 const API_CACHE = `api-${CACHE_VERSION}`;
 
-// Critical assets to cache immediately (excluding HTML pages)
+// Critical assets to cache immediately
 const STATIC_ASSETS = [
+  '/',
+  '/mobile',
   '/manifest.json',
   '/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png', // Logo
   '/lovable-uploads/3f627a82-3732-49c8-9927-8736394acebc.png', // Hero banner
@@ -72,10 +74,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Always fetch fresh HTML pages (network-first for page navigation)
-  if (request.destination === 'document' || url.pathname.match(/\/(courses|products|about|contact|gallery|auth|profile|dashboard)/)) {
-    event.respondWith(handlePageRequest(request));
-  } else if (request.destination === 'image') {
+  // Handle different types of requests with appropriate strategies
+  if (request.destination === 'image') {
     event.respondWith(handleImageRequest(request));
   } else if (isAPIRequest(url)) {
     event.respondWith(handleAPIRequest(request));
@@ -188,78 +188,6 @@ async function syncProductData() {
     // Implementation would sync any pending offline actions
   } catch (error) {
     console.log('SW: Product sync failed:', error);
-  }
-}
-
-// Handle page requests with network-first strategy to ensure fresh content
-async function handlePageRequest(request) {
-  try {
-    console.log('SW: Fetching fresh page:', request.url);
-    
-    // Always try network first for page requests
-    const networkResponse = await fetch(request, {
-      cache: 'no-cache', // Ensure fresh content
-      headers: {
-        'Cache-Control': 'no-cache'
-      }
-    });
-    
-    if (networkResponse.ok) {
-      console.log('SW: Serving fresh page from network');
-      return networkResponse;
-    }
-    
-    throw new Error('Network response not ok');
-  } catch (error) {
-    console.log('SW: Network failed for page, trying cache fallback');
-    
-    // Only fallback to cache if network completely fails
-    const cache = await caches.open(STATIC_CACHE);
-    const cachedResponse = await cache.match(request);
-    
-    if (cachedResponse) {
-      console.log('SW: Serving page from cache (offline)');
-      return cachedResponse;
-    }
-    
-    // Return basic offline page if no cache available
-    return new Response(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Offline - MTKCx</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <style>
-            body { 
-              font-family: Arial, sans-serif; 
-              text-align: center; 
-              padding: 50px; 
-              background: #f5f5f5;
-            }
-            .offline { 
-              color: #666; 
-              margin: 20px 0; 
-            }
-            button {
-              background: #007bff;
-              color: white;
-              padding: 10px 20px;
-              border: none;
-              border-radius: 5px;
-              cursor: pointer;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>You're Offline</h1>
-          <p class="offline">Please check your internet connection and try again.</p>
-          <button onclick="window.location.reload()">Retry</button>
-        </body>
-      </html>
-    `, {
-      status: 503,
-      headers: { 'Content-Type': 'text/html' }
-    });
   }
 }
 
@@ -388,14 +316,27 @@ async function handleAPIRequest(request) {
   }
 }
 
-// Handle static requests (JS, CSS, etc.) with cache-first strategy
+// Handle static requests with cache-first strategy
 async function handleStaticRequest(request) {
+  const url = new URL(request.url);
+  
   try {
     const cache = await caches.open(STATIC_CACHE);
     const cachedResponse = await cache.match(request);
     
-    // Return cached version for static assets
+    // Return cached version if available
     if (cachedResponse) {
+      // Update cache in background for HTML pages
+      if (url.pathname === '/' || url.pathname === '/mobile') {
+        fetch(request).then(response => {
+          if (response.ok) {
+            cache.put(request, response.clone());
+          }
+        }).catch(() => {
+          // Ignore background update errors
+        });
+      }
+      
       return cachedResponse;
     }
 
@@ -410,14 +351,35 @@ async function handleStaticRequest(request) {
   } catch (error) {
     console.log('SW: Static request failed:', error);
     
-    // Try to return any cached version
+    // Return cached fallback page
     const cache = await caches.open(STATIC_CACHE);
-    const cachedResponse = await cache.match(request);
+    const fallback = await cache.match('/');
     
-    if (cachedResponse) {
-      return cachedResponse;
+    if (fallback) {
+      return fallback;
     }
     
-    return new Response('', { status: 404 });
+    // Return basic offline page
+    return new Response(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Offline - MTKCX</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+            .offline { color: #666; }
+          </style>
+        </head>
+        <body>
+          <h1>You're Offline</h1>
+          <p class="offline">Please check your internet connection and try again.</p>
+          <button onclick="window.location.reload()">Retry</button>
+        </body>
+      </html>
+    `, {
+      status: 503,
+      headers: { 'Content-Type': 'text/html' }
+    });
   }
 }

@@ -51,6 +51,7 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
   }, []);
 
   const fetchProducts = async () => {
+    console.log('🔍 BulkCategoryManager: Starting fetchProducts...');
     try {
       // Get products with their categories via junction table
       let query = supabase
@@ -73,8 +74,11 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
       const { data, error } = await query;
 
       if (error) {
+        console.error('❌ BulkCategoryManager: Products fetch error:', error);
         throw error;
       }
+
+      console.log('✅ BulkCategoryManager: Products fetched:', data?.length || 0);
       
       // Transform data to include category_ids array
       const formattedProducts = data?.map(product => ({
@@ -88,6 +92,7 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
 
       setProducts(formattedProducts);
     } catch (error) {
+      console.error('💥 BulkCategoryManager: Fetch products error:', error);
       toast({
         title: "Error",
         description: "Failed to fetch products",
@@ -171,6 +176,7 @@ export const BulkCategoryManager: React.FC<BulkCategoryManagerProps> = ({
       fetchProducts();
       onUpdateComplete();
     } catch (error) {
+      console.error('Error updating products:', error);
       toast({
         title: "Error",
         description: "Failed to update products",

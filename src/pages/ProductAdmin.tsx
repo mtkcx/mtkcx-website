@@ -93,15 +93,7 @@ export default function ProductAdmin() {
         `)
         .order('created_at', { ascending: false });
 
-      if (productsError) {
-        console.error('Products fetch error:', productsError);
-        toast({
-          title: "Database Error",
-          description: `Failed to fetch products: ${productsError.message}`,
-          variant: "destructive",
-        });
-        throw productsError;
-      }
+      if (productsError) throw productsError;
 
       const { data: variantsData, error: variantsError } = await supabase
         .from('product_variants')

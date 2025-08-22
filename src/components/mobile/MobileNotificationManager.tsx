@@ -13,8 +13,9 @@ import {
   Plus, 
   Edit, 
   Send, 
+  Eye, 
   Trash2, 
-  Users,
+  Users, 
   MessageCircle,
   Check,
   X,
@@ -261,33 +262,36 @@ export const MobileNotificationManager: React.FC = () => {
   const getNotificationTypeColor = (type: string) => {
     switch (type) {
       case 'order_confirmed':
-      case 'payment_received':
-        return 'default';
+        return 'bg-green-100 text-green-800';
       case 'order_shipped':
+        return 'bg-blue-100 text-blue-800';
       case 'order_delivered':
-        return 'secondary';
+        return 'bg-purple-100 text-purple-800';
+      case 'payment_received':
+        return 'bg-emerald-100 text-emerald-800';
       case 'appointment_reminder':
+        return 'bg-orange-100 text-orange-800';
       case 'promotion':
-        return 'warning';
+        return 'bg-pink-100 text-pink-800';
       case 'welcome':
-        return 'outline';
+        return 'bg-indigo-100 text-indigo-800';
       case 'order_cancelled':
-        return 'destructive';
+        return 'bg-red-100 text-red-800';
       default:
-        return 'outline';
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'sent':
-        return 'default';
+        return 'bg-green-100 text-green-800';
       case 'pending':
-        return 'warning';
+        return 'bg-yellow-100 text-yellow-800';
       case 'failed':
-        return 'destructive';
+        return 'bg-red-100 text-red-800';
       default:
-        return 'outline';
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -538,7 +542,9 @@ export const MobileNotificationManager: React.FC = () => {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-medium text-sm">{notification.title}</h3>
-                            <Badge variant={getNotificationTypeColor(notification.notification_type)} className="text-xs">
+                            <Badge 
+                              className={`${getNotificationTypeColor(notification.notification_type)} text-xs`}
+                            >
                               {notification.notification_type}
                             </Badge>
                             <Badge 
@@ -653,7 +659,7 @@ export const MobileNotificationManager: React.FC = () => {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="font-medium text-sm">{sent.title}</h3>
-                          <Badge variant={getStatusColor(sent.status)} className="text-xs">
+                          <Badge className={`${getStatusColor(sent.status)} text-xs`}>
                             {sent.status}
                           </Badge>
                           <Badge variant="outline" className="text-xs">

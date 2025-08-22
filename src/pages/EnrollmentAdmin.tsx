@@ -1,23 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { format } from 'date-fns';
-import { Phone, Mail, Calendar, User, Trash2, MapPin } from 'lucide-react';
+import { Phone, Mail, Calendar, User } from 'lucide-react';
 
 interface EnrollmentRequest {
   id: string;
   name: string;
   email: string;
   phone: string;
-  city?: string;
   course_type: string;
   status: string;
   admin_notes?: string;
@@ -26,16 +24,19 @@ interface EnrollmentRequest {
 }
 
 const EnrollmentAdmin: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const { toast } = useToast();
   const [enrollments, setEnrollments] = useState<EnrollmentRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingNotes, setEditingNotes] = useState<string | null>(null);
   const [notesValue, setNotesValue] = useState('');
 
-  const fetchEnrollments = useCallback(async () => {
+  useEffect(() => {
+    fetchEnrollments();
+  }, []);
+
+  const fetchEnrollments = async () => {
     try {
-      setIsLoading(true);
       const { data, error } = await supabase
         .from('enrollment_requests')
         .select('*')
@@ -43,7 +44,7 @@ const EnrollmentAdmin: React.FC = () => {
 
       if (error) throw error;
       setEnrollments(data || []);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching enrollments:', error);
       toast({
         title: t('common.error'),
@@ -53,11 +54,7 @@ const EnrollmentAdmin: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [toast, t]);
-
-  useEffect(() => {
-    fetchEnrollments();
-  }, [fetchEnrollments]);
+  };
 
   const updateStatus = async (id: string, status: string) => {
     try {
@@ -78,7 +75,7 @@ const EnrollmentAdmin: React.FC = () => {
         title: 'Status Updated',
         description: `Enrollment status updated to ${status}`,
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error updating status:', error);
       toast({
         title: t('common.error'),
@@ -110,7 +107,7 @@ const EnrollmentAdmin: React.FC = () => {
         title: 'Notes Saved',
         description: 'Admin notes updated successfully',
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error saving notes:', error);
       toast({
         title: t('common.error'),
@@ -120,47 +117,18 @@ const EnrollmentAdmin: React.FC = () => {
     }
   };
 
-  const deleteEnrollment = async (id: string, name: string) => {
-    if (!window.confirm(`Are you sure you want to delete the enrollment request from ${name}? This action cannot be undone.`)) {
-      return;
-    }
-
-    try {
-      const { error } = await supabase
-        .from('enrollment_requests')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      setEnrollments(prev => prev.filter(enrollment => enrollment.id !== id));
-
-      toast({
-        title: 'Enrollment Deleted',
-        description: `Enrollment request from ${name} has been deleted`,
-      });
-    } catch (error: any) {
-      console.error('Error deleting enrollment:', error);
-      toast({
-        title: t('common.error'),
-        description: 'Failed to delete enrollment request',
-        variant: "destructive"
-      });
-    }
-  };
-
-  const getStatusVariant = (status: string) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'secondary';
+        return 'bg-yellow-100 text-yellow-800';
       case 'contacted':
-        return 'default';
+        return 'bg-blue-100 text-blue-800';
       case 'enrolled':
-        return 'default';
+        return 'bg-green-100 text-green-800';
       case 'declined':
-        return 'destructive';
+        return 'bg-red-100 text-red-800';
       default:
-        return 'outline';
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -177,7 +145,7 @@ const EnrollmentAdmin: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
@@ -203,31 +171,19 @@ const EnrollmentAdmin: React.FC = () => {
                       <User className="h-5 w-5" />
                       {enrollment.name}
                     </CardTitle>
-                    <div className="flex items-center gap-2">
-                      <div className="flex gap-2">
-                        <Badge variant={getStatusVariant(enrollment.status)}>
-                          {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
-                        </Badge>
-                        <Badge variant="outline">
-                          {enrollment.course_type.replace('_', ' ')}
-                        </Badge>
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => deleteEnrollment(enrollment.id, enrollment.name)}
-                        className="ml-2 min-w-[40px]"
-                        title="Delete enrollment request"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                        <span className="sr-only">Delete</span>
-                      </Button>
+                    <div className="flex gap-2">
+                      <Badge className={getStatusColor(enrollment.status)}>
+                        {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                      </Badge>
+                      <Badge variant="outline">
+                        {enrollment.course_type.replace('_', ' ')}
+                      </Badge>
                     </div>
                   </div>
                 </CardHeader>
                 
                 <CardContent className="space-y-4">
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid md:grid-cols-3 gap-4">
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{enrollment.email}</span>
@@ -236,12 +192,6 @@ const EnrollmentAdmin: React.FC = () => {
                       <Phone className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{enrollment.phone}</span>
                     </div>
-                    {enrollment.city && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">{enrollment.city}</span>
-                      </div>
-                    )}
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">
@@ -251,22 +201,35 @@ const EnrollmentAdmin: React.FC = () => {
                   </div>
 
                   <div className="border-t pt-4">
-                    <div className="flex items-center gap-4 mb-3">
-                      <label className="text-sm font-medium">Status:</label>
-                      <Select
-                        value={enrollment.status}
-                        onValueChange={(value) => updateStatus(enrollment.id, value)}
+                    <div className="flex gap-2 mb-3">
+                      <Button
+                        size="sm"
+                        variant={enrollment.status === 'pending' ? 'default' : 'outline'}
+                        onClick={() => updateStatus(enrollment.id, 'pending')}
                       >
-                        <SelectTrigger className="w-40">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="pending">Pending</SelectItem>
-                          <SelectItem value="contacted">Contacted</SelectItem>
-                          <SelectItem value="enrolled">Enrolled</SelectItem>
-                          <SelectItem value="declined">Declined</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        Pending
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={enrollment.status === 'contacted' ? 'default' : 'outline'}
+                        onClick={() => updateStatus(enrollment.id, 'contacted')}
+                      >
+                        Contacted
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={enrollment.status === 'enrolled' ? 'default' : 'outline'}
+                        onClick={() => updateStatus(enrollment.id, 'enrolled')}
+                      >
+                        Enrolled
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={enrollment.status === 'declined' ? 'default' : 'outline'}
+                        onClick={() => updateStatus(enrollment.id, 'declined')}
+                      >
+                        Declined
+                      </Button>
                     </div>
 
                     <div className="space-y-2">

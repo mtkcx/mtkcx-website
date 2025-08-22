@@ -43,8 +43,11 @@ export const MobileProductDetailDialog: React.FC<ProductDetailDialogProps> = ({
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [showImageZoom, setShowImageZoom] = useState(false);
 
-  // Mobile enrollment dialog component
+  // Debug logging
+  console.log('MobileProductDetailDialog rendered with:', { product, isOpen });
+
   if (!product) {
+    console.log('No product provided to dialog');
     return null;
   }
 

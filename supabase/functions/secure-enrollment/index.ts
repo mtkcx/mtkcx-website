@@ -10,7 +10,6 @@ interface EnrollmentRequest {
   name: string;
   email: string;
   phone: string;
-  city?: string;
   course_type?: string;
 }
 
@@ -33,7 +32,7 @@ serve(async (req) => {
 
     // Parse request body
     const requestBody: EnrollmentRequest = await req.json();
-    const { name, email, phone, city, course_type = 'professional_detailing' } = requestBody;
+    const { name, email, phone, course_type = 'professional_detailing' } = requestBody;
 
     // Very basic check - just require some content (even single character)
     if (!name || !email || !phone) {
@@ -53,7 +52,6 @@ serve(async (req) => {
     const sanitizedName = sanitizeInput(name || 'Customer');
     const sanitizedEmail = sanitizeInput(email || 'customer@example.com');
     const sanitizedPhone = sanitizeInput(phone || '000-000-0000');
-    const sanitizedCity = sanitizeInput(city || 'Not specified');
 
     // Insert enrollment request
     const { data: enrollment, error: insertError } = await supabase
@@ -62,7 +60,6 @@ serve(async (req) => {
         name: sanitizedName,
         email: sanitizedEmail,
         phone: sanitizedPhone,
-        city: sanitizedCity,
         course_type: course_type
       })
       .select()

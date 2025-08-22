@@ -82,6 +82,8 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
         notes: notes || undefined,
       };
 
+      console.log('🚀 Initiating payment with', gateway, paymentData);
+
       const functionName = gateway === 'stripe' ? 'create-stripe-payment' : 'create-paypal-payment';
       
       const { data, error } = await supabase.functions.invoke(functionName, {
@@ -96,6 +98,8 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
       if (!data?.url) {
         throw new Error('No payment URL received');
       }
+
+      console.log('✅ Payment session created:', data);
 
       // Open payment page in new tab for better UX
       window.open(data.url, '_blank');

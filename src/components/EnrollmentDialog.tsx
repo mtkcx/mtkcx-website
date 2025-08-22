@@ -19,8 +19,7 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    city: ''
+    phone: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,12 +33,12 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
           name: formData.name || 'Customer',
           email: formData.email || 'customer@example.com',
           phone: formData.phone || '000-000-0000',
-          city: formData.city || 'Not specified',
           course_type: 'professional_detailing'
         }
       });
 
-      // Enrollment submitted successfully
+      // Always show success unless there's a network error
+      console.log('Enrollment response:', { data, error });
       
       toast({
         title: t('enrollment.success_title'),
@@ -48,9 +47,10 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       });
 
       // Reset form and close dialog
-      setFormData({ name: '', email: '', phone: '', city: '' });
+      setFormData({ name: '', email: '', phone: '' });
       onClose();
     } catch (error) {
+      console.error('Error submitting enrollment:', error);
       toast({
         title: t('common.error'),
         description: t('enrollment.error_message'),
@@ -67,7 +67,7 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md mx-auto max-h-[90vh] overflow-y-auto" dir={isRTL ? 'rtl' : 'ltr'}>
+      <DialogContent className="max-w-md mx-auto" dir={isRTL ? 'rtl' : 'ltr'}>
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-center">
             {t('enrollment.dialog_title')}
@@ -110,18 +110,6 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
               placeholder={t('enrollment.phone_placeholder')}
-              disabled={isSubmitting}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="city">{t('enrollment.city')}</Label>
-            <Input
-              id="city"
-              type="text"
-              value={formData.city}
-              onChange={(e) => handleInputChange('city', e.target.value)}
-              placeholder={t('enrollment.city_placeholder')}
               disabled={isSubmitting}
             />
           </div>

@@ -48,11 +48,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Prevent caching for HTML pages -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://mtkcx.com" />
@@ -102,41 +97,18 @@
   <body>
     <div id="root"></div>
     
-    <!-- Service Worker Registration with force refresh -->
+    <!-- Service Worker Registration -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
             .then((registration) => {
               console.log('SW registered: ', registration);
-              
-              // Force update on page reload
-              registration.addEventListener('updatefound', () => {
-                const newWorker = registration.installing;
-                newWorker.addEventListener('statechange', () => {
-                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // New service worker installed, reload to get fresh content
-                    window.location.reload();
-                  }
-                });
-              });
             })
             .catch((registrationError) => {
               console.log('SW registration failed: ', registrationError);
             });
         });
-        
-        // Clear old caches on load
-        if ('caches' in window) {
-          caches.keys().then((names) => {
-            names.forEach(name => {
-              if (name.includes('v1.') || name.includes('v2.')) {
-                console.log('Clearing old cache:', name);
-                caches.delete(name);
-              }
-            });
-          });
-        }
       }
     </script>
     
