@@ -49,21 +49,21 @@ const Courses = () => {
                   </p>
 
                   {/* Course Details */}
-                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:gap-6 mb-6 sm:mb-8 px-2 sm:px-0">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 md:p-6 border border-white/20">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span className="text-xs sm:text-sm md:text-base font-semibold text-white text-center">{t("courses.course_date")}</span>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 md:gap-6 mb-6 sm:mb-8 px-1 sm:px-0">
+                    <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 sm:p-4 md:p-6 border border-white/30 shadow-lg">
+                      <div className="flex items-center justify-center gap-2 mb-3">
+                        <Calendar className="w-5 h-5 text-primary flex-shrink-0" />
+                        <span className="text-sm sm:text-sm md:text-base font-semibold text-white text-center">{t("courses.course_date")}</span>
                       </div>
-                      <p className="text-center text-sm sm:text-lg md:text-xl font-bold text-white">{t("courses.september_5_2025")}</p>
+                      <p className="text-center text-base sm:text-lg md:text-xl font-bold text-white">{t("courses.september_5_2025")}</p>
                     </div>
                     
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4 md:p-6 border border-white/20">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <span className="text-base sm:text-lg md:text-xl font-bold text-primary flex-shrink-0">₪</span>
-                        <span className="text-xs sm:text-sm md:text-base font-semibold text-white text-center">{t("courses.course_price")}</span>
+                    <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4 sm:p-4 md:p-6 border border-white/30 shadow-lg">
+                      <div className="flex items-center justify-center gap-2 mb-3">
+                        <span className="text-lg sm:text-lg md:text-xl font-bold text-primary flex-shrink-0">₪</span>
+                        <span className="text-sm sm:text-sm md:text-base font-semibold text-white text-center">{t("courses.course_price")}</span>
                       </div>
-                      <p className="text-center text-sm sm:text-lg md:text-xl font-bold text-white">{t("courses.price_7500_nis")}</p>
+                      <p className="text-center text-base sm:text-lg md:text-xl font-bold text-white">{t("courses.price_7500_nis")}</p>
                     </div>
                   </div>
                 </div>
