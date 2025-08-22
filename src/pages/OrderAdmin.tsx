@@ -29,7 +29,8 @@ import {
   FileText,
   Filter,
   Download,
-  Send
+  Send,
+  Trash2
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -320,6 +321,79 @@ const OrderAdmin = () => {
     }
   };
 
+  const handleDeleteOrder = async (orderId: string, orderNumber: string) => {
+    if (!confirm(`Are you sure you want to delete order ${orderNumber}? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      // First check if user is authenticated
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast({
+          title: t('admin.error'),
+          description: 'Please log in to delete orders',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      // Delete order items first (foreign key constraint)
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .delete()
+        .eq('order_id', orderId);
+
+      if (itemsError) {
+        console.error('Error deleting order items:', itemsError);
+        toast({
+          title: t('admin.error'),
+          description: `Error deleting order items: ${itemsError.message}`,
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      // Then delete the order
+      const { error: orderError } = await supabase
+        .from('orders')
+        .delete()
+        .eq('id', orderId);
+
+      if (orderError) {
+        console.error('Error deleting order:', orderError);
+        toast({
+          title: t('admin.error'),
+          description: `Error deleting order: ${orderError.message}`,
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: t('admin.success'),
+        description: `Order ${orderNumber} has been deleted successfully`,
+      });
+
+      // Update local state immediately
+      setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId));
+      setOrderItems(prevItems => {
+        const newItems = { ...prevItems };
+        delete newItems[orderId];
+        return newItems;
+      });
+
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      toast({
+        title: t('admin.error'),
+        description: 'Failed to delete order',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
@@ -550,47 +624,55 @@ const OrderAdmin = () => {
                           <TableCell>
                             {formatDate(order.created_at)}
                           </TableCell>
-                          <TableCell>
-                            <div className="flex items-center space-x-2">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  setSelectedOrder(order);
-                                  setShowDetailsDialog(true);
-                                }}
-                              >
-                                <Eye className="w-4 h-4" />
-                              </Button>
-                              <Select
-                                value={order.status}
-                                onValueChange={(value) => handleStatusUpdate(order.id, value)}
-                              >
-                                <SelectTrigger className="w-32">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="pending">{t('admin.orders.pending')}</SelectItem>
-                                  <SelectItem value="processing">{t('admin.orders.processing')}</SelectItem>
-                                  <SelectItem value="shipped">{t('admin.orders.shipped')}</SelectItem>
-                                  <SelectItem value="delivered">{t('admin.orders.delivered')}</SelectItem>
-                                  <SelectItem value="cancelled">{t('admin.orders.cancelled')}</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              {(order.status === 'processing' || order.status === 'shipped') && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    setSelectedOrder(order);
-                                    setShowTrackingDialog(true);
-                                  }}
-                                >
-                                  <Send className="w-4 h-4" />
-                                </Button>
-                              )}
-                            </div>
-                          </TableCell>
+                           <TableCell>
+                             <div className="flex items-center space-x-2">
+                               <Button
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() => {
+                                   setSelectedOrder(order);
+                                   setShowDetailsDialog(true);
+                                 }}
+                               >
+                                 <Eye className="w-4 h-4" />
+                               </Button>
+                               <Select
+                                 value={order.status}
+                                 onValueChange={(value) => handleStatusUpdate(order.id, value)}
+                               >
+                                 <SelectTrigger className="w-32">
+                                   <SelectValue />
+                                 </SelectTrigger>
+                                 <SelectContent>
+                                   <SelectItem value="pending">{t('admin.orders.pending')}</SelectItem>
+                                   <SelectItem value="processing">{t('admin.orders.processing')}</SelectItem>
+                                   <SelectItem value="shipped">{t('admin.orders.shipped')}</SelectItem>
+                                   <SelectItem value="delivered">{t('admin.orders.delivered')}</SelectItem>
+                                   <SelectItem value="cancelled">{t('admin.orders.cancelled')}</SelectItem>
+                                 </SelectContent>
+                               </Select>
+                               {(order.status === 'processing' || order.status === 'shipped') && (
+                                 <Button
+                                   variant="outline"
+                                   size="sm"
+                                   onClick={() => {
+                                     setSelectedOrder(order);
+                                     setShowTrackingDialog(true);
+                                   }}
+                                 >
+                                   <Send className="w-4 h-4" />
+                                 </Button>
+                               )}
+                               <Button
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() => handleDeleteOrder(order.id, order.order_number)}
+                                 className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                               >
+                                 <Trash2 className="w-4 h-4" />
+                               </Button>
+                             </div>
+                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
