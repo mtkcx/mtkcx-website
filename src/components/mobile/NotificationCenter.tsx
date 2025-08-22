@@ -283,7 +283,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                 variant={filter === tab.key ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => {
-                  setFilter(tab.key as any);
+                  setFilter(tab.key as 'all' | 'unread' | 'order' | 'course' | 'promotion');
                   impact('light');
                 }}
                 className="flex items-center gap-1 flex-shrink-0"

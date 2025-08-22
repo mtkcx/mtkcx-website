@@ -164,7 +164,7 @@ const SecurityDashboard: React.FC = () => {
                     <div className="space-y-2 max-h-96 overflow-y-auto">
                       {securityLogs.map((log, index) => (
                         <div key={index} className="flex items-start gap-3 p-3 border rounded-lg text-sm">
-                          <Badge variant={getSeverityColor(log.severity) as any}>
+                          <Badge variant={getSeverityColor(log.severity)}>
                             {log.severity}
                           </Badge>
                           <div className="flex-1">

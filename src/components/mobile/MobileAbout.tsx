@@ -39,7 +39,7 @@ interface MobileAboutProps {
   currentLanguage: string;
   handleLanguageChange: (lang: string) => void;
   menuItems: Array<{
-    icon: any;
+    icon: React.ComponentType<{ className?: string }>;
     label: string;
     action: () => void;
   }>;

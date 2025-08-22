@@ -157,7 +157,7 @@ const SecurityMonitor: React.FC = () => {
               .map((event, index) => (
                 <div key={index} className="flex items-center gap-2 text-xs">
                   {getSeverityIcon(event.severity)}
-                  <Badge variant={getSeverityColor(event.severity) as any} className="text-xs">
+                  <Badge variant={getSeverityColor(event.severity)} className="text-xs">
                     {event.severity}
                   </Badge>
                   <span className="flex-1 truncate">{event.event}</span>

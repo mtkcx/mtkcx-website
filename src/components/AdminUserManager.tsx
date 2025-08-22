@@ -69,7 +69,7 @@ export const AdminUserManager: React.FC = () => {
           user_id,
           full_name,
           created_at,
-          user_roles!inner(role)
+          user_roles(role)
         `);
 
       if (email) {
@@ -91,7 +91,7 @@ export const AdminUserManager: React.FC = () => {
         email: 'Protected', // Email is protected in profiles table
         created_at: profile.created_at,
         full_name: profile.full_name,
-        is_admin: (profile.user_roles as any)?.role === 'admin'
+        is_admin: (profile as any).user_roles?.role === 'admin'
       })) || [];
 
       setRegularUsers(usersWithRoles.filter(user => !user.is_admin));

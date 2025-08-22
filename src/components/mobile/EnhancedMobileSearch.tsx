@@ -379,7 +379,7 @@ export const EnhancedMobileSearch: React.FC<EnhancedSearchProps> = ({
                     variant={filters.sortBy === option.value ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => {
-                      setFilters(prev => ({ ...prev, sortBy: option.value as any }));
+                      setFilters(prev => ({ ...prev, sortBy: option.value as 'name' | 'price' | 'rating' | 'popularity' }));
                       selection();
                     }}
                   >
