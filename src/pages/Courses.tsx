@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Award, CheckCircle, Star, Calendar, MapPin, Phone, Mail, BookOpen, Users, Clock } from 'lucide-react';
+import { Calendar, Phone, Mail } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useNavigate } from 'react-router-dom';
 import EnrollmentDialog from '@/components/EnrollmentDialog';
 const Courses = () => {
-  const { toast } = useToast();
   const { t, isRTL } = useLanguage();
-  const navigate = useNavigate();
   const [isEnrollmentDialogOpen, setIsEnrollmentDialogOpen] = useState(false);
   
   const handleEnrollment = () => {
@@ -145,7 +141,7 @@ const Courses = () => {
                 {/* Koch Chemie Certification Notice */}
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-6 mb-8">
                   <div className="flex items-center gap-3 mb-2">
-                    <Award className="w-5 h-5 text-primary" />
+                    <Calendar className="w-5 h-5 text-primary" />
                     <h4 className="font-semibold text-lg">{t('courses.certification_included')}</h4>
                   </div>
                   <p className="text-muted-foreground">{t('courses.koch_certification_desc')}</p>

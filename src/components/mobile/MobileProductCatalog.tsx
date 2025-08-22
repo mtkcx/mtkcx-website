@@ -184,7 +184,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
         product.product_code.toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesCategory = !selectedCategory || 
-        product.product_categories?.some((pc: any) => pc.categories?.slug === selectedCategory);
+        product.product_categories?.some((pc) => pc.categories?.slug === selectedCategory);
       
       return matchesSearch && matchesCategory;
     });
