@@ -564,3 +564,5 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     </div>
   );
 };
+
+export default MobileProductCatalog;

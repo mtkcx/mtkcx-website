@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '@/components/Header';
 import ProductCatalog from '@/components/ProductCatalog';
-import { MobileProductCatalog } from '@/components/mobile/MobileProductCatalog';
+import MobileProductCatalog from '@/components/mobile/MobileProductCatalog';
 import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
 import { useLanguage } from '@/contexts/LanguageContext';
