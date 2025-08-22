@@ -19,7 +19,8 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    city: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,6 +34,7 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
           name: formData.name || 'Customer',
           email: formData.email || 'customer@example.com',
           phone: formData.phone || '000-000-0000',
+          city: formData.city || '',
           course_type: 'professional_detailing'
         }
       });
@@ -47,7 +49,7 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
       });
 
       // Reset form and close dialog
-      setFormData({ name: '', email: '', phone: '' });
+      setFormData({ name: '', email: '', phone: '', city: '' });
       onClose();
     } catch (error) {
       console.error('Error submitting enrollment:', error);
@@ -110,6 +112,18 @@ export const EnrollmentDialog: React.FC<EnrollmentDialogProps> = ({ isOpen, onCl
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
               placeholder={t('enrollment.phone_placeholder')}
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="city">{t('enrollment.city')}</Label>
+            <Input
+              id="city"
+              type="text"
+              value={formData.city}
+              onChange={(e) => handleInputChange('city', e.target.value)}
+              placeholder={t('enrollment.city_placeholder')}
               disabled={isSubmitting}
             />
           </div>

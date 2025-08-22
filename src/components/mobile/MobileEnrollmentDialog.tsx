@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { BookOpen, User, Mail, Phone } from 'lucide-react';
+import { BookOpen, User, Mail, Phone, MapPin } from 'lucide-react';
 
 interface MobileEnrollmentDialogProps {
   isOpen: boolean;
@@ -22,6 +22,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
     name: '',
     email: '',
     phone: '',
+    city: '',
     course_type: 'professional_detailing'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,6 +41,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
           name: formData.name || 'Customer',
           email: formData.email || 'customer@example.com', 
           phone: formData.phone || '000-000-0000',
+          city: formData.city || '',
           course_type: formData.course_type
         }
       });
@@ -57,6 +59,7 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
         name: '',
         email: '',
         phone: '',
+        city: '',
         course_type: 'professional_detailing'
       });
       onClose();
@@ -126,6 +129,20 @@ export const MobileEnrollmentDialog: React.FC<MobileEnrollmentDialogProps> = ({
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
               placeholder={t('auth.enter_phone')}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="city" className="flex items-center gap-2">
+              <MapPin className="h-4 w-4" />
+              {t('enrollment.city')}
+            </Label>
+            <Input
+              id="city"
+              type="text"
+              value={formData.city}
+              onChange={(e) => handleInputChange('city', e.target.value)}
+              placeholder={t('enrollment.city_placeholder')}
             />
           </div>
 

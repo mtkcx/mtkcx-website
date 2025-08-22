@@ -9,13 +9,14 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { format } from 'date-fns';
-import { Phone, Mail, Calendar, User } from 'lucide-react';
+import { Phone, Mail, Calendar, User, MapPin, Trash2 } from 'lucide-react';
 
 interface EnrollmentRequest {
   id: string;
   name: string;
   email: string;
   phone: string;
+  city?: string;
   course_type: string;
   status: string;
   admin_notes?: string;
@@ -80,6 +81,35 @@ const EnrollmentAdmin: React.FC = () => {
       toast({
         title: t('common.error'),
         description: 'Failed to update status',
+        variant: "destructive"
+      });
+    }
+  };
+
+  const deleteEnrollment = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete the enrollment request from ${name}?`)) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('enrollment_requests')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setEnrollments(prev => prev.filter(enrollment => enrollment.id !== id));
+
+      toast({
+        title: 'Enrollment Deleted',
+        description: `Enrollment request from ${name} has been deleted`,
+      });
+    } catch (error) {
+      console.error('Error deleting enrollment:', error);
+      toast({
+        title: t('common.error'),
+        description: 'Failed to delete enrollment request',
         variant: "destructive"
       });
     }
@@ -171,19 +201,27 @@ const EnrollmentAdmin: React.FC = () => {
                       <User className="h-5 w-5" />
                       {enrollment.name}
                     </CardTitle>
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-2">
                       <Badge className={getStatusColor(enrollment.status)}>
                         {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
                       </Badge>
                       <Badge variant="outline">
                         {enrollment.course_type.replace('_', ' ')}
                       </Badge>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => deleteEnrollment(enrollment.id, enrollment.name)}
+                        className="h-8 w-8 p-0"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 </CardHeader>
                 
                 <CardContent className="space-y-4">
-                  <div className="grid md:grid-cols-3 gap-4">
+                  <div className="grid md:grid-cols-4 gap-4">
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{enrollment.email}</span>
@@ -192,6 +230,12 @@ const EnrollmentAdmin: React.FC = () => {
                       <Phone className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{enrollment.phone}</span>
                     </div>
+                    {enrollment.city && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{enrollment.city}</span>
+                      </div>
+                    )}
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">
