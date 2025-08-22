@@ -142,8 +142,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     });
     
+    if (error) {
+      // Handle specific error cases for duplicate emails
+      if (error.message.includes('already registered') || 
+          error.message.includes('User already registered') ||
+          error.message.includes('email already exists')) {
+        return { error: new Error('An account with this email already exists. Please sign in instead.') };
+      }
+      return { error };
+    }
+    
     // If signup is successful, send welcome email
-    if (!error && data.user) {
+    if (data.user) {
       try {
         await supabase.functions.invoke('send-welcome-email', {
           body: {
