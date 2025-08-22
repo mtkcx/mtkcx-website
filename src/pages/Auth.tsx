@@ -175,7 +175,7 @@ const Auth = () => {
 
           toast({
             title: t('auth.success_title'),
-            description: t('auth.signup_success'),
+            description: 'Account created successfully! Check your email for a welcome message from MTKCx. You can start using your account immediately.',
           });
           // Switch to sign in mode after successful signup
           setIsSignUp(false);
