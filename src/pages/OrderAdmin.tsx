@@ -327,7 +327,7 @@ const OrderAdmin = () => {
     }
 
     try {
-      // First check if user is authenticated
+      // First check if user is authenticated and is admin
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
@@ -339,10 +339,29 @@ const OrderAdmin = () => {
         return;
       }
 
+      // Check admin status
+      const { data: roleData, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', session.user.id)
+        .single();
+
+      if (roleError || !roleData || roleData.role !== 'admin') {
+        console.error('Admin check failed:', roleError);
+        toast({
+          title: t('admin.error'),
+          description: 'Admin access required to delete orders',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      console.log('Starting order deletion for:', orderId);
+
       // Delete order items first (foreign key constraint)
-      const { error: itemsError } = await supabase
+      const { error: itemsError, count: deletedItemsCount } = await supabase
         .from('order_items')
-        .delete()
+        .delete({ count: 'exact' })
         .eq('order_id', orderId);
 
       if (itemsError) {
@@ -355,10 +374,12 @@ const OrderAdmin = () => {
         return;
       }
 
+      console.log(`Deleted ${deletedItemsCount} order items`);
+
       // Then delete the order
-      const { error: orderError } = await supabase
+      const { error: orderError, count: deletedOrdersCount } = await supabase
         .from('orders')
-        .delete()
+        .delete({ count: 'exact' })
         .eq('id', orderId);
 
       if (orderError) {
@@ -366,6 +387,17 @@ const OrderAdmin = () => {
         toast({
           title: t('admin.error'),
           description: `Error deleting order: ${orderError.message}`,
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      console.log(`Deleted ${deletedOrdersCount} order(s)`);
+
+      if (deletedOrdersCount === 0) {
+        toast({
+          title: t('admin.error'),
+          description: 'Order not found or already deleted',
           variant: 'destructive',
         });
         return;
@@ -388,7 +420,7 @@ const OrderAdmin = () => {
       console.error('Error deleting order:', error);
       toast({
         title: t('admin.error'),
-        description: 'Failed to delete order',
+        description: `Failed to delete order: ${error.message}`,
         variant: 'destructive',
       });
     }
