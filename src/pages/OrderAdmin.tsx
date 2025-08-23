@@ -344,10 +344,20 @@ const OrderAdmin = () => {
         .from('user_roles')
         .select('role')
         .eq('user_id', session.user.id)
-        .single();
+        .maybeSingle();
 
-      if (roleError || !roleData || roleData.role !== 'admin') {
+      if (roleError) {
         console.error('Admin check failed:', roleError);
+        toast({
+          title: t('admin.error'),
+          description: 'Error checking admin status',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      if (!roleData || roleData.role !== 'admin') {
+        console.error('User is not admin:', roleData);
         toast({
           title: t('admin.error'),
           description: 'Admin access required to delete orders',
