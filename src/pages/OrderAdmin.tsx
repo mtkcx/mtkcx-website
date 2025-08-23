@@ -358,13 +358,13 @@ const OrderAdmin = () => {
 
       console.log('Starting order deletion for:', orderId);
 
-      // Delete email logs first (foreign key constraint)
-      const { error: emailLogsError, count: deletedEmailLogsCount } = await supabase
+      // Step 1: Delete all email_logs entries for this order
+      const { error: emailLogsError } = await supabase
         .from('email_logs')
-        .delete({ count: 'exact' })
+        .delete()
         .eq('order_id', orderId);
 
-      if (emailLogsError) {
+      if (emailLogsError && emailLogsError.code !== 'PGRST116') { // PGRST116 means no rows found (which is ok)
         console.error('Error deleting email logs:', emailLogsError);
         toast({
           title: t('admin.error'),
@@ -374,15 +374,15 @@ const OrderAdmin = () => {
         return;
       }
 
-      console.log(`Deleted ${deletedEmailLogsCount} email logs`);
+      console.log('Deleted email logs for order:', orderId);
 
-      // Delete order items second (foreign key constraint)
-      const { error: itemsError, count: deletedItemsCount } = await supabase
+      // Step 2: Delete all order_items entries for this order
+      const { error: itemsError } = await supabase
         .from('order_items')
-        .delete({ count: 'exact' })
+        .delete()
         .eq('order_id', orderId);
 
-      if (itemsError) {
+      if (itemsError && itemsError.code !== 'PGRST116') { // PGRST116 means no rows found (which is ok)
         console.error('Error deleting order items:', itemsError);
         toast({
           title: t('admin.error'),
@@ -392,12 +392,12 @@ const OrderAdmin = () => {
         return;
       }
 
-      console.log(`Deleted ${deletedItemsCount} order items`);
+      console.log('Deleted order items for order:', orderId);
 
-      // Then delete the order
-      const { error: orderError, count: deletedOrdersCount } = await supabase
+      // Step 3: Finally delete the order itself
+      const { error: orderError } = await supabase
         .from('orders')
-        .delete({ count: 'exact' })
+        .delete()
         .eq('id', orderId);
 
       if (orderError) {
@@ -410,16 +410,7 @@ const OrderAdmin = () => {
         return;
       }
 
-      console.log(`Deleted ${deletedOrdersCount} order(s)`);
-
-      if (deletedOrdersCount === 0) {
-        toast({
-          title: t('admin.error'),
-          description: 'Order not found or already deleted',
-          variant: 'destructive',
-        });
-        return;
-      }
+      console.log('Successfully deleted order:', orderId);
 
       toast({
         title: t('admin.success'),
