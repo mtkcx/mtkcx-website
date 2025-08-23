@@ -358,7 +358,25 @@ const OrderAdmin = () => {
 
       console.log('Starting order deletion for:', orderId);
 
-      // Delete order items first (foreign key constraint)
+      // Delete email logs first (foreign key constraint)
+      const { error: emailLogsError, count: deletedEmailLogsCount } = await supabase
+        .from('email_logs')
+        .delete({ count: 'exact' })
+        .eq('order_id', orderId);
+
+      if (emailLogsError) {
+        console.error('Error deleting email logs:', emailLogsError);
+        toast({
+          title: t('admin.error'),
+          description: `Error deleting email logs: ${emailLogsError.message}`,
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      console.log(`Deleted ${deletedEmailLogsCount} email logs`);
+
+      // Delete order items second (foreign key constraint)
       const { error: itemsError, count: deletedItemsCount } = await supabase
         .from('order_items')
         .delete({ count: 'exact' })
