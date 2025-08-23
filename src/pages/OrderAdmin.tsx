@@ -322,15 +322,22 @@ const OrderAdmin = () => {
   };
 
   const handleDeleteOrder = async (orderId: string, orderNumber: string) => {
+    console.log('🗑️ Delete order button clicked for:', orderNumber, orderId);
+    
     if (!confirm(`Are you sure you want to delete order ${orderNumber}? This action cannot be undone.`)) {
+      console.log('🚫 User cancelled deletion');
       return;
     }
+
+    console.log('✅ User confirmed deletion, proceeding...');
 
     try {
       // First check if user is authenticated and is admin
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('🔐 Session check:', session ? 'Authenticated' : 'Not authenticated');
       
       if (!session) {
+        console.error('❌ No session found');
         toast({
           title: t('admin.error'),
           description: 'Please log in to delete orders',
@@ -339,6 +346,8 @@ const OrderAdmin = () => {
         return;
       }
 
+      console.log('👤 Checking admin status for user:', session.user.id);
+
       // Check admin status
       const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
@@ -346,8 +355,10 @@ const OrderAdmin = () => {
         .eq('user_id', session.user.id)
         .maybeSingle();
 
+      console.log('🛡️ Role check result:', { roleData, roleError });
+
       if (roleError) {
-        console.error('Admin check failed:', roleError);
+        console.error('❌ Admin check failed:', roleError);
         toast({
           title: t('admin.error'),
           description: 'Error checking admin status',
@@ -357,7 +368,7 @@ const OrderAdmin = () => {
       }
 
       if (!roleData || roleData.role !== 'admin') {
-        console.error('User is not admin:', roleData);
+        console.error('❌ User is not admin:', roleData);
         toast({
           title: t('admin.error'),
           description: 'Admin access required to delete orders',
@@ -366,16 +377,17 @@ const OrderAdmin = () => {
         return;
       }
 
-      console.log('Starting order deletion for:', orderId);
+      console.log('✅ Admin verification passed. Starting order deletion for:', orderId);
 
       // Step 1: Delete all email_logs entries for this order
+      console.log('📧 Step 1: Deleting email logs...');
       const { error: emailLogsError } = await supabase
         .from('email_logs')
         .delete()
         .eq('order_id', orderId);
 
       if (emailLogsError && emailLogsError.code !== 'PGRST116') { // PGRST116 means no rows found (which is ok)
-        console.error('Error deleting email logs:', emailLogsError);
+        console.error('❌ Error deleting email logs:', emailLogsError);
         toast({
           title: t('admin.error'),
           description: `Error deleting email logs: ${emailLogsError.message}`,
@@ -384,16 +396,17 @@ const OrderAdmin = () => {
         return;
       }
 
-      console.log('Deleted email logs for order:', orderId);
+      console.log('✅ Email logs deleted successfully');
 
       // Step 2: Delete all order_items entries for this order
+      console.log('📦 Step 2: Deleting order items...');
       const { error: itemsError } = await supabase
         .from('order_items')
         .delete()
         .eq('order_id', orderId);
 
       if (itemsError && itemsError.code !== 'PGRST116') { // PGRST116 means no rows found (which is ok)
-        console.error('Error deleting order items:', itemsError);
+        console.error('❌ Error deleting order items:', itemsError);
         toast({
           title: t('admin.error'),
           description: `Error deleting order items: ${itemsError.message}`,
@@ -402,16 +415,17 @@ const OrderAdmin = () => {
         return;
       }
 
-      console.log('Deleted order items for order:', orderId);
+      console.log('✅ Order items deleted successfully');
 
       // Step 3: Finally delete the order itself
+      console.log('🛒 Step 3: Deleting order...');
       const { error: orderError } = await supabase
         .from('orders')
         .delete()
         .eq('id', orderId);
 
       if (orderError) {
-        console.error('Error deleting order:', orderError);
+        console.error('❌ Error deleting order:', orderError);
         toast({
           title: t('admin.error'),
           description: `Error deleting order: ${orderError.message}`,
@@ -420,7 +434,7 @@ const OrderAdmin = () => {
         return;
       }
 
-      console.log('Successfully deleted order:', orderId);
+      console.log('🎉 Order deleted successfully!');
 
       toast({
         title: t('admin.success'),
@@ -435,8 +449,10 @@ const OrderAdmin = () => {
         return newItems;
       });
 
+      console.log('🔄 Local state updated');
+
     } catch (error) {
-      console.error('Error deleting order:', error);
+      console.error('💥 Unexpected error deleting order:', error);
       toast({
         title: t('admin.error'),
         description: `Failed to delete order: ${error.message}`,
