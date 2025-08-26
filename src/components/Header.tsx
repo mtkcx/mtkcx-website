@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Globe, Menu, X, Search, User, LogOut, Settings, ShoppingBag } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import CartButton from '@/components/CartButton';
@@ -22,6 +24,8 @@ const Header = () => {
   } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const languages = [{
     code: 'en',
     name: 'English',
@@ -57,6 +61,18 @@ const Header = () => {
     key: 'nav.contact',
     href: '/contact'
   }];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+      setIsMenuOpen(false);
+      window.scrollTo(0, 0);
+    }
+  };
+
   return <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-background/95 w-full" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="w-full px-4 sm:px-6 py-2 sm:py-4">
         <div className="flex items-center justify-between w-full">
@@ -124,10 +140,32 @@ const Header = () => {
               </Button>}
 
             {/* Search Button */}
-            <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-2 sm:px-4 py-2">
-              <Search className="h-5 w-5" />
-              <span className="hidden sm:inline text-sm">{t('common.search')}</span>
-            </Button>
+            <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-2 sm:px-4 py-2">
+                  <Search className="h-5 w-5" />
+                  <span className="hidden sm:inline text-sm">{t('common.search')}</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>{t('common.search')}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSearch} className="flex space-x-2">
+                  <Input
+                    type="text"
+                    placeholder={t('common.search_placeholder') || 'Search products...'}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="flex-1"
+                    autoFocus
+                  />
+                  <Button type="submit" disabled={!searchQuery.trim()}>
+                    <Search className="h-4 w-4" />
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
 
             {/* Language Dropdown */}
             <div className="relative">
@@ -209,7 +247,11 @@ const Header = () => {
                     </Button>}
                   
                   {/* Mobile Search */}
-                  <Button variant="ghost" className="justify-start py-3 px-2 border-b border-border">
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start py-3 px-2 border-b border-border"
+                    onClick={() => setIsSearchOpen(true)}
+                  >
                     <Search className="h-5 w-5 mr-3" />
                     {t('common.search')}
                   </Button>
