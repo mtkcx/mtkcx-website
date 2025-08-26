@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Globe, Menu, X, Search, User, LogOut, Settings, ShoppingBag } from 'lucide-react';
@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import CartButton from '@/components/CartButton';
 const Header = () => {
   const navigate = useNavigate();
@@ -26,6 +27,10 @@ const Header = () => {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const languages = [{
     code: 'en',
     name: 'English',
@@ -62,16 +67,121 @@ const Header = () => {
     href: '/contact'
   }];
 
+  // Search products function
+  const searchProducts = async (query: string) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setShowResults(false);
+      return;
+    }
+
+    setIsSearching(true);
+    
+    try {
+      const { data: productsData, error } = await supabase
+        .from('products')
+        .select(`
+          id,
+          name,
+          name_ar,
+          name_he,
+          product_code,
+          image_url,
+          product_categories!product_categories_product_id_fkey (
+            categories!product_categories_category_id_fkey (
+              name,
+              name_ar,
+              name_he
+            )
+          ),
+          product_images!product_images_product_id_fkey (
+            image_url,
+            is_primary
+          )
+        `)
+        .eq('status', 'active')
+        .or(`name.ilike.%${query}%,name_ar.ilike.%${query}%,name_he.ilike.%${query}%,product_code.ilike.%${query}%`)
+        .limit(8);
+
+      if (!error && productsData) {
+        const transformedResults = productsData.map(product => {
+          const primaryImage = product.product_images?.find(img => img.is_primary);
+          const categoryData = product.product_categories?.[0]?.categories;
+          
+          return {
+            id: product.id,
+            name: product.name,
+            name_ar: product.name_ar,
+            name_he: product.name_he,
+            product_code: product.product_code,
+            image_url: primaryImage?.image_url || product.image_url || '/placeholder.svg',
+            category: categoryData ? {
+              name: categoryData.name,
+              name_ar: categoryData.name_ar,
+              name_he: categoryData.name_he
+            } : null
+          };
+        });
+        
+        setSearchResults(transformedResults);
+        setShowResults(true);
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Handle search input change with debounce
+  const handleSearchInputChange = (value: string) => {
+    setSearchQuery(value);
+    
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    
+    searchTimeoutRef.current = setTimeout(() => {
+      searchProducts(value);
+    }, 300);
+  };
+
+  // Handle product selection
+  const handleProductSelect = (productId: string) => {
+    navigate(`/products/${productId}`);
+    setIsSearchOpen(false);
+    setSearchQuery('');
+    setSearchResults([]);
+    setShowResults(false);
+    setIsMenuOpen(false);
+    window.scrollTo(0, 0);
+  };
+
+  // Handle form submit (Enter key or search button)
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearchOpen(false);
       setSearchQuery('');
+      setSearchResults([]);
+      setShowResults(false);
       setIsMenuOpen(false);
       window.scrollTo(0, 0);
     }
   };
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setShowResults(false);
+    };
+
+    if (showResults) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [showResults]);
 
   return <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-background/95 w-full" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="w-full px-4 sm:px-6 py-2 sm:py-4">
@@ -156,19 +266,93 @@ const Header = () => {
                 <DialogHeader>
                   <DialogTitle>{t('common.search')}</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSearch} className="flex space-x-2">
-                  <Input
-                    type="text"
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1"
-                    autoFocus
-                  />
-                  <Button type="submit" disabled={!searchQuery.trim()}>
-                    <Search className="h-4 w-4" />
-                  </Button>
-                </form>
+                <div className="relative">
+                  <form onSubmit={handleSearch} className="flex space-x-2">
+                    <div className="relative flex-1">
+                      <Input
+                        type="text"
+                        placeholder="Search products..."
+                        value={searchQuery}
+                        onChange={(e) => handleSearchInputChange(e.target.value)}
+                        className="flex-1"
+                        autoFocus
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      {isSearching && (
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+                        </div>
+                      )}
+                    </div>
+                    <Button type="submit" disabled={!searchQuery.trim()}>
+                      <Search className="h-4 w-4" />
+                    </Button>
+                  </form>
+                  
+                  {/* Search Results Dropdown */}
+                  {showResults && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-background border border-border rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                      {searchResults.length > 0 ? (
+                        <div className="p-2">
+                          <div className="text-sm text-muted-foreground mb-2 px-2">
+                            Found {searchResults.length} product{searchResults.length !== 1 ? 's' : ''}
+                          </div>
+                          {searchResults.map((product) => (
+                            <button
+                              key={product.id}
+                              onClick={() => handleProductSelect(product.id)}
+                              className="w-full flex items-center space-x-3 p-3 hover:bg-accent rounded-lg transition-colors text-left"
+                            >
+                              <img
+                                src={product.image_url}
+                                alt={product.name}
+                                className="w-12 h-12 object-cover rounded-md flex-shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="font-medium text-sm truncate">
+                                  {currentLanguage === 'ar' ? (product.name_ar || product.name) :
+                                   currentLanguage === 'he' ? (product.name_he || product.name) :
+                                   product.name}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {product.product_code}
+                                  {product.category && (
+                                    <span className="ml-2">
+                                      • {currentLanguage === 'ar' ? (product.category.name_ar || product.category.name) :
+                                          currentLanguage === 'he' ? (product.category.name_he || product.category.name) :
+                                          product.category.name}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                          {searchQuery.trim() && (
+                            <div className="border-t border-border mt-2 pt-2">
+                              <button
+                                onClick={handleSearch}
+                                className="w-full flex items-center justify-center space-x-2 p-3 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                              >
+                                <Search className="h-4 w-4" />
+                                <span className="text-sm">View all results for "{searchQuery}"</span>
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      ) : searchQuery.trim() && !isSearching ? (
+                        <div className="p-4 text-center text-muted-foreground">
+                          <p className="text-sm">No products found for "{searchQuery}"</p>
+                          <button
+                            onClick={handleSearch}
+                            className="mt-2 text-primary hover:underline text-sm"
+                          >
+                            Search anyway
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
               </DialogContent>
             </Dialog>
 
