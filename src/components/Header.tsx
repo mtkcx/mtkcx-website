@@ -142,7 +142,15 @@ const Header = () => {
             {/* Search Button */}
             <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="lg" className="flex items-center space-x-2 px-2 sm:px-4 py-2">
+                <Button 
+                  variant="ghost" 
+                  size="lg" 
+                  className="flex items-center space-x-2 px-2 sm:px-4 py-2"
+                  onClick={() => {
+                    console.log('Search button clicked, opening dialog');
+                    setIsSearchOpen(true);
+                  }}
+                >
                   <Search className="h-5 w-5" />
                   <span className="hidden sm:inline text-sm">{t('common.search')}</span>
                 </Button>
@@ -250,7 +258,10 @@ const Header = () => {
                   <Button 
                     variant="ghost" 
                     className="justify-start py-3 px-2 border-b border-border"
-                    onClick={() => setIsSearchOpen(true)}
+                    onClick={() => {
+                      console.log('Mobile search button clicked, opening dialog');
+                      setIsSearchOpen(true);
+                    }}
                   >
                     <Search className="h-5 w-5 mr-3" />
                     {t('common.search')}
