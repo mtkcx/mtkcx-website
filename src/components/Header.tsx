@@ -9,6 +9,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import CartButton from '@/components/CartButton';
+
+interface SearchResult {
+  id: string;
+  name: string;
+  name_ar?: string;
+  name_he?: string;
+  product_code: string;
+  image_url: string;
+  category?: {
+    name: string;
+    name_ar?: string;
+    name_he?: string;
+  } | null;
+}
 const Header = () => {
   const navigate = useNavigate();
   const {
@@ -27,7 +41,7 @@ const Header = () => {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -182,6 +196,15 @@ const Header = () => {
       return () => document.removeEventListener('click', handleClickOutside);
     }
   }, [showResults]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-sm bg-background/95 w-full" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="w-full px-4 sm:px-6 py-2 sm:py-4">
