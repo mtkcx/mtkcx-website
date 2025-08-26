@@ -162,7 +162,7 @@ const Header = () => {
                 <form onSubmit={handleSearch} className="flex space-x-2">
                   <Input
                     type="text"
-                    placeholder={t('common.search_placeholder') || 'Search products...'}
+                    placeholder="Search products..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="flex-1"
