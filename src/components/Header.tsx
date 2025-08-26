@@ -172,8 +172,10 @@ const Header = () => {
   };
 
   // Handle form submit (Enter key or search button)
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
     if (searchQuery.trim()) {
       navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearchOpen(false);
@@ -183,6 +185,11 @@ const Header = () => {
       setIsMenuOpen(false);
       window.scrollTo(0, 0);
     }
+  };
+
+  // Handle search without form event
+  const handleSearchClick = () => {
+    handleSearch();
   };
 
   // Close search results when clicking outside
@@ -353,7 +360,7 @@ const Header = () => {
                           {searchQuery.trim() && (
                             <div className="border-t border-border mt-2 pt-2">
                               <button
-                                onClick={handleSearch}
+                                onClick={handleSearchClick}
                                 className="w-full flex items-center justify-center space-x-2 p-3 text-primary hover:bg-primary/10 rounded-lg transition-colors"
                               >
                                 <Search className="h-4 w-4" />
@@ -366,7 +373,7 @@ const Header = () => {
                         <div className="p-4 text-center text-muted-foreground">
                           <p className="text-sm">No products found for "{searchQuery}"</p>
                           <button
-                            onClick={handleSearch}
+                            onClick={handleSearchClick}
                             className="mt-2 text-primary hover:underline text-sm"
                           >
                             Search anyway
@@ -436,27 +443,40 @@ const Header = () => {
                       {t(item.key)}
                     </Link>)}
                   
-                  {/* Mobile Auth */}
-                  {user ? <>
-                      <Link to="/dashboard" className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}>
-                        <User className="h-5 w-5 mr-3" />
-                        {t('auth.dashboard')}
-                      </Link>
-                      <button onClick={() => {
-                    setIsMenuOpen(false);
-                    signOut();
-                  }} className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border w-full text-left">
-                        <LogOut className="h-5 w-5 mr-3" />
-                        {t('auth.sign_out')}
-                      </button>
-                    </> : <Button variant="ghost" onClick={() => {
-                  setIsMenuOpen(false);
-                  navigate('/auth');
-                  window.scrollTo(0, 0);
-                }} className="justify-start py-3 px-2 border-b border-border">
-                      <User className="h-5 w-5 mr-3" />
-                      {t('auth.sign_in')}
-                    </Button>}
+                   {/* Mobile Auth */}
+                   {user ? <>
+                       {isAdmin ? (
+                         <Link to="/dashboard" className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}>
+                           <Settings className="w-4 h-4 mr-3" />
+                           {t('auth.admin_dashboard')}
+                         </Link>
+                       ) : (
+                         <Link to="/profile" className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}>
+                           <User className="w-4 h-4 mr-3" />
+                           {t('auth.my_profile')}
+                         </Link>
+                       )}
+                       {!isAdmin && (
+                         <Link to="/my-orders" className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border" onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}>
+                           <ShoppingBag className="w-4 h-4 mr-3" />
+                           My Orders
+                         </Link>
+                       )}
+                       <button onClick={() => {
+                     setIsMenuOpen(false);
+                     signOut();
+                   }} className="flex items-center text-foreground hover:text-primary transition-colors font-medium py-3 px-2 border-b border-border w-full text-left">
+                         <LogOut className="w-4 h-4 mr-3" />
+                         {t('auth.sign_out')}
+                       </button>
+                     </> : <Button variant="ghost" onClick={() => {
+                   setIsMenuOpen(false);
+                   navigate('/auth');
+                   window.scrollTo(0, 0);
+                 }} className="justify-start py-3 px-2 border-b border-border">
+                       <User className="w-4 h-4 mr-3" />
+                       {t('auth.sign_in')}
+                     </Button>}
                   
                   {/* Mobile Search */}
                   <Button 
