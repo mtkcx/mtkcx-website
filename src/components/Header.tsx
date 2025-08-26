@@ -82,7 +82,7 @@ const Header = () => {
               <img 
                 src="/lovable-uploads/28ead321-c3c4-47fe-90f1-4c9e71157479.png" 
                 alt="MT KCx Logo" 
-                className="h-24 sm:h-32 md:h-36 lg:h-40 w-auto gpu-accelerated"
+                className="h-24 sm:h-32 md:h-36 lg:h-40 w-auto"
                 loading="eager"
                 decoding="async"
               />
@@ -146,10 +146,7 @@ const Header = () => {
                   variant="ghost" 
                   size="lg" 
                   className="flex items-center space-x-2 px-2 sm:px-4 py-2"
-                  onClick={() => {
-                    console.log('Search button clicked, opening dialog');
-                    setIsSearchOpen(true);
-                  }}
+                  onClick={() => setIsSearchOpen(true)}
                 >
                   <Search className="h-5 w-5" />
                   <span className="hidden sm:inline text-sm">{t('common.search')}</span>
@@ -258,10 +255,7 @@ const Header = () => {
                   <Button 
                     variant="ghost" 
                     className="justify-start py-3 px-2 border-b border-border"
-                    onClick={() => {
-                      console.log('Mobile search button clicked, opening dialog');
-                      setIsSearchOpen(true);
-                    }}
+                    onClick={() => setIsSearchOpen(true)}
                   >
                     <Search className="h-5 w-5 mr-3" />
                     {t('common.search')}
