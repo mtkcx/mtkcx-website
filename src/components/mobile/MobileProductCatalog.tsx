@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,10 +21,11 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const { addToCart: addItemToCart, getTotalItems } = useCart();
   const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(searchParams.get('category') || null);
   const [showFilters, setShowFilters] = useState(false);
   const [categories, setCategories] = useState<Array<{id: string, name: string, name_ar?: string, name_he?: string, slug: string}>>([]);
   const [selectedVariants, setSelectedVariants] = useState<Record<string, { variantId: string; size: string; price: number }>>({});
@@ -66,13 +68,32 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
     }
   }, [products]);
 
+  // Update search term and selectedCategory when URL changes
+  useEffect(() => {
+    const searchFromUrl = searchParams.get('search') || '';
+    const categoryFromUrl = searchParams.get('category');
+    setSearchTerm(searchFromUrl);
+    setSelectedCategory(categoryFromUrl);
+  }, [searchParams]);
+
   // Handle navigation events from home page and tab switching
   useEffect(() => {
     const handleSetCategory = (event: CustomEvent) => {
+      const newParams = new URLSearchParams(searchParams);
+      if (event.detail.category) {
+        newParams.set('category', event.detail.category);
+      } else {
+        newParams.delete('category');
+      }
+      setSearchParams(newParams);
       setSelectedCategory(event.detail.category);
     };
 
     const handleClearFilters = () => {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('category');
+      newParams.delete('search');
+      setSearchParams(newParams);
       setSelectedCategory(null);
       setSearchTerm('');
     };
@@ -84,7 +105,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       window.removeEventListener('set-product-category', handleSetCategory as EventListener);
       window.removeEventListener('clear-product-filters', handleClearFilters as EventListener);
     };
-  }, []);
+  }, [searchParams, setSearchParams]);
 
   // Optimized data fetching
   const fetchProducts = useCallback(async () => {
@@ -284,6 +305,13 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   }, []);
 
   const handleCategorySelect = (categorySlug: string | null) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (categorySlug) {
+      newParams.set('category', categorySlug);
+    } else {
+      newParams.delete('category');
+    }
+    setSearchParams(newParams);
     setSelectedCategory(categorySlug);
     setShowFilters(false); // Close filters when category is selected
   };
@@ -336,7 +364,17 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             <Input
               placeholder={t('mobile.products.search_placeholder')}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                const newSearchTerm = e.target.value;
+                setSearchTerm(newSearchTerm);
+                const newParams = new URLSearchParams(searchParams);
+                if (newSearchTerm.trim()) {
+                  newParams.set('search', newSearchTerm);
+                } else {
+                  newParams.delete('search');
+                }
+                setSearchParams(newParams);
+              }}
               className="pl-10"
             />
           </div>
