@@ -54,7 +54,7 @@ const ProductCatalog = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
     searchParams.get('category') || null
   );
@@ -168,9 +168,11 @@ const ProductCatalog = () => {
   }, []);
 
 
-  // Update selectedCategory when URL changes
+  // Update search term and selectedCategory when URL changes
   useEffect(() => {
+    const searchFromUrl = searchParams.get('search') || '';
     const categoryFromUrl = searchParams.get('category');
+    setSearchTerm(searchFromUrl);
     setSelectedCategory(categoryFromUrl);
   }, [searchParams]);
 
@@ -251,7 +253,17 @@ const ProductCatalog = () => {
           <Input
             placeholder={t('products.search_placeholder')}
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              const newSearchTerm = e.target.value;
+              setSearchTerm(newSearchTerm);
+              const newParams = new URLSearchParams(searchParams);
+              if (newSearchTerm.trim()) {
+                newParams.set('search', newSearchTerm);
+              } else {
+                newParams.delete('search');
+              }
+              setSearchParams(newParams);
+            }}
             className="pl-10"
           />
         </div>
@@ -350,6 +362,7 @@ const ProductCatalog = () => {
                   // Clear all filters from URL
                   const newParams = new URLSearchParams(searchParams);
                   newParams.delete('category');
+                  newParams.delete('search');
                   setSearchParams(newParams);
                 }}
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
