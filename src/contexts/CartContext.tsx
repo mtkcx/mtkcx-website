@@ -154,7 +154,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }));
         }
 
-        // Check localStorage for any additional items
+        // Check localStorage for any additional items (guest cart before login)
+        const guestCart = localStorage.getItem('shopping-cart-guest');
+        let guestItems: CartItem[] = [];
+        if (guestCart) {
+          try {
+            guestItems = JSON.parse(guestCart);
+          } catch (error) {
+            console.error('Error loading guest cart from localStorage:', error);
+          }
+        }
+
+        // Check user-specific localStorage
         const cartKey = getCartKey();
         let localItems: CartItem[] = [];
         if (cartKey) {
@@ -168,15 +179,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         }
 
-        // Use database items if they exist, otherwise use localStorage items
-        const finalItems = databaseItems.length > 0 ? databaseItems : localItems;
+        // Merge guest cart with user cart (prioritize database, then guest items, then local)
+        let finalItems = databaseItems;
+        if (finalItems.length === 0 && guestItems.length > 0) {
+          finalItems = guestItems;
+        } else if (finalItems.length === 0) {
+          finalItems = localItems;
+        }
+
         setItems(finalItems);
 
-        // Save final items to localStorage
+        // Save final items to user-specific localStorage and database
         if (cartKey && finalItems.length > 0) {
           localStorage.setItem(cartKey, JSON.stringify(finalItems));
-          // Save to database if we used localStorage items (sync up)
-          if (finalItems === localItems && databaseItems.length === 0) {
+          // Clear guest cart after migrating to user cart
+          if (guestItems.length > 0) {
+            localStorage.removeItem('shopping-cart-guest');
+          }
+          // Save to database if we merged guest items or local items
+          if (finalItems === guestItems || (finalItems === localItems && databaseItems.length === 0)) {
             setTimeout(() => saveCartToDatabase(), 100);
           }
         }
