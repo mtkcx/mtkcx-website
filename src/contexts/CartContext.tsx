@@ -123,7 +123,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Get user-specific cart key
   const getCartKey = () => {
-    return user ? `shopping-cart-${user.id}` : null;
+    return user ? `shopping-cart-${user.id}` : 'shopping-cart-guest';
   };
 
   // Load cart when user changes or component mounts
@@ -181,10 +181,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         }
       } else {
-        // User is logged out - clear local state only (database cart persists)
-        setItems([]);
-        // Clear localStorage for guest cart only
-        localStorage.removeItem('shopping-cart');
+        // User is logged out - load from guest cart in localStorage
+        const guestCart = localStorage.getItem('shopping-cart-guest');
+        if (guestCart) {
+          try {
+            const guestItems = JSON.parse(guestCart);
+            setItems(guestItems);
+          } catch (error) {
+            console.error('Error loading guest cart from localStorage:', error);
+            setItems([]);
+          }
+        } else {
+          setItems([]);
+        }
       }
     };
 
@@ -193,30 +202,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Save cart to localStorage and database whenever items change
   useEffect(() => {
-    if (loading || !user || items.length === 0) return;
+    if (loading) return;
     
     const cartKey = getCartKey();
     if (cartKey) {
       localStorage.setItem(cartKey, JSON.stringify(items));
-      // Debounce database saves to avoid too many requests
-      const timeoutId = setTimeout(() => {
-        saveCartToDatabase();
-      }, 500);
       
-      return () => clearTimeout(timeoutId);
+      // Save to database only for authenticated users
+      if (user && items.length > 0) {
+        const timeoutId = setTimeout(() => {
+          saveCartToDatabase();
+        }, 500);
+        
+        return () => clearTimeout(timeoutId);
+      }
     }
   }, [items, user, loading]);
 
   const addToCart = (newItem: Omit<CartItem, 'id' | 'quantity'>) => {
-    // Only allow adding to cart if user is logged in
-    if (!user) {
-      toast({
-        title: "Login Required",
-        description: "Please log in to add items to your cart.",
-        variant: "destructive"
-      });
-      return;
-    }
 
     setItems(prevItems => {
       // Check if item with same product and variant already exists

@@ -54,8 +54,9 @@ const handler = async (req: Request): Promise<Response> => {
     // Generate order number
     const orderNumber = `ORD-${Date.now()}`;
 
-    // Get authenticated user (optional for manual orders)
+    // Get authenticated user or create account for guest
     let userId = null;
+    let accountCreated = false;
     try {
       const authHeader = req.headers.get("Authorization");
       if (authHeader) {
@@ -68,7 +69,60 @@ const handler = async (req: Request): Promise<Response> => {
         userId = data.user?.id || null;
       }
     } catch (error) {
-      console.log('No authenticated user, proceeding as guest order');
+      console.log('No authenticated user, will create account during checkout');
+    }
+
+    // If no authenticated user, create account automatically
+    if (!userId) {
+      try {
+        console.log('🔐 Creating account for guest user:', customerInfo.email);
+        
+        // Generate a temporary password
+        const tempPassword = `TempPass${Date.now()}${Math.random().toString(36).substring(2, 8)}`;
+        
+        // Create user account using service role
+        const { data: authData, error: authError } = await supabaseService.auth.admin.createUser({
+          email: customerInfo.email,
+          password: tempPassword,
+          email_confirm: true, // Auto-confirm email
+          user_metadata: {
+            full_name: customerInfo.name,
+            phone: customerInfo.phone,
+            created_via: 'checkout_auto',
+            temp_password: true
+          }
+        });
+
+        if (authError) {
+          console.error('❌ Account creation error:', authError);
+          // Don't fail the order if account creation fails
+        } else {
+          userId = authData.user?.id;
+          accountCreated = true;
+          console.log('✅ Account created successfully for:', customerInfo.email);
+          
+          // Create profile for the new user
+          const { error: profileError } = await supabaseService
+            .from('profiles')
+            .insert({
+              user_id: userId,
+              full_name: customerInfo.name,
+              phone: customerInfo.phone,
+              address: customerInfo.address,
+              city: customerInfo.city,
+              country: 'Israel'
+            });
+            
+          if (profileError) {
+            console.error('❌ Profile creation error:', profileError);
+          } else {
+            console.log('✅ Profile created for new user');
+          }
+        }
+      } catch (createError) {
+        console.error('❌ Account creation failed:', createError);
+        // Continue with guest order if account creation fails
+      }
     }
 
     console.log('📝 Creating order for:', customerInfo.email);
@@ -196,6 +250,14 @@ const handler = async (req: Request): Promise<Response> => {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #333; text-align: center;">Order Confirmation</h1>
           
+          ${accountCreated ? `
+          <div style="background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4caf50;">
+            <h3 style="color: #2e7d32; margin: 0 0 10px 0;">🎉 Account Created!</h3>
+            <p style="margin: 5px 0; color: #2e7d32;">We've automatically created an account for you with the email <strong>${customerInfo.email}</strong>.</p>
+            <p style="margin: 5px 0; color: #2e7d32;">You can set your password by using the "Forgot Password" option on our login page to access your account and track future orders.</p>
+          </div>
+          ` : ''}
+          
           <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h2 style="color: #333; margin: 0 0 10px 0;">Order #${orderNumber}</h2>
             <p style="margin: 5px 0;"><strong>Customer:</strong> ${customerInfo.name}</p>
@@ -299,7 +361,7 @@ const handler = async (req: Request): Promise<Response> => {
       // Don't fail the order creation if email fails
     }
 
-    // Return success response with order details and session ID for guest access
+    // Return success response with order details and account info
     const responseData = {
       success: true,
       order: {
@@ -313,7 +375,8 @@ const handler = async (req: Request): Promise<Response> => {
         payment_gateway: customerInfo.paymentMethod,
         created_at: order.created_at,
         items: items
-      }
+      },
+      account_created: accountCreated
     };
 
     // Include session ID for guest orders (for order tracking)

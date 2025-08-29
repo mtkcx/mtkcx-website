@@ -146,9 +146,16 @@ const Checkout: React.FC = () => {
       if (data?.success && data?.order) {
         console.log('✅ Order created successfully:', data.order);
         
+        let successMessage = `Order #${data.order.order_number} created successfully! ${formatPrice(totalAmount)}`;
+        
+        // Add account creation message if applicable
+        if (data.account_created) {
+          successMessage += '\n\n🎉 We\'ve also created an account for you! You can set your password using "Forgot Password" to track future orders.';
+        }
+        
         toast({
           title: t('checkout.order_success'),
-          description: `Order #${data.order.order_number} created successfully! ${formatPrice(totalAmount)}`,
+          description: successMessage,
         });
         
         clearCart();

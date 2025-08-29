@@ -148,9 +148,16 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
       if (data?.success && data?.order) {
         console.log('✅ Order created successfully:', data.order);
         
+        let successDescription = `${t('checkout.order_success_desc')} Order #${data.order.order_number} - ₪${totalAmount.toLocaleString()}`;
+        
+        // Add account creation message if applicable
+        if (data.account_created) {
+          successDescription += '\n\n🎉 Account created! Use "Forgot Password" to set your password and track orders.';
+        }
+        
         toast({
           title: t('checkout.order_success'),
-          description: `${t('checkout.order_success_desc')} Order #${data.order.order_number} - ₪${totalAmount.toLocaleString()}`,
+          description: successDescription,
         });
 
         // Clear cart and reset form
@@ -169,7 +176,7 @@ export const MobileCheckout: React.FC<MobileCheckoutProps> = ({ onBack }) => {
         // Go back to previous screen after successful order
         setTimeout(() => {
           onBack();
-        }, 2000);
+        }, 3000); // Extended time to read account message
       } else {
         throw new Error('Failed to create order');
       }
