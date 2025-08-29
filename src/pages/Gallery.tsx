@@ -286,7 +286,7 @@ const Gallery = () => {
                       {t('gallery.wrapping_services')}
                     </h4>
                     <div className="space-y-3">
-                      {[t('gallery.paint_protection_film'), t('gallery.color_change_wrap'), t('gallery.commercial_fleet')].map((service, index) => <div key={index} className="flex items-center text-muted-foreground">
+                      {[t('gallery.paint_protection_film'), t('gallery.color_change_wrap'), t('gallery.commercial_fleet')].map((service, index) => <div key={`wrapping-service-${index}`} className="flex items-center text-muted-foreground">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
                           {service}
                         </div>)}
@@ -299,7 +299,7 @@ const Gallery = () => {
                       {t('gallery.additional_services')}
                     </h4>
                     <div className="space-y-3">
-                      {[t('gallery.specialty_finishes'), t('gallery.polish_detailing'), t('gallery.professional_detailing')].map((service, index) => <div key={index} className="flex items-center text-muted-foreground">
+                      {[t('gallery.specialty_finishes'), t('gallery.polish_detailing'), t('gallery.professional_detailing')].map((service, index) => <div key={`additional-service-${index}`} className="flex items-center text-muted-foreground">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
                           {service}
                         </div>)}
@@ -397,7 +397,7 @@ const Gallery = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {materials.map((material, index) => <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300">
+            {materials.map((material, index) => <Card key={`material-${material.brand}-${index}`} className="p-6 text-center hover:shadow-lg transition-all duration-300">
                 <CardHeader className="pb-4">
                   <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
                     <Layers className="w-6 h-6 text-primary" />
@@ -409,7 +409,7 @@ const Gallery = () => {
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="space-y-2">
-                    {material.features.map((feature, featureIndex) => <div key={featureIndex} className="flex items-center text-sm justify-center">
+                    {material.features.map((feature, featureIndex) => <div key={`${material.brand}-feature-${featureIndex}`} className="flex items-center text-sm justify-center">
                         <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                         <span>{feature}</span>
                       </div>)}

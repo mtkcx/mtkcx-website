@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { MessageCircle, User, Clock, Send, UserCheck } from 'lucide-react';
 import { format } from 'date-fns';
 import AdminProtectedRoute from '@/components/AdminProtectedRoute';

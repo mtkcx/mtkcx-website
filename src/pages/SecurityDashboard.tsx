@@ -13,7 +13,13 @@ import { useToast } from '@/hooks/use-toast';
 const SecurityDashboard: React.FC = () => {
   const [testResults, setTestResults] = useState<SecurityTestResult[]>([]);
   const [isRunning, setIsRunning] = useState(false);
-  const [securityLogs, setSecurityLogs] = useState<any[]>([]);
+  const [securityLogs, setSecurityLogs] = useState<Array<{
+    timestamp: number;
+    level: string;
+    type: string;
+    message: string;
+    details?: any;
+  }>>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -163,12 +169,12 @@ const SecurityDashboard: React.FC = () => {
                   ) : (
                     <div className="space-y-2 max-h-96 overflow-y-auto">
                       {securityLogs.map((log, index) => (
-                        <div key={index} className="flex items-start gap-3 p-3 border rounded-lg text-sm">
-                          <Badge variant={getSeverityColor(log.severity)}>
-                            {log.severity}
+                        <div key={`log-${log.timestamp}-${index}`} className="flex items-start gap-3 p-3 border rounded-lg text-sm">
+                          <Badge variant={getSeverityColor(log.level || 'low')}>
+                            {log.level || 'low'}
                           </Badge>
                           <div className="flex-1">
-                            <div className="font-medium">{log.event}</div>
+                            <div className="font-medium">{log.type}</div>
                             <div className="text-muted-foreground text-xs mt-1">
                               {new Date(log.timestamp).toLocaleString()}
                             </div>

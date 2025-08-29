@@ -292,7 +292,13 @@ export class SecurityAuditLogger {
     }
   }
 
-  static getSecurityLogs(): any[] {
+  static getSecurityLogs(): Array<{
+    timestamp: number;
+    level: string;
+    type: string;
+    message: string;
+    details?: any;
+  }> {
     try {
       return JSON.parse(localStorage.getItem('security_logs') || '[]');
     } catch {

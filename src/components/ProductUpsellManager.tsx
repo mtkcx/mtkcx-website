@@ -29,8 +29,15 @@ interface Upsell {
   upsell_product: AdminProduct;
 }
 
+interface ProductForUpsell {
+  id?: string;
+  name: string;
+  product_code?: string;
+  status?: string;
+}
+
 interface ProductUpsellManagerProps {
-  products: any[]; // Accept any array type to avoid conflicts
+  products: ProductForUpsell[];
   onUpdate: () => void;
 }
 
@@ -56,7 +63,15 @@ export const ProductUpsellManager: React.FC<ProductUpsellManagerProps> = ({
   useEffect(() => {
     if (selectedProductId) {
       loadUpsells();
-      setAvailableProducts(products.filter(p => p.id !== selectedProductId));
+      setAvailableProducts(products.filter((p): p is AdminProduct => 
+        Boolean(p.id) && p.id !== selectedProductId
+      ).map(p => ({
+        id: p.id!,
+        name: p.name,
+        product_code: p.product_code || '',
+        image_url: undefined,
+        category: undefined
+      })));
     }
   }, [selectedProductId, products]);
 
@@ -239,8 +254,8 @@ export const ProductUpsellManager: React.FC<ProductUpsellManagerProps> = ({
                 <SelectValue placeholder="Choose a product..." />
               </SelectTrigger>
               <SelectContent>
-                {filteredProducts.map((product) => (
-                  <SelectItem key={product.id} value={product.id}>
+                {filteredProducts.filter(p => p.id).map((product) => (
+                  <SelectItem key={product.id} value={product.id!}>
                     {product.name} ({product.product_code})
                   </SelectItem>
                 ))}

@@ -80,7 +80,14 @@ const SecurityMonitor: React.FC = () => {
 
   const loadSecurityEvents = () => {
     const events = SecurityAuditLogger.getSecurityLogs();
-    setSecurityEvents(events.slice(-10)); // Show last 10 events
+    // Transform the logs to match SecurityEvent interface
+    const securityEvents: SecurityEvent[] = events.map(log => ({
+      event: log.type,
+      severity: (log.level as 'low' | 'medium' | 'high' | 'critical') || 'low',
+      details: log.details || {},
+      timestamp: new Date(log.timestamp).toISOString()
+    }));
+    setSecurityEvents(securityEvents.slice(-10)); // Show last 10 events
   };
 
   const getSeverityColor = (severity: string) => {

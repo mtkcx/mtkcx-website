@@ -13,8 +13,17 @@ interface CachedItem<T> {
 }
 
 interface OfflineStore {
-  products: any[];
-  categories: any[];
+  products: Array<{
+    id: string;
+    name: string;
+    price?: number;
+    image_url?: string;
+  }>;
+  categories: Array<{
+    id: string;
+    name: string;
+    slug: string;
+  }>;
   lastSync: number;
 }
 

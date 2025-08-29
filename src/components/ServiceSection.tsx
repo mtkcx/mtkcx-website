@@ -57,7 +57,7 @@ const ServiceSection = () => {
                 
                 <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6 flex-1 flex flex-col">
                   <ul className="space-y-2 sm:space-y-3 flex-1">
-                    {service.features.map((feature, featureIndex) => <li key={featureIndex} className="flex items-center text-sm sm:text-base text-muted-foreground">
+                     {service.features.map((feature, featureIndex) => <li key={`feature-${featureIndex}-${feature.substring(0,10)}`} className="flex items-center text-sm sm:text-base text-muted-foreground">
                         <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
                         {feature}
                       </li>)}

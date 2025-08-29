@@ -22,7 +22,42 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
   const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Array<{
+    id: string;
+    name: string;
+    name_ar?: string;
+    name_he?: string;
+    description?: string;
+    description_ar?: string;
+    description_he?: string;
+    image_url?: string;
+    product_code?: string;
+    safety_icons?: string[];
+    featured?: boolean;
+    product_categories?: Array<{
+      categories?: {
+        id: string;
+        name: string;
+        name_ar?: string;
+        name_he?: string;
+        slug: string;
+      };
+    }>;
+    product_variants?: Array<{
+      id: string;
+      size: string;
+      price: number;
+      stock_quantity: number;
+      is_primary?: boolean;
+    }>;
+    product_images?: Array<{
+      id: string;
+      image_url: string;
+      alt_text?: string;
+      is_primary?: boolean;
+      variant_id?: string;
+    }>;
+  }>>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(searchParams.get('category') || null);
@@ -59,7 +94,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             newSelectedVariants[product.id] = {
               variantId: primaryVariant.id,
               size: primaryVariant.size,
-              price: parseFloat(primaryVariant.price)
+              price: Number(primaryVariant.price)
             };
           }
         }
@@ -137,6 +172,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
             id,
             size,
             price,
+            stock_quantity,
             is_primary
           ),
           product_images!product_images_product_id_fkey (
@@ -268,7 +304,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
       productCode: product.product_code,
       variantId: selectedVariant?.variantId || null,
       variantSize: selectedVariant?.size || 'default',
-      price: selectedVariant?.price || parseFloat(product.product_variants?.[0]?.price || '0'),
+      price: selectedVariant?.price || Number(product.product_variants?.[0]?.price || 0),
       quantity: 1,
       imageUrl: getCurrentProductImage(product),
       categoryName: product.product_categories?.[0]?.categories?.name || 'Unknown'
@@ -538,8 +574,8 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                         onValueChange={(variantId) => {
                           const variant = product.product_variants?.find((v: any) => v.id === variantId);
                           if (variant) {
-                            handleVariantChange(product.id, variantId, variant.size, parseFloat(variant.price));
-                          }
+            handleVariantChange(product.id, variantId, variant.size, Number(variant.price));
+          }
                         }}
                       >
                         <SelectTrigger className="h-7 text-xs">
@@ -548,7 +584,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                         <SelectContent>
                           {product.product_variants.map((variant: any) => (
                             <SelectItem key={variant.id} value={variant.id}>
-                              {variant.size} - ₪{parseFloat(variant.price).toLocaleString()}
+                              {variant.size} - ₪{Number(variant.price).toLocaleString()}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -559,7 +595,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                   {/* Quick Actions */}
                   <div className="flex items-center justify-between">
                     <div className="font-bold text-primary text-sm">
-                      ₪{(selectedVariants[product.id]?.price || parseFloat(product.product_variants?.[0]?.price || '0')).toLocaleString()}
+                      ₪{(selectedVariants[product.id]?.price || Number(product.product_variants?.[0]?.price || 0)).toLocaleString()}
                     </div>
                     <div className="flex gap-1">
                       <Button
