@@ -515,39 +515,42 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                    </Badge>
                  </div>
                    
-                   {/* Product Description with expandable preview */}
-                   {(product.description || product.description_ar || product.description_he) && (
-                     <div className="space-y-1">
-                       <div className={`text-xs text-muted-foreground leading-relaxed ${
-                         expandedDescriptions[product.id] ? '' : 'line-clamp-2'
-                       }`}>
-                         {currentLanguage === 'ar' ? (product.description_ar || product.description) :
-                          currentLanguage === 'he' ? (product.description_he || product.description) :
-                          product.description}
-                       </div>
-                       {(product.description || product.description_ar || product.description_he)?.length > 80 && (
-                         <button
-                           onClick={(e) => {
-                             e.stopPropagation();
-                             toggleDescription(product.id);
-                           }}
-                           className="flex items-center gap-1 text-xs text-primary hover:underline focus:outline-none"
-                         >
-                           {expandedDescriptions[product.id] ? (
-                             <>
-                               <span>{t('mobile.products.show_less')}</span>
-                               <ChevronUp className="h-3 w-3" />
-                             </>
-                           ) : (
-                             <>
-                               <span>{t('mobile.products.show_more')}</span>
-                               <ChevronDown className="h-3 w-3" />
-                             </>
-                           )}
-                         </button>
-                       )}
-                     </div>
-                   )}
+                    {/* Product Description with expandable preview */}
+                    {(() => {
+                      const currentDescription = currentLanguage === 'ar' ? (product.description_ar || product.description) :
+                                                currentLanguage === 'he' ? (product.description_he || product.description) :
+                                                product.description;
+                      return currentDescription && (
+                        <div className="space-y-1">
+                          <div className={`text-xs text-muted-foreground leading-relaxed ${
+                            expandedDescriptions[product.id] ? '' : 'line-clamp-2'
+                          }`}>
+                            {currentDescription}
+                          </div>
+                          {currentDescription.length > 80 && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleDescription(product.id);
+                              }}
+                              className="flex items-center gap-1 text-xs text-primary hover:underline focus:outline-none"
+                            >
+                              {expandedDescriptions[product.id] ? (
+                                <>
+                                  <span>{t('mobile.products.show_less')}</span>
+                                  <ChevronUp className="h-3 w-3" />
+                                </>
+                              ) : (
+                                <>
+                                  <span>{t('mobile.products.show_more')}</span>
+                                  <ChevronDown className="h-3 w-3" />
+                                </>
+                              )}
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })()}
 
                  {/* Product Features */}
                  {product.safety_icons && product.safety_icons.length > 0 && (
