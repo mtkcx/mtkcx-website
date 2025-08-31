@@ -60,7 +60,7 @@ const SecurityMiddleware: React.FC<SecurityMiddlewareProps> = ({ children }) => 
 
       // Monitor for security events
       const originalConsoleError = console.error;
-      console.error = (...args: any[]) => {
+      console.error = (...args: unknown[]) => {
         // Log security-related errors
         const message = args.join(' ');
         if (message.includes('CSP') || message.includes('security') || message.includes('XSS')) {

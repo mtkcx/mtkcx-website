@@ -557,7 +557,7 @@ export const MobileProductCatalog: React.FC<MobileProductCatalogProps> = ({ comp
                    <div className="flex items-center gap-1 flex-wrap">
                      <Info className="h-3 w-3 text-primary" />
                      {product.safety_icons.slice(0, 2).map((icon: string, index: number) => (
-                       <Badge key={index} variant="outline" className="text-xs px-1 py-0">
+                       <Badge key={`safety-${product.id}-${index}`} variant="outline" className="text-xs px-1 py-0">
                          {icon}
                        </Badge>
                      ))}

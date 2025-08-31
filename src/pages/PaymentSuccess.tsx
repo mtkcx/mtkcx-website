@@ -15,7 +15,26 @@ const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const { t } = useLanguage();
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<{
+    id: string;
+    order_number: string;
+    amount: number;
+    currency?: string;
+    status: string;
+    items: any[];
+    customer_name?: string;
+    customer_email?: string;
+    email?: string;
+    created_at: string;
+    payment_gateway?: string;
+    order_type?: string;
+    service_type?: string;
+    service_description?: string;
+    preferred_date?: string;
+    customer_phone?: string;
+    customer_address?: string;
+    customer_city?: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [verifying, setVerifying] = useState(false);
 
@@ -255,7 +274,7 @@ const PaymentSuccess = () => {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Total Amount</p>
-                      <p className="font-bold text-lg">₪{parseFloat(order.amount).toFixed(2)} {order.currency}</p>
+                      <p className="font-bold text-lg">₪{order.amount.toFixed(2)} {order.currency || 'ILS'}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Order Date</p>
@@ -316,7 +335,7 @@ const PaymentSuccess = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4 text-muted-foreground" />
-                      <span>{order.email}</span>
+                      <span>{order.customer_email || order.email}</span>
                     </div>
                     {order.customer_phone && (
                       <div className="flex items-center gap-2">

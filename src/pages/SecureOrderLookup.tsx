@@ -12,7 +12,26 @@ import SecureOrderAccess from '@/components/SecureOrderAccess';
 import { DataEncryptionManager } from '@/utils/enhanced-security';
 
 const SecureOrderLookup = () => {
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<{
+    id: string;
+    order_number: string;
+    amount: number;
+    status: string;
+    items: any[];
+    customer_name?: string;
+    customer_email?: string;
+    email?: string;
+    created_at: string;
+    payment_gateway?: string;
+    order_type?: string;
+    service_type?: string;
+    service_description?: string;
+    preferred_date?: string;
+    customer_phone?: string;
+    customer_address?: string;
+    customer_city?: string;
+    currency?: string;
+  } | null>(null);
   const [accessDenied, setAccessDenied] = useState<string | null>(null);
 
   const handleOrderFound = (foundOrder: any) => {
@@ -142,7 +161,7 @@ const SecureOrderLookup = () => {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Total Amount</p>
-                      <p className="font-bold text-lg">₪{parseFloat(order.amount).toFixed(2)} {order.currency}</p>
+                      <p className="font-bold text-lg">₪{order.amount.toFixed(2)} {order.currency || 'ILS'}</p>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Order Date</p>
@@ -203,7 +222,7 @@ const SecureOrderLookup = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4 text-muted-foreground" />
-                      <span>{DataEncryptionManager.maskSensitiveData(order.email, 'email')}</span>
+                      <span>{DataEncryptionManager.maskSensitiveData(order.customer_email || order.email, 'email')}</span>
                     </div>
                     {order.customer_phone && (
                       <div className="flex items-center gap-2">
